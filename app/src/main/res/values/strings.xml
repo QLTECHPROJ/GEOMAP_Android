@@ -147,4 +147,5 @@
     <string name="client_s_geologist_sign">Client’s Geologist sign</string>
     <string name="night_shift">Night Shift</string>
     <string name="day_shift">Day Shift</string>
+    <string name="data">DATA</string>
 </resources>

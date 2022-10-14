@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/screen_bg"
@@ -103,10 +103,10 @@
                             android:cursorVisible="true"
                             android:fontFamily="@font/inter_semi_bold"
                             android:hint="@string/name"
-                            android:nextFocusDown="@id/etPassword"
                             android:inputType="text"
                             android:maxLength="25"
                             android:maxLines="1"
+                            android:nextFocusDown="@id/etPassword"
                             android:singleLine="true"
                             android:textColor="@color/light_black"
                             android:textColorHint="@color/gray"
@@ -209,7 +209,7 @@
                 android:layout_marginHorizontal="@dimen/_25sdp"
                 android:layout_marginTop="@dimen/_40sdp"
                 android:background="@drawable/disable_button"
-                android:enabled="true"
+                android:enabled="false"
                 android:fontFamily="@font/inter_bold"
                 android:text="@string/sign_in"
                 android:textColor="@color/white"
@@ -218,21 +218,18 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp"
-                android:layout_gravity="center"
-                android:indeterminateTint="@color/primary_theme"
-                android:scaleType="centerInside"
-                android:visibility="gone" />
-
-        </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/primary_theme"
+            android:scaleType="centerInside"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <FrameLayout
             android:id="@+id/progressBarHolder"
@@ -241,6 +238,10 @@
             android:alpha="0.4"
             android:animateLayoutChanges="true"
             android:background="#A6EFEFEF"
-            android:visibility="gone" />
-    </RelativeLayout>
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

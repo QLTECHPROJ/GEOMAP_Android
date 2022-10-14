@@ -4,302 +4,290 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/screen_bg"
         tools:context=".mapReportModule.activities.UnderGroundFormFirstStepActivity">
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/llBack"
+            android:layout_width="@dimen/_56sdp"
+            android:layout_height="@dimen/_56sdp"
+            android:contentDescription="@string/todo"
+            android:padding="@dimen/_20sdp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_arrow_left_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/black" />
+
+        <TextView
+            android:id="@+id/tvHeaderTitle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="@dimen/_56sdp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/inter_semi_bold"
+            android:gravity="center"
+            android:text="@string/geological_attributes"
+            android:textColor="@color/light_black"
+            android:textSize="@dimen/_16sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SpUsage" />
 
-            <RelativeLayout
-                android:id="@+id/rlLayout"
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_56sdp"
+            android:overScrollMode="never"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvHeaderTitle">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_56sdp">
-
-                <LinearLayout
-                    android:id="@+id/llBack"
-                    android:layout_width="42dp"
-                    android:layout_height="@dimen/_56sdp"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/todo"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_arrow_left_icon"
-                        app:tint="@color/black" />
-
-                </LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_18sdp"
+                android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tvAddAttributes"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
+                    android:layout_height="match_parent"
                     android:fontFamily="@font/inter_semi_bold"
-                    android:gravity="center"
-                    android:text="@string/geological_attributes"
-                    android:textColor="@color/light_black"
+                    android:gravity="center|end"
+                    android:text="@string/add_attributes"
+                    android:textColor="@color/primary_theme"
                     android:textSize="@dimen/_16sdp"
                     tools:ignore="SpUsage" />
 
-            </RelativeLayout>
-
-            <androidx.core.widget.NestedScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:overScrollMode="never">
-
                 <LinearLayout
+                    android:id="@+id/llMainLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="@dimen/_18sdp"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <TextView
-                        android:id="@+id/tvAddAttributes"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_24sdp"
                         android:fontFamily="@font/inter_semi_bold"
-                        android:gravity="center|end"
-                        android:text="@string/add_attributes"
-                        android:textColor="@color/primary_theme"
+                        android:gravity="start"
+                        android:text="@string/attributes_"
+                        android:textColor="@color/light_black"
                         android:textSize="@dimen/_16sdp"
                         tools:ignore="SpUsage" />
 
-                    <LinearLayout
-                        android:id="@+id/llMainLayout"
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cvMineralization"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_60sdp"
+                        android:layout_gravity="center"
+                        android:layout_marginHorizontal="@dimen/_1sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        app:cardCornerRadius="@dimen/_10sdp"
+                        app:cardElevation="@dimen/_2sdp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:paddingStart="@dimen/_14sdp"
+                            android:paddingEnd="@dimen/_0sdp"
+                            android:weightSum="1"
+                            tools:ignore="DisableBaselineAlignment">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="0.83"
+                                android:gravity="center_vertical"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tvMineralization"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center_vertical"
+                                    android:fontFamily="@font/inter_semi_bold"
+                                    android:gravity="center_vertical"
+                                    android:text="@string/mineralization"
+                                    android:textColor="@color/light_black"
+                                    android:textSize="@dimen/_16sdp"
+                                    tools:ignore="SpUsage" />
+
+                            </LinearLayout>
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_48sdp"
+                                android:layout_weight="0.17"
+                                android:paddingStart="@dimen/_0sdp"
+                                android:paddingEnd="@dimen/_14sdp">
+
+                                <ImageView
+                                    android:id="@+id/ivMineralization"
+                                    android:layout_width="@dimen/_20sdp"
+                                    android:layout_height="@dimen/_20sdp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:contentDescription="@string/todo"
+                                    android:paddingHorizontal="@dimen/_2sdp"
+                                    android:paddingVertical="@dimen/_2sdp"
+                                    android:rotation="90"
+                                    android:src="@drawable/ic_arrow_icon"
+                                    android:visibility="visible" />
+
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:visibility="gone">
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_50sdp"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:gravity="start"
+                        android:text="@string/nos_"
+                        android:textColor="@color/light_black"
+                        android:textSize="@dimen/_16sdp"
+                        tools:ignore="SpUsage" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_24sdp"
-                            android:fontFamily="@font/inter_semi_bold"
-                            android:gravity="start"
-                            android:text="@string/attributes_"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cvMineralizationOne"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_60sdp"
+                        android:layout_gravity="center"
+                        android:layout_marginHorizontal="@dimen/_1sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
+                        android:layout_marginBottom="@dimen/_2sdp"
+                        app:cardCornerRadius="@dimen/_10sdp"
+                        app:cardElevation="@dimen/_2sdp">
 
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/cvMineralization"
+                        <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_60sdp"
-                            android:layout_gravity="center"
-                            android:layout_marginHorizontal="@dimen/_1sdp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            app:cardCornerRadius="@dimen/_10sdp"
-                            app:cardElevation="@dimen/_2sdp">
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="horizontal"
+                            android:paddingStart="@dimen/_14sdp"
+                            android:paddingEnd="@dimen/_0sdp"
+                            android:weightSum="1"
+                            tools:ignore="DisableBaselineAlignment">
 
                             <LinearLayout
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:orientation="horizontal"
-                                android:paddingStart="@dimen/_14sdp"
-                                android:paddingEnd="@dimen/_0sdp"
-                                android:weightSum="1"
-                                tools:ignore="DisableBaselineAlignment">
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="0.83"
+                                android:gravity="center_vertical"
+                                android:orientation="vertical">
 
-                                <LinearLayout
-                                    android:layout_width="0dp"
+                                <TextView
+                                    android:id="@+id/tvMineralizationOne"
+                                    android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_gravity="center_vertical"
-                                    android:layout_weight="0.83"
+                                    android:fontFamily="@font/inter_semi_bold"
                                     android:gravity="center_vertical"
-                                    android:orientation="vertical">
+                                    android:text="@string/mineralization_1"
+                                    android:textColor="@color/light_black"
+                                    android:textSize="@dimen/_16sdp"
+                                    tools:ignore="SpUsage" />
 
-                                    <TextView
-                                        android:id="@+id/tvMineralization"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_gravity="center_vertical"
-                                        android:fontFamily="@font/inter_semi_bold"
-                                        android:gravity="center_vertical"
-                                        android:text="@string/mineralization"
-                                        android:textColor="@color/light_black"
-                                        android:textSize="@dimen/_16sdp"
-                                        tools:ignore="SpUsage" />
-
-                                </LinearLayout>
-
-                                <RelativeLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="@dimen/_48sdp"
-                                    android:layout_weight="0.17"
-                                    android:paddingStart="@dimen/_0sdp"
-                                    android:paddingEnd="@dimen/_14sdp">
-
-                                    <ImageView
-                                        android:id="@+id/ivMineralization"
-                                        android:layout_width="@dimen/_20sdp"
-                                        android:layout_height="@dimen/_20sdp"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_centerVertical="true"
-                                        android:contentDescription="@string/todo"
-                                        android:paddingHorizontal="@dimen/_2sdp"
-                                        android:paddingVertical="@dimen/_2sdp"
-                                        android:rotation="90"
-                                        android:src="@drawable/ic_arrow_icon"
-                                        android:visibility="visible" />
-
-                                </RelativeLayout>
                             </LinearLayout>
-                        </androidx.cardview.widget.CardView>
 
-                        <TextView
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="@dimen/_48sdp"
+                                android:layout_weight="0.17"
+                                android:paddingStart="@dimen/_0sdp"
+                                android:paddingEnd="@dimen/_14sdp">
+
+                                <ImageView
+                                    android:id="@+id/ivMineralizationOne"
+                                    android:layout_width="@dimen/_20sdp"
+                                    android:layout_height="@dimen/_20sdp"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:contentDescription="@string/todo"
+                                    android:paddingHorizontal="@dimen/_2sdp"
+                                    android:paddingVertical="@dimen/_2sdp"
+                                    android:rotation="90"
+                                    android:src="@drawable/ic_arrow_icon"
+                                    android:visibility="visible" />
+
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_50sdp"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:gravity="start"
+                        android:text="@string/properties_"
+                        android:textColor="@color/light_black"
+                        android:textSize="@dimen/_16sdp"
+                        tools:ignore="SpUsage" />
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/_1sdp"
+                        android:layout_marginTop="@dimen/_26sdp"
+                        android:layout_marginBottom="@dimen/_2sdp"
+                        app:cardCornerRadius="@dimen/_14sdp"
+                        app:cardElevation="@dimen/_1sdp">
+
+                        <EditText
+                            android:id="@+id/edtDescription"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_50sdp"
-                            android:fontFamily="@font/inter_semi_bold"
-                            android:gravity="start"
-                            android:text="@string/nos_"
+                            android:layout_height="@dimen/_140sdp"
+                            android:layout_marginHorizontal="@dimen/_18sdp"
+                            android:layout_marginVertical="@dimen/_10sdp"
+                            android:background="@android:color/transparent"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="top"
+                            android:hint="@string/add_description"
+                            android:imeOptions="actionDone"
+                            android:importantForAutofill="no"
+                            android:inputType="textMultiLine|textVisiblePassword"
+                            android:overScrollMode="always"
+                            android:paddingLeft="@dimen/_8sdp"
+                            android:paddingTop="@dimen/_8sdp"
+                            android:paddingRight="@dimen/_8sdp"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical"
+                            android:singleLine="false"
                             android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
+                            android:textCursorDrawable="@null"
+                            android:textSize="@dimen/_14sdp"
+                            android:visibility="visible"
                             tools:ignore="SpUsage" />
 
-                        <androidx.cardview.widget.CardView
-                            android:id="@+id/cvMineralizationOne"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_60sdp"
-                            android:layout_gravity="center"
-                            android:layout_marginHorizontal="@dimen/_1sdp"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:layout_marginBottom="@dimen/_2sdp"
-                            app:cardCornerRadius="@dimen/_10sdp"
-                            app:cardElevation="@dimen/_2sdp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:orientation="horizontal"
-                                android:paddingStart="@dimen/_14sdp"
-                                android:paddingEnd="@dimen/_0sdp"
-                                android:weightSum="1"
-                                tools:ignore="DisableBaselineAlignment">
-
-                                <LinearLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="match_parent"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_weight="0.83"
-                                    android:gravity="center_vertical"
-                                    android:orientation="vertical">
-
-                                    <TextView
-                                        android:id="@+id/tvMineralizationOne"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"
-                                        android:layout_gravity="center_vertical"
-                                        android:fontFamily="@font/inter_semi_bold"
-                                        android:gravity="center_vertical"
-                                        android:text="@string/mineralization_1"
-                                        android:textColor="@color/light_black"
-                                        android:textSize="@dimen/_16sdp"
-                                        tools:ignore="SpUsage" />
-
-                                </LinearLayout>
-
-                                <RelativeLayout
-                                    android:layout_width="0dp"
-                                    android:layout_height="@dimen/_48sdp"
-                                    android:layout_weight="0.17"
-                                    android:paddingStart="@dimen/_0sdp"
-                                    android:paddingEnd="@dimen/_14sdp">
-
-                                    <ImageView
-                                        android:id="@+id/ivMineralizationOne"
-                                        android:layout_width="@dimen/_20sdp"
-                                        android:layout_height="@dimen/_20sdp"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_centerVertical="true"
-                                        android:contentDescription="@string/todo"
-                                        android:paddingHorizontal="@dimen/_2sdp"
-                                        android:paddingVertical="@dimen/_2sdp"
-                                        android:rotation="90"
-                                        android:src="@drawable/ic_arrow_icon"
-                                        android:visibility="visible" />
-
-                                </RelativeLayout>
-                            </LinearLayout>
-                        </androidx.cardview.widget.CardView>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_50sdp"
-                            android:fontFamily="@font/inter_semi_bold"
-                            android:gravity="start"
-                            android:text="@string/properties_"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/_1sdp"
-                            android:layout_marginTop="@dimen/_26sdp"
-                            android:layout_marginBottom="@dimen/_2sdp"
-                            app:cardCornerRadius="@dimen/_14sdp"
-                            app:cardElevation="@dimen/_1sdp">
-
-                            <EditText
-                                android:id="@+id/edtDescription"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_140sdp"
-                                android:layout_marginHorizontal="@dimen/_18sdp"
-                                android:layout_marginVertical="@dimen/_10sdp"
-                                android:background="@android:color/transparent"
-                                android:cursorVisible="true"
-                                android:fontFamily="@font/inter_medium"
-                                android:gravity="top"
-                                android:hint="@string/add_description"
-                                android:imeOptions="actionDone"
-                                android:importantForAutofill="no"
-                                android:inputType="textMultiLine|textVisiblePassword"
-                                android:overScrollMode="always"
-                                android:paddingLeft="@dimen/_8sdp"
-                                android:paddingTop="@dimen/_8sdp"
-                                android:paddingRight="@dimen/_8sdp"
-                                android:scrollbarStyle="insideInset"
-                                android:scrollbars="vertical"
-                                android:singleLine="false"
-                                android:textColor="@color/light_black"
-                                android:textCursorDrawable="@null"
-                                android:textSize="@dimen/_14sdp"
-                                android:visibility="visible"
-                                tools:ignore="SpUsage" />
-
-                        </androidx.cardview.widget.CardView>
-                    </LinearLayout>
-
-
+                    </androidx.cardview.widget.CardView>
                 </LinearLayout>
 
-            </androidx.core.widget.NestedScrollView>
 
-        </LinearLayout>
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
 
         <Button
             android:id="@+id/btnNextStep"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginBottom="@dimen/_20sdp"
@@ -310,23 +298,23 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="@dimen/_14sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             tools:ignore="SpUsage" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp"
-                android:layout_gravity="center"
-                android:indeterminateTint="@color/primary_theme"
-                android:scaleType="centerInside"
-                android:visibility="gone" />
-
-        </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/primary_theme"
+            android:scaleType="centerInside"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <FrameLayout
             android:id="@+id/progressBarHolder"
@@ -335,6 +323,10 @@
             android:alpha="0.4"
             android:animateLayoutChanges="true"
             android:background="#A6EFEFEF"
-            android:visibility="gone" />
-    </RelativeLayout>
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

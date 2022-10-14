@@ -4,1390 +4,1379 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/screen_bg"
         tools:context=".mapReportModule.activities.OpenCastFormFirstStepActivity">
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/llBack"
+            android:layout_width="@dimen/_56sdp"
+            android:layout_height="@dimen/_56sdp"
+            android:contentDescription="@string/todo"
+            android:padding="@dimen/_20sdp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_arrow_left_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/black" />
+
+        <TextView
+            android:id="@+id/tvHeaderTitle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="@dimen/_56sdp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/inter_semi_bold"
+            android:gravity="center"
+            android:text="@string/geological_mapping"
+            android:textColor="@color/light_black"
+            android:textSize="@dimen/_16sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SpUsage" />
 
-            <RelativeLayout
-                android:id="@+id/rlLayout"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_56sdp">
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_56sdp"
+            android:overScrollMode="never"
+            android:layout_marginBottom="@dimen/_40sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvHeaderTitle">
 
-                <LinearLayout
-                    android:id="@+id/llBack"
-                    android:layout_width="42dp"
-                    android:layout_height="@dimen/_56sdp"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/todo"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_arrow_left_icon"
-                        app:tint="@color/black" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/inter_semi_bold"
-                    android:gravity="center"
-                    android:text="@string/geological_mapping"
-                    android:textColor="@color/light_black"
-                    android:textSize="@dimen/_16sdp"
-                    tools:ignore="SpUsage" />
-            </RelativeLayout>
-
-
-            <androidx.core.widget.NestedScrollView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:overScrollMode="never">
+                android:layout_marginHorizontal="@dimen/_18sdp"
+                android:layout_marginTop="@dimen/_24sdp"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="@dimen/_18sdp"
-                    android:layout_marginTop="@dimen/_24sdp"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="1">
-
-                        <TextView
-                            android:layout_width="@dimen/_0sdp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="0.5"
-                            android:fontFamily="@font/inter_semi_bold"
-                            android:gravity="start"
-                            android:text="@string/mapping_sheet_no_1523"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
-
-                        <TextView
-                            android:layout_width="@dimen/_0sdp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="0.5"
-                            android:fontFamily="@font/inter_semi_bold"
-                            android:gravity="end"
-                            android:text="14 July 2022"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
-                    </LinearLayout>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltMinesSiteName"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etMinesSiteName"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:cursorVisible="true"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/mines_site_name"
-                                android:nextFocusDown="@id/etPitName"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltPitName"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etPitName"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:cursorVisible="true"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/pit_name_"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:nextFocusDown="@id/etPitLocation"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltPitLocation"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etPitLocation"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:cursorVisible="true"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/pit_location_"
-                                android:nextFocusDown="@id/etShiftInchargeName"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltShiftInchargeName"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etShiftInchargeName"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:cursorVisible="true"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/shift_incharge_name_"
-                                android:nextFocusDown="@id/etGeologistName"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltGeologistName"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etGeologistName"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:cursorVisible="true"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/geologist_name_"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:nextFocusDown="@id/etFaceLocation"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/_18sdp"
-                                android:layout_marginTop="@dimen/_10sdp"
-                                android:fontFamily="@font/inter_medium"
-                                android:gravity="start"
-                                android:text="@string/shift_"
-                                android:textColor="@color/gray"
-                                android:textSize="@dimen/_12sdp"
-                                tools:ignore="SpUsage" />
-
-                            <RadioGroup
-                                android:id="@+id/rbRadioGroup"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/_10sdp"
-                                android:layout_marginBottom="@dimen/_16sdp"
-                                android:orientation="horizontal"
-                                android:paddingTop="@dimen/_10sdp">
-
-                                <RadioButton
-                                    android:id="@+id/rbNightShift"
-                                    style="@android:style/Widget.CompoundButton.CheckBox"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="@dimen/_10sdp"
-                                    android:background="@android:color/transparent"
-                                    android:button="@drawable/cb_btn_bg"
-                                    android:buttonTint="@color/primary_theme"
-                                    android:checked="true"
-                                    android:fontFamily="@font/inter_semi_bold"
-                                    android:gravity="center"
-                                    android:paddingStart="@dimen/_10sdp"
-                                    android:paddingEnd="@dimen/_0sdp"
-                                    android:text="@string/night_shift"
-                                    android:textSize="@dimen/_16sdp"
-                                    tools:ignore="SpUsage" />
-
-                                <RadioButton
-                                    android:id="@+id/rbDayShift"
-                                    style="@android:style/Widget.CompoundButton.CheckBox"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="@dimen/_36sdp"
-                                    android:background="@android:color/transparent"
-                                    android:button="@drawable/cb_btn_bg"
-                                    android:buttonTint="@color/primary_theme"
-                                    android:fontFamily="@font/inter_semi_bold"
-                                    android:gravity="center"
-                                    android:paddingStart="@dimen/_10sdp"
-                                    android:paddingEnd="@dimen/_0sdp"
-                                    android:text="@string/day_shift"
-                                    android:textSize="@dimen/_16sdp"
-                                    tools:ignore="SpUsage" />
-                            </RadioGroup>
-
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="@dimen/_0sdp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_34sdp"
+                        android:layout_weight="0.5"
                         android:fontFamily="@font/inter_semi_bold"
                         android:gravity="start"
-                        android:text="@string/mapping_parameters_"
+                        android:text="@string/mapping_sheet_no_1523"
                         android:textColor="@color/light_black"
                         android:textSize="@dimen/_12sdp"
                         tools:ignore="SpUsage" />
 
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltFaceLocation"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etFaceLocation"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:cursorVisible="true"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/face_location_"
-                                android:nextFocusDown="@id/etFaceLengthM"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltFaceLengthM"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etFaceLengthM"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:cursorVisible="true"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/face_length_m_"
-                                android:nextFocusDown="@id/etFaceAreaM2"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltFaceAreaM2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etFaceAreaM2"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:cursorVisible="true"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/face_area_m2_"
-                                android:nextFocusDown="@id/etFaceRockTypes"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltFaceRockTypes"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etFaceRockTypes"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:cursorVisible="true"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/face_rock_types_"
-                                android:nextFocusDown="@id/etBenchRL"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltBenchRL"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etBenchRL"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:cursorVisible="true"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/bench_rl_"
-                                android:nextFocusDown="@id/etBenchHeightWidth"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltBenchHeightWidth"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etBenchHeightWidth"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:cursorVisible="true"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/bench_height_amp_width_m"
-                                android:nextFocusDown="@id/etBenchAngle"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltBenchAngle"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etBenchAngle"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:cursorVisible="true"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/bench_angle_"
-                                android:nextFocusDown="@id/etDipDirectionAngle"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltDipDirectionAngle"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etDipDirectionAngle"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:cursorVisible="true"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/dip_direction_and_angle_"
-                                android:nextFocusDown="@id/etThicknessOfOre"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltThicknessOfOre"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etThicknessOfOre"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:cursorVisible="true"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/thickness_of_ore_coal_seam_"
-                                android:nextFocusDown="@id/etThinessOfOverburden"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltThinessOfOverburden"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etThinessOfOverburden"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:cursorVisible="true"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/thiness_of_overburden_m_"
-                                android:nextFocusDown="@id/etThicknessOfInterburden"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltThicknessOfInterburden"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etThicknessOfInterburden"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:cursorVisible="true"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/thickness_of_interburden_m_"
-                                android:nextFocusDown="@id/etObservedGradeOfOre"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltObservedGradeOfOre"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etObservedGradeOfOre"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:cursorVisible="true"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/observed_grade_of_ore_"
-                                android:nextFocusDown="@id/etSampleCollected"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltSampleCollected"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etSampleCollected"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:cursorVisible="true"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/sample_collected_"
-                                android:nextFocusDown="@id/etActualGradeOfOre"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </androidx.cardview.widget.CardView>
-
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltActualGradeOfOre"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etActualGradeOfOre"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:cursorVisible="true"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/actual_grade_of_ore_lab_grade_"
-                                android:nextFocusDown="@id/etWeathering"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </androidx.cardview.widget.CardView>
-
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltWeathering"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etWeathering"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:cursorVisible="true"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/weathering_"
-                                android:nextFocusDown="@id/etRockStrength"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp"
-                        tools:ignore="TooManyViews">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltRockStrength"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etRockStrength"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:cursorVisible="true"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/rock_strength_"
-                                android:nextFocusDown="@id/etWaterCondition"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltWaterCondition"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etWaterCondition"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:cursorVisible="true"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/water_condition_"
-                                android:nextFocusDown="@id/etTypeOfGeologicalStructures"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltTypeOfGeologicalStructures"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etTypeOfGeologicalStructures"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:cursorVisible="true"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/type_of_geological_structures_"
-                                android:nextFocusDown="@id/etTypeOfFaults"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_76sdp"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/ltTypeOfFaults"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginHorizontal="@dimen/_20sdp"
-                            android:layout_marginTop="@dimen/_2sdp"
-                            android:focusableInTouchMode="true"
-                            android:gravity="center_vertical"
-                            android:textColorHint="@color/gray"
-                            app:boxStrokeColor="@color/primary_theme"
-                            app:errorEnabled="true"
-                            app:errorTextAppearance="@style/ErrorText"
-                            app:hintTextAppearance="@style/HintText"
-                            app:hintTextColor="@color/primary_theme">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:id="@+id/etTypeOfFaults"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_38sdp"
-                                android:cursorVisible="true"
-                                android:background="@null"
-                                android:backgroundTint="@color/black"
-                                android:fontFamily="@font/inter_semi_bold"
-                                android:hint="@string/type_of_faults_"
-                                android:nextFocusDown="@id/edtNotes"
-                                android:inputType="text"
-                                android:maxLines="1"
-                                android:singleLine="true"
-                                android:textColor="@color/light_black"
-                                android:textColorHint="@color/gray"
-                                android:textSize="@dimen/_16sdp"
-                                app:hintTextAppearance="@style/HintText"
-                                tools:ignore="SpUsage" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="@dimen/_0sdp"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_16sdp"
-                        android:layout_marginBottom="@dimen/_2sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
+                        android:layout_gravity="center"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:gravity="end"
+                        android:text="14 July 2022"
+                        android:textColor="@color/light_black"
+                        android:textSize="@dimen/_12sdp"
+                        tools:ignore="SpUsage" />
+                </LinearLayout>
 
-                        <EditText
-                            android:id="@+id/edtNotes"
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltMinesSiteName"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etMinesSiteName"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_90sdp"
-                            android:layout_marginHorizontal="@dimen/_18sdp"
-                            android:layout_marginVertical="@dimen/_10sdp"
-                            android:background="@android:color/transparent"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
                             android:cursorVisible="true"
                             android:fontFamily="@font/inter_semi_bold"
-                            android:gravity="top"
-                            android:hint="@string/notes"
-                            android:imeOptions="actionDone"
-                            android:importantForAutofill="no"
-                            android:inputType="textMultiLine|textVisiblePassword"
-                            android:overScrollMode="always"
-                            android:paddingLeft="@dimen/_8sdp"
-                            android:paddingTop="@dimen/_8sdp"
-                            android:paddingRight="@dimen/_8sdp"
-                            android:scrollbarStyle="insideInset"
-                            android:scrollbars="vertical"
-                            android:singleLine="false"
+                            android:hint="@string/mines_site_name"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etPitName"
+                            android:singleLine="true"
                             android:textColor="@color/light_black"
-                            android:textCursorDrawable="@null"
+                            android:textColorHint="@color/gray"
                             android:textSize="@dimen/_16sdp"
-                            android:visibility="visible"
+                            app:hintTextAppearance="@style/HintText"
                             tools:ignore="SpUsage" />
-                    </androidx.cardview.widget.CardView>
 
-                    <androidx.cardview.widget.CardView
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltPitName"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_80sdp"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:layout_marginBottom="@dimen/_2sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
 
-                        <TextView
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etPitName"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:layout_gravity="center"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
                             android:fontFamily="@font/inter_semi_bold"
-                            android:gravity="center"
-                            android:paddingVertical="@dimen/_50sdp"
-                            android:text="@string/geologist_sign"
-                            android:textColor="@color/gray"
+                            android:hint="@string/pit_name_"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etPitLocation"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
                             android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
                             tools:ignore="SpUsage" />
 
-                    </androidx.cardview.widget.CardView>
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                    <androidx.cardview.widget.CardView
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltPitLocation"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="@dimen/_80sdp"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:layout_marginBottom="@dimen/_2sdp"
-                        app:cardCornerRadius="@dimen/_10sdp"
-                        app:cardElevation="@dimen/_2sdp">
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
 
-                        <TextView
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etPitLocation"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:layout_gravity="center"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
                             android:fontFamily="@font/inter_semi_bold"
-                            android:gravity="center"
-                            android:paddingVertical="@dimen/_50sdp"
-                            android:text="@string/client_s_geologist_sign"
-                            android:textColor="@color/gray"
+                            android:hint="@string/pit_location_"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etShiftInchargeName"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
                             android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
                             tools:ignore="SpUsage" />
 
-                    </androidx.cardview.widget.CardView>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltShiftInchargeName"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etShiftInchargeName"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:hint="@string/shift_incharge_name_"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etGeologistName"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
+                            android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
+                            tools:ignore="SpUsage" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltGeologistName"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etGeologistName"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:hint="@string/geologist_name_"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etFaceLocation"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
+                            android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
+                            tools:ignore="SpUsage" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_80sdp"
-                        tools:ignore="UselessLeaf" />
-                </LinearLayout>
-            </androidx.core.widget.NestedScrollView>
-        </LinearLayout>
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_18sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/shift_"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <RadioGroup
+                            android:id="@+id/rbRadioGroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_16sdp"
+                            android:orientation="horizontal"
+                            android:paddingTop="@dimen/_10sdp">
+
+                            <RadioButton
+                                android:id="@+id/rbNightShift"
+                                style="@android:style/Widget.CompoundButton.CheckBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_10sdp"
+                                android:background="@android:color/transparent"
+                                android:button="@drawable/cb_btn_bg"
+                                android:buttonTint="@color/primary_theme"
+                                android:checked="true"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:gravity="center"
+                                android:paddingStart="@dimen/_10sdp"
+                                android:paddingEnd="@dimen/_0sdp"
+                                android:text="@string/night_shift"
+                                android:textSize="@dimen/_16sdp"
+                                tools:ignore="SpUsage" />
+
+                            <RadioButton
+                                android:id="@+id/rbDayShift"
+                                style="@android:style/Widget.CompoundButton.CheckBox"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_36sdp"
+                                android:background="@android:color/transparent"
+                                android:button="@drawable/cb_btn_bg"
+                                android:buttonTint="@color/primary_theme"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:gravity="center"
+                                android:paddingStart="@dimen/_10sdp"
+                                android:paddingEnd="@dimen/_0sdp"
+                                android:text="@string/day_shift"
+                                android:textSize="@dimen/_16sdp"
+                                tools:ignore="SpUsage" />
+                        </RadioGroup>
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_34sdp"
+                    android:fontFamily="@font/inter_semi_bold"
+                    android:gravity="start"
+                    android:text="@string/mapping_parameters_"
+                    android:textColor="@color/light_black"
+                    android:textSize="@dimen/_12sdp"
+                    tools:ignore="SpUsage" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltFaceLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etFaceLocation"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:hint="@string/face_location_"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etFaceLengthM"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
+                            android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
+                            tools:ignore="SpUsage" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltFaceLengthM"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etFaceLengthM"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:hint="@string/face_length_m_"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etFaceAreaM2"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
+                            android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
+                            tools:ignore="SpUsage" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltFaceAreaM2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etFaceAreaM2"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:hint="@string/face_area_m2_"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etFaceRockTypes"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
+                            android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
+                            tools:ignore="SpUsage" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltFaceRockTypes"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etFaceRockTypes"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:hint="@string/face_rock_types_"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etBenchRL"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
+                            android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
+                            tools:ignore="SpUsage" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltBenchRL"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etBenchRL"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:hint="@string/bench_rl_"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etBenchHeightWidth"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
+                            android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
+                            tools:ignore="SpUsage" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltBenchHeightWidth"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etBenchHeightWidth"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:hint="@string/bench_height_amp_width_m"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etBenchAngle"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
+                            android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
+                            tools:ignore="SpUsage" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltBenchAngle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etBenchAngle"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:hint="@string/bench_angle_"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etDipDirectionAngle"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
+                            android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
+                            tools:ignore="SpUsage" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltDipDirectionAngle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etDipDirectionAngle"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:hint="@string/dip_direction_and_angle_"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etThicknessOfOre"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
+                            android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
+                            tools:ignore="SpUsage" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltThicknessOfOre"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etThicknessOfOre"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:hint="@string/thickness_of_ore_coal_seam_"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etThinessOfOverburden"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
+                            android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
+                            tools:ignore="SpUsage" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltThinessOfOverburden"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etThinessOfOverburden"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:hint="@string/thiness_of_overburden_m_"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etThicknessOfInterburden"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
+                            android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
+                            tools:ignore="SpUsage" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltThicknessOfInterburden"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etThicknessOfInterburden"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:hint="@string/thickness_of_interburden_m_"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etObservedGradeOfOre"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
+                            android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
+                            tools:ignore="SpUsage" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltObservedGradeOfOre"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etObservedGradeOfOre"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:hint="@string/observed_grade_of_ore_"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etSampleCollected"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
+                            android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
+                            tools:ignore="SpUsage" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltSampleCollected"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etSampleCollected"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:hint="@string/sample_collected_"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etActualGradeOfOre"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
+                            android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
+                            tools:ignore="SpUsage" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltActualGradeOfOre"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etActualGradeOfOre"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:hint="@string/actual_grade_of_ore_lab_grade_"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etWeathering"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
+                            android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
+                            tools:ignore="SpUsage" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltWeathering"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etWeathering"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:hint="@string/weathering_"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etRockStrength"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
+                            android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
+                            tools:ignore="SpUsage" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp"
+                    tools:ignore="TooManyViews">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltRockStrength"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etRockStrength"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:hint="@string/rock_strength_"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etWaterCondition"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
+                            android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
+                            tools:ignore="SpUsage" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp"
+                    tools:ignore="TooManyViews">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltWaterCondition"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etWaterCondition"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:hint="@string/water_condition_"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etTypeOfGeologicalStructures"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
+                            android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
+                            tools:ignore="SpUsage" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltTypeOfGeologicalStructures"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etTypeOfGeologicalStructures"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:hint="@string/type_of_geological_structures_"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etTypeOfFaults"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
+                            android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
+                            tools:ignore="SpUsage" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_76sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltTypeOfFaults"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etTypeOfFaults"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_38sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:hint="@string/type_of_faults_"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/edtNotes"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
+                            android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
+                            tools:ignore="SpUsage" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <EditText
+                        android:id="@+id/edtNotes"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_90sdp"
+                        android:layout_marginHorizontal="@dimen/_18sdp"
+                        android:layout_marginVertical="@dimen/_10sdp"
+                        android:background="@android:color/transparent"
+                        android:cursorVisible="true"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:gravity="top"
+                        android:hint="@string/notes"
+                        android:imeOptions="actionDone"
+                        android:importantForAutofill="no"
+                        android:inputType="textMultiLine|textVisiblePassword"
+                        android:overScrollMode="always"
+                        android:paddingLeft="@dimen/_8sdp"
+                        android:paddingTop="@dimen/_8sdp"
+                        android:paddingRight="@dimen/_8sdp"
+                        android:scrollbarStyle="insideInset"
+                        android:scrollbars="vertical"
+                        android:singleLine="false"
+                        android:textColor="@color/light_black"
+                        android:textCursorDrawable="@null"
+                        android:textSize="@dimen/_16sdp"
+                        android:visibility="visible"
+                        tools:ignore="SpUsage" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_80sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:gravity="center"
+                        android:paddingVertical="@dimen/_50sdp"
+                        android:text="@string/geologist_sign"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/_16sdp"
+                        tools:ignore="SpUsage" />
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_80sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:gravity="center"
+                        android:paddingVertical="@dimen/_50sdp"
+                        android:text="@string/client_s_geologist_sign"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/_16sdp"
+                        tools:ignore="SpUsage" />
+
+                </androidx.cardview.widget.CardView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_90sdp"
+                    tools:ignore="UselessLeaf" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
 
         <Button
             android:id="@+id/btnSubmit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginBottom="@dimen/_20sdp"
@@ -1398,23 +1387,23 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="@dimen/_14sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             tools:ignore="SpUsage" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center">
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp"
-                android:layout_gravity="center"
-                android:indeterminateTint="@color/primary_theme"
-                android:scaleType="centerInside"
-                android:visibility="gone" />
-
-        </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/primary_theme"
+            android:scaleType="centerInside"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <FrameLayout
             android:id="@+id/progressBarHolder"
@@ -1423,6 +1412,10 @@
             android:alpha="0.4"
             android:animateLayoutChanges="true"
             android:background="#A6EFEFEF"
-            android:visibility="gone" />
-    </RelativeLayout>
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
