@@ -7,40 +7,35 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-
-import com.geomap.mapReportModule.activities.OpenCastDetailActivity;
-import com.geomap.mapReportModule.activities.OpenCastFormFirstStepActivity;
-import com.geomap.mapReportModule.activities.OpenCastFormSecondStepActivity;
-import com.geomap.mapReportModule.activities.SyncDataActivity;
-import com.geomap.mapReportModule.activities.UnderGroundFormFirstStepActivity;
-import com.geomap.mapReportModule.activities.UnderGroundFormSecondStepActivity;
-import com.geomap.mapReportModule.activities.UnderGroundFormThirdStepActivity;
-import com.geomap.mapReportModule.activities.UnderGroundListActivity;
-import com.geomap.mapReportModule.activities.UnderGroundDetailActivity;
-import com.geomap.mapReportModule.activities.OpenCastListActivity;
-import com.geomap.mapReportModule.activities.AddReportActivity;
-import com.geomap.mapReportModule.activities.ViewPdfActivity;
-import com.geomap.userModule.activities.MenuListActivity;
-import com.geomap.userModule.activities.UserProfileActivity;
-import com.geomap.utils.AppSignatureHashHelper;
-import com.geomap.utils.CONSTANTS;
-import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
-import com.geomap.utils.CryptLib;
 
-import com.geomap.userModule.activities.SignInActivity;
-import com.geomap.mapReportModule.activities.DashboardActivity;
 import com.geomap.faqModule.activities.FaqActivity;
+import com.geomap.mapReportModule.activities.AddReportActivity;
+import com.geomap.mapReportModule.activities.DashboardActivity;
+import com.geomap.mapReportModule.activities.OpenCastDetailActivity;
+import com.geomap.mapReportModule.activities.OpenCastFormFirstStepActivity;
+import com.geomap.mapReportModule.activities.OpenCastFormSecondStepActivity;
+import com.geomap.mapReportModule.activities.OpenCastListActivity;
+import com.geomap.mapReportModule.activities.SyncDataActivity;
+import com.geomap.mapReportModule.activities.UnderGroundDetailActivity;
+import com.geomap.mapReportModule.activities.UnderGroundFormFirstStepActivity;
+import com.geomap.mapReportModule.activities.UnderGroundFormSecondStepActivity;
+import com.geomap.mapReportModule.activities.UnderGroundFormThirdStepActivity;
+import com.geomap.mapReportModule.activities.UnderGroundListActivity;
+import com.geomap.mapReportModule.activities.ViewPdfActivity;
+import com.geomap.userModule.activities.MenuListActivity;
+import com.geomap.userModule.activities.SignInActivity;
+import com.geomap.userModule.activities.UserProfileActivity;
+import com.geomap.utils.AppSignatureHashHelper;
+import com.geomap.utils.CONSTANTS;
+import com.geomap.utils.CryptLib;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -163,39 +158,8 @@ public class GeoMapApp extends Application {
     }
 
     public static void showToast(String message, Activity context) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-            Toast toast = new Toast(context);
-            View view = LayoutInflater.from(context).inflate(R.layout.toast_layout, null);
-            TextView tvMessage = view.findViewById(R.id.tvMessage);
-            tvMessage.setText(message);
-            toast.setGravity(Gravity.BOTTOM | Gravity.CENTER, 0, 160);
-            toast.setView(view);
-            toast.show();
-        } else {
-            /*final Dialog dialog = new Dialog(getContext());
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setContentView(R.layout.toast_above_version_layout);
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            TextView tvMessage = dialog.findViewById(R.id.tvMessage);
-            tvMessage.setText(message);
-            dialog.setOnKeyListener((v, keyCode, event) -> {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    dialog.dismiss();
-                    return true;
-                }
-                return false;
-            });
-            dialog.show();
-            new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                dialog.hide();
-            }, 2 * 600);
-
-            dialog.setCancelable(true);*/
-            Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
-            //            toast.setGravity(Gravity.BOTTOM | Gravity.CENTER, 0, 160);
-            toast.show();
-        }
+        Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     public static void deleteCache(Context context) {

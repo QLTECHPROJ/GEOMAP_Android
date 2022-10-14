@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
@@ -9,86 +11,88 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_31sdp"
+        android:contentDescription="@string/todo"
+        android:src="@drawable/app_logo_text"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/tvTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/inter_bold"
         android:gravity="center"
-        android:orientation="vertical">
+        android:paddingHorizontal="@dimen/_24sdp"
+        android:paddingTop="@dimen/_31sdp"
+        android:text="@string/support"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_18sdp"
+        app:layout_constraintBottom_toTopOf="@+id/tvHeader"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        tools:ignore="SpUsage" />
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_245sdp"
-            android:layout_marginTop="@dimen/_16sdp"
-            android:contentDescription="@string/todo"
-            android:src="@drawable/app_logo_text"
-            android:visibility="visible" />
+    <TextView
+        android:id="@+id/tvHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/inter_medium"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/_24sdp"
+        android:paddingTop="@dimen/_22sdp"
+        android:text="@string/support_quotes"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_14sdp"
+        app:layout_constraintBottom_toTopOf="@+id/tvEmail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+        tools:ignore="SpUsage" />
 
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/inter_bold"
-            android:gravity="center"
-            android:paddingHorizontal="@dimen/_24sdp"
-            android:paddingTop="@dimen/_31sdp"
-            android:text="@string/support"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_18sdp"
-            tools:ignore="SpUsage" />
+    <TextView
+        android:id="@+id/tvEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="22dp"
+        android:fontFamily="@font/inter_medium"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/_24sdp"
+        android:text="@string/support_link"
+        android:textColor="@color/primary_theme"
+        android:textSize="@dimen/_14sdp"
+        app:layout_constraintBottom_toTopOf="@+id/btnClose"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHeader"
+        tools:ignore="SpUsage" />
 
-        <TextView
-            android:id="@+id/tvHeader"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/inter_medium"
-            android:gravity="center"
-            android:paddingHorizontal="@dimen/_24sdp"
-            android:paddingTop="@dimen/_22sdp"
-            android:text="@string/support_quotes"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_14sdp"
-            tools:ignore="SpUsage" />
+    <Button
+        android:id="@+id/btnClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/_28sdp"
+        android:background="@drawable/enable_button"
+        android:enabled="true"
+        android:fontFamily="@font/inter_medium"
+        android:text="@string/close"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_15sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvEmail"
+        tools:ignore="SpUsage" />
 
-        <TextView
-            android:id="@+id/tvEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:fontFamily="@font/inter_medium"
-            android:gravity="center"
-            android:paddingHorizontal="@dimen/_24sdp"
-            android:text="@string/support_link"
-            android:textColor="@color/primary_theme"
-            android:textSize="@dimen/_14sdp"
-            tools:ignore="SpUsage" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/btnClose"
-                android:layout_width="@dimen/_120sdp"
-                android:layout_height="@dimen/_46sdp"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/_22sdp"
-                android:layout_marginBottom="@dimen/_26sdp"
-                android:background="@drawable/enable_button"
-                android:enabled="true"
-                android:fontFamily="@font/inter_medium"
-                android:text="@string/close"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_15sdp"
-                tools:ignore="SpUsage" />
-
-        </LinearLayout>
-    </LinearLayout>
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
