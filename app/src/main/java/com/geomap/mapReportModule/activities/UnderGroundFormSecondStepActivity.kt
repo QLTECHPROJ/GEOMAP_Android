@@ -36,6 +36,10 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
     var mappedBy : String? = ""
     var scale : String? = ""
     var location : String? = ""
+    var veinLoad : String? = ""
+    var xCoordinate : String? = ""
+    var yCoordinate : String? = ""
+    var zCoordinate : String? = ""
 
     private var userTextWatcher : TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s : CharSequence, start : Int, count : Int, after : Int) {}
@@ -45,6 +49,10 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
             mappedBy = binding.etMappedBy.text.toString()
             scale = binding.etScale.text.toString()
             location = binding.etLocation.text.toString()
+            veinLoad = binding.etVeinLoad.text.toString()
+            xCoordinate = binding.etXCoordinate.text.toString()
+            yCoordinate = binding.etYCoordinate.text.toString()
+            zCoordinate = binding.etZCoordinate.text.toString()
 
             when {
                 mapSerialNo.equals("", ignoreCase = true) -> {
@@ -64,6 +72,22 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
                 }
 
                 location.equals("", ignoreCase = true) -> {
+                    allDisable(binding.btnNextStep)
+                }
+
+                veinLoad.equals("", ignoreCase = true) -> {
+                    allDisable(binding.btnNextStep)
+                }
+
+                xCoordinate.equals("", ignoreCase = true) -> {
+                    allDisable(binding.btnNextStep)
+                }
+
+                yCoordinate.equals("", ignoreCase = true) -> {
+                    allDisable(binding.btnNextStep)
+                }
+
+                zCoordinate.equals("", ignoreCase = true) -> {
                     allDisable(binding.btnNextStep)
                 }
 
@@ -93,6 +117,10 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
         binding.etMappedBy.addTextChangedListener(userTextWatcher)
         binding.etScale.addTextChangedListener(userTextWatcher)
         binding.etLocation.addTextChangedListener(userTextWatcher)
+        binding.etVeinLoad.addTextChangedListener(userTextWatcher)
+        binding.etXCoordinate.addTextChangedListener(userTextWatcher)
+        binding.etYCoordinate.addTextChangedListener(userTextWatcher)
+        binding.etZCoordinate.addTextChangedListener(userTextWatcher)
 
         binding.etDate.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

@@ -33,13 +33,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
     var thinessOfOverburden : String? = null
     var thicknessOfInterburden : String? = null
     var observedGradeOfOre : String? = null
-    var sampleCollected : String? = null
     var actualGradeOfOre : String? = null
-    var weathering : String? = null
-    var rockStrength : String? = null
-    var waterCondition : String? = null
-    var typeOfGeologicalStructures : String? = null
-    var typeOfFaults : String? = null
     var notes : String? = null
 
     private var userTextWatcher : TextWatcher = object : TextWatcher {
@@ -62,13 +56,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             thinessOfOverburden = binding.etThinessOfOverburden.text.toString()
             thicknessOfInterburden = binding.etThicknessOfInterburden.text.toString()
             observedGradeOfOre = binding.etObservedGradeOfOre.text.toString()
-            sampleCollected = binding.etSampleCollected.text.toString()
             actualGradeOfOre = binding.etActualGradeOfOre.text.toString()
-            weathering = binding.etWeathering.text.toString()
-            rockStrength = binding.etRockStrength.text.toString()
-            waterCondition = binding.etWaterCondition.text.toString()
-            typeOfGeologicalStructures = binding.etTypeOfGeologicalStructures.text.toString()
-            typeOfFaults = binding.etTypeOfFaults.text.toString()
             notes = binding.edtNotes.text.toString()
 
             when {
@@ -123,25 +111,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 observedGradeOfOre.equals("") -> {
                     allDisable(binding.btnSubmit)
                 }
-                sampleCollected.equals("") -> {
-                    allDisable(binding.btnSubmit)
-                }
                 actualGradeOfOre.equals("") -> {
-                    allDisable(binding.btnSubmit)
-                }
-                weathering.equals("") -> {
-                    allDisable(binding.btnSubmit)
-                }
-                rockStrength.equals("") -> {
-                    allDisable(binding.btnSubmit)
-                }
-                waterCondition.equals("") -> {
-                    allDisable(binding.btnSubmit)
-                }
-                typeOfGeologicalStructures.equals("") -> {
-                    allDisable(binding.btnSubmit)
-                }
-                typeOfFaults.equals("") -> {
                     allDisable(binding.btnSubmit)
                 }
                 notes.equals("") -> {
@@ -186,13 +156,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         binding.etThinessOfOverburden.addTextChangedListener(userTextWatcher)
         binding.etThicknessOfInterburden.addTextChangedListener(userTextWatcher)
         binding.etObservedGradeOfOre.addTextChangedListener(userTextWatcher)
-        binding.etSampleCollected.addTextChangedListener(userTextWatcher)
         binding.etActualGradeOfOre.addTextChangedListener(userTextWatcher)
-        binding.etWeathering.addTextChangedListener(userTextWatcher)
-        binding.etRockStrength.addTextChangedListener(userTextWatcher)
-        binding.etWaterCondition.addTextChangedListener(userTextWatcher)
-        binding.etTypeOfGeologicalStructures.addTextChangedListener(userTextWatcher)
-        binding.etTypeOfFaults.addTextChangedListener(userTextWatcher)
         binding.edtNotes.addTextChangedListener(userTextWatcher)
 
         binding.btnSubmit.setOnClickListener {

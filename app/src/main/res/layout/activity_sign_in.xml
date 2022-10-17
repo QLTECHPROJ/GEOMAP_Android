@@ -210,6 +210,7 @@
                 android:layout_marginTop="@dimen/_40sdp"
                 android:background="@drawable/disable_button"
                 android:enabled="false"
+                android:textAllCaps="false"
                 android:fontFamily="@font/inter_bold"
                 android:text="@string/sign_in"
                 android:textColor="@color/white"

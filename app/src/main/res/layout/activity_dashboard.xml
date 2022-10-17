@@ -63,7 +63,7 @@
                     android:fontFamily="@font/inter_semi_bold"
                     android:gravity="start"
                     android:text="@string/undergrounds_mapping_report"
-                    android:textColor="@color/light_black"
+                    android:textColor="@color/primary_theme"
                     android:textSize="@dimen/_16sdp"
                     tools:ignore="SpUsage" />
 
@@ -115,7 +115,7 @@
                     android:fontFamily="@font/inter_semi_bold"
                     android:gravity="start"
                     android:text="@string/opencast_mapping_report"
-                    android:textColor="@color/light_black"
+                    android:textColor="@color/primary_theme"
                     android:textSize="@dimen/_16sdp"
                     tools:ignore="SpUsage" />
 

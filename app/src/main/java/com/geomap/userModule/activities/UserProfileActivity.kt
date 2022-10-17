@@ -58,6 +58,7 @@ class UserProfileActivity : AppCompatActivity() {
     private var ageDate : Int = 0
     private var profilePicPath : String? = ""
     private var typedFile : TypedFile? = null
+    private var mRequestPermissionHandler : RequestPermissionHandler? = null
 
     private var userTextWatcher : TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s : CharSequence, start : Int, count : Int, after : Int) {}
@@ -180,7 +181,7 @@ class UserProfileActivity : AppCompatActivity() {
     }
 
     private fun selectImage() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
             if (ContextCompat.checkSelfPermission(
                     ctx, Manifest.permission.WRITE_EXTERNAL_STORAGE
                 ) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
@@ -450,7 +451,6 @@ Tap Setting > permission, and turn "Files and media" on."""
     }
 
     companion object {
-        private var mRequestPermissionHandler : RequestPermissionHandler? = null
         private lateinit var options : Array<String>
         lateinit var image : File
         private const val CONTENT_REQUEST = 100

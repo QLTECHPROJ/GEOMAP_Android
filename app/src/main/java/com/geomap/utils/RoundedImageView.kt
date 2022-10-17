@@ -22,7 +22,7 @@ class RoundedImageView : AppCompatImageView {
         val b = (drawable as BitmapDrawable).bitmap
         val bitmap = b.copy(Bitmap.Config.ARGB_8888, true)
         val w = width
-        val h = height
+//        val h = height
         val roundBitmap = getRoundBitmap(bitmap, w)
         canvas.drawBitmap(roundBitmap, 0f, 0f, null)
     }

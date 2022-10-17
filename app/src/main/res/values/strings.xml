@@ -72,8 +72,11 @@
     <string name="location_">Location</string>
     <string name="vein_load">Vein/load:</string>
     <string name="x_coordinate">X coordinate:</string>
+    <string name="x_coordinate_">X coordinate</string>
     <string name="y_coordinate">Y coordinate:</string>
+    <string name="y_coordinate_">Y coordinate</string>
     <string name="z_coordinate">Z coordinate:</string>
+    <string name="z_coordinate_">Z coordinate</string>
     <string name="attributes">Attributes:</string>
     <string name="attributes_">Attributes</string>
     <string name="nos">Nos:</string>
@@ -148,4 +151,5 @@
     <string name="night_shift">Night Shift</string>
     <string name="day_shift">Day Shift</string>
     <string name="data">DATA</string>
+    <string name="vein_load_">Vein/Load</string>
 </resources>
