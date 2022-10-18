@@ -15,6 +15,7 @@ import android.view.Window
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.geomap.GeoMapApp.*
 import com.geomap.R
@@ -89,7 +90,8 @@ class MenuListActivity : AppCompatActivity() {
                 supportDialog = Dialog(ctx)
                 supportDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
                 supportDialog!!.setContentView(R.layout.support_layout)
-                supportDialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                supportDialog!!.window!!.setBackgroundDrawable(
+                    ColorDrawable(ContextCompat.getColor(ctx, R.color.primary_transparent)))
                 supportDialog!!.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT)
                 val tvEmail = supportDialog!!.findViewById<TextView>(R.id.tvEmail)

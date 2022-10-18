@@ -4,6 +4,7 @@
     <color name="primary_light_theme">#9927AEE0</color>
     <color name="secondary_theme">#27AEE0</color>
     <color name="third_theme">#27AEE0</color>
+    <color name="primary_transparent">#6027AEE0</color>
     <color name="screen_bg">#F8FCFF</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>

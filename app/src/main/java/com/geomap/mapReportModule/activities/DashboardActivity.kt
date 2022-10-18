@@ -2,11 +2,18 @@ package com.geomap.mapReportModule.activities
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +28,7 @@ class DashboardActivity : AppCompatActivity() {
     private lateinit var binding : ActivityDashboardBinding
     private lateinit var ctx : Context
     private lateinit var act : Activity
+    private var dialog : Dialog? = null
     private var underGroundListAdapter : UnderGroundListAdapter? = null
     private var openCastListAdapter : OpenCastListAdapter? = null
     private var listModel : Array<DummyModel> = arrayOf(
@@ -40,7 +48,38 @@ class DashboardActivity : AppCompatActivity() {
         }
 
         binding.tvAddReport.setOnClickListener {
-            callAddReportActivity(act, "1")
+//            callAddReportActivity(act, "1")
+            dialog = Dialog(ctx)
+            dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog!!.setContentView(R.layout.add_report_layout)
+            dialog!!.window!!.setBackgroundDrawable(
+                ColorDrawable(ContextCompat.getColor(ctx, R.color.transparent_white)))
+            dialog!!.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT)
+            val btnAddUnderGroundsReport =
+                dialog!!.findViewById<Button>(R.id.btnAddUnderGroundsReport)
+            val btnAddOpenCastReport = dialog!!.findViewById<Button>(R.id.btnAddOpenCastReport)
+
+
+            dialog!!.setOnKeyListener { _ : DialogInterface?, keyCode : Int, _ : KeyEvent? ->
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    dialog!!.dismiss()
+                    return@setOnKeyListener true
+                }
+                false
+            }
+
+            btnAddUnderGroundsReport.setOnClickListener {
+                callUnderGroundFormFirstStepActivity(act, "0")
+            }
+
+            btnAddOpenCastReport.setOnClickListener {
+                callOpenCastFormFirstStepActivity(act, "0")
+            }
+
+
+            dialog!!.show()
+            dialog!!.setCancelable(true)
         }
 
         binding.tvUnderGroundListViewAll.setOnClickListener {
