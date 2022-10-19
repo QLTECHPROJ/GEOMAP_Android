@@ -24,7 +24,9 @@ interface RetrofitService {
 
     @POST("csdetails")
     @FormUrlEncoded
-    fun postLoginData(@Field("custId") custId : String?) : Call<LoginModel>
+    fun postLoginData(@Field("userId") userId : String?,
+        @Field("name") name : String?,
+        @Field("password") password : String?) : Call<LoginModel>
 
     companion object {
         fun getInstance() : RetrofitService {

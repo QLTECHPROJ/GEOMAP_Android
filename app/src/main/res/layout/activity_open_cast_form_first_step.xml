@@ -87,7 +87,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_76sdp"
+                    android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_20sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
@@ -112,7 +112,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etMinesSiteName"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_38sdp"
+                            android:layout_height="@dimen/_24sdp"
                             android:background="@null"
                             android:backgroundTint="@color/black"
                             android:cursorVisible="true"
@@ -134,7 +134,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_76sdp"
+                    android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
@@ -159,7 +159,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPitName"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_38sdp"
+                            android:layout_height="@dimen/_24sdp"
                             android:background="@null"
                             android:backgroundTint="@color/black"
                             android:cursorVisible="true"
@@ -182,7 +182,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_76sdp"
+                    android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
@@ -207,7 +207,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPitLocation"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_38sdp"
+                            android:layout_height="@dimen/_24sdp"
                             android:background="@null"
                             android:backgroundTint="@color/black"
                             android:cursorVisible="true"
@@ -230,7 +230,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_76sdp"
+                    android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
@@ -255,7 +255,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etShiftInchargeName"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_38sdp"
+                            android:layout_height="@dimen/_28sdp"
                             android:background="@null"
                             android:backgroundTint="@color/black"
                             android:cursorVisible="true"
@@ -278,7 +278,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_76sdp"
+                    android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
@@ -303,7 +303,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etGeologistName"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_38sdp"
+                            android:layout_height="@dimen/_24sdp"
                             android:background="@null"
                             android:backgroundTint="@color/black"
                             android:cursorVisible="true"
@@ -408,7 +408,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_76sdp"
+                    android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
@@ -433,7 +433,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etFaceLocation"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_38sdp"
+                            android:layout_height="@dimen/_24sdp"
                             android:background="@null"
                             android:backgroundTint="@color/black"
                             android:cursorVisible="true"
@@ -454,7 +454,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_76sdp"
+                    android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
@@ -479,7 +479,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etFaceLengthM"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_38sdp"
+                            android:layout_height="@dimen/_24sdp"
                             android:background="@null"
                             android:backgroundTint="@color/black"
                             android:cursorVisible="true"
@@ -499,7 +499,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_76sdp"
+                    android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
@@ -524,7 +524,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etFaceAreaM2"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_38sdp"
+                            android:layout_height="@dimen/_24sdp"
                             android:background="@null"
                             android:backgroundTint="@color/black"
                             android:cursorVisible="true"
@@ -545,7 +545,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_76sdp"
+                    android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
@@ -570,7 +570,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etFaceRockTypes"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_38sdp"
+                            android:layout_height="@dimen/_24sdp"
                             android:background="@null"
                             android:backgroundTint="@color/black"
                             android:cursorVisible="true"
@@ -591,7 +591,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_76sdp"
+                    android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
@@ -616,7 +616,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etBenchRL"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_38sdp"
+                            android:layout_height="@dimen/_24sdp"
                             android:background="@null"
                             android:backgroundTint="@color/black"
                             android:cursorVisible="true"
@@ -636,7 +636,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_76sdp"
+                    android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
@@ -661,7 +661,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etBenchHeightWidth"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_38sdp"
+                            android:layout_height="@dimen/_24sdp"
                             android:background="@null"
                             android:backgroundTint="@color/black"
                             android:cursorVisible="true"
@@ -682,7 +682,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_76sdp"
+                    android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
@@ -707,7 +707,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etBenchAngle"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_38sdp"
+                            android:layout_height="@dimen/_24sdp"
                             android:background="@null"
                             android:backgroundTint="@color/black"
                             android:cursorVisible="true"
@@ -728,7 +728,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_76sdp"
+                    android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
@@ -753,7 +753,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etDipDirectionAngle"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_38sdp"
+                            android:layout_height="@dimen/_24sdp"
                             android:background="@null"
                             android:backgroundTint="@color/black"
                             android:cursorVisible="true"
@@ -774,7 +774,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_76sdp"
+                    android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
@@ -799,7 +799,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etThicknessOfOre"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_38sdp"
+                            android:layout_height="@dimen/_24sdp"
                             android:background="@null"
                             android:backgroundTint="@color/black"
                             android:cursorVisible="true"
@@ -820,7 +820,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_76sdp"
+                    android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
@@ -845,7 +845,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etThinessOfOverburden"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_38sdp"
+                            android:layout_height="@dimen/_24sdp"
                             android:background="@null"
                             android:backgroundTint="@color/black"
                             android:cursorVisible="true"
@@ -866,7 +866,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_76sdp"
+                    android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
@@ -891,7 +891,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etThicknessOfInterburden"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_38sdp"
+                            android:layout_height="@dimen/_24sdp"
                             android:background="@null"
                             android:backgroundTint="@color/black"
                             android:cursorVisible="true"
@@ -912,7 +912,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_76sdp"
+                    android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
@@ -937,7 +937,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etObservedGradeOfOre"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_38sdp"
+                            android:layout_height="@dimen/_24sdp"
                             android:background="@null"
                             android:backgroundTint="@color/black"
                             android:cursorVisible="true"
@@ -1024,7 +1024,7 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_76sdp"
+                    android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_16sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
@@ -1049,7 +1049,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etActualGradeOfOre"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_38sdp"
+                            android:layout_height="@dimen/_24sdp"
                             android:background="@null"
                             android:backgroundTint="@color/black"
                             android:cursorVisible="true"
@@ -1410,7 +1410,7 @@
                     <EditText
                         android:id="@+id/edtNotes"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_90sdp"
+                        android:layout_height="@dimen/_100sdp"
                         android:layout_marginHorizontal="@dimen/_18sdp"
                         android:layout_marginVertical="@dimen/_10sdp"
                         android:background="@android:color/transparent"

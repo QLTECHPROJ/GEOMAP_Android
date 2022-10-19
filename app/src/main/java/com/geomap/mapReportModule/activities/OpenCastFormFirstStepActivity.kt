@@ -12,9 +12,6 @@ import com.geomap.R
 import com.geomap.databinding.ActivityOpenCastFormFirstStepBinding
 import com.github.gcacace.signaturepad.views.SignaturePad
 
-
-
-
 class OpenCastFormFirstStepActivity : AppCompatActivity() {
     private lateinit var binding : ActivityOpenCastFormFirstStepBinding
     private lateinit var ctx : Context

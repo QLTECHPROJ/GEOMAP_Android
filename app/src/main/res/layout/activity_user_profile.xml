@@ -110,7 +110,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cvName"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_76sdp"
+            android:layout_height="@dimen/_66sdp"
             android:layout_marginHorizontal="@dimen/_25sdp"
             android:layout_marginTop="@dimen/_16sdp"
             app:cardCornerRadius="@dimen/_10sdp"
@@ -138,7 +138,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etName"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_38sdp"
+                    android:layout_height="@dimen/_24sdp"
                     android:background="@null"
                     android:backgroundTint="@color/black"
                     android:cursorVisible="true"
@@ -162,7 +162,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cvEmail"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_76sdp"
+            android:layout_height="@dimen/_66sdp"
             android:layout_marginHorizontal="@dimen/_25sdp"
             android:layout_marginTop="@dimen/_16sdp"
             app:cardCornerRadius="@dimen/_10sdp"
@@ -190,7 +190,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etEmail"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_38sdp"
+                    android:layout_height="@dimen/_24sdp"
                     android:background="@null"
                     android:backgroundTint="@color/black"
                     android:cursorVisible="true"
@@ -213,7 +213,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cvMobileNo"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_76sdp"
+            android:layout_height="@dimen/_66sdp"
             android:layout_marginHorizontal="@dimen/_25sdp"
             android:layout_marginTop="@dimen/_16sdp"
             app:cardCornerRadius="@dimen/_10sdp"
@@ -241,7 +241,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etMobileNo"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_38sdp"
+                    android:layout_height="@dimen/_24sdp"
                     android:background="@null"
                     android:backgroundTint="@color/black"
                     android:cursorVisible="true"
@@ -263,7 +263,7 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_76sdp"
+            android:layout_height="@dimen/_66sdp"
             android:layout_marginHorizontal="@dimen/_25sdp"
             android:layout_marginTop="@dimen/_16sdp"
             app:cardCornerRadius="@dimen/_10sdp"
@@ -292,7 +292,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etDob"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_38sdp"
+                    android:layout_height="@dimen/_24sdp"
                     android:background="@null"
                     android:backgroundTint="@color/black"
                     android:cursorVisible="true"
