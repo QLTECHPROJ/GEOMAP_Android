@@ -7,10 +7,13 @@ import android.text.Editable
 import android.text.TextWatcher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.geomap.GeoMapApp.allDisable
-import com.geomap.GeoMapApp.callOpenCastFormSecondStepActivity
+import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityOpenCastFormFirstStepBinding
+import com.github.gcacace.signaturepad.views.SignaturePad
+
+
+
 
 class OpenCastFormFirstStepActivity : AppCompatActivity() {
     private lateinit var binding : ActivityOpenCastFormFirstStepBinding
@@ -162,6 +165,47 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         binding.btnSubmit.setOnClickListener {
             callOpenCastFormSecondStepActivity(act, "0")
         }
+
+        binding.btnGeologistSignPadClear.setOnClickListener {
+            binding.geologistSignPad.clear()
+        }
+
+        binding.btnGeologistClientSignPadClear.setOnClickListener {
+            binding.geologistClientSignPad.clear()
+        }
+
+        binding.geologistSignPad.setOnSignedListener(object : SignaturePad.OnSignedListener {
+            override fun onStartSigning() {
+
+            }
+
+            override fun onSigned() {
+                binding.btnGeologistSignPadClear.isEnabled = true
+                binding.btnGeologistSignPadClear.setBackgroundResource(R.drawable.enable_button)
+            }
+
+            override fun onClear() {
+                binding.btnGeologistSignPadClear.isEnabled = false
+                binding.btnGeologistSignPadClear.setBackgroundResource(R.drawable.disable_button)
+            }
+        })
+
+        binding.geologistClientSignPad.setOnSignedListener(object : SignaturePad.OnSignedListener {
+            override fun onStartSigning() {
+
+            }
+
+            override fun onSigned() {
+                binding.btnGeologistClientSignPadClear.isEnabled = true
+                binding.btnGeologistClientSignPadClear.setBackgroundResource(R.drawable.enable_button)
+
+            }
+
+            override fun onClear() {
+                binding.btnGeologistClientSignPadClear.isEnabled = false
+                binding.btnGeologistClientSignPadClear.setBackgroundResource(R.drawable.disable_button)
+            }
+        })
     }
 
     override fun onBackPressed() {

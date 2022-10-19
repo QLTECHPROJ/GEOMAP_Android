@@ -4,6 +4,7 @@ import android.provider.Settings
 import com.geomap.GeoMapApp.getContext
 import com.geomap.GeoMapApp.securityKey
 import com.geomap.faqModule.models.FaqListModel
+import com.geomap.userModule.models.LoginModel
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -11,18 +12,19 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.POST
 import java.util.concurrent.TimeUnit
 
 interface RetrofitService {
     @get:GET("cs-faq")
     val faqLists : Call<FaqListModel>
 
-/*
-    @POST("cskids-report-listing")
+    @POST("csdetails")
     @FormUrlEncoded
-    fun getDailyKidsReportListing(@Field("campId") campId : String?) : Call<KidsReportModel>
-*/
+    fun postLoginData(@Field("custId") custId : String?) : Call<LoginModel>
 
     companion object {
         fun getInstance() : RetrofitService {

@@ -70,11 +70,11 @@ class DashboardActivity : AppCompatActivity() {
             }
 
             btnAddUnderGroundsReport.setOnClickListener {
-                callUnderGroundFormFirstStepActivity(act, "0")
+                callUnderGroundFormFirstStepActivity(act, "1")
             }
 
             btnAddOpenCastReport.setOnClickListener {
-                callOpenCastFormFirstStepActivity(act, "0")
+                callOpenCastFormFirstStepActivity(act, "1")
             }
 
 

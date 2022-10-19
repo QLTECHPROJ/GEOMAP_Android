@@ -666,7 +666,7 @@
                             android:backgroundTint="@color/black"
                             android:cursorVisible="true"
                             android:fontFamily="@font/inter_semi_bold"
-                            android:hint="@string/bench_height_amp_width_m"
+                            android:hint="@string/bench_height_amp_width_m_"
                             android:inputType="text"
                             android:maxLines="1"
                             android:nextFocusDown="@id/etBenchAngle"
@@ -991,7 +991,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:fontFamily="@font/inter_semi_bold"
                                 android:gravity="center_vertical"
-                                android:text="@string/sample_collected_"
+                                android:text="@string/sample_collected"
                                 android:textColor="@color/light_black"
                                 android:textSize="@dimen/_16sdp"
                                 tools:ignore="SpUsage" />
@@ -1435,53 +1435,107 @@
                         tools:ignore="SpUsage" />
                 </androidx.cardview.widget.CardView>
 
-                <androidx.cardview.widget.CardView
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_80sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:fontFamily="@font/inter_semi_bold"
+                    android:gravity="start"
+                    android:text="@string/geologist_sign"
+                    android:textColor="@color/light_black"
+                    android:textSize="@dimen/_16sdp"
+                    tools:ignore="SpUsage" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/_60sdp"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_2sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
-                    <TextView
+                    <com.github.gcacace.signaturepad.views.SignaturePad
+                        android:id="@+id/geologistSignPad"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_gravity="center"
-                        android:fontFamily="@font/inter_semi_bold"
-                        android:gravity="center"
-                        android:paddingVertical="@dimen/_50sdp"
-                        android:text="@string/geologist_sign"
-                        android:textColor="@color/gray"
-                        android:textSize="@dimen/_16sdp"
-                        tools:ignore="SpUsage" />
+                        android:layout_height="@dimen/_180sdp"
+                        android:padding="@dimen/_6sdp"
+                        app:penColor="@android:color/black" />
 
                 </androidx.cardview.widget.CardView>
 
-                <androidx.cardview.widget.CardView
+                <Button
+                    android:id="@+id/btnGeologistSignPadClear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:background="@drawable/disable_button"
+                    android:enabled="false"
+                    android:fontFamily="@font/inter_bold"
+                    android:paddingHorizontal="@dimen/_20sdp"
+                    android:text="@string/clear_geologist_signature"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:ignore="SpUsage" />
+
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_80sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:fontFamily="@font/inter_semi_bold"
+                    android:gravity="start"
+                    android:text="@string/client_s_geologist_sign"
+                    android:textColor="@color/light_black"
+                    android:textSize="@dimen/_16sdp"
+                    tools:ignore="SpUsage" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/_60sdp"
                     android:layout_marginTop="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_20sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
-                    <TextView
+
+                    <com.github.gcacace.signaturepad.views.SignaturePad
+                        android:id="@+id/geologistClientSignPad"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_gravity="center"
-                        android:fontFamily="@font/inter_semi_bold"
-                        android:gravity="center"
-                        android:paddingVertical="@dimen/_50sdp"
-                        android:text="@string/client_s_geologist_sign"
-                        android:textColor="@color/gray"
-                        android:textSize="@dimen/_16sdp"
-                        tools:ignore="SpUsage" />
+                        android:layout_height="@dimen/_180sdp"
+                        android:padding="@dimen/_6sdp"
+                        app:penColor="@android:color/black" />
 
                 </androidx.cardview.widget.CardView>
+
+                <Button
+                    android:id="@+id/btnGeologistClientSignPadClear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:background="@drawable/disable_button"
+                    android:enabled="false"
+                    android:fontFamily="@font/inter_bold"
+                    android:paddingHorizontal="@dimen/_20sdp"
+                    android:text="@string/clear_geologist_client_signature"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:ignore="SpUsage" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -1489,6 +1543,7 @@
                     tools:ignore="UselessLeaf" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
+
 
 
         <Button
