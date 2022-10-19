@@ -87,7 +87,7 @@
         <LinearLayout
             android:id="@+id/rlViewPdf"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_48sdp"
+            android:layout_height="@dimen/_60sdp"
             android:layout_gravity="center"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginBottom="@dimen/_20sdp"

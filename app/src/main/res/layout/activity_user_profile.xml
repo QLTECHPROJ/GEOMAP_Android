@@ -318,7 +318,7 @@
         <Button
             android:id="@+id/btnUpdate"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_60sdp"
             android:layout_gravity="center"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginBottom="@dimen/_18sdp"
@@ -337,7 +337,7 @@
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnDeleteAccount"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_60sdp"
             android:layout_gravity="center"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_18sdp"
