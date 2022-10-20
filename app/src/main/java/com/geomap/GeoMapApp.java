@@ -17,7 +17,6 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.geomap.faqModule.activities.FaqActivity;
-import com.geomap.mapReportModule.activities.AddReportActivity;
 import com.geomap.mapReportModule.activities.DashboardActivity;
 import com.geomap.mapReportModule.activities.OpenCastDetailActivity;
 import com.geomap.mapReportModule.activities.OpenCastFormFirstStepActivity;
@@ -264,15 +263,6 @@ public class GeoMapApp extends Application {
 
     public static void callOpenCastListActivity(Activity act, String finish) {
         Intent i = new Intent(act, OpenCastListActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        act.startActivity(i);
-        if (finish.equalsIgnoreCase("0")) {
-            act.finish();
-        }
-    }
-
-    public static void callAddReportActivity(Activity act, String finish) {
-        Intent i = new Intent(act, AddReportActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         act.startActivity(i);
         if (finish.equalsIgnoreCase("0")) {

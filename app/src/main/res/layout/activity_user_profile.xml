@@ -23,19 +23,11 @@
 
         <TextView
             android:id="@+id/tvHeaderTitle"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_56sdp"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:fontFamily="@font/inter_semi_bold"
-            android:gravity="center"
+            style="@style/screenTitle"
             android:text="@string/profile"
-            android:textColor="@color/light_black"
-            android:textSize="@dimen/_16sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="SpUsage" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <RelativeLayout
             android:id="@+id/llImageUpload"
@@ -310,29 +302,19 @@
                     tools:ignore="SpUsage" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
-
         </androidx.cardview.widget.CardView>
-
 
         <Button
             android:id="@+id/btnUpdate"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_60sdp"
-            android:layout_gravity="center"
+            style="@style/screenButton"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginBottom="@dimen/_18sdp"
             android:background="@drawable/disable_button"
             android:enabled="false"
-            android:fontFamily="@font/inter_bold"
             android:text="@string/update"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_14sdp"
             app:layout_constraintBottom_toTopOf="@id/btnDeleteAccount"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="SpUsage" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnDeleteAccount"
@@ -357,26 +339,15 @@
 
         <ProgressBar
             android:id="@+id/progressBar"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
-            android:layout_gravity="center"
-            android:indeterminateTint="@color/primary_theme"
-            android:scaleType="centerInside"
-            android:visibility="gone"
+            style="@style/screenProgressBar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
         <FrameLayout
             android:id="@+id/progressBarHolder"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0.4"
-            android:animateLayoutChanges="true"
-            android:background="#A6EFEFEF"
-            android:visibility="gone"
+            style="@style/screenFrameLayout"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

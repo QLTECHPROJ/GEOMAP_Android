@@ -81,8 +81,7 @@ class UserProfileActivity : AppCompatActivity() {
                 }
 
                 else -> {
-                    binding.btnUpdate.isEnabled = true
-                    binding.btnUpdate.setBackgroundResource(R.drawable.enable_button)
+                    enableButton()
                 }
             }
         }
@@ -421,15 +420,13 @@ Tap Setting > permission, and turn "Files and media" on."""
                     binding.etDob.requestFocus()
                     binding.ltDob.isErrorEnabled = true
                     binding.ltDob.error = getString(R.string.check_dob)
-                    binding.btnUpdate.isEnabled = false
-                    binding.btnUpdate.isClickable = false
+                    allDisable(binding.btnUpdate)
                     binding.btnUpdate.setTextColor(
                         ContextCompat.getColor(applicationContext, R.color.white))
                     binding.btnUpdate.setBackgroundResource(R.drawable.disable_button)
                 } else {
                     binding.ltDob.isErrorEnabled = false
-                    binding.btnUpdate.isEnabled = true
-                    binding.btnUpdate.isClickable = true
+                    enableButton()
                     binding.btnUpdate.setTextColor(
                         ContextCompat.getColor(applicationContext, R.color.white))
                     binding.btnUpdate.setBackgroundResource(R.drawable.enable_button)

@@ -10,34 +10,14 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
-    <ImageView
-        android:id="@+id/llBack"
-        android:layout_width="@dimen/_56sdp"
-        android:layout_height="@dimen/_56sdp"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:layout_marginEnd="@dimen/_10sdp"
-        android:contentDescription="@string/todo"
-        android:padding="@dimen/_12sdp"
-        android:scaleType="fitXY"
-        android:src="@drawable/ic_close_icon"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/black" />
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnAddUnderGroundsReport"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_60sdp"
-        android:layout_gravity="center"
+        style="@style/screenButton"
         android:layout_marginHorizontal="@dimen/_28sdp"
         android:layout_marginTop="@dimen/_100sdp"
         android:background="@drawable/enable_button"
         android:enabled="true"
-        android:fontFamily="@font/inter_bold"
         android:text="@string/add_under_ground_mapping_report"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

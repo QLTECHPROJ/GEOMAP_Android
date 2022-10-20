@@ -24,18 +24,11 @@
 
         <TextView
             android:id="@+id/tvHeaderTitle"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_56sdp"
-            android:layout_gravity="center"
-            android:fontFamily="@font/inter_semi_bold"
-            android:gravity="center"
+            style="@style/screenTitle"
             android:text="@string/opencast_mapping_report_details"
-            android:textColor="@color/light_black"
-            android:textSize="@dimen/_16sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="SpUsage" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -723,43 +716,27 @@
 
         <Button
             android:id="@+id/btnViewPdf"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_60sdp"
-            android:layout_gravity="center"
+            style="@style/screenButton"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginBottom="@dimen/_20sdp"
             android:background="@drawable/enable_button"
             android:enabled="true"
-            android:fontFamily="@font/inter_bold"
             android:text="@string/view_pdf"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_14sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <ProgressBar
             android:id="@+id/progressBar"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
-            android:layout_gravity="center"
-            android:indeterminateTint="@color/primary_theme"
-            android:scaleType="centerInside"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/screenProgressBar"/>
 
         <FrameLayout
             android:id="@+id/progressBarHolder"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:alpha="0.4"
-            android:animateLayoutChanges="true"
-            android:background="#A6EFEFEF"
-            android:visibility="gone"
+            style="@style/screenFrameLayout"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

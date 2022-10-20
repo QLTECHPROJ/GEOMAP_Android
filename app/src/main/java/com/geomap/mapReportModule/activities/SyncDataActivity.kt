@@ -22,7 +22,7 @@ class SyncDataActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        binding.rlViewPdf.setOnClickListener {
+        binding.btnViewPdf.setOnClickListener {
             finish()
         }
     }
