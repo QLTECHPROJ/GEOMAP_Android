@@ -5,6 +5,7 @@ import com.geomap.GeoMapApp.getContext
 import com.geomap.GeoMapApp.securityKey
 import com.geomap.faqModule.models.FaqListModel
 import com.geomap.userModule.models.LoginModel
+import com.geomap.userModule.models.VersionModel
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -19,14 +20,25 @@ import retrofit2.http.POST
 import java.util.concurrent.TimeUnit
 
 interface RetrofitService {
+    @POST("app-version")
+    @FormUrlEncoded
+    fun getAppVersions(
+        @Field("custId") custId : String?, @Field("version") version : String?,
+        @Field("deviceType") deviceType : String?, @Field("deviceToken") deviceToken : String?,
+        @Field("timeZone") timeZone : String?, @Field("deviceId") deviceId : String?
+    ) : Call<VersionModel>
+
+    @POST("login")
+    @FormUrlEncoded
+    fun postLoginData(@Field("userName") userName : String?,
+        @Field("password") password : String?,
+        @Field("deviceToken") deviceToken : String?,
+        @Field("deviceId") deviceId : String?,
+        @Field("deviceType") deviceType : String?) : Call<LoginModel>
+
     @get:GET("cs-faq")
     val faqLists : Call<FaqListModel>
 
-    @POST("csdetails")
-    @FormUrlEncoded
-    fun postLoginData(@Field("userId") userId : String?,
-        @Field("name") name : String?,
-        @Field("password") password : String?) : Call<LoginModel>
 
     companion object {
         fun getInstance() : RetrofitService {

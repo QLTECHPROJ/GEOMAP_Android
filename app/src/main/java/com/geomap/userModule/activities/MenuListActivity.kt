@@ -6,15 +6,17 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.geomap.GeoMapApp.*
@@ -31,6 +33,7 @@ class MenuListActivity : AppCompatActivity() {
     private var supportTitle : String? = null
     private var supportText : String? = null
     private var supportEmail : String? = null
+    private var logoutDialog : Dialog? = null
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +47,7 @@ class MenuListActivity : AppCompatActivity() {
 
         binding.llEditProfile.setOnClickListener {
             if (isNetworkConnected(ctx)) {
-                callUserProfileActivity(act, "1")
+                callUnderGroundFormThirdStepActivity(act, "1")
             } else {
                 showToast(ctx.getString(R.string.no_server_found), act)
             }
@@ -58,7 +61,8 @@ class MenuListActivity : AppCompatActivity() {
             callOpenCastListActivity(act, "1")
         }
         binding.llAboutUs.setOnClickListener {
-            startActivity(Intent(ctx, TncActivity::class.java).putExtra(CONSTANTS.Web, getString(R.string.about_us)))
+            startActivity(Intent(ctx, TncActivity::class.java).putExtra(CONSTANTS.Web,
+                getString(R.string.about_us)))
         }
 
         binding.llFAQ.setOnClickListener {
@@ -79,9 +83,37 @@ class MenuListActivity : AppCompatActivity() {
 
         binding.llLogOut.setOnClickListener {
             if (isNetworkConnected(ctx)) {
-                callSignActivity("", act)
+                logoutDialog = Dialog(ctx)
+                logoutDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                logoutDialog!!.setContentView(R.layout.logout_layout)
+                logoutDialog!!.window!!.setBackgroundDrawable(
+                    ColorDrawable(ContextCompat.getColor(ctx, R.color.primary_light_theme)))
+                logoutDialog!!.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT)
+                val tvGoBack = logoutDialog!!.findViewById<AppCompatButton>(R.id.tvGoBack)
+                val btn = logoutDialog!!.findViewById<Button>(R.id.Btn)
+                val progressBar = logoutDialog!!.findViewById<ProgressBar>(R.id.progressBar)
+                val progressBarHolder =
+                    logoutDialog!!.findViewById<FrameLayout>(R.id.progressBarHolder)
+                logoutDialog!!.setOnKeyListener { _ : DialogInterface?, keyCode : Int, _ : KeyEvent? ->
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        logoutDialog!!.hide()
+                        return@setOnKeyListener true
+                    }
+                    false
+                }
+                btn.setOnClickListener {
+                    logoutDialog!!.hide()
+                    showProgressBar(progressBar, progressBarHolder, act)
+//                    logoutCall(binding.progressBar)
+
+                    callSignActivity("", act)
+                }
+                tvGoBack.setOnClickListener { logoutDialog!!.hide() }
+                logoutDialog!!.show()
+                logoutDialog!!.setCancelable(false)
             } else {
-                showToast(ctx.getString(R.string.no_server_found), act)
+                showToast(getString(R.string.no_server_found), act)
             }
         }
 
@@ -98,22 +130,26 @@ class MenuListActivity : AppCompatActivity() {
                 val tvTitle = supportDialog!!.findViewById<TextView>(R.id.tvTitle)
                 val tvHeader = supportDialog!!.findViewById<TextView>(R.id.tvHeader)
                 val btnClose = supportDialog!!.findViewById<Button>(R.id.btnClose)
+
                 if (supportTitle.equals("", ignoreCase = true)) {
                     tvTitle.text = getString(R.string.support)
                 } else {
                     tvTitle.text = supportTitle
+                    tvTitle.text = getString(R.string.support)
                 }
 
                 if (supportText.equals("", ignoreCase = true)) {
                     tvHeader.text = getString(R.string.support_quotes)
                 } else {
                     tvHeader.text = supportText
+                    tvHeader.text = getString(R.string.support_quotes)
                 }
 
                 if (supportEmail.equals("", ignoreCase = true)) {
                     tvEmail.text = getString(R.string.support_link)
                 } else {
                     tvEmail.text = supportEmail
+                    tvEmail.text = getString(R.string.support_link)
                 }
 
                 tvEmail.setOnClickListener {
@@ -153,6 +189,13 @@ class MenuListActivity : AppCompatActivity() {
         }
 
     }
+
+/*
+    private fun logoutCall(progressBar : ProgressBar) {
+        deleteCall(ctx)
+        callLogoutApi(progressBar)
+    }
+*/
 
     override fun onBackPressed() {
         finish()

@@ -89,6 +89,7 @@
                         android:inputType="textMultiLine|textVisiblePassword"
                         android:overScrollMode="always"
                         android:paddingLeft="@dimen/_8sdp"
+                        android:hint="@string/add_description"
                         android:paddingTop="@dimen/_8sdp"
                         android:paddingRight="@dimen/_8sdp"
                         android:scrollbarStyle="insideInset"

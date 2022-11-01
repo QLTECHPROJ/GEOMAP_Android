@@ -32,6 +32,8 @@
     <string name="about_us">About Us</string>
     <string name="support">Support</string>
     <string name="log_out">Logout</string>
+    <string name="log_out_">Log Out</string>
+    <string name="logout_quotes">Are you sure you want to log out of The Geo Map App?</string>
     <string name="contact_us">Contact Us</string>
     <string name="undergrounds_mapping_report">Undergrounds Mapping Report</string>
     <string name="view_all">View All</string>
@@ -43,6 +45,7 @@
     <string name="add_report">Add Report</string>
     <string name="support_quotes">Please contact support at</string>
     <string name="support_link">support@geomap.com.in</string>
+    <string name="ok">ok</string>
     <string name="close">Close</string>
     <string name="no_result_found">No Result Found</string>
     <string name="t_n_csf">T&amp;Cs</string>

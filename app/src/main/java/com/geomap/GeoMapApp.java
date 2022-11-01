@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -35,6 +36,8 @@ import com.geomap.userModule.activities.UserProfileActivity;
 import com.geomap.utils.AppSignatureHashHelper;
 import com.geomap.utils.CONSTANTS;
 import com.geomap.utils.CryptLib;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -49,17 +52,48 @@ import java.util.TimeZone;
 public class GeoMapApp extends Application {
     static Context mContext;
     static GeoMapApp GeoMapApp;
+    public static String fcmId = "";
 
     @Override
     public void onCreate() {
         super.onCreate();
         mContext = this;
-        Log.e("onCreate", "Called");
         GeoMapApp = this;
+        FirebaseApp.initializeApp(mContext);
+        Log.e("onCreate", "Called");
+        try {
+            FirebaseApp.getInstance();
+        } catch (IllegalStateException e) {
+            Log.e("Firebsdaoodgk", "oiuytdcb v");
+        }
     }
 
     public static Context getContext() {
         return mContext;
+    }
+
+    public static void callFCMRegMethod(Context ctx) {
+        SharedPreferences sharedPreferences2 = ctx.getSharedPreferences(CONSTANTS.FCMToken, Context.MODE_PRIVATE);
+        fcmId = sharedPreferences2.getString(CONSTANTS.Token, "");
+        if (TextUtils.isEmpty(fcmId)) {
+            Log.e("Token called", ctx.toString());
+//            FirebaseApp.initializeApp(ctx);
+            FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+                if (!task.isSuccessful()) {
+                    return;
+                }
+                // Get new FCM registration token
+                String token = task.getResult();
+                // Log and toast
+                Log.e("newToken", token);
+                fcmId = token;
+                SharedPreferences.Editor editor = getContext().getSharedPreferences(CONSTANTS.FCMToken, Context.MODE_PRIVATE).edit();
+                editor.putString(CONSTANTS.Token, token); //Friend
+                editor.apply();
+            });
+        }
+
+        Log.e("Token", fcmId);
     }
 
     public static boolean isNetworkConnected(Context context) {
