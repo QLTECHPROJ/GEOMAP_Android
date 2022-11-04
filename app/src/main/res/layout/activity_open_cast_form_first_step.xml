@@ -990,6 +990,15 @@
                                 android:textSize="@dimen/_16sdp"
                                 tools:ignore="SpUsage" />
 
+                            <TextView
+                                android:id="@+id/tvHintSampleCollected"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/_1sdp"
+                                android:visibility="gone"
+                                tools:ignore="SpUsage"
+                                tools:targetApi="lollipop" />
+
                         </LinearLayout>
 
                         <RelativeLayout
@@ -1102,6 +1111,15 @@
                                 android:textSize="@dimen/_16sdp"
                                 tools:ignore="SpUsage" />
 
+                            <TextView
+                                android:id="@+id/tvHintWeathering"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/_1sdp"
+                                android:visibility="gone"
+                                tools:ignore="SpUsage"
+                                tools:targetApi="lollipop" />
+
                         </LinearLayout>
 
                         <RelativeLayout
@@ -1167,6 +1185,15 @@
                                 android:textColor="@color/light_black"
                                 android:textSize="@dimen/_16sdp"
                                 tools:ignore="SpUsage" />
+
+                            <TextView
+                                android:id="@+id/tvHintRockStrength"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/_1sdp"
+                                android:visibility="gone"
+                                tools:ignore="SpUsage"
+                                tools:targetApi="lollipop" />
 
                         </LinearLayout>
 
@@ -1234,6 +1261,15 @@
                                 android:textSize="@dimen/_16sdp"
                                 tools:ignore="SpUsage" />
 
+                            <TextView
+                                android:id="@+id/tvHintWaterCondition"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/_1sdp"
+                                android:visibility="gone"
+                                tools:ignore="SpUsage"
+                                tools:targetApi="lollipop" />
+
                         </LinearLayout>
 
                         <RelativeLayout
@@ -1300,6 +1336,15 @@
                                 android:textSize="@dimen/_16sdp"
                                 tools:ignore="SpUsage" />
 
+                            <TextView
+                                android:id="@+id/tvHintTypeOfGeologicalStructures"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/_1sdp"
+                                android:visibility="gone"
+                                tools:ignore="SpUsage"
+                                tools:targetApi="lollipop" />
+
                         </LinearLayout>
 
                         <RelativeLayout
@@ -1365,6 +1410,15 @@
                                 android:textColor="@color/light_black"
                                 android:textSize="@dimen/_16sdp"
                                 tools:ignore="SpUsage" />
+
+                            <TextView
+                                android:id="@+id/tvHintTypeOfFaults"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/_1sdp"
+                                android:visibility="gone"
+                                tools:ignore="SpUsage"
+                                tools:targetApi="lollipop" />
 
                         </LinearLayout>
 

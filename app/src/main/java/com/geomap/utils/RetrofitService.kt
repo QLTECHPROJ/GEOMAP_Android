@@ -4,6 +4,7 @@ import android.provider.Settings
 import com.geomap.GeoMapApp.getContext
 import com.geomap.GeoMapApp.securityKey
 import com.geomap.faqModule.models.FaqListModel
+import com.geomap.mapReportModule.models.*
 import com.geomap.userModule.models.LoginModel
 import com.geomap.userModule.models.VersionModel
 import okhttp3.Interceptor
@@ -20,7 +21,7 @@ import retrofit2.http.POST
 import java.util.concurrent.TimeUnit
 
 interface RetrofitService {
-    @POST("app-version")
+    @POST("app_version")
     @FormUrlEncoded
     fun getAppVersions(
         @Field("custId") custId : String?, @Field("version") version : String?,
@@ -36,9 +37,48 @@ interface RetrofitService {
         @Field("deviceId") deviceId : String?,
         @Field("deviceType") deviceType : String?) : Call<LoginModel>
 
-    @get:GET("cs-faq")
+    @POST("delete_user")
+    @FormUrlEncoded
+    fun postDeleteUser(@Field("id") id : String?) : Call<SuccessModel>
+
+    @get:GET("faq")
     val faqLists : Call<FaqListModel>
 
+    @get:GET("ur_or_listing")
+    val getDashboardlisting : Call<DashboardModel>
+
+    @get:GET("ur_or_listing_view_all")
+    val getDashboardViewAlllisting : Call<DashboardViewAllModel>
+
+    @get:GET("ur_detail")
+    val getUnderGroundDetails : Call<UnderGroundDetailsModel>
+
+    @get:GET("or_detail")
+    val getOpenCastDetails : Call<OpenCastDetailsModel>
+
+    @get:GET("attribute_data_number")
+    val getAttributesList : Call<AttributesListModel>
+
+    @get:GET("sample_collecteds")
+    val getSampleCollectedsList : Call<CommonPopupListModel>
+
+    @get:GET("weathering_data")
+    val getWeatheringDataList : Call<CommonPopupListModel>
+
+    @get:GET("rock_strength_data")
+    val getRockStrengthDataList : Call<CommonPopupListModel>
+
+    @get:GET("water_condition_data")
+    val getWaterConditionDataList : Call<CommonPopupListModel>
+
+    @get:GET("type_of_geological_structures")
+    val getTypeOfGeologicalStructuresList : Call<CommonPopupListModel>
+
+    @get:GET("types_of_fault")
+    val getTypeOfFaultList : Call<CommonPopupListModel>
+
+    @get:GET("geologist_data")
+    val getGeologistData : Call<CommonPopupListModel>
 
     companion object {
         fun getInstance() : RetrofitService {

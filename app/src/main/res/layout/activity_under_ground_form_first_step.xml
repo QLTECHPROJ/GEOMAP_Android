@@ -76,7 +76,7 @@
                         tools:ignore="SpUsage" />
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/cvMineralization"
+                        android:id="@+id/cvAttributes"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_60sdp"
                         android:layout_gravity="center"
@@ -114,6 +114,15 @@
                                     android:textColor="@color/light_black"
                                     android:textSize="@dimen/_16sdp"
                                     tools:ignore="SpUsage" />
+
+                                <TextView
+                                    android:id="@+id/tvHintMineralization"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/_1sdp"
+                                    android:visibility="gone"
+                                    tools:ignore="SpUsage"
+                                    tools:targetApi="lollipop" />
 
                             </LinearLayout>
 
@@ -154,7 +163,7 @@
                         tools:ignore="SpUsage" />
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/cvMineralizationOne"
+                        android:id="@+id/cvNos"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_60sdp"
                         android:layout_gravity="center"

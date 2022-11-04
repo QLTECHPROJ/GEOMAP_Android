@@ -30,6 +30,7 @@ import com.geomap.mapReportModule.activities.UnderGroundFormSecondStepActivity;
 import com.geomap.mapReportModule.activities.UnderGroundFormThirdStepActivity;
 import com.geomap.mapReportModule.activities.UnderGroundListActivity;
 import com.geomap.mapReportModule.activities.ViewPdfActivity;
+import com.geomap.userModule.activities.ContactUsActivity;
 import com.geomap.userModule.activities.MenuListActivity;
 import com.geomap.userModule.activities.SignInActivity;
 import com.geomap.userModule.activities.UserProfileActivity;
@@ -61,11 +62,6 @@ public class GeoMapApp extends Application {
         GeoMapApp = this;
         FirebaseApp.initializeApp(mContext);
         Log.e("onCreate", "Called");
-        try {
-            FirebaseApp.getInstance();
-        } catch (IllegalStateException e) {
-            Log.e("Firebsdaoodgk", "oiuytdcb v");
-        }
     }
 
     public static Context getContext() {
@@ -77,7 +73,6 @@ public class GeoMapApp extends Application {
         fcmId = sharedPreferences2.getString(CONSTANTS.Token, "");
         if (TextUtils.isEmpty(fcmId)) {
             Log.e("Token called", ctx.toString());
-//            FirebaseApp.initializeApp(ctx);
             FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
                 if (!task.isSuccessful()) {
                     return;
@@ -324,6 +319,15 @@ public class GeoMapApp extends Application {
 
     public static void callViewPdfActivity(Activity act, String finish) {
         Intent i = new Intent(act, ViewPdfActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        act.startActivity(i);
+        if (finish.equalsIgnoreCase("0")) {
+            act.finish();
+        }
+    }
+
+    public static void callContactUsActivity(Activity act, String finish) {
+        Intent i = new Intent(act, ContactUsActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         act.startActivity(i);
         if (finish.equalsIgnoreCase("0")) {

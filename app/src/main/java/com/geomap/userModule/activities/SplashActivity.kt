@@ -76,6 +76,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun checkAppVersion() {
+        callFCMRegMethod(act)
         val simpleDateFormat1 = SimpleDateFormat("hh:mm a")
         simpleDateFormat1.timeZone = TimeZone.getDefault()
         timezoneName = simpleDateFormat1.timeZone.id
@@ -83,7 +84,7 @@ class SplashActivity : AppCompatActivity() {
             CONSTANTS.Token, "").toString()
         val deviceId = Settings.Secure.getString(getContext().contentResolver,
             Settings.Secure.ANDROID_ID)
-        val appURI = "https://play.google.com/store/apps/details?id=com.nsc.cust"
+        val appURI = "https://play.google.com/store/apps/details?id=com.geomap"
         if (isNetworkConnected(ctx)) {
             RetrofitService.getInstance().getAppVersions("id",
                 BuildConfig.VERSION_CODE.toString(), CONSTANTS.FLAG_ONE, fcmId,
@@ -175,6 +176,7 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun callSplashData() {
+        callFCMRegMethod(act)
         Handler(Looper.getMainLooper()).postDelayed({
             callSignActivity("", act)
         }, 1800)

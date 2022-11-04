@@ -23,6 +23,7 @@
     <string name="Settings">Settings</string>
     <string name="not_now">Not Now</string>
     <string name="pls_provide_valid_email">Please provide a valid email address</string>
+    <string name="pls_provide_valid_password">Password should contain at least one uppercase, one lowercase, one special symbol and minimum 8 character long</string>
     <string name="check_dob">Please confirm whether you are above 3 years old</string>
     <string name="underground_report_list">UnderGround Report List</string>
     <string name="opencast_report_list">OpenCast Report List</string>
@@ -33,7 +34,7 @@
     <string name="support">Support</string>
     <string name="log_out">Logout</string>
     <string name="log_out_">Log Out</string>
-    <string name="logout_quotes">Are you sure you want to log out of The Geo Map App?</string>
+    <string name="logout_quotes">Are you sure you want to logout?</string>
     <string name="contact_us">Contact Us</string>
     <string name="undergrounds_mapping_report">Undergrounds Mapping Report</string>
     <string name="view_all">View All</string>
@@ -46,6 +47,8 @@
     <string name="support_quotes">Please contact support at</string>
     <string name="support_link">support@geomap.com.in</string>
     <string name="ok">ok</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <string name="close">Close</string>
     <string name="no_result_found">No Result Found</string>
     <string name="t_n_csf">T&amp;Cs</string>
@@ -157,4 +160,26 @@
     <string name="vein_load_">Vein/load</string>
     <string name="clear_geologist_signature">Clear Geologist Signature</string>
     <string name="clear_geologist_client_signature">Clear Client’s Geologist Signature</string>
+    <string name="choose_your_attributes">Choose your attributes</string>
+    <string name="choose_your_nos">Choose your nos</string>
+    <string name="choose_your_sample_collected">Choose your sample collected</string>
+    <string name="choose_your_weathering">Choose your weathering</string>
+    <string name="choose_your_rock_strength">Choose your rock strength</string>
+    <string name="choose_your_water_condition">Choose your water condition</string>
+    <string name="choose_your_type_of_geological_structures">Choose your type of geological structures</string>
+    <string name="choose_your_Type_of_faults">Choose your type of faults</string>
+    <string name="pls_select_your_attributes">Search your attributes</string>
+    <string name="pls_select_your_nos">Search your nos</string>
+    <string name="pls_select_your_sample_collected">Search your sample collected</string>
+    <string name="pls_select_your_weathering">Search your weathering</string>
+    <string name="pls_select_your_rock_strength">Search your rock strength</string>
+    <string name="pls_select_your_water_condition">Search your water condition</string>
+    <string name="pls_select_your_type_of_geological_structures">Search your type of geological structures</string>
+    <string name="pls_select_your_Type_of_faults">Search your type of faults</string>
+    <string name="delete_ac_quotes">Are you sure you want to delete your account?</string>
+    <string name="cancel">CANCEL</string>
+    <string name="enter_name">Enter Name</string>
+    <string name="enter_email">Enter Email</string>
+    <string name="enter_subject">Enter Subject</string>
+    <string name="enter_message">Enter Message</string>
 </resources>

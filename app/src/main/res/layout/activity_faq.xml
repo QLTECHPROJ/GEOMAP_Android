@@ -35,6 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginBottom="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_84sdp"
             android:nestedScrollingEnabled="true"
             android:overScrollMode="never"
             app:layout_constraintBottom_toBottomOf="parent"

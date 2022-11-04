@@ -4,21 +4,27 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.SystemClock
 import android.provider.MediaStore
 import android.provider.Settings
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
-import android.widget.DatePicker
+import android.view.KeyEvent
+import android.view.ViewGroup
+import android.view.Window
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -32,10 +38,17 @@ import com.geomap.BuildConfig
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityUserProfileBinding
+import com.geomap.mapReportModule.models.SuccessModel
+import com.geomap.utils.APIClientProfile.apiService
 import com.geomap.utils.CONSTANTS
 import com.geomap.utils.FileUtil.getPath
 import com.geomap.utils.RequestPermissionHandler
+import com.geomap.utils.RetrofitService
+import retrofit.RetrofitError
 import retrofit.mime.TypedFile
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -49,6 +62,7 @@ class UserProfileActivity : AppCompatActivity() {
     var email : String? = ""
     var mobileNo : String? = ""
     var dob : String? = ""
+    private var id : String? = null
     private var mYear : Int = 0
     private var mMonth : Int = 0
     private var mDay : Int = 0
@@ -59,6 +73,8 @@ class UserProfileActivity : AppCompatActivity() {
     private var profilePicPath : String? = ""
     private var typedFile : TypedFile? = null
     private var mRequestPermissionHandler : RequestPermissionHandler? = null
+    private var deleteDialog : Dialog? = null
+    private var mLastClickTime : Long = 0
 
     private var userTextWatcher : TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s : CharSequence, start : Int, count : Int, after : Int) {}
@@ -118,8 +134,45 @@ class UserProfileActivity : AppCompatActivity() {
         }
 
         binding.btnDeleteAccount.setOnClickListener {
-            finish()
+            if (isNetworkConnected(ctx)) {
+                deleteDialog = Dialog(ctx)
+                deleteDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                deleteDialog!!.setContentView(R.layout.logout_layout)
+                deleteDialog!!.window!!.setBackgroundDrawable(
+                    ColorDrawable(ContextCompat.getColor(ctx, R.color.primary_transparent)))
+                deleteDialog!!.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT)
+                val tvGoBack = deleteDialog!!.findViewById<TextView>(R.id.tvGoBack)
+                val tvTitle = deleteDialog!!.findViewById<TextView>(R.id.tvTitle)
+                val tvHeader = deleteDialog!!.findViewById<TextView>(R.id.tvHeader)
+                val btn = deleteDialog!!.findViewById<Button>(R.id.Btn)
+                val progressBar = deleteDialog!!.findViewById<ProgressBar>(R.id.progressBar)
+                val progressBarHolder =
+                    deleteDialog!!.findViewById<FrameLayout>(R.id.progressBarHolder)
+                tvTitle.text = getString(R.string.delete_account)
+                tvHeader.text = getString(R.string.delete_ac_quotes)
+                tvGoBack.text = getString(R.string.cancel)
+
+                deleteDialog!!.setOnKeyListener { _ : DialogInterface?, keyCode : Int, _ : KeyEvent? ->
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        deleteDialog!!.hide()
+                        return@setOnKeyListener true
+                    }
+                    false
+                }
+                btn.setOnClickListener {
+                    deleteDialog!!.hide()
+                    showProgressBar(progressBar, progressBarHolder, act)
+                    deleteAcCall()
+                }
+                tvGoBack.setOnClickListener { deleteDialog!!.hide() }
+                deleteDialog!!.show()
+                deleteDialog!!.setCancelable(false)
+            } else {
+                showToast(getString(R.string.no_server_found), act)
+            }
         }
+
 
         binding.btnUpdate.setOnClickListener {
             if (!binding.etEmail.text.toString().isEmailValid()) {
@@ -129,14 +182,151 @@ class UserProfileActivity : AppCompatActivity() {
                 binding.ltEmail.error = getString(R.string.pls_provide_valid_email)
             } else {
                 binding.ltEmail.isErrorEnabled = false
-                finish()
+                prepareUpdateData()
             }
+        }
+    }
+
+    private fun deleteAcCall() {
+//        deleteCall(ctx)
+        callDeleteAcApi()
+    }
+
+    private fun callDeleteAcApi() {
+        if (isNetworkConnected(ctx)) {
+            RetrofitService.getInstance().postDeleteUser(
+                "4").enqueue(object : Callback<SuccessModel?> {
+                override fun onResponse(call : Call<SuccessModel?>,
+                    response : Response<SuccessModel?>) {
+                    val sucessModel = response.body()
+                    if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                        return
+                    }
+                    mLastClickTime = SystemClock.elapsedRealtime()
+                    if (sucessModel!!.responseCode.equals(
+                            getString(R.string.ResponseCodesuccess))) {
+                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                        showToast(sucessModel.responseMessage, act)
+                        callSignActivity("", act)
+                    }
+                }
+
+                override fun onFailure(call : Call<SuccessModel?>, t : Throwable) {
+                    hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                }
+            })
+        } else {
+            showToast(getString(R.string.no_server_found), act)
         }
     }
 
     private fun String.isEmailValid() : Boolean {
         return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this)
             .matches()
+    }
+
+    private fun prepareUpdateData() {
+        if (isNetworkConnected(ctx)) {
+            showProgressBar(binding.progressBar, binding.progressBarHolder, act)
+            val map = HashMap<String, String?>()
+            map[CONSTANTS.id] = id
+            apiService!!.getProfileUpdate("4", binding.etName.text.toString(),
+                binding.etEmail.text.toString(),
+                binding.etDob.text.toString(), binding.etMobileNo.text.toString(), typedFile,
+                object : retrofit.Callback<SuccessModel> {
+                    override fun success(model : SuccessModel,
+                        response : retrofit.client.Response) {
+                        try {
+                            if (model.responseCode.equals(
+                                    ctx.getString(R.string.ResponseCodesuccess))) {
+                                hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                                showToast(model.responseMessage, act)
+                                prepareData("0")
+                                finish()
+                            } else if (model.responseCode.equals(
+                                    ctx.getString(R.string.ResponseCodeDeleted))) {
+                                callDelete403(act, model.responseMessage)
+                            }
+                        } catch (e : Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+
+                    override fun failure(e : RetrofitError) {
+                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                        showToast(e.message, act)
+                    }
+                })
+        } else {
+            showToast(getString(R.string.no_server_found), act)
+        }
+    }
+
+    private fun prepareData(finishS : String) {
+//        showProgressBar(binding.progressBar, binding.progressBarHolder, this@EditProfileActivity)
+//        if (isNetworkConnected(applicationContext)) {
+//            RetrofitService.getInstance().getCoachDetails(coachId)
+//                .enqueue(object : Callback<LoginModel> {
+//                    override fun onResponse(call: Call<LoginModel>, response: Response<LoginModel>) {
+//                        hideProgressBar(binding.progressBar, binding.progressBarHolder, this@EditProfileActivity)
+//                        val coachStatusModel: LoginModel? = response.body()
+//                        when (coachStatusModel!!.ResponseCode) {
+//                            getString(R.string.ResponseCodesuccess) -> {
+//                                binding.llBackground.visibility = View.VISIBLE
+//                                binding.llBack.visibility = View.VISIBLE
+//                                binding.rlMainLayout.visibility = View.VISIBLE
+//                                firstName = coachStatusModel.ResponseData!!.Fname
+//                                lastName = coachStatusModel.ResponseData.Lname
+//                                emailUser = coachStatusModel.ResponseData.Email
+//                                numberUser = coachStatusModel.ResponseData.Mobile
+//                                ProfileImage = coachStatusModel.ResponseData.Profile_Image
+//                                binding.tvName.text = coachStatusModel.ResponseData.Name
+//                                binding.etNumber.setText(numberUser)
+//                                binding.etFName.setText(firstName)
+//                                binding.etLName.setText(lastName)
+//                                binding.etEmail.setText(emailUser)
+//                                if (coachStatusModel.ResponseData.Profile_Image == "") {
+//                                    binding.civProfile.visibility = View.GONE
+//                                    val name = if (coachStatusModel.ResponseData.Name == "") {
+//                                        "Guest"
+//                                    } else {
+//                                        coachStatusModel.ResponseData.Name
+//                                    }
+//                                    binding.rlLetter.visibility = View.VISIBLE
+//                                    binding.tvLetter.text = name.substring(0, 1)
+//                                } else {
+//                                    binding.civProfile.visibility = View.VISIBLE
+//                                    binding.rlLetter.visibility = View.GONE
+//                                    Glide.with(applicationContext).load(coachStatusModel.ResponseData.Profile_Image).thumbnail(0.10f)
+//                                        .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
+//                                        .into(binding.civProfile)
+//                                }
+//
+//                                binding.etNumber.isEnabled = false
+//                                binding.etNumber.isClickable = false
+//                                binding.etNumber.setTextColor(ContextCompat.getColor(applicationContext, R.color.light_gray))
+//
+//                                binding.etEmail.isEnabled = false
+//                                binding.etEmail.isClickable = false
+//                                binding.etEmail.setTextColor(ContextCompat.getColor(applicationContext, R.color.light_gray))
+//
+//                            }
+//                            getString(R.string.ResponseCodefail) -> {
+//                                showToast(coachStatusModel.ResponseMessage, act)
+//                            }
+//                            getString(R.string.ResponseCodeDeleted) -> {
+//                                callDelete403(act, coachStatusModel.ResponseMessage)
+//                            }
+//                        }
+//                    }
+//
+//                    override fun onFailure(call: Call<LoginModel>, t: Throwable) {
+//                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+//                    }
+//                })
+//        } else {
+//            setProfilePic("")
+//        }
     }
 
     override fun onActivityResult(requestCode : Int, resultCode : Int, data : Intent?) {

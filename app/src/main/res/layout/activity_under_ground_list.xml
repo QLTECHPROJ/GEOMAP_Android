@@ -37,6 +37,7 @@
             android:layout_marginBottom="@dimen/_20sdp"
             android:nestedScrollingEnabled="true"
             android:overScrollMode="never"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvHeaderTitle"
@@ -62,11 +63,11 @@
 
         <ProgressBar
             android:id="@+id/progressBar"
+            style="@style/screenProgressBar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/screenProgressBar"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <FrameLayout
             android:id="@+id/progressBarHolder"

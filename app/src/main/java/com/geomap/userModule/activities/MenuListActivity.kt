@@ -47,7 +47,7 @@ class MenuListActivity : AppCompatActivity() {
 
         binding.llEditProfile.setOnClickListener {
             if (isNetworkConnected(ctx)) {
-                callUnderGroundFormThirdStepActivity(act, "1")
+                callUserProfileActivity(act, "1")
             } else {
                 showToast(ctx.getString(R.string.no_server_found), act)
             }
@@ -68,6 +68,14 @@ class MenuListActivity : AppCompatActivity() {
         binding.llFAQ.setOnClickListener {
             if (isNetworkConnected(ctx)) {
                 callFaqActivity(act, "1")
+            } else {
+                showToast(ctx.getString(R.string.no_server_found), act)
+            }
+        }
+
+        binding.llContactUs.setOnClickListener {
+            if (isNetworkConnected(ctx)) {
+                callContactUsActivity(act, "1")
             } else {
                 showToast(ctx.getString(R.string.no_server_found), act)
             }
@@ -130,7 +138,6 @@ class MenuListActivity : AppCompatActivity() {
                 val tvTitle = supportDialog!!.findViewById<TextView>(R.id.tvTitle)
                 val tvHeader = supportDialog!!.findViewById<TextView>(R.id.tvHeader)
                 val btnClose = supportDialog!!.findViewById<Button>(R.id.btnClose)
-
                 if (supportTitle.equals("", ignoreCase = true)) {
                     tvTitle.text = getString(R.string.support)
                 } else {
