@@ -264,14 +264,14 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         dialog.setContentView(R.layout.common_list_layout)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         val tvTilte : TextView = dialog.findViewById(R.id.tvTilte)
-        val rvStateList : RecyclerView = dialog.findViewById(R.id.rvStateList)
+        val rvList : RecyclerView = dialog.findViewById(R.id.rvList)
         val searchView : SearchView = dialog.findViewById(R.id.searchView)
         val tvFound : TextView = dialog.findViewById(R.id.tvFound)
         val pb : ProgressBar = dialog.findViewById(R.id.progressBar)
         val pbh : FrameLayout = dialog.findViewById(R.id.progressBarHolder)
         tvTilte.text = title
-        rvStateList.visibility = View.VISIBLE
-        rvStateList.layoutManager = LinearLayoutManager(ctx)
+        rvList.visibility = View.VISIBLE
+        rvList.layoutManager = LinearLayoutManager(ctx)
         dialog.setOnKeyListener { _ : DialogInterface?, keyCode : Int, _ : KeyEvent? ->
             if (keyCode == KeyEvent.KEYCODE_BACK) {
                 dialog.dismiss()
@@ -326,13 +326,13 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 return false
             }
         })
-        prepareAttributesListing(dialog, rvStateList, tvFound, pb, pbh, searchView, keyS)
+        prepareAttributesListing(dialog, rvList, tvFound, pb, pbh, searchView, keyS)
         dialog.show()
         dialog.setCanceledOnTouchOutside(true)
         dialog.setCancelable(true)
     }
 
-    private fun prepareAttributesListing(dialog : Dialog, rvStateList : RecyclerView,
+    private fun prepareAttributesListing(dialog : Dialog, rvList : RecyclerView,
         tvFound : TextView,
         progressBar : ProgressBar, progressBarHolder : FrameLayout, searchView : SearchView,
         keyS : String) {
@@ -372,11 +372,11 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                         model!!.responseCode!! == getString(R.string.ResponseCodesuccess) -> {
                             searchView.isEnabled = true
                             searchView.isClickable = true
-                            rvStateList.layoutManager = LinearLayoutManager(ctx)
+                            rvList.layoutManager = LinearLayoutManager(ctx)
                             popupAdapter =
                                 PopupAdapter(dialog, binding,
-                                    model.responseData!!, rvStateList, tvFound, keyS)
-                            rvStateList.adapter = popupAdapter
+                                    model.responseData!!, rvList, tvFound, keyS)
+                            rvList.adapter = popupAdapter
                         }
                         model.responseCode!! == getString(R.string.ResponseCodefail) -> {
                             showToast(model.responseMessage, act)
@@ -414,7 +414,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
             val mData : CommonPopupListModel.ResponseData = listFilterData[position]
-            holder.bindingAdapter.tvCountryName.text = mData.name
+            holder.bindingAdapter.tvName.text = mData.name
             holder.bindingAdapter.llMainLayout.setOnClickListener {
                 when (keyS) {
                     "1" -> {

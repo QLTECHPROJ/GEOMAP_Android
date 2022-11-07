@@ -9,7 +9,7 @@ import retrofit.mime.TypedFile
 
 interface APIInterfaceProfile {
     @Multipart @POST("/profile_update") fun getProfileUpdate(
-        @Part("id") id : String?,
+        @Part("userId") userId : String?,
         @Part("name") name : String?,
         @Part("email") email : String?,
         @Part("dob") dob : String?,

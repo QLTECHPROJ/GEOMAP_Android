@@ -7,7 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.geomap.GeoMapApp.*
+import com.geomap.GeoMapApp.allDisable
 import com.geomap.R
 import com.geomap.databinding.ActivityOpenCastFormSecondStepBinding
 

@@ -8,6 +8,7 @@
     <string name="hello_again">Hello Again!</string>
     <string name="wellcome_back_you_ve_been_missed">Welcome back you’ve\n been missed!</string>
     <string name="name">Name</string>
+    <string name="name_">Name:</string>
     <string name="password">Password</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="sign_in">Sign In</string>
@@ -116,8 +117,8 @@
     <string name="dip_direction_and_angle_">Dip direction and angle</string>
     <string name="thickness_of_ore_coal_seam">Thickness of ore (Coal seam):</string>
     <string name="thickness_of_ore_coal_seam_">Thickness of ore (Coal seam)</string>
-    <string name="thiness_of_overburden_m">Thiness of overburden (m):</string>
-    <string name="thiness_of_overburden_m_">Thiness of overburden (m)</string>
+    <string name="thiness_of_overburden_m">Thickness of overburden (m):</string>
+    <string name="thiness_of_overburden_m_">Thickness of overburden (m)</string>
     <string name="thickness_of_interburden_m">Thickness of interburden (m):</string>
     <string name="thickness_of_interburden_m_">Thickness of interburden (m)</string>
     <string name="observed_grade_of_ore">Observed grade of ore:</string>
@@ -182,4 +183,5 @@
     <string name="enter_email">Enter Email</string>
     <string name="enter_subject">Enter Subject</string>
     <string name="enter_message">Enter Message</string>
+    <string name="mapping_sheet_no">Mapping sheet no</string>
 </resources>

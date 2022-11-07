@@ -41,7 +41,10 @@ class UnderGroundListActivity : AppCompatActivity() {
         val mLayoutManager : RecyclerView.LayoutManager = LinearLayoutManager(applicationContext)
         binding.rvUnderGroundList.layoutManager = mLayoutManager
         binding.rvUnderGroundList.itemAnimator = DefaultItemAnimator()
+    }
 
+    override fun onResume() {
+        super.onResume()
         postData()
     }
 
@@ -49,7 +52,7 @@ class UnderGroundListActivity : AppCompatActivity() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             RetrofitService.getInstance()
-                .getDashboardViewAlllisting
+                .getURViewAlllisting("1")
                 .enqueue(object : Callback<DashboardViewAllModel> {
                     override fun onResponse(call : Call<DashboardViewAllModel>,
                         response : Response<DashboardViewAllModel>) {
@@ -106,10 +109,10 @@ class UnderGroundListActivity : AppCompatActivity() {
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
             holder.binding.tvName.text = listModel[position].name
-            holder.binding.tvArea.text = listModel[position].name
-//                "${listModel[position].location}, ${listModel[position].country}"
-//            holder.binding.tvSubTitle.text = listModel[position].description
-            holder.binding.tvDate.text = listModel[position].createdAt
+            holder.binding.tvArea.text = listModel[position].location
+            holder.binding.tvSubTitleOne.text = "Scale : ${listModel[position].scale}"
+            holder.binding.tvSubTitleTwo.text = "Map Serial No : ${listModel[position].mapSerialNo}"
+            holder.binding.tvDate.text = listModel[position].ugDate
 
             holder.binding.llMainLayout.setOnClickListener {
                 callUnderGroundDetailActivity(act, "1")

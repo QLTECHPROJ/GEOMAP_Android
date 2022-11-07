@@ -7,10 +7,10 @@ class UserModelFactory constructor(private val repository : UserRepository) :
     ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass : Class<T>) : T {
-        return if (modelClass.isAssignableFrom(ViewModel::class.java)) {
-            ViewModel(repository) as T
+        return if (modelClass.isAssignableFrom(AllViewModel::class.java)) {
+            AllViewModel(repository) as T
         } else {
-            throw IllegalArgumentException("ViewModel Not Found")
+            throw IllegalArgumentException("AllViewModel Not Found")
         }
     }
 }

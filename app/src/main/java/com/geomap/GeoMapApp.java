@@ -34,11 +34,13 @@ import com.geomap.userModule.activities.ContactUsActivity;
 import com.geomap.userModule.activities.MenuListActivity;
 import com.geomap.userModule.activities.SignInActivity;
 import com.geomap.userModule.activities.UserProfileActivity;
+import com.geomap.userModule.models.UserCommonDataModel;
 import com.geomap.utils.AppSignatureHashHelper;
 import com.geomap.utils.CONSTANTS;
 import com.geomap.utils.CryptLib;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -222,9 +224,66 @@ public class GeoMapApp extends Application {
     }
 
     public static void callDelete403(Activity act, String msg) {
-//        deleteCall(act);
+        deleteCall(act);
         showToast(msg, act);
         callSignActivity("", act);
+    }
+
+    public static void deleteCall(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = preferences.edit();
+        edit.remove(CONSTANTS.userId);
+        edit.remove(CONSTANTS.deviceToken);
+        edit.remove(CONSTANTS.deviceId);
+        edit.remove(CONSTANTS.deviceType);
+        edit.remove(CONSTANTS.name);
+        edit.remove(CONSTANTS.email);
+        edit.remove(CONSTANTS.mobile);
+        edit.remove(CONSTANTS.dob);
+        edit.remove(CONSTANTS.profileImage);
+        edit.remove(CONSTANTS.profileImage);
+        edit.remove(CONSTANTS.attributeData);
+        edit.remove(CONSTANTS.sampleCollected);
+        edit.remove(CONSTANTS.rockStrength);
+        edit.remove(CONSTANTS.typeOfFaults);
+        edit.remove(CONSTANTS.typeOfGeologicalStructures);
+        edit.remove(CONSTANTS.waterCondition);
+        edit.remove(CONSTANTS.weatheringData);
+        edit.remove(CONSTANTS.supportTitle);
+        edit.remove(CONSTANTS.supportText);
+        edit.remove(CONSTANTS.supportEmail);
+        edit.remove(CONSTANTS.isForce);
+        edit.apply();
+
+        SharedPreferences preferencess = context.getSharedPreferences(CONSTANTS.FCMToken, Context.MODE_PRIVATE);
+        SharedPreferences.Editor edited = preferencess.edit();
+        edited.remove(CONSTANTS.Token);
+        edited.clear();
+        edited.apply();
+        deleteCache(context);
+    }
+
+    public static void saveLoginData(UserCommonDataModel.ResponseData responseData, Context ctx) {
+        Gson gson = new Gson();
+        SharedPreferences shared = ctx.getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = shared.edit();
+        editor.putString(CONSTANTS.userId, responseData.getUserId());
+        editor.putString(CONSTANTS.deviceToken, responseData.getDeviceToken());
+        editor.putString(CONSTANTS.deviceId, responseData.getDeviceId());
+        editor.putString(CONSTANTS.deviceType, responseData.getDeviceType());
+        editor.putString(CONSTANTS.name, responseData.getName());
+        editor.putString(CONSTANTS.email, responseData.getEmail());
+        editor.putString(CONSTANTS.mobile, responseData.getMobile());
+        editor.putString(CONSTANTS.dob, responseData.getDob());
+        editor.putString(CONSTANTS.profileImage, responseData.getProfileImage());
+        editor.putString(CONSTANTS.attributeData, gson.toJson(responseData.getAttributeData()));
+        editor.putString(CONSTANTS.sampleCollected, gson.toJson(responseData.getSampleCollected()));
+        editor.putString(CONSTANTS.rockStrength, gson.toJson(responseData.getRockStrength()));
+        editor.putString(CONSTANTS.typeOfFaults, gson.toJson(responseData.getTypeOfFaults()));
+        editor.putString(CONSTANTS.typeOfGeologicalStructures, gson.toJson(responseData.getTypeOfGeologicalStructures()));
+        editor.putString(CONSTANTS.waterCondition, gson.toJson(responseData.getWaterCondition()));
+        editor.putString(CONSTANTS.weatheringData, gson.toJson(responseData.getWeatheringData()));
+        editor.apply();
     }
 
     public static String getKey(Context context) {

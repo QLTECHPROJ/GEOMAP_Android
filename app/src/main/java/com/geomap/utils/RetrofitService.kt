@@ -5,7 +5,7 @@ import com.geomap.GeoMapApp.getContext
 import com.geomap.GeoMapApp.securityKey
 import com.geomap.faqModule.models.FaqListModel
 import com.geomap.mapReportModule.models.*
-import com.geomap.userModule.models.LoginModel
+import com.geomap.userModule.models.UserCommonDataModel
 import com.geomap.userModule.models.VersionModel
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -24,9 +24,9 @@ interface RetrofitService {
     @POST("app_version")
     @FormUrlEncoded
     fun getAppVersions(
-        @Field("custId") custId : String?, @Field("version") version : String?,
+        /*@Field("userId") userId : String?, */@Field("version") version : String?,
         @Field("deviceType") deviceType : String?, @Field("deviceToken") deviceToken : String?,
-        @Field("timeZone") timeZone : String?, @Field("deviceId") deviceId : String?
+        @Field("deviceId") deviceId : String?
     ) : Call<VersionModel>
 
     @POST("login")
@@ -35,26 +35,38 @@ interface RetrofitService {
         @Field("password") password : String?,
         @Field("deviceToken") deviceToken : String?,
         @Field("deviceId") deviceId : String?,
-        @Field("deviceType") deviceType : String?) : Call<LoginModel>
+        @Field("deviceType") deviceType : String?) : Call<UserCommonDataModel>
+
+    @POST("user_details")
+    @FormUrlEncoded
+    fun getUserDetails(@Field("userId") userId : String?) : Call<UserCommonDataModel>
 
     @POST("delete_user")
     @FormUrlEncoded
-    fun postDeleteUser(@Field("id") id : String?) : Call<SuccessModel>
+    fun postDeleteUser(@Field("userId") userId : String?) : Call<SuccessModel>
 
-    @get:GET("faq")
+    @get:GET("faqData")
     val faqLists : Call<FaqListModel>
 
-    @get:GET("ur_or_listing")
-    val getDashboardlisting : Call<DashboardModel>
+    @POST("ur_or_listing")
+    @FormUrlEncoded
+    fun getDashboardlisting(@Field("userId") userId : String?) : Call<DashboardModel>
 
-    @get:GET("ur_or_listing_view_all")
-    val getDashboardViewAlllisting : Call<DashboardViewAllModel>
+    @POST("ur_listing_view_all")
+    @FormUrlEncoded
+    fun getURViewAlllisting(@Field("userId") userId : String?) : Call<DashboardViewAllModel>
 
-    @get:GET("ur_detail")
-    val getUnderGroundDetails : Call<UnderGroundDetailsModel>
+    @POST("or_listing_view_all")
+    @FormUrlEncoded
+    fun getORViewAlllisting(@Field("userId") userId : String?) : Call<DashboardViewAllModel>
 
-    @get:GET("or_detail")
-    val getOpenCastDetails : Call<OpenCastDetailsModel>
+    @POST("ur_detail")
+    @FormUrlEncoded
+    fun getUnderGroundDetails(@Field("id") id : String?) : Call<UnderGroundDetailsModel>
+
+    @POST("or_detail")
+    @FormUrlEncoded
+    fun getOpenCastDetails(@Field("id") id : String?) : Call<OpenCastDetailsModel>
 
     @get:GET("attribute_data_number")
     val getAttributesList : Call<AttributesListModel>

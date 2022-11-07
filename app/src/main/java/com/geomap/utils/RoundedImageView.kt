@@ -9,12 +9,13 @@ import kotlin.math.min
 
 /* This class file is the create custom rounded imageview */
 class RoundedImageView : AppCompatImageView {
-    constructor(context: Context?) : super(context!!)
-    constructor(context: Context?, attrs: AttributeSet?) : super(context!!, attrs)
+    constructor(context : Context?) : super(context!!)
+    constructor(context : Context?, attrs : AttributeSet?) : super(context!!, attrs)
 
-    constructor(context: Context?, attrs: AttributeSet?, defStyle: Int) : super(context!!, attrs, defStyle)
+    constructor(context : Context?, attrs : AttributeSet?, defStyle : Int) : super(context!!, attrs,
+        defStyle)
 
-    override fun onDraw(canvas: Canvas) {
+    override fun onDraw(canvas : Canvas) {
         val drawable = drawable ?: return
         if (width == 0 || height == 0) {
             return
@@ -28,11 +29,12 @@ class RoundedImageView : AppCompatImageView {
     }
 
     companion object {
-        fun getRoundBitmap(bmp: Bitmap, radius: Int): Bitmap {
-            val sBmp: Bitmap = if (bmp.width != radius || bmp.height != radius) {
+        fun getRoundBitmap(bmp : Bitmap, radius : Int) : Bitmap {
+            val sBmp : Bitmap = if (bmp.width != radius || bmp.height != radius) {
                 val smallest = min(bmp.width, bmp.height).toFloat()
                 val factor = smallest / radius
-                Bitmap.createScaledBitmap(bmp, (bmp.width / factor).toInt(), (bmp.height / factor).toInt(), false)
+                Bitmap.createScaledBitmap(bmp, (bmp.width / factor).toInt(),
+                    (bmp.height / factor).toInt(), false)
             } else {
                 bmp
             }

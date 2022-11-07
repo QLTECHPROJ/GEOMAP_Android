@@ -3,6 +3,7 @@ package com.geomap.userModule.activities
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,12 @@ import androidx.databinding.DataBindingUtil
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivitySignInBinding
+import com.geomap.userModule.models.UserCommonDataModel
+import com.geomap.utils.CONSTANTS
+import com.geomap.utils.RetrofitService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SignInActivity : AppCompatActivity() {
     private lateinit var binding : ActivitySignInBinding
@@ -80,60 +87,45 @@ class SignInActivity : AppCompatActivity() {
 
     private fun postLoginData() {
         callDashboardActivity(act, "0")
-//        if (isNetworkConnected(ctx)) {
-//            fcmId = getSharedPreferences(CONSTANTS.FCMToken, Context.MODE_PRIVATE).getString(
-//                CONSTANTS.Token, "").toString()
-//            showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-//            RetrofitService.getInstance()
-//                .postLoginData(binding.etName.text.toString(), binding.etPassword.text.toString(),
-//                    fcmId,
-//                    Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID),
-//                    CONSTANTS.FLAG_ONE)
-//                .enqueue(object : Callback<LoginModel> {
-//                    override fun onResponse(call : Call<LoginModel>,
-//                        response : Response<LoginModel>) {
-//                        try {
-//                            hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-//                            val versionModel : LoginModel? = response.body()!!
-//                            when (versionModel!!.responseCode) {
-//                                getString(R.string.ResponseCodesuccess) -> {
-//                                    callDashboardActivity(act, "0")
-//                                    /*
-//                                    when (versionModel.responseData?.loginFlag) {
-//                                        "1" -> {
-//                                            sendVerificationCode(
-//                                                binding.tvCountry.text.toString() + " " + binding.etNumber.text.toString())
-//                                        }
-//                                        "0" -> {
-//                                            callSignUpActivity(binding.etNumber.text.toString(),
-//                                                act)
-//                                        }
-//                                        else -> {
-//                                            callSignUpActivity(binding.etNumber.text.toString(),
-//                                                act)
-//                                        }
-//                                    }
-//*/
-//                                }
-//                                getString(R.string.ResponseCodefail) -> {
-//                                    showToast(versionModel.responseMessage, act)
-//                                }
-//                                getString(R.string.ResponseCodeDeleted) -> {
-//                                    callDelete403(act, versionModel.responseMessage)
-//                                }
-//                            }
-//                        } catch (e : Exception) {
-//                            e.printStackTrace()
-//                        }
-//                    }
-//
-//                    override fun onFailure(call : Call<LoginModel>, t : Throwable) {
-//                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-//                    }
-//                })
-//        } else {
-//            showToast(getString(R.string.no_server_found), act)
-//        }
+        if (isNetworkConnected(ctx)) {
+            fcmId = getSharedPreferences(CONSTANTS.FCMToken, Context.MODE_PRIVATE).getString(
+                CONSTANTS.Token, "").toString()
+            showProgressBar(binding.progressBar, binding.progressBarHolder, act)
+            RetrofitService.getInstance()
+                .postLoginData(binding.etName.text.toString(), binding.etPassword.text.toString(),
+                    fcmId,
+                    Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID),
+                    CONSTANTS.FLAG_ONE)
+                .enqueue(object : Callback<UserCommonDataModel> {
+                    override fun onResponse(call : Call<UserCommonDataModel>,
+                        response : Response<UserCommonDataModel>) {
+                        try {
+                            hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                            val model : UserCommonDataModel? = response.body()!!
+                            when (model!!.responseCode) {
+                                getString(R.string.ResponseCodesuccess) -> {
+                                    saveLoginData(model.responseData, ctx)
+                                    callDashboardActivity(act, "0")
+                                }
+                                getString(R.string.ResponseCodefail) -> {
+                                    showToast(model.responseMessage, act)
+                                }
+                                getString(R.string.ResponseCodeDeleted) -> {
+                                    callDelete403(act, model.responseMessage)
+                                }
+                            }
+                        } catch (e : Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+
+                    override fun onFailure(call : Call<UserCommonDataModel>, t : Throwable) {
+                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                    }
+                })
+        } else {
+            showToast(getString(R.string.no_server_found), act)
+        }
     }
 
 }

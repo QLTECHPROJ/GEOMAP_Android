@@ -142,21 +142,18 @@ class MenuListActivity : AppCompatActivity() {
                     tvTitle.text = getString(R.string.support)
                 } else {
                     tvTitle.text = supportTitle
-                    tvTitle.text = getString(R.string.support)
                 }
 
                 if (supportText.equals("", ignoreCase = true)) {
                     tvHeader.text = getString(R.string.support_quotes)
                 } else {
                     tvHeader.text = supportText
-                    tvHeader.text = getString(R.string.support_quotes)
                 }
 
                 if (supportEmail.equals("", ignoreCase = true)) {
                     tvEmail.text = getString(R.string.support_link)
                 } else {
                     tvEmail.text = supportEmail
-                    tvEmail.text = getString(R.string.support_link)
                 }
 
                 tvEmail.setOnClickListener {

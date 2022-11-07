@@ -17,28 +17,21 @@ class DashboardViewAllModel {
     var responseStatus : String? = null
 
     class ResponseData {
-        @SerializedName("id") @Expose
-        var id : Int? = null
+        @SerializedName("id") @Expose var id : Int? = null
+        @SerializedName("created_at") @Expose var createdAt : String? = null
+        @SerializedName("updated_at") @Expose var updatedAt : String? = null
 
-        @SerializedName("name") @Expose
-        var name : String? = null
+        /*  Under Ground View All Keys */
+        @SerializedName("name") @Expose var name : String? = null
+        @SerializedName("location") @Expose var location : String? = null
+        @SerializedName("ugDate") @Expose var ugDate : String? = null
+        @SerializedName("scale") @Expose var scale : String? = null
+        @SerializedName("mapSerialNo") @Expose var mapSerialNo : String? = null
 
-        @SerializedName("email") @Expose
-        var email : String? = null
-
-        @SerializedName("phone") @Expose
-        var phone : String? = null
-
-        @SerializedName("logo") @Expose
-        var logo : String? = null
-
-        @SerializedName("address") @Expose
-        var address : String? = null
-
-        @SerializedName("created_at") @Expose
-        var createdAt : String? = null
-
-        @SerializedName("updated_at") @Expose
-        var updatedAt : String? = null
-    }
-}
+        /*  Open Cast View All Keys */
+        @SerializedName("minesSiteName") @Expose var minesSiteName : String? = null
+        @SerializedName("mappingSheetNo") @Expose var mappingSheetNo : String? = null
+        @SerializedName("pitName") @Expose var pitName : String? = null
+        @SerializedName("pitLoaction") @Expose var pitLoaction : String? = null
+        @SerializedName("ocDate") @Expose var ocDate : String? = null
+    }}

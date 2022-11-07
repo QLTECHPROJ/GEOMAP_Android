@@ -10,7 +10,7 @@
         android:paddingVertical="@dimen/_14sdp">
 
         <TextView
-            android:id="@+id/tvCountryName"
+            android:id="@+id/tvName"
             android:layout_width="@dimen/_0sdp"
             android:layout_height="match_parent"
             android:layout_weight="0.85"

@@ -22,8 +22,10 @@ open class FaqListModel {
     var responseStatus : String? = null
 
     class ResponseData {
-        @SerializedName("ID") @Expose var id : String? = null
-        @SerializedName("Desc") @Expose var desc : String? = null
-        @SerializedName("Title") @Expose var title : String? = null
+        @SerializedName("id") @Expose var id : String? = null
+        @SerializedName("question") @Expose var question : String? = null
+        @SerializedName("answer") @Expose var answer : String? = null
+        @SerializedName("created_at") @Expose var createdAt : String? = null
+        @SerializedName("updated_at") @Expose var updatedAt : String? = null
     }
 }

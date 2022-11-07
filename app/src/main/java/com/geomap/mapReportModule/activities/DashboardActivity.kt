@@ -20,7 +20,11 @@ import com.geomap.R
 import com.geomap.databinding.ActivityDashboardBinding
 import com.geomap.databinding.MappingReportListLayoutBinding
 import com.geomap.mapReportModule.models.DashboardModel
+import com.geomap.userModule.models.UserCommonDataModel
+import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -30,6 +34,7 @@ class DashboardActivity : AppCompatActivity() {
     private lateinit var ctx : Context
     private lateinit var act : Activity
     private var dialog : Dialog? = null
+    private var userId : String? = ""
     private var underGroundListAdapter : UnderGroundListAdapter? = null
     private var openCastListAdapter : OpenCastListAdapter? = null
 
@@ -38,6 +43,9 @@ class DashboardActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_dashboard)
         ctx = this@DashboardActivity
         act = this@DashboardActivity
+
+        val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
+        userId = shared.getString(CONSTANTS.userId, "")
 
         binding.llMenu.setOnClickListener {
             callMenuListActivity(act, "1")
@@ -92,6 +100,10 @@ class DashboardActivity : AppCompatActivity() {
         binding.rvOpenCastList.layoutManager = mLayoutManage
         binding.rvOpenCastList.itemAnimator = DefaultItemAnimator()
 
+    }
+
+    override fun onResume() {
+        super.onResume()
         postData()
     }
 
@@ -99,7 +111,7 @@ class DashboardActivity : AppCompatActivity() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             RetrofitService.getInstance()
-                .getDashboardlisting
+                .getDashboardlisting("1")
                 .enqueue(object : Callback<DashboardModel> {
                     override fun onResponse(call : Call<DashboardModel>,
                         response : Response<DashboardModel>) {
@@ -161,8 +173,9 @@ class DashboardActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
             holder.binding.tvName.text = listModel[position].name
             holder.binding.tvArea.text = listModel[position].location
-            holder.binding.tvSubTitle.text = listModel[position].description
-            holder.binding.tvDate.text = listModel[position].createdAt
+            holder.binding.tvSubTitleOne.text = "Scale : ${listModel[position].scale}"
+            holder.binding.tvSubTitleTwo.text = "Map Serial No : ${listModel[position].mapSerialNo}"
+            holder.binding.tvDate.text = listModel[position].ugDate
 
             holder.binding.llMainLayout.setOnClickListener {
                 callUnderGroundDetailActivity(act, "1")
@@ -197,10 +210,13 @@ class DashboardActivity : AppCompatActivity() {
 
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
-            holder.binding.tvName.text = listModel[position].name
-            holder.binding.tvArea.text = listModel[position].location
-            holder.binding.tvSubTitle.text = listModel[position].description
-            holder.binding.tvDate.text = listModel[position].createdAt
+            holder.binding.tvName.text = listModel[position].pitName
+            holder.binding.tvArea.text = listModel[position].pitLoaction
+            holder.binding.tvSubTitleOne.text =
+                "Mines Site Name : ${listModel[position].minesSiteName}"
+            holder.binding.tvSubTitleTwo.text =
+                "Mapping Sheet No : ${listModel[position].mappingSheetNo}"
+            holder.binding.tvDate.text = listModel[position].ocDate
 
             holder.binding.llMainLayout.setOnClickListener {
                 callOpenCastDetailActivity(act, "1")

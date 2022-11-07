@@ -30,7 +30,7 @@ class FaqActivity : AppCompatActivity() {
     lateinit var adapter : FaqListAdapter
     lateinit var act : Activity
     lateinit var ctx : Context
-    private var custId : String? = ""
+    private var userId : String? = ""
     lateinit var section : ArrayList<String>
 
     override fun onCreate(savedInstanceState : Bundle?) {
@@ -39,12 +39,12 @@ class FaqActivity : AppCompatActivity() {
         act = this@FaqActivity
         ctx = this@FaqActivity
         val shared1 = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
-        custId = shared1.getString(CONSTANTS.custId, "")
+        userId = shared1.getString(CONSTANTS.userId, "")
         modelList = ArrayList()
         section = ArrayList()
         prepareData()
         binding.llBack.setOnClickListener {
-            finish()
+            onBackPressed()
         }
     }
 
@@ -59,6 +59,7 @@ class FaqActivity : AppCompatActivity() {
                         val listModel = response.body()
                         if (listModel!!.responseCode.equals(getString(R.string.ResponseCodesuccess),
                                 ignoreCase = true)) {
+                            binding.rvFAQList.visibility = View.VISIBLE
                             hideProgressBar(binding.progressBar,
                                 binding.progressBarHolder, act)
                             faqListModel = listModel
@@ -94,12 +95,12 @@ class FaqActivity : AppCompatActivity() {
         @SuppressLint("ResourceType") override fun onBindViewHolder(holder : MyViewHolder,
             position : Int) {
             for (i in modelList.indices) {
-                section.add(modelList[position].title.toString())
-                section.add(modelList[position].desc.toString())
+                section.add(modelList[position].question.toString())
+                section.add(modelList[position].answer.toString())
             }
 
-            holder.binding.tvTitle.text = modelList[position].title
-            holder.binding.tvDesc.text = modelList[position].desc
+            holder.binding.tvTitle.text = modelList[position].question
+            holder.binding.tvDesc.text = modelList[position].answer
 
             holder.binding.llMainLayout.setOnClickListener {
                 callChangeArrow(holder)
@@ -154,7 +155,7 @@ class FaqActivity : AppCompatActivity() {
                 holder.binding.ivClickDown.visibility = View.VISIBLE
                 holder.binding.llBgChange.setBackgroundResource(R.drawable.faq_not_clicked)
                 holder.binding.llMainLayout.setBackgroundResource(R.drawable.faq_clicked)
-                holder.binding.ivClickDown.setImageResource(R.drawable.ic_white_arrow_down_icon)
+                holder.binding.ivClickDown.setImageResource(R.drawable.ic_down_arrow_white_icon)
             }
 
         }

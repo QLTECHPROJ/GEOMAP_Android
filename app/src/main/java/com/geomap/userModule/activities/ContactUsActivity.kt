@@ -66,7 +66,7 @@ class ContactUsActivity : AppCompatActivity() {
         binding.etMessage.addTextChangedListener(userTextWatcher)
 
         binding.llBack.setOnClickListener {
-            finish()
+            onBackPressed()
         }
 
         binding.btnSubmit.setOnClickListener {

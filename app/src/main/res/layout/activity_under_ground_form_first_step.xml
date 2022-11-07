@@ -61,7 +61,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -202,6 +202,15 @@
                                     android:textColor="@color/light_black"
                                     android:textSize="@dimen/_16sdp"
                                     tools:ignore="SpUsage" />
+
+                                <TextView
+                                    android:id="@+id/tvHintMineralizationOne"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="@dimen/_1sdp"
+                                    android:visibility="gone"
+                                    tools:ignore="SpUsage"
+                                    tools:targetApi="lollipop" />
 
                             </LinearLayout>
 

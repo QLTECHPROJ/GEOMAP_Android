@@ -11,14 +11,14 @@ import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.util.*
 
-class AppSignatureHashHelper(context: Context?) :
+class AppSignatureHashHelper(context : Context?) :
     ContextWrapper(context) {// Get all package details
     /**
      * Get all the app signatures for the current package
      *
      * @return
      */
-    val appSignatures: ArrayList<String>
+    val appSignatures : ArrayList<String>
         get() {
             val appSignaturesHashs = ArrayList<String>()
             try {
@@ -33,20 +33,20 @@ class AppSignatureHashHelper(context: Context?) :
                         appSignaturesHashs.add(String.format("%s", hash))
                     }
                 }
-            } catch (e: Exception) {
+            } catch (e : Exception) {
                 Log.e(tag, "Package not found", e)
             }
             return appSignaturesHashs
         }
 
     companion object {
-        val tag: String = AppSignatureHashHelper::class.java.simpleName
+        val tag : String = AppSignatureHashHelper::class.java.simpleName
         private const val hashType = "SHA-256"
         private const val numHashedBytes = 9
         const val numBase64Char = 11
 
         @TargetApi(19)
-        private fun hash(packageName: String, signature: String): String? {
+        private fun hash(packageName : String, signature : String) : String? {
             val appInfo = "$packageName $signature"
             try {
                 val messageDigest = MessageDigest.getInstance(hashType)
@@ -60,7 +60,7 @@ class AppSignatureHashHelper(context: Context?) :
                     Base64.encodeToString(hashSignature, Base64.NO_PADDING or Base64.NO_WRAP)
                 base64Hash = base64Hash.substring(0, numBase64Char)
                 return base64Hash
-            } catch (e: NoSuchAlgorithmException) {
+            } catch (e : NoSuchAlgorithmException) {
                 Log.e(tag, "No Such Algorithm Exception", e)
             }
             return null

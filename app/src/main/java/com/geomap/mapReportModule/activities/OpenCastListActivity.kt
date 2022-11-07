@@ -17,7 +17,6 @@ import com.geomap.R
 import com.geomap.databinding.ActivityOpenCastListBinding
 import com.geomap.databinding.MappingReportListLayoutBinding
 import com.geomap.mapReportModule.models.DashboardViewAllModel
-import com.geomap.mapReportModule.models.DummyModel
 import com.geomap.utils.RetrofitService
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,11 +27,6 @@ class OpenCastListActivity : AppCompatActivity() {
     private lateinit var ctx : Context
     private lateinit var act : Activity
     private var openCastListAdapter : OpenCastListAdapter? = null
-    private var listModel : Array<DummyModel> = arrayOf(
-        DummyModel("My Report Name 1"),
-        DummyModel("My Report Name 2"), DummyModel("My Report Name 3"),
-        DummyModel("My Report Name 4")
-    )
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +41,10 @@ class OpenCastListActivity : AppCompatActivity() {
         val mLayoutManage : RecyclerView.LayoutManager = LinearLayoutManager(applicationContext)
         binding.rvOpenCastList.layoutManager = mLayoutManage
         binding.rvOpenCastList.itemAnimator = DefaultItemAnimator()
+    }
 
+    override fun onResume() {
+        super.onResume()
         postData()
     }
 
@@ -55,7 +52,7 @@ class OpenCastListActivity : AppCompatActivity() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             RetrofitService.getInstance()
-                .getDashboardViewAlllisting
+                .getORViewAlllisting("1")
                 .enqueue(object : Callback<DashboardViewAllModel> {
                     override fun onResponse(call : Call<DashboardViewAllModel>,
                         response : Response<DashboardViewAllModel>) {
@@ -111,11 +108,14 @@ class OpenCastListActivity : AppCompatActivity() {
 
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
-            holder.binding.tvName.text = listModel[position].name
-            holder.binding.tvArea.text = listModel[position].name
-//                "${listModel[position].address}, ${listModel[position].country}"
-//            holder.binding.tvSubTitle.text = listModel[position].description
-            holder.binding.tvDate.text = listModel[position].createdAt
+            holder.binding.tvName.text = listModel[position].pitName
+            holder.binding.tvArea.text = listModel[position].pitLoaction
+            holder.binding.tvSubTitleOne.text =
+                "Mines Site Name : ${listModel[position].minesSiteName}"
+            holder.binding.tvSubTitleTwo.text =
+                "Mapping Sheet No : ${listModel[position].mappingSheetNo}"
+            holder.binding.tvDate.text = listModel[position].ocDate
+
             holder.binding.llMainLayout.setOnClickListener {
                 callOpenCastDetailActivity(act, "1")
             }
