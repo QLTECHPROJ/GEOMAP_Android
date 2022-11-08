@@ -19,17 +19,18 @@ import android.widget.Toast;
 
 import com.geomap.faqModule.activities.FaqActivity;
 import com.geomap.mapReportModule.activities.DashboardActivity;
-import com.geomap.mapReportModule.activities.OpenCastDetailActivity;
-import com.geomap.mapReportModule.activities.OpenCastFormFirstStepActivity;
-import com.geomap.mapReportModule.activities.OpenCastFormSecondStepActivity;
-import com.geomap.mapReportModule.activities.OpenCastListActivity;
+import com.geomap.mapReportModule.activities.OCModule.OpenCastDetailActivity;
+import com.geomap.mapReportModule.activities.OCModule.OpenCastFormFirstStepActivity;
+import com.geomap.mapReportModule.activities.OCModule.OpenCastFormSecondStepActivity;
+import com.geomap.mapReportModule.activities.OCModule.OpenCastListActivity;
 import com.geomap.mapReportModule.activities.SyncDataActivity;
-import com.geomap.mapReportModule.activities.UnderGroundDetailActivity;
-import com.geomap.mapReportModule.activities.UnderGroundFormFirstStepActivity;
-import com.geomap.mapReportModule.activities.UnderGroundFormSecondStepActivity;
-import com.geomap.mapReportModule.activities.UnderGroundFormThirdStepActivity;
-import com.geomap.mapReportModule.activities.UnderGroundListActivity;
+import com.geomap.mapReportModule.activities.UGModule.UnderGroundDetailActivity;
+import com.geomap.mapReportModule.activities.UGModule.UnderGroundFormFirstStepActivity;
+import com.geomap.mapReportModule.activities.UGModule.UnderGroundFormSecondStepActivity;
+import com.geomap.mapReportModule.activities.UGModule.UnderGroundFormThirdStepActivity;
+import com.geomap.mapReportModule.activities.UGModule.UnderGroundListActivity;
 import com.geomap.mapReportModule.activities.ViewPdfActivity;
+import com.geomap.roomDataBase.TypeOfFaults;
 import com.geomap.userModule.activities.ContactUsActivity;
 import com.geomap.userModule.activities.MenuListActivity;
 import com.geomap.userModule.activities.SignInActivity;
@@ -242,17 +243,6 @@ public class GeoMapApp extends Application {
         edit.remove(CONSTANTS.dob);
         edit.remove(CONSTANTS.profileImage);
         edit.remove(CONSTANTS.profileImage);
-        edit.remove(CONSTANTS.attributeData);
-        edit.remove(CONSTANTS.sampleCollected);
-        edit.remove(CONSTANTS.rockStrength);
-        edit.remove(CONSTANTS.typeOfFaults);
-        edit.remove(CONSTANTS.typeOfGeologicalStructures);
-        edit.remove(CONSTANTS.waterCondition);
-        edit.remove(CONSTANTS.weatheringData);
-        edit.remove(CONSTANTS.supportTitle);
-        edit.remove(CONSTANTS.supportText);
-        edit.remove(CONSTANTS.supportEmail);
-        edit.remove(CONSTANTS.isForce);
         edit.apply();
 
         SharedPreferences preferencess = context.getSharedPreferences(CONSTANTS.FCMToken, Context.MODE_PRIVATE);
@@ -263,7 +253,7 @@ public class GeoMapApp extends Application {
         deleteCache(context);
     }
 
-    public static void saveLoginData(UserCommonDataModel.ResponseData responseData, Context ctx) {
+    public static void saveLoginData(UserCommonDataModel.ResponseData responseData, Context ctx,String flag,Activity act) {
         Gson gson = new Gson();
         SharedPreferences shared = ctx.getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = shared.edit();
@@ -276,14 +266,22 @@ public class GeoMapApp extends Application {
         editor.putString(CONSTANTS.mobile, responseData.getMobile());
         editor.putString(CONSTANTS.dob, responseData.getDob());
         editor.putString(CONSTANTS.profileImage, responseData.getProfileImage());
-        editor.putString(CONSTANTS.attributeData, gson.toJson(responseData.getAttributeData()));
-        editor.putString(CONSTANTS.sampleCollected, gson.toJson(responseData.getSampleCollected()));
-        editor.putString(CONSTANTS.rockStrength, gson.toJson(responseData.getRockStrength()));
-        editor.putString(CONSTANTS.typeOfFaults, gson.toJson(responseData.getTypeOfFaults()));
-        editor.putString(CONSTANTS.typeOfGeologicalStructures, gson.toJson(responseData.getTypeOfGeologicalStructures()));
-        editor.putString(CONSTANTS.waterCondition, gson.toJson(responseData.getWaterCondition()));
-        editor.putString(CONSTANTS.weatheringData, gson.toJson(responseData.getWeatheringData()));
         editor.apply();
+        SharedPreferences shared1 = ctx.getSharedPreferences(CONSTANTS.PREFE_ACCESS_ArrayData, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor1 = shared1.edit();
+        editor1.putString(CONSTANTS.attributeData, gson.toJson(responseData.getAttributeData()));
+        editor1.putString(CONSTANTS.sampleCollected, gson.toJson(responseData.getSampleCollected()));
+        editor1.putString(CONSTANTS.rockStrength, gson.toJson(responseData.getRockStrength()));
+        editor1.putString(CONSTANTS.waterCondition, gson.toJson(responseData.getWaterCondition()));
+        editor1.putString(CONSTANTS.weatheringData, gson.toJson(responseData.getWeatheringData()));
+        editor1.putString(CONSTANTS.typeOfGeologicalStructures, gson.toJson(responseData.getTypeOfGeologicalStructures()));
+        editor1.putString(CONSTANTS.typeOfFaults, gson.toJson(responseData.getTypeOfFaults()));
+        editor1.apply();
+        List<TypeOfFaults> listTypeOfFaults = DataBaseFunctions.Companion.callTypeOfFaultsObserver(ctx);
+
+        if(flag.equalsIgnoreCase("1")) {
+            callDashboardActivity(act, "0");
+        }
     }
 
     public static String getKey(Context context) {
@@ -304,7 +302,7 @@ public class GeoMapApp extends Application {
         act.finish();
     }
 
-    public static void callDashboardActivity(Activity act, String finish) {
+    public static void  callDashboardActivity(Activity act, String finish) {
         Intent i = new Intent(act, DashboardActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         act.startActivity(i);

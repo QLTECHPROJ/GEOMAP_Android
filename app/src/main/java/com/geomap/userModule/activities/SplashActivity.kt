@@ -89,7 +89,7 @@ class SplashActivity : AppCompatActivity() {
                             when (versionModel.ResponseCode) {
                                 getString(R.string.ResponseCodesuccess) -> {
                                     val shared1 =
-                                        getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA,
+                                        getSharedPreferences(CONSTANTS.PREFE_ACCESS_SplashData,
                                             Context.MODE_PRIVATE)
                                     val editor1 = shared1.edit()
                                     editor1.putString(CONSTANTS.supportTitle,
@@ -133,8 +133,6 @@ class SplashActivity : AppCompatActivity() {
                                                 }.create().show()
                                         }
                                         "" -> {
-
-//                                    askBattyPermission()
                                             callSplashData()
                                         }
                                     }
@@ -171,8 +169,7 @@ class SplashActivity : AppCompatActivity() {
                     when {
                         it?.responseCode == getString(
                             R.string.ResponseCodesuccess) -> {
-                            saveLoginData(it.responseData, ctx)
-                            callDashboardActivity(act, "0")
+                            saveLoginData(it.responseData, ctx,"1",act)
                         }
                         it.responseCode == act.getString(
                             R.string.ResponseCodefail) -> {

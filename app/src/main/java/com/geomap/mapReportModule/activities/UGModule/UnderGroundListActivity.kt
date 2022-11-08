@@ -1,4 +1,4 @@
-package com.geomap.mapReportModule.activities
+package com.geomap.mapReportModule.activities.UGModule
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.geomap.GeoMapApp.*
 import com.geomap.R
-import com.geomap.databinding.ActivityOpenCastListBinding
+import com.geomap.databinding.ActivityUnderGroundListBinding
 import com.geomap.databinding.MappingReportListLayoutBinding
 import com.geomap.mapReportModule.models.DashboardViewAllModel
 import com.geomap.utils.RetrofitService
@@ -22,25 +22,25 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class OpenCastListActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityOpenCastListBinding
+class UnderGroundListActivity : AppCompatActivity() {
+    private lateinit var binding : ActivityUnderGroundListBinding
     private lateinit var ctx : Context
     private lateinit var act : Activity
-    private var openCastListAdapter : OpenCastListAdapter? = null
+    private var underGroundListAdapter : UnderGroundListAdapter? = null
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_open_cast_list)
-        ctx = this@OpenCastListActivity
-        act = this@OpenCastListActivity
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_under_ground_list)
+        ctx = this@UnderGroundListActivity
+        act = this@UnderGroundListActivity
 
         binding.llBack.setOnClickListener {
             onBackPressed()
         }
 
-        val mLayoutManage : RecyclerView.LayoutManager = LinearLayoutManager(applicationContext)
-        binding.rvOpenCastList.layoutManager = mLayoutManage
-        binding.rvOpenCastList.itemAnimator = DefaultItemAnimator()
+        val mLayoutManager : RecyclerView.LayoutManager = LinearLayoutManager(applicationContext)
+        binding.rvUnderGroundList.layoutManager = mLayoutManager
+        binding.rvUnderGroundList.itemAnimator = DefaultItemAnimator()
     }
 
     override fun onResume() {
@@ -52,7 +52,7 @@ class OpenCastListActivity : AppCompatActivity() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             RetrofitService.getInstance()
-                .getORViewAlllisting("1")
+                .getURViewAlllisting("1")
                 .enqueue(object : Callback<DashboardViewAllModel> {
                     override fun onResponse(call : Call<DashboardViewAllModel>,
                         response : Response<DashboardViewAllModel>) {
@@ -62,10 +62,10 @@ class OpenCastListActivity : AppCompatActivity() {
                             val model : DashboardViewAllModel? = response.body()!!
                             when (model!!.responseCode) {
                                 getString(R.string.ResponseCodesuccess) -> {
-                                    binding.rvOpenCastList.visibility = View.VISIBLE
-                                    openCastListAdapter =
-                                        OpenCastListAdapter(model.responseData!!)
-                                    binding.rvOpenCastList.adapter = openCastListAdapter
+                                    binding.rvUnderGroundList.visibility = View.VISIBLE
+                                    underGroundListAdapter = UnderGroundListAdapter(
+                                        model.responseData!!)
+                                    binding.rvUnderGroundList.adapter = underGroundListAdapter
                                 }
                                 getString(R.string.ResponseCodefail) -> {
                                     showToast(model.responseMessage, act)
@@ -89,9 +89,9 @@ class OpenCastListActivity : AppCompatActivity() {
         }
     }
 
-    inner class OpenCastListAdapter(
+    inner class UnderGroundListAdapter(
         private val listModel : List<DashboardViewAllModel.ResponseData>
-    ) : RecyclerView.Adapter<OpenCastListAdapter.MyViewHolder>() {
+    ) : RecyclerView.Adapter<UnderGroundListAdapter.MyViewHolder>() {
 
         override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : MyViewHolder {
             val v : MappingReportListLayoutBinding =
@@ -108,16 +108,14 @@ class OpenCastListActivity : AppCompatActivity() {
 
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
-            holder.binding.tvName.text = listModel[position].pitName
-            holder.binding.tvArea.text = listModel[position].pitLoaction
-            holder.binding.tvSubTitleOne.text =
-                "Mines Site Name : ${listModel[position].minesSiteName}"
-            holder.binding.tvSubTitleTwo.text =
-                "Mapping Sheet No : ${listModel[position].mappingSheetNo}"
-            holder.binding.tvDate.text = listModel[position].ocDate
+            holder.binding.tvName.text = listModel[position].name
+            holder.binding.tvArea.text = listModel[position].location
+            holder.binding.tvSubTitleOne.text = "Scale : ${listModel[position].scale}"
+            holder.binding.tvSubTitleTwo.text = "Map Serial No : ${listModel[position].mapSerialNo}"
+            holder.binding.tvDate.text = listModel[position].ugDate
 
             holder.binding.llMainLayout.setOnClickListener {
-                callOpenCastDetailActivity(act, "1")
+                callUnderGroundDetailActivity(act, "1")
             }
         }
 

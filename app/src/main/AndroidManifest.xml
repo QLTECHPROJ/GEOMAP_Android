@@ -61,14 +61,14 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".mapReportModule.activities.OpenCastFormSecondStepActivity"
+            android:name=".mapReportModule.activities.OCModule.OpenCastFormSecondStepActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".mapReportModule.activities.UnderGroundFormThirdStepActivity"
+            android:name=".mapReportModule.activities.UGModule.UnderGroundFormThirdStepActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:hardwareAccelerated="true"
@@ -82,7 +82,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".mapReportModule.activities.UnderGroundFormSecondStepActivity"
+            android:name=".mapReportModule.activities.UGModule.UnderGroundFormSecondStepActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:hardwareAccelerated="true"
@@ -96,42 +96,42 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".mapReportModule.activities.OpenCastFormFirstStepActivity"
+            android:name=".mapReportModule.activities.OCModule.OpenCastFormFirstStepActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".mapReportModule.activities.UnderGroundFormFirstStepActivity"
+            android:name=".mapReportModule.activities.UGModule.UnderGroundFormFirstStepActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".mapReportModule.activities.UnderGroundDetailActivity"
+            android:name=".mapReportModule.activities.UGModule.UnderGroundDetailActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".mapReportModule.activities.OpenCastDetailActivity"
+            android:name=".mapReportModule.activities.OCModule.OpenCastDetailActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".mapReportModule.activities.OpenCastListActivity"
+            android:name=".mapReportModule.activities.OCModule.OpenCastListActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".mapReportModule.activities.UnderGroundListActivity"
+            android:name=".mapReportModule.activities.UGModule.UnderGroundListActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:hardwareAccelerated="true"

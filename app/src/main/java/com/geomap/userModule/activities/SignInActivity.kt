@@ -76,8 +76,8 @@ class SignInActivity : AppCompatActivity() {
     private fun isValidPassword(password : String) : Boolean {
         if (password.length < 8) return false
         if (password.filter { it.isDigit() }.firstOrNull() == null) return false
-        if (password.filter { it.isLetter() }.filter { it.isUpperCase() }
-                .firstOrNull() == null) return false
+//        if (password.filter { it.isLetter() }.filter { it.isUpperCase() }
+//                .firstOrNull() == null) return false
         if (password.filter { it.isLetter() }.filter { it.isLowerCase() }
                 .firstOrNull() == null) return false
         if (password.filter { !it.isLetterOrDigit() }.firstOrNull() == null) return false
@@ -86,7 +86,6 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun postLoginData() {
-        callDashboardActivity(act, "0")
         if (isNetworkConnected(ctx)) {
             fcmId = getSharedPreferences(CONSTANTS.FCMToken, Context.MODE_PRIVATE).getString(
                 CONSTANTS.Token, "").toString()
@@ -104,8 +103,7 @@ class SignInActivity : AppCompatActivity() {
                             val model : UserCommonDataModel? = response.body()!!
                             when (model!!.responseCode) {
                                 getString(R.string.ResponseCodesuccess) -> {
-                                    saveLoginData(model.responseData, ctx)
-                                    callDashboardActivity(act, "0")
+                                    saveLoginData(model.responseData, ctx,"1",act)
                                 }
                                 getString(R.string.ResponseCodefail) -> {
                                     showToast(model.responseMessage, act)

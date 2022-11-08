@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/screen_bg"
-        tools:context=".mapReportModule.activities.UnderGroundFormThirdStepActivity">
+        tools:context=".mapReportModule.activities.UGModule.UnderGroundFormThirdStepActivity">
 
         <ImageView
             android:id="@+id/llBack"

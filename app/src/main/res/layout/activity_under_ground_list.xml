@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/screen_bg"
-        tools:context=".mapReportModule.activities.UnderGroundListActivity">
+        tools:context=".mapReportModule.activities.UGModule.UnderGroundListActivity">
 
         <ImageView
             android:id="@+id/llBack"

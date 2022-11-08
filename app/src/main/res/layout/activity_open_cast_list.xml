@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/screen_bg"
-        tools:context=".mapReportModule.activities.OpenCastListActivity">
+        tools:context=".mapReportModule.activities.OCModule.OpenCastListActivity">
 
         <ImageView
             android:id="@+id/llBack"

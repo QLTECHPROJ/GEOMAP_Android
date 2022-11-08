@@ -31,6 +31,7 @@ object CONSTANTS {
     const val MULTIPART_FORMAT = "multipart/form-data"
 
     const val PREFE_ACCESS_USERDATA = "UserData"
+    const val PREFE_ACCESS_ArrayData = "ArrayData"
     const val PREFE_ACCESS_SplashData = "PREFE_ACCESS_SplashData"
     const val attributeData = "attributeData"
     const val rockStrength = "rockStrength"
@@ -39,14 +40,6 @@ object CONSTANTS {
     const val typeOfGeologicalStructures = "typeOfGeologicalStructures"
     const val waterCondition = "waterCondition"
     const val weatheringData = "weatheringData"
-
-    const val countryID = "countryID"
-    const val countryCode = "countryCode"
-    const val countryShortName = "countryShortName"
-    const val mobileMaxDigits = "mobileMaxDigits"
-    const val mobileMinDigits = "mobileMinDigits"
-    const val postCodeMaxDigits = "postCodeMaxDigits"
-    const val postCodeMinDigits = "postCodeMinDigits"
 
     const val userId = "userId"
     const val deviceToken = "deviceToken"

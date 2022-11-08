@@ -12,12 +12,12 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.geomap.DataBaseFunctions
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityFaqBinding
 import com.geomap.databinding.FaqLayoutBinding
 import com.geomap.faqModule.models.FaqListModel
-import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
 import retrofit2.Call
 import retrofit2.Callback
@@ -30,7 +30,6 @@ class FaqActivity : AppCompatActivity() {
     lateinit var adapter : FaqListAdapter
     lateinit var act : Activity
     lateinit var ctx : Context
-    private var userId : String? = ""
     lateinit var section : ArrayList<String>
 
     override fun onCreate(savedInstanceState : Bundle?) {
@@ -38,8 +37,6 @@ class FaqActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_faq)
         act = this@FaqActivity
         ctx = this@FaqActivity
-        val shared1 = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
-        userId = shared1.getString(CONSTANTS.userId, "")
         modelList = ArrayList()
         section = ArrayList()
         prepareData()

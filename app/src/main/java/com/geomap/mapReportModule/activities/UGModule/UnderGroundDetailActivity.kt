@@ -1,4 +1,4 @@
-package com.geomap.mapReportModule.activities
+package com.geomap.mapReportModule.activities.UGModule
 
 import android.annotation.SuppressLint
 import android.app.Activity
