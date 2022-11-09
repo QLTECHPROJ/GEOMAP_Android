@@ -126,12 +126,19 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
             val pb : ProgressBar = dialog.findViewById(R.id.progressBar)
             val pbh : FrameLayout = dialog.findViewById(R.id.progressBarHolder)
             tvTilte.text = getString(R.string.choose_your_nos)
-            rvList.visibility = View.VISIBLE
             rvList.layoutManager = LinearLayoutManager(ctx)
 
-            nosAdapter = NosAdapter(dialog, binding,
-                nosModel, rvList, tvFound)
-            rvList.adapter = nosAdapter
+            if (nosModel.isEmpty()){
+                tvFound.visibility = View.VISIBLE
+                rvList.visibility = View.GONE
+                tvFound.text = getString(R.string.no_result_found)
+            }else {
+                tvFound.visibility = View.GONE
+                rvList.visibility = View.VISIBLE
+                nosAdapter = NosAdapter(dialog, binding,
+                    nosModel, rvList, tvFound)
+                rvList.adapter = nosAdapter
+            }
             dialog.setOnKeyListener { _ : DialogInterface?, keyCode : Int, _ : KeyEvent? ->
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
                     dialog.dismiss()
