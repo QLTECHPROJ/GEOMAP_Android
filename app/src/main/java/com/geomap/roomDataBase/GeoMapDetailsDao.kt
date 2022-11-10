@@ -30,10 +30,16 @@ interface GeoMapDetailsDao {
     fun deleteAllOpenCastMappingReport()
 
     @Insert
-    fun insertGetAttributes(getAttributes: GetAttributes?)
+    fun insertAttributeData(attributeData: AttributeData?)
 
-    @Query("SELECT * FROM GetAttributes")
-    fun geAllGetAttributes(): LiveData<List<GetAttributes>>
+    @Query("SELECT * FROM AttributeData")
+    fun geAllAttributeData(): LiveData<List<AttributeData>>
+
+    @Insert
+    fun insertNos(nos: Nos?)
+
+    @Query("SELECT * FROM Nos WHERE attributeId =:attributeId")
+    fun geAllNos(attributeId: String?): LiveData<List<Nos?>?>?
 
     @Insert
     fun insertSampleCollected(sampleCollected: SampleCollected?)
@@ -42,15 +48,15 @@ interface GeoMapDetailsDao {
     fun geAllSampleCollected(): LiveData<List<SampleCollected>>
 
     @Insert
-    fun insertWeathering(weathering: Weathering?)
+    fun insertWeatheringData(weathering: WeatheringData?)
 
-    @Query("SELECT * FROM SampleCollected")
-    fun geAllWeathering(): LiveData<List<Weathering>>
+    @Query("SELECT * FROM WeatheringData")
+    fun geAllWeatheringData(): LiveData<List<WeatheringData>>
 
     @Insert
     fun insertRockStrength(rockStrength: RockStrength?)
 
-    @Query("SELECT * FROM SampleCollected")
+    @Query("SELECT * FROM RockStrength")
     fun geAllRockStrength(): LiveData<List<RockStrength>>
 
     @Insert

@@ -11,11 +11,10 @@ class OpenCastMappingReport : Serializable {
     var uid = 0
 
     @ColumnInfo(name = "Id")
-    var iD: String? = null
+    var iD: Int? = null
 
     @ColumnInfo(name = "ocDate")
     var ocDate: String? = null
-
 
     @ColumnInfo(name = "mappingSheetNo")
     var mappingSheetNo: String? = null

@@ -11,7 +11,7 @@ class UnderGroundMappingReport : Serializable {
     var uid = 0
 
     @ColumnInfo(name = "Id")
-    var iD: String? = null
+    var iD: Int? = null
 
     @ColumnInfo(name = "mapSerialNo")
     var mapSerialNo :String? = null
@@ -48,6 +48,18 @@ class UnderGroundMappingReport : Serializable {
 
     @ColumnInfo(name = "comment")
     var comment :String? = null
+
+    @ColumnInfo(name = "leftImage")
+    var leftImage :String? = null
+
+    @ColumnInfo(name = "roofImage")
+    var roofImage :String? = null
+
+    @ColumnInfo(name = "rightImage")
+    var rightImage :String? = null
+
+    @ColumnInfo(name = "faceImage")
+    var faceImage :String? = null
 
     @ColumnInfo(name = "attributes")
     var attributes :String? = null

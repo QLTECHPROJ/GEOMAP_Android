@@ -11,7 +11,7 @@ class WaterCondition : Serializable {
     var uid = 0
 
     @ColumnInfo(name = "Id")
-    var iD: String? = null
+    var iD: Int? = null
 
     @ColumnInfo(name = "name")
     var name : String? = null

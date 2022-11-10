@@ -28,11 +28,10 @@ class UserCommonDataModel {
         @SerializedName("profileImage") @Expose var profileImage : String? = null
         @SerializedName("attributeData") @Expose var attributeData : List<AttributeData>? = null
         @SerializedName("rockStrength") @Expose var rockStrength : List<RockStrength>? = null
-        @SerializedName("sampleCollected") @Expose var sampleCollected : List<SampleCollected>? =
-            null
-        @SerializedName("typeOfFaults") @Expose var typeOfFaults : List<TypeOfFault>? = null
+        @SerializedName("sampleCollected") @Expose var sampleCollected : List<SampleCollected>? = null
+        @SerializedName("typeOfFaults") @Expose var typeOfFaults : List<TypeOfFaults>? = null
         @SerializedName("typeOfGeologicalStructures") @Expose
-        var typeOfGeologicalStructures : List<TypeOfGeologicalStructure>? = null
+        var typeOfGeologicalStructures : List<TypeOfGeologicalStructures>? = null
         @SerializedName("waterCondition") @Expose var waterCondition : List<WaterCondition>? = null
         @SerializedName("weatheringData") @Expose var weatheringData : List<WeatheringData>? = null
 
@@ -66,14 +65,14 @@ class UserCommonDataModel {
             @SerializedName("updated_at") @Expose var updatedAt : String? = null
         }
 
-        class TypeOfFault {
+        class TypeOfFaults {
             @SerializedName("id") @Expose var id : Int? = null
             @SerializedName("name") @Expose var name : String? = null
             @SerializedName("created_at") @Expose var createdAt : String? = null
             @SerializedName("updated_at") @Expose var updatedAt : String? = null
         }
 
-        class TypeOfGeologicalStructure {
+        class TypeOfGeologicalStructures {
             @SerializedName("id") @Expose var id : Int? = null
             @SerializedName("name") @Expose var name : String? = null
             @SerializedName("created_at") @Expose var createdAt : String? = null

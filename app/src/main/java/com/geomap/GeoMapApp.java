@@ -30,7 +30,6 @@ import com.geomap.mapReportModule.activities.UGModule.UnderGroundFormSecondStepA
 import com.geomap.mapReportModule.activities.UGModule.UnderGroundFormThirdStepActivity;
 import com.geomap.mapReportModule.activities.UGModule.UnderGroundListActivity;
 import com.geomap.mapReportModule.activities.ViewPdfActivity;
-import com.geomap.roomDataBase.TypeOfFaults;
 import com.geomap.userModule.activities.ContactUsActivity;
 import com.geomap.userModule.activities.MenuListActivity;
 import com.geomap.userModule.activities.SignInActivity;
@@ -63,6 +62,7 @@ public class GeoMapApp extends Application {
         super.onCreate();
         mContext = this;
         GeoMapApp = this;
+        callFCMRegMethod(mContext);
         FirebaseApp.initializeApp(mContext);
         Log.e("onCreate", "Called");
     }
@@ -277,7 +277,7 @@ public class GeoMapApp extends Application {
         editor1.putString(CONSTANTS.typeOfGeologicalStructures, gson.toJson(responseData.getTypeOfGeologicalStructures()));
         editor1.putString(CONSTANTS.typeOfFaults, gson.toJson(responseData.getTypeOfFaults()));
         editor1.apply();
-        List<TypeOfFaults> listTypeOfFaults = DataBaseFunctions.Companion.callTypeOfFaultsObserver(ctx);
+        DataBaseFunctions.Companion.callLocalDBGetAndInsertFunction(responseData,ctx);
 
         if(flag.equalsIgnoreCase("1")) {
             callDashboardActivity(act, "0");

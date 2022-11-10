@@ -47,12 +47,11 @@ class SplashActivity : AppCompatActivity() {
         ctx = this@SplashActivity
         act = this@SplashActivity
 
+        callFCMRegMethod(ctx)
         val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
         userId = shared.getString(CONSTANTS.userId, "")
 
         key = AppSignatureHashHelper(this).appSignatures[0]
-
-        callFCMRegMethod(ctx)
 
         if (key.equals("")) {
             key = getKey(ctx)
@@ -71,6 +70,9 @@ class SplashActivity : AppCompatActivity() {
         timezoneName = simpleDateFormat1.timeZone.id
         fcmId = getSharedPreferences(CONSTANTS.FCMToken, Context.MODE_PRIVATE).getString(
             CONSTANTS.Token, "").toString()
+        if(fcmId == "")
+            callFCMRegMethod(act)
+
         val deviceId = Settings.Secure.getString(getContext().contentResolver,
             Settings.Secure.ANDROID_ID)
         Log.e("deviceId", deviceId)

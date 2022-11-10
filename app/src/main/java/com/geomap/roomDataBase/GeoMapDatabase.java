@@ -6,7 +6,7 @@ import androidx.room.RoomDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {UnderGroundMappingReport.class, OpenCastMappingReport.class, GetAttributes.class, SampleCollected.class, Weathering.class, RockStrength.class, WaterCondition.class, TypeOfGeologicalStructures.class, TypeOfFaults.class}, version = 1, exportSchema = false)
+@Database(entities = {UnderGroundMappingReport.class, OpenCastMappingReport.class, AttributeData.class, Nos.class, SampleCollected.class, WeatheringData.class, RockStrength.class, WaterCondition.class, TypeOfGeologicalStructures.class, TypeOfFaults.class}, version = 1, exportSchema = false)
 public abstract class GeoMapDatabase extends RoomDatabase {
 
     private static volatile GeoMapDatabase INSTANCE;

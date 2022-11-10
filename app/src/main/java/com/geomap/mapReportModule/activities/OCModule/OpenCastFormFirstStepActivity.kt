@@ -5,9 +5,11 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.provider.OpenableColumns
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -24,8 +26,11 @@ import com.geomap.R
 import com.geomap.databinding.ActivityOpenCastFormFirstStepBinding
 import com.geomap.databinding.CommonPopupLayoutBinding
 import com.geomap.mapReportModule.models.CommonPopupListModel
+import com.geomap.mapReportModule.models.OpenCastDetailsModel
+import com.geomap.mapReportModule.models.OpenCastInsertModel
 import com.geomap.utils.RetrofitService
 import com.github.gcacace.signaturepad.views.SignaturePad
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -81,7 +86,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             notes = binding.edtNotes.text.toString()
 
             when {
-                minesSiteName.equals("") -> {
+               /* minesSiteName.equals("") -> {
                     allDisable(binding.btnSubmit)
                 }
                 pitName.equals("") -> {
@@ -137,7 +142,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 }
                 notes.equals("") -> {
                     allDisable(binding.btnSubmit)
-                }
+                }*/
 
                 else -> {
                     binding.btnSubmit.isEnabled = true
@@ -211,7 +216,16 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         }
 
         binding.btnSubmit.setOnClickListener {
-            callOpenCastFormSecondStepActivity(act, "0")
+//            callOpenCastFormSecondStepActivity(act, "0")
+            var gson = Gson()
+            var oc = OpenCastInsertModel()
+            oc.minesSiteName = binding.etMinesSiteName.text.toString()
+
+            val i = Intent(act, OpenCastFormSecondStepActivity::class.java)
+            i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            i.putExtra("ocData",gson.toJson(oc))
+            act.startActivity(i)
+            act.finish()
         }
 
         binding.btnGeologistSignPadClear.setOnClickListener {
