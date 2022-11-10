@@ -159,6 +159,7 @@
     <string name="day_shift">Day shift</string>
     <string name="data">DATA</string>
     <string name="vein_load_">Vein/load</string>
+    <string name="clear_signature">Clear Signature</string>
     <string name="clear_geologist_signature">Clear Geologist Signature</string>
     <string name="clear_geologist_client_signature">Clear Client’s Geologist Signature</string>
     <string name="choose_your_attributes">Choose your attributes</string>
@@ -175,6 +176,8 @@
     <string name="pls_select_water_condition">Please select water condition</string>
     <string name="pls_select_type_of_geological_structures">Please select type of geological structures</string>
     <string name="pls_select_type_of_faults">Please select type of faults</string>
+    <string name="pls_add_geologist_sign">Please add geologist sign</string>
+    <string name="pls_add_geologist_client_sign">Please add geologist client sign</string>
     <string name="pls_select_your_attributes">Search your attributes</string>
     <string name="pls_select_your_nos">Search your nos</string>
     <string name="pls_select_your_sample_collected">Search your sample collected</string>

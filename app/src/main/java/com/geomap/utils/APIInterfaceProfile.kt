@@ -1,6 +1,6 @@
 package com.geomap.utils
 
-import com.geomap.mapReportModule.models.SuccessModel
+import com.geomap.userModule.models.ProfileUpdateModel
 import retrofit.Callback
 import retrofit.http.Multipart
 import retrofit.http.POST
@@ -15,6 +15,6 @@ interface APIInterfaceProfile {
         @Part("dob") dob : String?,
         @Part("mobile") mobile : String?,
         @Part("profileimage") profileimage : TypedFile?,
-        addProfileModelCallback : Callback<SuccessModel>?)
+        addProfileModelCallback : Callback<ProfileUpdateModel>?)
 
 }

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/llMainLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/screen_bg"
@@ -33,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/_56sdp"
+            android:layout_marginBottom="@dimen/_90sdp"
             android:overScrollMode="never"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -49,7 +51,7 @@
                     android:layout_width="@dimen/_160sdp"
                     android:layout_height="@dimen/_160sdp"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_80sdp"
+                    android:layout_marginTop="@dimen/_56sdp"
                     android:background="@drawable/text_bg"
                     android:gravity="center"
                     android:padding="@dimen/_2sdp"
@@ -67,10 +69,48 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/_18sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
+                    app:cardCornerRadius="@dimen/_24sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.github.gcacace.signaturepad.views.SignaturePad
+                        android:id="@+id/signPad"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_220sdp"
+                        android:padding="@dimen/_6sdp"
+                        app:penColor="@android:color/black" />
+
+                </androidx.cardview.widget.CardView>
+
+                <Button
+                    android:id="@+id/btnSignPadClear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:background="@drawable/disable_button"
+                    android:enabled="false"
+                    android:fontFamily="@font/inter_bold"
+                    android:paddingHorizontal="@dimen/_20sdp"
+                    android:text="@string/clear_signature"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:ignore="SpUsage" />
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_26sdp"
                     android:layout_marginBottom="@dimen/_2sdp"
+                    android:visibility="gone"
                     app:cardCornerRadius="@dimen/_24sdp"
                     app:cardElevation="@dimen/_1sdp">
 
@@ -84,12 +124,12 @@
                         android:cursorVisible="true"
                         android:fontFamily="@font/inter_medium"
                         android:gravity="top"
+                        android:hint="@string/add_description"
                         android:imeOptions="actionDone"
                         android:importantForAutofill="no"
                         android:inputType="textMultiLine|textVisiblePassword"
                         android:overScrollMode="always"
                         android:paddingLeft="@dimen/_8sdp"
-                        android:hint="@string/add_description"
                         android:paddingTop="@dimen/_8sdp"
                         android:paddingRight="@dimen/_8sdp"
                         android:scrollbarStyle="insideInset"
@@ -120,11 +160,11 @@
 
         <ProgressBar
             android:id="@+id/progressBar"
+            style="@style/screenProgressBar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/screenProgressBar"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <FrameLayout
             android:id="@+id/progressBarHolder"

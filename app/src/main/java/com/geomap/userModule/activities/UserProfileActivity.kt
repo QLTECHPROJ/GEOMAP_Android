@@ -40,6 +40,7 @@ import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityUserProfileBinding
 import com.geomap.mapReportModule.models.SuccessModel
+import com.geomap.userModule.models.ProfileUpdateModel
 import com.geomap.userModule.models.UserCommonDataModel
 import com.geomap.utils.APIClientProfile.apiService
 import com.geomap.utils.CONSTANTS
@@ -83,20 +84,24 @@ class UserProfileActivity : AppCompatActivity() {
     private var userTextWatcher : TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s : CharSequence, start : Int, count : Int, after : Int) {}
         override fun onTextChanged(s : CharSequence, start : Int, before : Int, count : Int) {
-            val name = binding.etName.text.toString()
-            val email = binding.etEmail.text.toString()
-            val mobileNo = binding.etMobileNo.text.toString()
+            val nameUser = binding.etName.text.toString()
+            val emailUser = binding.etEmail.text.toString()
+            val mobileNoUser = binding.etMobileNo.text.toString()
 
             when {
-                name.equals("", ignoreCase = true) -> {
+                nameUser == name && emailUser == email && mobileNoUser == mobileNo -> {
                     allDisable(binding.btnUpdate)
                 }
 
-                email.equals("", ignoreCase = true) -> {
+                nameUser.equals("", ignoreCase = true) -> {
                     allDisable(binding.btnUpdate)
                 }
 
-                mobileNo.equals("", ignoreCase = true) -> {
+                emailUser.equals("", ignoreCase = true) -> {
+                    allDisable(binding.btnUpdate)
+                }
+
+                mobileNoUser.equals("", ignoreCase = true) -> {
                     allDisable(binding.btnUpdate)
                 }
 
@@ -242,14 +247,22 @@ class UserProfileActivity : AppCompatActivity() {
             apiService!!.getProfileUpdate(userId, binding.etName.text.toString(),
                 binding.etEmail.text.toString(),
                 binding.etDob.text.toString(), binding.etMobileNo.text.toString(), typedFile,
-                object : retrofit.Callback<SuccessModel> {
-                    override fun success(model : SuccessModel,
+                object : retrofit.Callback<ProfileUpdateModel> {
+                    override fun success(model : ProfileUpdateModel,
                         response : retrofit.client.Response) {
                         try {
                             if (model.responseCode.equals(
                                     ctx.getString(R.string.ResponseCodesuccess))) {
                                 hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                                 showToast(model.responseMessage, act)
+                                val shared1 =
+                                    getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA,
+                                        Context.MODE_PRIVATE)
+                                val editor1 = shared1.edit()
+                                editor1.putString(
+                                    CONSTANTS.profileImage, model.responseData?.profileImage
+                                )
+                                editor1.apply()
                                 prepareData("0")
                                 finish()
                             } else if (model.responseCode.equals(
@@ -283,8 +296,7 @@ class UserProfileActivity : AppCompatActivity() {
                         val coachStatusModel : UserCommonDataModel? = response.body()
                         when (coachStatusModel!!.responseCode) {
                             getString(R.string.ResponseCodesuccess) -> {
-                                binding.llBack.visibility = View.VISIBLE
-                                binding.rlMainLayout.visibility = View.VISIBLE
+//                                binding.rlMainLayout.visibility = View.VISIBLE
                                 name = coachStatusModel.responseData!!.name
                                 email = coachStatusModel.responseData!!.email
                                 mobileNo = coachStatusModel.responseData!!.mobile
@@ -315,8 +327,8 @@ class UserProfileActivity : AppCompatActivity() {
 
 //                                binding.etMobileNo.isEnabled = false
 //                                binding.etMobileNo.isClickable = false
-                                binding.etMobileNo.setTextColor(
-                                    ContextCompat.getColor(applicationContext, R.color.light_gray))
+//                                binding.etMobileNo.setTextColor(
+//                                    ContextCompat.getColor(applicationContext, R.color.light_gray))
 
                                 binding.etEmail.isEnabled = false
                                 binding.etEmail.isClickable = false

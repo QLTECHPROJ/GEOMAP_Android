@@ -44,7 +44,6 @@
                             android:layout_height="@dimen/_100sdp"
                             android:layout_centerInParent="true"
                             android:padding="@dimen/_2sdp"
-                            android:src="@drawable/default_profile"
                             android:visibility="gone" />
 
                         <RelativeLayout
@@ -54,7 +53,7 @@
                             android:layout_centerInParent="true"
                             android:background="@drawable/profile_image_drawable"
                             android:padding="@dimen/_2sdp"
-                            android:visibility="visible">
+                            android:visibility="gone">
 
                             <TextView
                                 android:id="@+id/tvLetter"
@@ -80,7 +79,7 @@
                             android:layout_marginBottom="@dimen/_20sdp"
                             android:contentDescription="@string/todo"
                             android:src="@drawable/ic_camera_bg"
-                            android:visibility="visible" />
+                            android:visibility="gone" />
 
                         <ImageView
                             android:id="@+id/ivCameraIcon"
@@ -92,7 +91,7 @@
                             android:layout_marginBottom="@dimen/_29sdp"
                             android:contentDescription="@string/todo"
                             android:src="@drawable/ic_camera_icon"
-                            android:visibility="visible" />
+                            android:visibility="gone" />
                     </RelativeLayout>
 
                 </LinearLayout>
@@ -620,11 +619,11 @@
 
         <ProgressBar
             android:id="@+id/progressBar"
+            style="@style/screenProgressBar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/screenProgressBar"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <FrameLayout
             android:id="@+id/progressBarHolder"

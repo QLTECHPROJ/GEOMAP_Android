@@ -2,13 +2,11 @@ package com.geomap.userModule.activities
 
 import android.app.Activity
 import android.app.Dialog
-import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
+import android.content.*
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
@@ -19,11 +17,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityMenuListBinding
+import com.geomap.userModule.models.UserCommonDataModel
 import com.geomap.utils.CONSTANTS
+import com.geomap.utils.RetrofitService
 import com.geomap.webView.TncActivity
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MenuListActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMenuListBinding
@@ -34,7 +40,9 @@ class MenuListActivity : AppCompatActivity() {
     private var supportTitle : String? = null
     private var supportText : String? = null
     private var supportEmail : String? = null
+    private var profileImage : String? = null
     private var logoutDialog : Dialog? = null
+    val shared : SharedPreferences? = null
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,10 +52,13 @@ class MenuListActivity : AppCompatActivity() {
 
         val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
         userId = shared.getString(CONSTANTS.userId, "")
-        supportTitle = shared.getString(CONSTANTS.supportTitle, "")
-        supportText = shared.getString(CONSTANTS.supportText, "")
-        supportEmail = shared.getString(CONSTANTS.supportEmail, "")
 
+        val shareded = getSharedPreferences(CONSTANTS.PREFE_ACCESS_SplashData, Context.MODE_PRIVATE)
+        supportTitle = shareded.getString(CONSTANTS.supportTitle, "")
+        supportText = shareded.getString(CONSTANTS.supportText, "")
+        supportEmail = shareded.getString(CONSTANTS.supportEmail, "")
+
+        prepareData()
         binding.llBack.setOnClickListener {
             onBackPressed()
         }
@@ -199,6 +210,59 @@ class MenuListActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        prepareData()
+    }
+
+    private fun prepareData() {
+        showProgressBar(binding.progressBar, binding.progressBarHolder, act)
+        if (isNetworkConnected(ctx)) {
+            RetrofitService.getInstance().getUserDetails(userId)
+                .enqueue(object : Callback<UserCommonDataModel> {
+                    override fun onResponse(call : Call<UserCommonDataModel>,
+                        response : Response<UserCommonDataModel>) {
+                        hideProgressBar(binding.progressBar, binding.progressBarHolder,
+                            act)
+                        val coachStatusModel : UserCommonDataModel? = response.body()
+                        when (coachStatusModel!!.responseCode) {
+                            getString(R.string.ResponseCodesuccess) -> {
+                                if (coachStatusModel.responseData!!.profileImage == "") {
+                                    binding.civProfile.visibility = View.GONE
+                                    val name = if (coachStatusModel.responseData!!.name == "") {
+                                        "Guest"
+                                    } else {
+                                        coachStatusModel.responseData!!.name
+                                    }
+                                    binding.rlLetter.visibility = View.VISIBLE
+                                    binding.tvLetter.text = name!!.substring(0, 1)
+                                } else {
+                                    binding.civProfile.visibility = View.VISIBLE
+                                    binding.rlLetter.visibility = View.GONE
+                                    Glide.with(applicationContext)
+                                        .load(coachStatusModel.responseData!!.profileImage)
+                                        .thumbnail(0.10f)
+                                        .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
+                                        .into(binding.civProfile)
+                                }
+                            }
+                            getString(R.string.ResponseCodefail) -> {
+                                showToast(coachStatusModel.responseMessage, act)
+                            }
+                            getString(R.string.ResponseCodeDeleted) -> {
+                                callDelete403(act, coachStatusModel.responseMessage)
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call : Call<UserCommonDataModel>, t : Throwable) {
+                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                    }
+                })
+        } else {
+        }
     }
 
 /*

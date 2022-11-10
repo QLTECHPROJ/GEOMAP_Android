@@ -116,7 +116,7 @@
                             android:cursorVisible="true"
                             android:fontFamily="@font/inter_semi_bold"
                             android:hint="@string/mapping_sheet_no"
-                            android:inputType="text"
+                            android:inputType="number"
                             android:maxLines="1"
                             android:nextFocusDown="@id/etMinesSiteName"
                             android:singleLine="true"

@@ -1,14 +1,20 @@
 package com.geomap.mapReportModule.activities.openCastModule
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -17,6 +23,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -34,6 +41,10 @@ import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -62,8 +73,14 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
     var actualGradeOfOre : String? = null
     var notes : String? = null
     var shift : String? = null
+    var geologistSign : String? = null
+    var geologistClientSign : String? = null
+    var geologistSignCheck : String? = ""
+    var geologistClientSignCheck : String? = ""
     var searchFilter : String = ""
     private var popupAdapter : PopupAdapter? = null
+    private val REQUEST_EXTERNAL_STORAGE = 1
+    private val PERMISSIONS_STORAGE = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     private var userTextWatcher : TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s : CharSequence, start : Int, count : Int, after : Int) {}
@@ -196,11 +213,11 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         binding.etNotes.addTextChangedListener(userTextWatcher)
 
         binding.tvOCDate.text = SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT).format(Date())
+
         shift = getString(R.string.night_shift)
-        Log.e("Shift OutSide", shift!!)
+
         binding.rbRadioGroup.setOnCheckedChangeListener { radioGroup : RadioGroup, id : Int ->
             shift = radioGroup.findViewById<AppCompatRadioButton>(id).text.toString()
-            Log.e("Shift InSide", shift!!)
         }
         binding.cvSampleCollected.setOnClickListener {
             callPopupList(getString(R.string.choose_your_sample_collected),
@@ -232,65 +249,10 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 getString(R.string.pls_select_your_Type_of_faults), "6")
         }
 
-        binding.btnSubmit.setOnClickListener {
-            if (binding.tvSampleCollected.text.toString() == getString(R.string.sample_collected)) {
-                showToast(getString(R.string.pls_select_sample_collected), act)
-            } else if (binding.tvWeathering.text.toString() == getString(R.string.weathering_)) {
-                showToast(getString(R.string.pls_select_weathering), act)
-            } else if (binding.tvRockStrength.text.toString() == getString(
-                    R.string.rock_strength_)) {
-                showToast(getString(R.string.pls_select_rock_strength), act)
-            } else if (binding.tvWaterCondition.text.toString() == getString(
-                    R.string.water_condition_)) {
-                showToast(getString(R.string.pls_select_water_condition), act)
-            } else if (binding.tvTypeOfGeologicalStructures.text.toString() == getString(
-                    R.string.pls_select_type_of_geological_structures)) {
-                showToast(getString(R.string.pls_select_type_of_geological_structures), act)
-            } else if (binding.tvTypeOfFaults.text.toString() == getString(
-                    R.string.type_of_faults_)) {
-                showToast(getString(R.string.pls_select_type_of_faults), act)
-            } else {
-                val gson = Gson()
-                val oc = OpenCastInsertModel()
-                oc.minesSiteName = binding.etMinesSiteName.text.toString()
-                oc.sheetNo = binding.etMappingSheetNo.text.toString()
-                oc.ocDate = binding.tvOCDate.text.toString()
-                oc.pitName = binding.etPitName.text.toString()
-                oc.pitLocation = binding.etPitLocation.text.toString()
-                oc.shiftInchargeName = binding.etShiftInchargeName.text.toString()
-                oc.geologistName = binding.etGeologistName.text.toString()
-                oc.faceLocation = binding.etFaceLocation.text.toString()
-                oc.faceLengthM = binding.etFaceLengthM.text.toString()
-                oc.faceAreaM2 = binding.etFaceAreaM2.text.toString()
-                oc.faceRockTypes = binding.etFaceRockTypes.text.toString()
-                oc.benchRL = binding.etBenchRL.text.toString()
-                oc.benchHeightWidth = binding.etBenchHeightWidth.text.toString()
-                oc.benchAngle = binding.etBenchAngle.text.toString()
-                oc.dipDirectionAngle = binding.etDipDirectionAngle.text.toString()
-                oc.thicknessOfOre = binding.etThicknessOfOre.text.toString()
-                oc.thinessOfOverburden = binding.etThinessOfOverburden.text.toString()
-                oc.thicknessOfInterburden = binding.etThicknessOfInterburden.text.toString()
-                oc.observedGradeOfOre = binding.etObservedGradeOfOre.text.toString()
-                oc.actualGradeOfOre = binding.etActualGradeOfOre.text.toString()
-                oc.sampleCollected = binding.tvSampleCollected.text.toString()
-                oc.weathering = binding.tvWeathering.text.toString()
-                oc.rockStregth = binding.tvRockStrength.text.toString()
-                oc.waterCondition = binding.tvWaterCondition.text.toString()
-                oc.typeOfGeologist = binding.tvTypeOfGeologicalStructures.text.toString()
-                oc.typeOfFaults = binding.tvTypeOfFaults.text.toString()
-                oc.shift = shift
-                oc.notes = binding.etNotes.text.toString()
-                oc.image = ""
-                oc.geologistSign = ""
-                oc.clientsGeologistSign = ""
 
-                val i = Intent(act, OpenCastFormSecondStepActivity::class.java)
-                i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-                i.putExtra("ocData", gson.toJson(oc))
-                startActivity(i)
-                finish()
-            }
-        }
+        binding.btnSubmit.isEnabled = true
+        binding.btnSubmit.setBackgroundResource(R.drawable.enable_button)
+
 
         binding.btnGeologistSignPadClear.setOnClickListener {
             binding.geologistSignPad.clear()
@@ -302,15 +264,17 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
 
         binding.geologistSignPad.setOnSignedListener(object : SignaturePad.OnSignedListener {
             override fun onStartSigning() {
-
+                verifyStoragePermissions(act)
             }
 
             override fun onSigned() {
+                geologistSignCheck = "1"
                 binding.btnGeologistSignPadClear.isEnabled = true
                 binding.btnGeologistSignPadClear.setBackgroundResource(R.drawable.enable_button)
             }
 
             override fun onClear() {
+                geologistSignCheck = ""
                 binding.btnGeologistSignPadClear.isEnabled = false
                 binding.btnGeologistSignPadClear.setBackgroundResource(R.drawable.disable_button)
             }
@@ -318,10 +282,11 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
 
         binding.geologistClientSignPad.setOnSignedListener(object : SignaturePad.OnSignedListener {
             override fun onStartSigning() {
-
+                verifyStoragePermissions(act)
             }
 
             override fun onSigned() {
+                geologistClientSignCheck = "1"
                 binding.btnGeologistClientSignPadClear.isEnabled = true
                 binding.btnGeologistClientSignPadClear.setBackgroundResource(
                     R.drawable.enable_button)
@@ -329,11 +294,82 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             }
 
             override fun onClear() {
+                geologistClientSignCheck = ""
                 binding.btnGeologistClientSignPadClear.isEnabled = false
                 binding.btnGeologistClientSignPadClear.setBackgroundResource(
                     R.drawable.disable_button)
             }
         })
+
+        binding.btnSubmit.setOnClickListener {
+            postData()
+        }
+    }
+
+    private fun postData() {
+        if (binding.tvSampleCollected.text.toString() == getString(R.string.sample_collected)) {
+            showToast(getString(R.string.pls_select_sample_collected), act)
+        } else if (binding.tvWeathering.text.toString() == getString(R.string.weathering_)) {
+            showToast(getString(R.string.pls_select_weathering), act)
+        } else if (binding.tvRockStrength.text.toString() == getString(
+                R.string.rock_strength_)) {
+            showToast(getString(R.string.pls_select_rock_strength), act)
+        } else if (binding.tvWaterCondition.text.toString() == getString(
+                R.string.water_condition_)) {
+            showToast(getString(R.string.pls_select_water_condition), act)
+        } else if (binding.tvTypeOfGeologicalStructures.text.toString() == getString(
+                R.string.type_of_geological_structures_)) {
+            showToast(getString(R.string.pls_select_type_of_geological_structures), act)
+        } else if (binding.tvTypeOfFaults.text.toString() == getString(
+                R.string.type_of_faults_)) {
+            showToast(getString(R.string.pls_select_type_of_faults), act)
+        } else if (geologistSignCheck == "") {
+            showToast(getString(R.string.pls_add_geologist_sign), act)
+        } else if (geologistClientSignCheck == "") {
+            showToast(getString(R.string.pls_add_geologist_client_sign), act)
+        } else {
+            addGeologistSignJpgSignatureToGallery(binding.geologistSignPad.signatureBitmap)
+            addGeologistClientSignJpgSignatureToGallery(
+                binding.geologistClientSignPad.signatureBitmap)
+            val gson = Gson()
+            val oc = OpenCastInsertModel()
+            oc.minesSiteName = binding.etMinesSiteName.text.toString()
+            oc.sheetNo = binding.etMappingSheetNo.text.toString()
+            oc.ocDate = binding.tvOCDate.text.toString()
+            oc.pitName = binding.etPitName.text.toString()
+            oc.pitLocation = binding.etPitLocation.text.toString()
+            oc.shiftInchargeName = binding.etShiftInchargeName.text.toString()
+            oc.geologistName = binding.etGeologistName.text.toString()
+            oc.faceLocation = binding.etFaceLocation.text.toString()
+            oc.faceLengthM = binding.etFaceLengthM.text.toString()
+            oc.faceAreaM2 = binding.etFaceAreaM2.text.toString()
+            oc.faceRockTypes = binding.etFaceRockTypes.text.toString()
+            oc.benchRL = binding.etBenchRL.text.toString()
+            oc.benchHeightWidth = binding.etBenchHeightWidth.text.toString()
+            oc.benchAngle = binding.etBenchAngle.text.toString()
+            oc.dipDirectionAngle = binding.etDipDirectionAngle.text.toString()
+            oc.thicknessOfOre = binding.etThicknessOfOre.text.toString()
+            oc.thinessOfOverburden = binding.etThinessOfOverburden.text.toString()
+            oc.thicknessOfInterburden = binding.etThicknessOfInterburden.text.toString()
+            oc.observedGradeOfOre = binding.etObservedGradeOfOre.text.toString()
+            oc.actualGradeOfOre = binding.etActualGradeOfOre.text.toString()
+            oc.sampleCollected = binding.tvSampleCollected.text.toString()
+            oc.weathering = binding.tvWeathering.text.toString()
+            oc.rockStregth = binding.tvRockStrength.text.toString()
+            oc.waterCondition = binding.tvWaterCondition.text.toString()
+            oc.typeOfGeologist = binding.tvTypeOfGeologicalStructures.text.toString()
+            oc.typeOfFaults = binding.tvTypeOfFaults.text.toString()
+            oc.shift = shift
+            oc.notes = binding.etNotes.text.toString()
+            oc.image = ""
+            oc.geologistSign = geologistSign
+            oc.clientsGeologistSign = geologistClientSign
+            val i = Intent(act, OpenCastFormSecondStepActivity::class.java)
+            i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            i.putExtra("ocData", gson.toJson(oc))
+            startActivity(i)
+            finish()
+        }
     }
 
     private fun callPopupList(title : String, searchHint : String, keyS : String) {
@@ -609,6 +645,92 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         inner class MyViewHolder(
             var bindingAdapter : CommonPopupLayoutBinding) : RecyclerView.ViewHolder(
             bindingAdapter.root)
+    }
+
+    override fun onRequestPermissionsResult(requestCode : Int,
+        permissions : Array<String?>, grantResults : IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            REQUEST_EXTERNAL_STORAGE -> {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.isEmpty()
+                    || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    Log.e("onRequestPermissionsResult", "Cannot write images to external storage")
+                }
+            }
+        }
+    }
+
+    private fun addGeologistSignJpgSignatureToGallery(signature : Bitmap) : Boolean {
+        var result = false
+        try {
+            val photo = File(getAlbumStorageDir("Pictures"),
+                String.format("geologistSign.jpg", System.currentTimeMillis()))
+            saveBitmapToJPG(signature, photo)
+            scanMediaFile(photo)
+            geologistSign = photo.toString()
+            Log.e("geologistSign", geologistSign!!)
+            result = true
+        } catch (e : IOException) {
+            e.printStackTrace()
+        }
+        return result
+    }
+
+    private fun addGeologistClientSignJpgSignatureToGallery(signature : Bitmap) : Boolean {
+        var result = false
+        try {
+            val photo = File(getAlbumStorageDir("Pictures"),
+                String.format("geologistClientSign.jpg", System.currentTimeMillis()))
+            saveBitmapToJPG(signature, photo)
+            scanMediaFile(photo)
+            geologistClientSign = photo.toString()
+            Log.e("geologistClientSign", geologistClientSign!!)
+            result = true
+        } catch (e : IOException) {
+            e.printStackTrace()
+        }
+        return result
+    }
+
+    private fun scanMediaFile(photo : File) {
+        val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+        val contentUri = Uri.fromFile(photo)
+        mediaScanIntent.data = contentUri
+        ctx.sendBroadcast(mediaScanIntent)
+    }
+
+    private fun getAlbumStorageDir(albumName : String?) : File {
+        val file = File(Environment.getExternalStoragePublicDirectory(
+            Environment.DIRECTORY_PICTURES), albumName)
+        if (!file.mkdirs()) {
+            Log.e("SignaturePad", "Directory not created")
+        }
+        return file
+    }
+
+    @Throws(IOException::class) fun saveBitmapToJPG(bitmap : Bitmap, photo : File?) {
+        val newBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(newBitmap)
+        canvas.drawColor(Color.WHITE)
+        canvas.drawBitmap(bitmap, 0f, 0f, null)
+        val stream : OutputStream = FileOutputStream(photo)
+        newBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
+        stream.close()
+    }
+
+    fun verifyStoragePermissions(activity : Activity?) {
+        // Check if we have write permission
+        val permission = ActivityCompat.checkSelfPermission(activity!!,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                activity,
+                PERMISSIONS_STORAGE,
+                REQUEST_EXTERNAL_STORAGE
+            )
+        }
     }
 
     companion object {
