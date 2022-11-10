@@ -61,14 +61,14 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".mapReportModule.activities.OCModule.OpenCastFormSecondStepActivity"
+            android:name=".mapReportModule.activities.openCastModule.OpenCastFormSecondStepActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".mapReportModule.activities.UGModule.UnderGroundFormThirdStepActivity"
+            android:name=".mapReportModule.activities.underGroundModule.UnderGroundFormThirdStepActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:hardwareAccelerated="true"
@@ -82,7 +82,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".mapReportModule.activities.UGModule.UnderGroundFormSecondStepActivity"
+            android:name=".mapReportModule.activities.underGroundModule.UnderGroundFormSecondStepActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:hardwareAccelerated="true"
@@ -96,42 +96,42 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".mapReportModule.activities.OCModule.OpenCastFormFirstStepActivity"
+            android:name=".mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".mapReportModule.activities.UGModule.UnderGroundFormFirstStepActivity"
+            android:name=".mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".mapReportModule.activities.UGModule.UnderGroundDetailActivity"
+            android:name=".mapReportModule.activities.underGroundModule.UnderGroundDetailActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".mapReportModule.activities.OCModule.OpenCastDetailActivity"
+            android:name=".mapReportModule.activities.openCastModule.OpenCastDetailActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".mapReportModule.activities.OCModule.OpenCastListActivity"
+            android:name=".mapReportModule.activities.openCastModule.OpenCastListActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".mapReportModule.activities.UGModule.UnderGroundListActivity"
+            android:name=".mapReportModule.activities.underGroundModule.UnderGroundListActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false"
             android:hardwareAccelerated="true"

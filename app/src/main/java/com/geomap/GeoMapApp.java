@@ -19,16 +19,16 @@ import android.widget.Toast;
 
 import com.geomap.faqModule.activities.FaqActivity;
 import com.geomap.mapReportModule.activities.DashboardActivity;
-import com.geomap.mapReportModule.activities.OCModule.OpenCastDetailActivity;
-import com.geomap.mapReportModule.activities.OCModule.OpenCastFormFirstStepActivity;
-import com.geomap.mapReportModule.activities.OCModule.OpenCastFormSecondStepActivity;
-import com.geomap.mapReportModule.activities.OCModule.OpenCastListActivity;
+import com.geomap.mapReportModule.activities.openCastModule.OpenCastDetailActivity;
+import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity;
+import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormSecondStepActivity;
+import com.geomap.mapReportModule.activities.openCastModule.OpenCastListActivity;
 import com.geomap.mapReportModule.activities.SyncDataActivity;
-import com.geomap.mapReportModule.activities.UGModule.UnderGroundDetailActivity;
-import com.geomap.mapReportModule.activities.UGModule.UnderGroundFormFirstStepActivity;
-import com.geomap.mapReportModule.activities.UGModule.UnderGroundFormSecondStepActivity;
-import com.geomap.mapReportModule.activities.UGModule.UnderGroundFormThirdStepActivity;
-import com.geomap.mapReportModule.activities.UGModule.UnderGroundListActivity;
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundDetailActivity;
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity;
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormSecondStepActivity;
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormThirdStepActivity;
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundListActivity;
 import com.geomap.mapReportModule.activities.ViewPdfActivity;
 import com.geomap.userModule.activities.ContactUsActivity;
 import com.geomap.userModule.activities.MenuListActivity;
@@ -242,7 +242,9 @@ public class GeoMapApp extends Application {
         edit.remove(CONSTANTS.mobile);
         edit.remove(CONSTANTS.dob);
         edit.remove(CONSTANTS.profileImage);
-        edit.remove(CONSTANTS.profileImage);
+        edit.remove(CONSTANTS.supportTitle);
+        edit.remove(CONSTANTS.supportText);
+        edit.remove(CONSTANTS.supportEmail);
         edit.apply();
 
         SharedPreferences preferencess = context.getSharedPreferences(CONSTANTS.FCMToken, Context.MODE_PRIVATE);

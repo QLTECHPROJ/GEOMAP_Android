@@ -1,4 +1,4 @@
-package com.geomap.mapReportModule.activities.OCModule
+package com.geomap.mapReportModule.activities.openCastModule
 
 import android.app.Activity
 import android.content.Context

@@ -82,7 +82,7 @@
                             android:hint="@string/enter_name"
                             android:inputType="text"
                             android:maxLines="1"
-                            android:nextFocusDown="@id/etEmail"
+                            android:nextFocusDown="@id/etMobileNo"
                             android:singleLine="true"
                             android:textColor="@color/light_black"
                             android:textColorHint="@color/gray"
@@ -92,6 +92,57 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvMobileNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_66sdp"
+                    android:layout_marginHorizontal="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cvName">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltMobileNo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etMobileNo"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_24sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:hint="@string/enter_mobile_no"
+                            android:inputType="number"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etEmail"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
+                            android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
+                            tools:ignore="SpUsage" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
 
                 </androidx.cardview.widget.CardView>
 
@@ -228,15 +279,15 @@
                             android:id="@+id/etMessage"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:layout_gravity="top"
+                            android:layout_marginVertical="@dimen/_8sdp"
                             android:background="@null"
                             android:backgroundTint="@color/black"
                             android:cursorVisible="true"
-                            android:gravity="top"
-                            android:layout_gravity="top"
                             android:fontFamily="@font/inter_semi_bold"
+                            android:gravity="top"
                             android:hint="@string/enter_message"
                             android:imeOptions="actionDone"
-                            android:layout_marginVertical="@dimen/_8sdp"
                             android:inputType="textMultiLine"
                             android:textColor="@color/light_black"
                             android:textColorHint="@color/gray"

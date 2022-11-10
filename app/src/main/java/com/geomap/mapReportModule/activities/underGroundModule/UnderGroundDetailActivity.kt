@@ -1,4 +1,4 @@
-package com.geomap.mapReportModule.activities.UGModule
+package com.geomap.mapReportModule.activities.underGroundModule
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -17,6 +17,7 @@ import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundDetailBinding
 import com.geomap.databinding.AttributeLayoutBinding
 import com.geomap.mapReportModule.models.UnderGroundDetailsModel
+import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,12 +28,16 @@ class UnderGroundDetailActivity : AppCompatActivity() {
     private lateinit var ctx : Context
     private lateinit var act : Activity
     private var attributesListAdapter : AttributesListAdapter? = null
+    private var userId : String? = null
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_under_ground_detail)
         ctx = this@UnderGroundDetailActivity
         act = this@UnderGroundDetailActivity
+
+        val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
+        userId = shared.getString(CONSTANTS.userId, "")
 
         binding.llBack.setOnClickListener {
             onBackPressed()
@@ -53,7 +58,7 @@ class UnderGroundDetailActivity : AppCompatActivity() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             RetrofitService.getInstance()
-                .getUnderGroundDetails("1")
+                .getUnderGroundDetails(userId)
                 .enqueue(object : Callback<UnderGroundDetailsModel> {
                     override fun onResponse(call : Call<UnderGroundDetailsModel>,
                         response : Response<UnderGroundDetailsModel>) {

@@ -111,7 +111,7 @@ class DashboardActivity : AppCompatActivity() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             RetrofitService.getInstance()
-                .getDashboardlisting("1")
+                .getDashboardlisting(userId)
                 .enqueue(object : Callback<DashboardModel> {
                     override fun onResponse(call : Call<DashboardModel>,
                         response : Response<DashboardModel>) {

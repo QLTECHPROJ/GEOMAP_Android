@@ -5,6 +5,7 @@ import com.geomap.GeoMapApp.getContext
 import com.geomap.GeoMapApp.securityKey
 import com.geomap.faqModule.models.FaqListModel
 import com.geomap.mapReportModule.models.*
+import com.geomap.userModule.models.ContactUsModel
 import com.geomap.userModule.models.UserCommonDataModel
 import com.geomap.userModule.models.VersionModel
 import okhttp3.Interceptor
@@ -41,11 +42,18 @@ interface RetrofitService {
     @FormUrlEncoded
     fun getUserDetails(@Field("userId") userId : String?) : Call<UserCommonDataModel>
 
+    @POST("contact_insert")
+    @FormUrlEncoded
+    fun postContactUs(@Field("userId") userId : String?, @Field("name") name : String?,
+        @Field("mobile") mobile : String?, @Field("email") email : String?,
+        @Field("subject") subject : String?,
+        @Field("message") message : String?) : Call<ContactUsModel>
+
     @POST("delete_user")
     @FormUrlEncoded
     fun postDeleteUser(@Field("userId") userId : String?) : Call<SuccessModel>
 
-    @get:GET("faqData")
+    @get:GET("faq_data")
     val faqLists : Call<FaqListModel>
 
     @POST("ur_or_listing")

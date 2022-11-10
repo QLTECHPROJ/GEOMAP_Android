@@ -181,6 +181,7 @@
     <string name="cancel">CANCEL</string>
     <string name="enter_name">Enter Name</string>
     <string name="enter_email">Enter Email</string>
+    <string name="enter_mobile_no">Enter Mobile No</string>
     <string name="enter_subject">Enter Subject</string>
     <string name="enter_message">Enter Message</string>
     <string name="mapping_sheet_no">Mapping sheet no</string>

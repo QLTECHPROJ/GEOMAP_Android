@@ -29,6 +29,7 @@ class MenuListActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMenuListBinding
     private lateinit var ctx : Context
     private lateinit var act : Activity
+    private var userId : String? = null
     private var supportDialog : Dialog? = null
     private var supportTitle : String? = null
     private var supportText : String? = null
@@ -40,6 +41,12 @@ class MenuListActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_menu_list)
         ctx = this@MenuListActivity
         act = this@MenuListActivity
+
+        val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
+        userId = shared.getString(CONSTANTS.userId, "")
+        supportTitle = shared.getString(CONSTANTS.supportTitle, "")
+        supportText = shared.getString(CONSTANTS.supportText, "")
+        supportEmail = shared.getString(CONSTANTS.supportEmail, "")
 
         binding.llBack.setOnClickListener {
             onBackPressed()

@@ -1,4 +1,4 @@
-package com.geomap.mapReportModule.activities.OCModule
+package com.geomap.mapReportModule.activities.openCastModule
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -9,7 +9,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.provider.OpenableColumns
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -26,7 +25,6 @@ import com.geomap.R
 import com.geomap.databinding.ActivityOpenCastFormFirstStepBinding
 import com.geomap.databinding.CommonPopupLayoutBinding
 import com.geomap.mapReportModule.models.CommonPopupListModel
-import com.geomap.mapReportModule.models.OpenCastDetailsModel
 import com.geomap.mapReportModule.models.OpenCastInsertModel
 import com.geomap.utils.RetrofitService
 import com.github.gcacace.signaturepad.views.SignaturePad

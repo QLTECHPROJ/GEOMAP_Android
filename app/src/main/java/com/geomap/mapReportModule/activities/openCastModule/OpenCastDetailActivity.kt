@@ -1,4 +1,4 @@
-package com.geomap.mapReportModule.activities.OCModule
+package com.geomap.mapReportModule.activities.openCastModule
 
 import android.app.Activity
 import android.content.Context
@@ -10,6 +10,7 @@ import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityOpenCastDetailBinding
 import com.geomap.mapReportModule.models.OpenCastDetailsModel
+import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
 import retrofit2.Call
 import retrofit2.Callback
@@ -19,11 +20,16 @@ class OpenCastDetailActivity : AppCompatActivity() {
     private lateinit var binding : ActivityOpenCastDetailBinding
     private lateinit var ctx : Context
     private lateinit var act : Activity
+    private var userId : String? = null
+
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_open_cast_detail)
         ctx = this@OpenCastDetailActivity
         act = this@OpenCastDetailActivity
+
+        val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
+        userId = shared.getString(CONSTANTS.userId, "")
 
         binding.llBack.setOnClickListener {
             onBackPressed()
@@ -40,7 +46,7 @@ class OpenCastDetailActivity : AppCompatActivity() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             RetrofitService.getInstance()
-                .getOpenCastDetails("1")
+                .getOpenCastDetails(userId)
                 .enqueue(object : Callback<OpenCastDetailsModel> {
                     override fun onResponse(call : Call<OpenCastDetailsModel>,
                         response : Response<OpenCastDetailsModel>) {
@@ -52,7 +58,7 @@ class OpenCastDetailActivity : AppCompatActivity() {
                                 getString(R.string.ResponseCodesuccess) -> {
                                     binding.llMainLayout.visibility = View.VISIBLE
                                     binding.btnViewPdf.visibility = View.VISIBLE
-                                    model.responseData?.let { it
+                                    model.responseData?.let {
                                         binding.tvMappingSheetNo.text = it.mappingSheetNo
                                         binding.tvDate.text = it.ocDate
                                         binding.tvMineSiteName.text = it.minesSiteName
