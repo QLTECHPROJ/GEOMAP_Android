@@ -42,11 +42,13 @@
             app:layout_constraintTop_toBottomOf="@id/tvHeaderTitle">
 
             <LinearLayout
+                android:id="@+id/llMainLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/_18sdp"
                 android:layout_marginTop="@dimen/_24sdp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -64,9 +66,11 @@
                         android:text="@string/mapping_sheet_no_1523"
                         android:textColor="@color/light_black"
                         android:textSize="@dimen/_12sdp"
+                        android:visibility="invisible"
                         tools:ignore="SpUsage" />
 
                     <TextView
+                        android:id="@+id/tvOCDate"
                         android:layout_width="@dimen/_0sdp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -78,6 +82,53 @@
                         android:textSize="@dimen/_12sdp"
                         tools:ignore="SpUsage" />
                 </LinearLayout>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_68sdp"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ltMappingSheetNo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:focusableInTouchMode="true"
+                        android:gravity="center_vertical"
+                        android:textColorHint="@color/gray"
+                        app:boxStrokeColor="@color/primary_theme"
+                        app:errorEnabled="true"
+                        app:errorTextAppearance="@style/ErrorText"
+                        app:hintTextAppearance="@style/HintText"
+                        app:hintTextColor="@color/primary_theme">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etMappingSheetNo"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_24sdp"
+                            android:background="@null"
+                            android:backgroundTint="@color/black"
+                            android:cursorVisible="true"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:hint="@string/mapping_sheet_no"
+                            android:inputType="text"
+                            android:maxLines="1"
+                            android:nextFocusDown="@id/etMinesSiteName"
+                            android:singleLine="true"
+                            android:textColor="@color/light_black"
+                            android:textColorHint="@color/gray"
+                            android:textSize="@dimen/_16sdp"
+                            app:hintTextAppearance="@style/HintText"
+                            tools:ignore="SpUsage" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -1058,9 +1109,9 @@
                             android:cursorVisible="true"
                             android:fontFamily="@font/inter_semi_bold"
                             android:hint="@string/actual_grade_of_ore_lab_grade_"
-                            android:imeOptions="actionDone"
                             android:inputType="text"
                             android:maxLines="1"
+                            android:nextFocusDown="@id/etNotes"
                             android:singleLine="true"
                             android:textColor="@color/light_black"
                             android:textColorHint="@color/gray"
@@ -1456,7 +1507,7 @@
                     app:cardElevation="@dimen/_2sdp">
 
                     <EditText
-                        android:id="@+id/edtNotes"
+                        android:id="@+id/etNotes"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_100sdp"
                         android:layout_marginHorizontal="@dimen/_18sdp"
@@ -1600,17 +1651,18 @@
             android:background="@drawable/disable_button"
             android:enabled="false"
             android:text="@string/submit"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <ProgressBar
             android:id="@+id/progressBar"
+            style="@style/screenProgressBar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/screenProgressBar"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <FrameLayout
             android:id="@+id/progressBarHolder"

@@ -1,12 +1,9 @@
 package com.geomap.mapReportModule.models
 
-import android.os.Parcel
-import android.os.Parcelable
-
-class OpenCastInsertModel{
-    var ocDate : String? = ""
-    var sheetNo : String? = ""
+class OpenCastInsertModel {
     var minesSiteName : String? = ""
+    var sheetNo : String? = ""
+    var ocDate : String? = ""
     var pitName : String? = ""
     var pitLocation : String? = ""
     var shiftInchargeName : String? = ""
@@ -32,4 +29,7 @@ class OpenCastInsertModel{
     var typeOfFaults : String? = ""
     var shift : String? = ""
     var notes : String? = ""
+    var image : String? = ""
+    var geologistSign : String? = ""
+    var clientsGeologistSign : String? = ""
 }

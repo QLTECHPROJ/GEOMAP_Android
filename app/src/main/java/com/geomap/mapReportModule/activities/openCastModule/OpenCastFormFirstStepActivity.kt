@@ -15,6 +15,7 @@ import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -26,18 +27,21 @@ import com.geomap.databinding.ActivityOpenCastFormFirstStepBinding
 import com.geomap.databinding.CommonPopupLayoutBinding
 import com.geomap.mapReportModule.models.CommonPopupListModel
 import com.geomap.mapReportModule.models.OpenCastInsertModel
+import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
 import com.github.gcacace.signaturepad.views.SignaturePad
 import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
 import java.util.*
 
 class OpenCastFormFirstStepActivity : AppCompatActivity() {
     private lateinit var binding : ActivityOpenCastFormFirstStepBinding
     private lateinit var ctx : Context
     private lateinit var act : Activity
+    var mappingSheetNo : String? = null
     var minesSiteName : String? = null
     var pitName : String? = null
     var pitLocation : String? = null
@@ -57,12 +61,14 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
     var observedGradeOfOre : String? = null
     var actualGradeOfOre : String? = null
     var notes : String? = null
+    var shift : String? = null
     var searchFilter : String = ""
     private var popupAdapter : PopupAdapter? = null
 
     private var userTextWatcher : TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s : CharSequence, start : Int, count : Int, after : Int) {}
         override fun onTextChanged(s : CharSequence, start : Int, before : Int, count : Int) {
+            mappingSheetNo = binding.etMinesSiteName.text.toString()
             minesSiteName = binding.etMinesSiteName.text.toString()
             pitName = binding.etPitName.text.toString()
             pitLocation = binding.etPitLocation.text.toString()
@@ -81,10 +87,13 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             thicknessOfInterburden = binding.etThicknessOfInterburden.text.toString()
             observedGradeOfOre = binding.etObservedGradeOfOre.text.toString()
             actualGradeOfOre = binding.etActualGradeOfOre.text.toString()
-            notes = binding.edtNotes.text.toString()
+            notes = binding.etNotes.text.toString()
 
             when {
-               /* minesSiteName.equals("") -> {
+                mappingSheetNo.equals("") -> {
+                    allDisable(binding.btnSubmit)
+                }
+                minesSiteName.equals("") -> {
                     allDisable(binding.btnSubmit)
                 }
                 pitName.equals("") -> {
@@ -140,8 +149,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 }
                 notes.equals("") -> {
                     allDisable(binding.btnSubmit)
-                }*/
-
+                }
                 else -> {
                     binding.btnSubmit.isEnabled = true
                     binding.btnSubmit.setBackgroundResource(R.drawable.enable_button)
@@ -158,11 +166,15 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         ctx = this@OpenCastFormFirstStepActivity
         act = this@OpenCastFormFirstStepActivity
 
+        binding.llMainLayout.visibility = View.VISIBLE
+        binding.btnSubmit.visibility = View.VISIBLE
+
         binding.llBack.setOnClickListener {
             onBackPressed()
         }
 
         binding.etMinesSiteName.addTextChangedListener(userTextWatcher)
+        binding.etMappingSheetNo.addTextChangedListener(userTextWatcher)
         binding.etPitName.addTextChangedListener(userTextWatcher)
         binding.etPitLocation.addTextChangedListener(userTextWatcher)
         binding.etShiftInchargeName.addTextChangedListener(userTextWatcher)
@@ -181,8 +193,15 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         binding.etThicknessOfInterburden.addTextChangedListener(userTextWatcher)
         binding.etObservedGradeOfOre.addTextChangedListener(userTextWatcher)
         binding.etActualGradeOfOre.addTextChangedListener(userTextWatcher)
-        binding.edtNotes.addTextChangedListener(userTextWatcher)
+        binding.etNotes.addTextChangedListener(userTextWatcher)
 
+        binding.tvOCDate.text = SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT).format(Date())
+        shift = getString(R.string.night_shift)
+        Log.e("Shift OutSide", shift!!)
+        binding.rbRadioGroup.setOnCheckedChangeListener { radioGroup : RadioGroup, id : Int ->
+            shift = radioGroup.findViewById<AppCompatRadioButton>(id).text.toString()
+            Log.e("Shift InSide", shift!!)
+        }
         binding.cvSampleCollected.setOnClickListener {
             callPopupList(getString(R.string.choose_your_sample_collected),
                 getString(R.string.pls_select_your_sample_collected), "1")
@@ -214,16 +233,63 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         }
 
         binding.btnSubmit.setOnClickListener {
-//            callOpenCastFormSecondStepActivity(act, "0")
-            var gson = Gson()
-            var oc = OpenCastInsertModel()
-            oc.minesSiteName = binding.etMinesSiteName.text.toString()
+            if (binding.tvSampleCollected.text.toString() == getString(R.string.sample_collected)) {
+                showToast(getString(R.string.pls_select_sample_collected), act)
+            } else if (binding.tvWeathering.text.toString() == getString(R.string.weathering_)) {
+                showToast(getString(R.string.pls_select_weathering), act)
+            } else if (binding.tvRockStrength.text.toString() == getString(
+                    R.string.rock_strength_)) {
+                showToast(getString(R.string.pls_select_rock_strength), act)
+            } else if (binding.tvWaterCondition.text.toString() == getString(
+                    R.string.water_condition_)) {
+                showToast(getString(R.string.pls_select_water_condition), act)
+            } else if (binding.tvTypeOfGeologicalStructures.text.toString() == getString(
+                    R.string.pls_select_type_of_geological_structures)) {
+                showToast(getString(R.string.pls_select_type_of_geological_structures), act)
+            } else if (binding.tvTypeOfFaults.text.toString() == getString(
+                    R.string.type_of_faults_)) {
+                showToast(getString(R.string.pls_select_type_of_faults), act)
+            } else {
+                val gson = Gson()
+                val oc = OpenCastInsertModel()
+                oc.minesSiteName = binding.etMinesSiteName.text.toString()
+                oc.sheetNo = binding.etMappingSheetNo.text.toString()
+                oc.ocDate = binding.tvOCDate.text.toString()
+                oc.pitName = binding.etPitName.text.toString()
+                oc.pitLocation = binding.etPitLocation.text.toString()
+                oc.shiftInchargeName = binding.etShiftInchargeName.text.toString()
+                oc.geologistName = binding.etGeologistName.text.toString()
+                oc.faceLocation = binding.etFaceLocation.text.toString()
+                oc.faceLengthM = binding.etFaceLengthM.text.toString()
+                oc.faceAreaM2 = binding.etFaceAreaM2.text.toString()
+                oc.faceRockTypes = binding.etFaceRockTypes.text.toString()
+                oc.benchRL = binding.etBenchRL.text.toString()
+                oc.benchHeightWidth = binding.etBenchHeightWidth.text.toString()
+                oc.benchAngle = binding.etBenchAngle.text.toString()
+                oc.dipDirectionAngle = binding.etDipDirectionAngle.text.toString()
+                oc.thicknessOfOre = binding.etThicknessOfOre.text.toString()
+                oc.thinessOfOverburden = binding.etThinessOfOverburden.text.toString()
+                oc.thicknessOfInterburden = binding.etThicknessOfInterburden.text.toString()
+                oc.observedGradeOfOre = binding.etObservedGradeOfOre.text.toString()
+                oc.actualGradeOfOre = binding.etActualGradeOfOre.text.toString()
+                oc.sampleCollected = binding.tvSampleCollected.text.toString()
+                oc.weathering = binding.tvWeathering.text.toString()
+                oc.rockStregth = binding.tvRockStrength.text.toString()
+                oc.waterCondition = binding.tvWaterCondition.text.toString()
+                oc.typeOfGeologist = binding.tvTypeOfGeologicalStructures.text.toString()
+                oc.typeOfFaults = binding.tvTypeOfFaults.text.toString()
+                oc.shift = shift
+                oc.notes = binding.etNotes.text.toString()
+                oc.image = ""
+                oc.geologistSign = ""
+                oc.clientsGeologistSign = ""
 
-            val i = Intent(act, OpenCastFormSecondStepActivity::class.java)
-            i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            i.putExtra("ocData",gson.toJson(oc))
-            act.startActivity(i)
-            act.finish()
+                val i = Intent(act, OpenCastFormSecondStepActivity::class.java)
+                i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                i.putExtra("ocData", gson.toJson(oc))
+                startActivity(i)
+                finish()
+            }
         }
 
         binding.btnGeologistSignPadClear.setOnClickListener {

@@ -438,13 +438,4 @@ public class GeoMapApp extends Application {
             act.finish();
         }
     }
-
-    public static void callOpenCastFormSecondStepActivity(Activity act, String finish) {
-        Intent i = new Intent(act, OpenCastFormSecondStepActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        act.startActivity(i);
-        if (finish.equalsIgnoreCase("0")) {
-            act.finish();
-        }
-    }
 }
