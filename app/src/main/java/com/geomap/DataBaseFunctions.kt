@@ -125,6 +125,8 @@ class DataBaseFunctions {
             }
             return list
         }
+     //   UndergroundReport: [ { "name": "test","shift": "test shift","mappedBy": "test map","scale": "2*3","location": "test loc","venieLoad": "test load","xCordinate": "85","yCordinate": "88","zCordinate": "88","comment": "test conten","mapSerialNo": "123","ugDate": "1-Nov-2022","leftImage": "bfvbdf","roofImage": "nuvfxll","rightImage": "nvxvull","faceImage": "nvxvull","userId": "1","attribute": "[ {"undergroundId": 1,"name": "test","nose": "test nose",  "properties": "dssdv"},{"undergroundId": 1,"name": "test","nose": "test nose",  "properties": "dssdv"},{"undergroundId": 1,"name": "test","nose": "test nose",  "properties": "dssdv"}]" }]
+      //  OpenCastReport:[{"minesSiteName": "test name","mappingSheetNo": "12312","pitName": "9797","pitLoaction": "gkgk","shiftInchargeName": "gkjggkjg","geologistName": "jgjgkjgkjg","mappingParameter": "jgjkgkjgjkgjk","faceLocation": "gjkgkjgjg","faceLength": "gjhgg","faceArea": "gjhk","faceRockType": "kjgjgjgjg","benchRl": "jkgjgjkgkjgkj","benchHeightWidth": "gjkgkjgjgj","benchAngle": "gkjgjk","thicknessOfOre": "jgjkgj","thicknessOfOverburdan": "gkjgkjgkjgkjgjgjg","thicknessOfInterburden": "jg","observedGradeOfOre": "jgkjgkjgkjg","sampleColledted": "jhg","actualGradeOfOre": "jghkj","weathring": "jhgjk","rockStregth": "jgkjkkggg","waterCondition": "5+5","typeOfGeologist": "564","typeOfFaults": "456564","shift": "Day Shift","ocDate": "1-Nov-2022","userId": "1","dipDirectionAndAngle": "mbmbm","geologistSign": "mnbnmnbmnbm","clientsGeologistSign": "" }]
 
         fun saveWeatheringData(obj: WeatheringData, ctx: Context) {
             DB = getDataBase(ctx)
@@ -142,6 +144,7 @@ class DataBaseFunctions {
             }
             return list
         }
+
 
         fun saveRockStrength(obj: RockStrength, ctx: Context) {
             DB = getDataBase(ctx)
