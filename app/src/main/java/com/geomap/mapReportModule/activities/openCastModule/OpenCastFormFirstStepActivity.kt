@@ -15,11 +15,13 @@ import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.appcompat.widget.SearchView
@@ -80,7 +82,8 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
     var searchFilter : String = ""
     private var popupAdapter : PopupAdapter? = null
     private val REQUEST_EXTERNAL_STORAGE = 1
-    private val PERMISSIONS_STORAGE = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    private val PERMISSIONS_STORAGE = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE)
 
     private var userTextWatcher : TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s : CharSequence, start : Int, count : Int, after : Int) {}
@@ -186,6 +189,9 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         binding.llMainLayout.visibility = View.VISIBLE
         binding.btnSubmit.visibility = View.VISIBLE
 
+
+        verifyStoragePermissions(act)
+
         binding.llBack.setOnClickListener {
             onBackPressed()
         }
@@ -268,15 +274,15 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             }
 
             override fun onSigned() {
-                geologistSignCheck = "1"
                 binding.btnGeologistSignPadClear.isEnabled = true
                 binding.btnGeologistSignPadClear.setBackgroundResource(R.drawable.enable_button)
+                geologistSignCheck = "1"
             }
 
             override fun onClear() {
-                geologistSignCheck = ""
                 binding.btnGeologistSignPadClear.isEnabled = false
                 binding.btnGeologistSignPadClear.setBackgroundResource(R.drawable.disable_button)
+                geologistSignCheck = ""
             }
         })
 
@@ -286,18 +292,18 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             }
 
             override fun onSigned() {
-                geologistClientSignCheck = "1"
                 binding.btnGeologistClientSignPadClear.isEnabled = true
                 binding.btnGeologistClientSignPadClear.setBackgroundResource(
                     R.drawable.enable_button)
+                geologistClientSignCheck = "1"
 
             }
 
             override fun onClear() {
-                geologistClientSignCheck = ""
                 binding.btnGeologistClientSignPadClear.isEnabled = false
                 binding.btnGeologistClientSignPadClear.setBackgroundResource(
                     R.drawable.disable_button)
+                geologistClientSignCheck = ""
             }
         })
 
@@ -652,7 +658,6 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             REQUEST_EXTERNAL_STORAGE -> {
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.isEmpty()
                     || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Log.e("onRequestPermissionsResult", "Cannot write images to external storage")
@@ -703,7 +708,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
     private fun getAlbumStorageDir(albumName : String?) : File {
         val file = File(Environment.getExternalStoragePublicDirectory(
             Environment.DIRECTORY_PICTURES), albumName)
-        if (!file.mkdirs()) {
+        if (!file.exists() && !file.mkdirs()) {
             Log.e("SignaturePad", "Directory not created")
         }
         return file
@@ -720,17 +725,55 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
     }
 
     fun verifyStoragePermissions(activity : Activity?) {
-        // Check if we have write permission
-        val permission = ActivityCompat.checkSelfPermission(activity!!,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
-            ActivityCompat.requestPermissions(
-                activity,
-                PERMISSIONS_STORAGE,
-                REQUEST_EXTERNAL_STORAGE
-            )
+        if (ContextCompat.checkSelfPermission(
+                ctx, Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_DENIED && ContextCompat.checkSelfPermission(
+                ctx, Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_DENIED) {
+            callFilesPermission()
+        } else {
+            val permission = ContextCompat.checkSelfPermission(activity!!,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            if (permission != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+                )
+            }
         }
+    }
+
+    private fun callFilesPermission() {
+        val building = AlertDialog.Builder(ctx)
+        building.setMessage(
+            """To upload image allow ${
+                ctx.getString(
+                    R.string.app_name
+                )
+            } access to your device's files. 
+Tap Setting > permission, and turn "Files and media" on."""
+        )
+        building.setCancelable(true)
+        building.setPositiveButton(
+            ctx.getString(R.string.Settings)
+        ) { dialogs : DialogInterface, _ : Int ->
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val uri = Uri.fromParts("package", ctx.packageName, null)
+            intent.data = uri
+            startActivity(intent)
+            dialogs.dismiss()
+        }
+        building.setNegativeButton(
+            ctx.getString(R.string.not_now)
+        ) { dialogs : DialogInterface, _ : Int -> dialogs.dismiss() }
+        val alert11 = building.create()
+        alert11.window!!.setBackgroundDrawableResource(R.drawable.dialog_bg)
+        alert11.show()
+        alert11.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
+            .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
+        alert11.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
+            .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
     }
 
     companion object {

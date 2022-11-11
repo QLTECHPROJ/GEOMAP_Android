@@ -233,6 +233,7 @@
                             android:text="@string/mapping_parameters"
                             android:textColor="@color/gray"
                             android:textSize="@dimen/_12sdp"
+                            android:visibility="gone"
                             tools:ignore="SpUsage" />
 
                         <TextView
@@ -244,6 +245,7 @@
                             android:gravity="start"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
+                            android:visibility="gone"
                             tools:ignore="SpUsage" />
 
                         <TextView

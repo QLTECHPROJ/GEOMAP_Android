@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
 import android.widget.Button
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -54,12 +55,13 @@ class DashboardActivity : AppCompatActivity() {
             dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog!!.setContentView(R.layout.add_report_layout)
             dialog!!.window!!.setBackgroundDrawable(
-                ColorDrawable(ContextCompat.getColor(ctx, R.color.transparent_white)))
+                ColorDrawable(ContextCompat.getColor(ctx, R.color.primary_transparent)))
             dialog!!.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT)
+                ViewGroup.LayoutParams.MATCH_PARENT)
             val btnAddUnderGroundsReport =
                 dialog!!.findViewById<Button>(R.id.btnAddUnderGroundsReport)
             val btnAddOpenCastReport = dialog!!.findViewById<Button>(R.id.btnAddOpenCastReport)
+            val llBack = dialog!!.findViewById<ImageView>(R.id.llBack)
 
 
             dialog!!.setOnKeyListener { _ : DialogInterface?, keyCode : Int, _ : KeyEvent? ->
@@ -68,6 +70,10 @@ class DashboardActivity : AppCompatActivity() {
                     return@setOnKeyListener true
                 }
                 false
+            }
+
+            llBack.setOnClickListener {
+                dialog!!.dismiss()
             }
 
             btnAddUnderGroundsReport.setOnClickListener {
@@ -79,6 +85,7 @@ class DashboardActivity : AppCompatActivity() {
             }
             dialog!!.show()
             dialog!!.setCancelable(true)
+            dialog!!.setCanceledOnTouchOutside(true)
         }
 
         binding.tvUnderGroundListViewAll.setOnClickListener {
@@ -117,16 +124,39 @@ class DashboardActivity : AppCompatActivity() {
                             val model : DashboardModel? = response.body()!!
                             when (model!!.responseCode) {
                                 getString(R.string.ResponseCodesuccess) -> {
-                                    binding.llUnderGroundList.visibility = View.VISIBLE
-                                    binding.rvUnderGroundList.visibility = View.VISIBLE
-                                    binding.llOpenCastList.visibility = View.VISIBLE
-                                    binding.rvOpenCastList.visibility = View.VISIBLE
-                                    underGroundListAdapter = UnderGroundListAdapter(
-                                        model.responseData?.underGround!!)
-                                    binding.rvUnderGroundList.adapter = underGroundListAdapter
-                                    openCastListAdapter =
-                                        OpenCastListAdapter(model.responseData?.openCast!!)
-                                    binding.rvOpenCastList.adapter = openCastListAdapter
+                                    if (model.responseData?.underGround!!.isEmpty() && model.responseData?.openCast!!.isEmpty()) {
+                                        binding.llUnderGroundList.visibility = View.GONE
+                                        binding.rvUnderGroundList.visibility = View.GONE
+                                        binding.llOpenCastList.visibility = View.GONE
+                                        binding.rvOpenCastList.visibility = View.GONE
+                                        binding.tvFound.visibility = View.VISIBLE
+                                    }
+
+                                    if (model.responseData?.underGround!!.isEmpty()) {
+                                        binding.llUnderGroundList.visibility = View.GONE
+                                        binding.rvUnderGroundList.visibility = View.GONE
+                                        binding.tvFound.visibility = View.GONE
+                                    } else {
+                                        binding.llUnderGroundList.visibility = View.VISIBLE
+                                        binding.rvUnderGroundList.visibility = View.VISIBLE
+                                        binding.tvFound.visibility = View.GONE
+                                        underGroundListAdapter = UnderGroundListAdapter(
+                                            model.responseData?.underGround!!)
+                                        binding.rvUnderGroundList.adapter = underGroundListAdapter
+                                    }
+
+                                    if (model.responseData?.openCast!!.isEmpty()) {
+                                        binding.llOpenCastList.visibility = View.GONE
+                                        binding.rvOpenCastList.visibility = View.GONE
+                                        binding.tvFound.visibility = View.GONE
+                                    } else {
+                                        binding.llOpenCastList.visibility = View.VISIBLE
+                                        binding.rvOpenCastList.visibility = View.VISIBLE
+                                        binding.tvFound.visibility = View.GONE
+                                        openCastListAdapter =
+                                            OpenCastListAdapter(model.responseData?.openCast!!)
+                                        binding.rvOpenCastList.adapter = openCastListAdapter
+                                    }
                                 }
                                 getString(R.string.ResponseCodefail) -> {
                                     showToast(model.responseMessage, act)
@@ -171,7 +201,7 @@ class DashboardActivity : AppCompatActivity() {
             holder.binding.tvName.text = listModel[position].name
             holder.binding.tvArea.text = listModel[position].location
             holder.binding.tvSubTitleOne.text = "Scale : ${listModel[position].scale}"
-            holder.binding.tvSubTitleTwo.text = "Map Serial No : ${listModel[position].mapSerialNo}"
+            holder.binding.tvSubTitleTwo.text = "Map serial no : ${listModel[position].mapSerialNo}"
             holder.binding.tvDate.text = listModel[position].ugDate
 
             holder.binding.llMainLayout.setOnClickListener {
@@ -210,9 +240,9 @@ class DashboardActivity : AppCompatActivity() {
             holder.binding.tvName.text = listModel[position].pitName
             holder.binding.tvArea.text = listModel[position].pitLoaction
             holder.binding.tvSubTitleOne.text =
-                "Mines Site Name : ${listModel[position].minesSiteName}"
+                "Mines site name : ${listModel[position].minesSiteName}"
             holder.binding.tvSubTitleTwo.text =
-                "Mapping Sheet No : ${listModel[position].mappingSheetNo}"
+                "Mapping sheet no : ${listModel[position].mappingSheetNo}"
             holder.binding.tvDate.text = listModel[position].ocDate
 
             holder.binding.llMainLayout.setOnClickListener {

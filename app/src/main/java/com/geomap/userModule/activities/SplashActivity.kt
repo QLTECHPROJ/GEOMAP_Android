@@ -18,9 +18,9 @@ import com.geomap.BuildConfig
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivitySplashBinding
+import com.geomap.mvvm.AllViewModel
 import com.geomap.mvvm.UserModelFactory
 import com.geomap.mvvm.UserRepository
-import com.geomap.mvvm.AllViewModel
 import com.geomap.userModule.models.VersionModel
 import com.geomap.utils.AppSignatureHashHelper
 import com.geomap.utils.CONSTANTS
@@ -47,11 +47,11 @@ class SplashActivity : AppCompatActivity() {
         ctx = this@SplashActivity
         act = this@SplashActivity
 
-        callFCMRegMethod(ctx)
         val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
         userId = shared.getString(CONSTANTS.userId, "")
-
         key = AppSignatureHashHelper(this).appSignatures[0]
+
+        callFCMRegMethod(ctx)
 
         if (key.equals("")) {
             key = getKey(ctx)
@@ -70,8 +70,10 @@ class SplashActivity : AppCompatActivity() {
         timezoneName = simpleDateFormat1.timeZone.id
         fcmId = getSharedPreferences(CONSTANTS.FCMToken, Context.MODE_PRIVATE).getString(
             CONSTANTS.Token, "").toString()
-        if(fcmId == "")
+
+        if (fcmId == "") {
             callFCMRegMethod(act)
+        }
 
         val deviceId = Settings.Secure.getString(getContext().contentResolver,
             Settings.Secure.ANDROID_ID)
@@ -171,7 +173,7 @@ class SplashActivity : AppCompatActivity() {
                     when {
                         it?.responseCode == getString(
                             R.string.ResponseCodesuccess) -> {
-                            saveLoginData(it.responseData, ctx,"1",act)
+                            saveLoginData(it.responseData, ctx, "1", act)
                         }
                         it.responseCode == act.getString(
                             R.string.ResponseCodefail) -> {
@@ -186,6 +188,6 @@ class SplashActivity : AppCompatActivity() {
             } else {
                 callSignActivity("", act)
             }
-        }, 1800)
+        }, 1600)
     }
 }

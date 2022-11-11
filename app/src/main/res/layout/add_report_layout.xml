@@ -10,17 +10,51 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
+    <ImageView
+        android:id="@+id/llBack"
+        android:layout_width="@dimen/_56sdp"
+        android:layout_height="@dimen/_56sdp"
+        android:contentDescription="@string/todo"
+        android:padding="@dimen/_14sdp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_close_icon"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/primary_theme" />
+
+    <ImageView
+        android:id="@+id/llAddReport"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:contentDescription="@string/todo"
+        android:scaleType="fitXY"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:src="@drawable/add_report_icon"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvHeaderTitle"
+        app:layout_constraintRight_toRightOf="parent"
+        app:tint="@color/primary_theme" />
+
+    <TextView
+        android:id="@+id/tvHeaderTitle"
+        style="@style/screenTitle"
+        android:text="@string/add_report"
+        android:textColor="@color/primary_theme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnAddUnderGroundsReport"
         style="@style/screenButton"
         android:layout_marginHorizontal="@dimen/_28sdp"
-        android:layout_marginTop="@dimen/_100sdp"
+        android:layout_marginTop="@dimen/_20sdp"
         android:background="@drawable/enable_button"
         android:enabled="true"
         android:text="@string/add_under_ground_mapping_report"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/llAddReport"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnAddOpenCastReport"

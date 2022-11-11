@@ -116,9 +116,9 @@ class OpenCastListActivity : AppCompatActivity() {
             holder.binding.tvName.text = listModel[position].pitName
             holder.binding.tvArea.text = listModel[position].pitLoaction
             holder.binding.tvSubTitleOne.text =
-                "Mines Site Name : ${listModel[position].minesSiteName}"
+                "Mines site name : ${listModel[position].minesSiteName}"
             holder.binding.tvSubTitleTwo.text =
-                "Mapping Sheet No : ${listModel[position].mappingSheetNo}"
+                "Mapping sheet no : ${listModel[position].mappingSheetNo}"
             holder.binding.tvDate.text = listModel[position].ocDate
 
             holder.binding.llMainLayout.setOnClickListener {

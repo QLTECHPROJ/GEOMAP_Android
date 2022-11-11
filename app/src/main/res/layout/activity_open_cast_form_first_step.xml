@@ -1550,8 +1550,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="@dimen/_60sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_18sdp"
                     android:layout_marginBottom="@dimen/_2sdp"
+                    android:visibility="visible"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -1579,6 +1580,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14sdp"
+                    android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -1594,23 +1596,25 @@
                     android:text="@string/client_s_geologist_sign"
                     android:textColor="@color/light_black"
                     android:textSize="@dimen/_16sdp"
+                    android:visibility="visible"
                     tools:ignore="SpUsage" />
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="@dimen/_60sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_18sdp"
                     android:layout_marginBottom="@dimen/_20sdp"
+                    android:visibility="visible"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
-
 
                     <com.github.gcacace.signaturepad.views.SignaturePad
                         android:id="@+id/geologistClientSignPad"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_180sdp"
                         android:padding="@dimen/_6sdp"
+                        android:saveEnabled="false"
                         app:penColor="@android:color/black" />
 
                 </androidx.cardview.widget.CardView>
@@ -1631,6 +1635,7 @@
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14sdp"
+                    android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

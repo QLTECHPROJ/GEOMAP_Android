@@ -165,21 +165,20 @@ class UserProfileActivity : AppCompatActivity() {
                     deleteDialog!!.findViewById<FrameLayout>(R.id.progressBarHolder)
                 tvTitle.text = getString(R.string.delete_account)
                 tvHeader.text = getString(R.string.delete_ac_quotes)
-                tvGoBack.text = getString(R.string.cancel)
 
                 deleteDialog!!.setOnKeyListener { _ : DialogInterface?, keyCode : Int, _ : KeyEvent? ->
                     if (keyCode == KeyEvent.KEYCODE_BACK) {
-                        deleteDialog!!.hide()
+                        deleteDialog!!.dismiss()
                         return@setOnKeyListener true
                     }
                     false
                 }
                 btn.setOnClickListener {
-                    deleteDialog!!.hide()
+                    deleteDialog!!.dismiss()
                     showProgressBar(progressBar, progressBarHolder, act)
                     deleteAcCall()
                 }
-                tvGoBack.setOnClickListener { deleteDialog!!.hide() }
+                tvGoBack.setOnClickListener { deleteDialog!!.dismiss() }
                 deleteDialog!!.show()
                 deleteDialog!!.setCancelable(false)
             } else {
@@ -330,10 +329,10 @@ class UserProfileActivity : AppCompatActivity() {
 //                                binding.etMobileNo.setTextColor(
 //                                    ContextCompat.getColor(applicationContext, R.color.light_gray))
 
-                                binding.etEmail.isEnabled = false
-                                binding.etEmail.isClickable = false
-                                binding.etEmail.setTextColor(
-                                    ContextCompat.getColor(applicationContext, R.color.light_gray))
+//                                binding.etEmail.isEnabled = false
+//                                binding.etEmail.isClickable = false
+//                                binding.etEmail.setTextColor(
+//                                    ContextCompat.getColor(applicationContext, R.color.light_gray))
 
                             }
                             getString(R.string.ResponseCodefail) -> {

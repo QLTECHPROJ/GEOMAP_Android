@@ -51,7 +51,7 @@ class OpenCastDetailActivity : AppCompatActivity() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             RetrofitService.getInstance()
-                .getOpenCastDetails(userId)
+                .getOpenCastDetails(id)
                 .enqueue(object : Callback<OpenCastDetailsModel> {
                     override fun onResponse(call : Call<OpenCastDetailsModel>,
                         response : Response<OpenCastDetailsModel>) {
@@ -71,7 +71,6 @@ class OpenCastDetailActivity : AppCompatActivity() {
                                         binding.tvPitLocation.text = it.pitLoaction
                                         binding.tvShiftInchargeName.text = it.shiftInchargeName
                                         binding.tvGeologistName.text = it.geologistName
-                                        binding.tvMappingParameters.text = it.mappingParameter
                                         binding.tvFaceLocation.text = it.faceLocation
                                         binding.tvFaceLength.text = it.faceLength
                                         binding.tvFaceArea.text = it.faceArea

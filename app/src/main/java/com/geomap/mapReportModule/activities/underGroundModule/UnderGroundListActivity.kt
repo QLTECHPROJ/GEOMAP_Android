@@ -116,7 +116,7 @@ class UnderGroundListActivity : AppCompatActivity() {
             holder.binding.tvName.text = listModel[position].name
             holder.binding.tvArea.text = listModel[position].location
             holder.binding.tvSubTitleOne.text = "Scale : ${listModel[position].scale}"
-            holder.binding.tvSubTitleTwo.text = "Map Serial No : ${listModel[position].mapSerialNo}"
+            holder.binding.tvSubTitleTwo.text = "Map serial no : ${listModel[position].mapSerialNo}"
             holder.binding.tvDate.text = listModel[position].ugDate
 
             holder.binding.llMainLayout.setOnClickListener {

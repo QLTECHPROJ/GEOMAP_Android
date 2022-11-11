@@ -149,6 +149,25 @@
                 tools:listitem="@layout/mapping_report_list_layout" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/tvFound"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:fontFamily="@font/inter_regular"
+            android:gravity="center"
+            android:text="@string/no_data_found"
+            android:textColor="@color/light_black"
+            android:textSize="@dimen/_16sdp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SpUsage" />
+
         <ProgressBar
             android:id="@+id/progressBar"
             app:layout_constraintBottom_toBottomOf="parent"

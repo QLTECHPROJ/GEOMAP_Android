@@ -43,7 +43,7 @@
                     android:layout_weight="0.7"
                     android:fontFamily="@font/inter_medium"
                     android:gravity="start"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/light_black"
                     android:textSize="@dimen/_12sdp"
                     tools:ignore="SpUsage" />
 
@@ -75,7 +75,7 @@
                     android:layout_weight="0.7"
                     android:fontFamily="@font/inter_medium"
                     android:gravity="start"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/light_black"
                     android:textSize="@dimen/_12sdp"
                     tools:ignore="SpUsage" />
 
@@ -94,7 +94,7 @@
                     android:layout_weight="0.3"
                     android:fontFamily="@font/inter_medium"
                     android:gravity="start"
-                    android:text="@string/attributes"
+                    android:text="@string/properties"
                     android:textColor="@color/gray"
                     android:textSize="@dimen/_12sdp"
                     tools:ignore="SpUsage" />
@@ -107,7 +107,7 @@
                     android:layout_weight="0.7"
                     android:fontFamily="@font/inter_medium"
                     android:gravity="start"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/light_black"
                     android:textSize="@dimen/_12sdp"
                     tools:ignore="SpUsage" />
             </LinearLayout>

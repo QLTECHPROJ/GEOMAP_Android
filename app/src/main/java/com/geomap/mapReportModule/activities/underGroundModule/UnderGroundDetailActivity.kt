@@ -40,7 +40,7 @@ class UnderGroundDetailActivity : AppCompatActivity() {
         val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
         userId = shared.getString(CONSTANTS.userId, "")
 
-        if (intent.extras != null){
+        if (intent.extras != null) {
             id = intent.extras?.getString("id")
         }
 
@@ -63,7 +63,7 @@ class UnderGroundDetailActivity : AppCompatActivity() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             RetrofitService.getInstance()
-                .getUnderGroundDetails(userId)
+                .getUnderGroundDetails(id)
                 .enqueue(object : Callback<UnderGroundDetailsModel> {
                     override fun onResponse(call : Call<UnderGroundDetailsModel>,
                         response : Response<UnderGroundDetailsModel>) {
@@ -76,7 +76,6 @@ class UnderGroundDetailActivity : AppCompatActivity() {
                                     binding.llMainLayout.visibility = View.VISIBLE
                                     binding.btnViewPdf.visibility = View.VISIBLE
                                     model.responseData?.let {
-                                        it
                                         binding.tvSerialNo.text = it.mapSerialNo
                                         binding.tvDate.text = it.ugDate
                                         binding.tvShift.text = it.shift
@@ -87,9 +86,17 @@ class UnderGroundDetailActivity : AppCompatActivity() {
                                         binding.tvXCoordinate.text = it.xCordinate
                                         binding.tvYCoordinate.text = it.yCordinate
                                         binding.tvZCoordinate.text = it.zCordinate
-                                        attributesListAdapter =
-                                            AttributesListAdapter(model.responseData?.attribute!!)
-                                        binding.rvAttributesList.adapter = attributesListAdapter
+                                        if (it.attribute?.size == 0) {
+                                            binding.tvAttributes.visibility = View.GONE
+                                            binding.rvAttributesList.visibility = View.GONE
+                                        } else {
+                                            binding.tvAttributes.visibility = View.VISIBLE
+                                            binding.rvAttributesList.visibility = View.VISIBLE
+                                            attributesListAdapter =
+                                                AttributesListAdapter(
+                                                    it.attribute!!)
+                                            binding.rvAttributesList.adapter = attributesListAdapter
+                                        }
                                     }
                                 }
                                 getString(R.string.ResponseCodefail) -> {

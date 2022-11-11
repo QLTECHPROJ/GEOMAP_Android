@@ -40,7 +40,6 @@ class MenuListActivity : AppCompatActivity() {
     private var supportTitle : String? = null
     private var supportText : String? = null
     private var supportEmail : String? = null
-    private var profileImage : String? = null
     private var logoutDialog : Dialog? = null
     val shared : SharedPreferences? = null
 
@@ -113,7 +112,7 @@ class MenuListActivity : AppCompatActivity() {
                 logoutDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
                 logoutDialog!!.setContentView(R.layout.logout_layout)
                 logoutDialog!!.window!!.setBackgroundDrawable(
-                    ColorDrawable(ContextCompat.getColor(ctx, R.color.primary_light_theme)))
+                    ColorDrawable(ContextCompat.getColor(ctx, R.color.primary_transparent)))
                 logoutDialog!!.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.MATCH_PARENT)
                 val tvGoBack = logoutDialog!!.findViewById<AppCompatButton>(R.id.tvGoBack)
@@ -123,21 +122,22 @@ class MenuListActivity : AppCompatActivity() {
                     logoutDialog!!.findViewById<FrameLayout>(R.id.progressBarHolder)
                 logoutDialog!!.setOnKeyListener { _ : DialogInterface?, keyCode : Int, _ : KeyEvent? ->
                     if (keyCode == KeyEvent.KEYCODE_BACK) {
-                        logoutDialog!!.hide()
+                        logoutDialog!!.dismiss()
                         return@setOnKeyListener true
                     }
                     false
                 }
                 btn.setOnClickListener {
-                    logoutDialog!!.hide()
+                    logoutDialog!!.dismiss()
                     showProgressBar(progressBar, progressBarHolder, act)
 //                    logoutCall(binding.progressBar)
 
                     callSignActivity("", act)
                 }
-                tvGoBack.setOnClickListener { logoutDialog!!.hide() }
+                tvGoBack.setOnClickListener { logoutDialog!!.dismiss() }
                 logoutDialog!!.show()
-                logoutDialog!!.setCancelable(false)
+                logoutDialog!!.setCancelable(true)
+                logoutDialog!!.setCanceledOnTouchOutside(true)
             } else {
                 showToast(getString(R.string.no_server_found), act)
             }
@@ -204,7 +204,8 @@ class MenuListActivity : AppCompatActivity() {
                 }
                 btnClose.setOnClickListener { supportDialog!!.dismiss() }
                 supportDialog!!.show()
-                supportDialog!!.setCancelable(false)
+                supportDialog!!.setCancelable(true)
+                supportDialog!!.setCanceledOnTouchOutside(true)
             } else {
                 showToast(getString(R.string.no_server_found), act)
             }
@@ -261,7 +262,6 @@ class MenuListActivity : AppCompatActivity() {
                         hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                     }
                 })
-        } else {
         }
     }
 

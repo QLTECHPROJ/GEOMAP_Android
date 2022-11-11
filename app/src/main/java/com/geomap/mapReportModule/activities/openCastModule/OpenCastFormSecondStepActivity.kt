@@ -83,6 +83,9 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             ocDataModel = gson.fromJson(data, type1)
         }
 
+        val gson = Gson()
+        Log.e("OCData", gson.toJson(ocDataModel).toString())
+
         binding.llBack.setOnClickListener {
             onBackPressed()
         }
@@ -99,20 +102,17 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             }
 
             override fun onSigned() {
-                signCheck = "1"
                 binding.btnSignPadClear.isEnabled = true
                 binding.btnSignPadClear.setBackgroundResource(R.drawable.enable_button)
+                signCheck = "1"
             }
 
             override fun onClear() {
-                signCheck = ""
                 binding.btnSignPadClear.isEnabled = false
                 binding.btnSignPadClear.setBackgroundResource(R.drawable.disable_button)
+                signCheck = ""
             }
         })
-
-        val gson = Gson()
-        Log.e("OCData", gson.toJson(ocDataModel).toString())
 
         binding.btnSubmit.setOnClickListener {
             if (signCheck == "") {
@@ -220,11 +220,9 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
     }
 
     fun verifyStoragePermissions(activity : Activity?) {
-        // Check if we have write permission
         val permission = ActivityCompat.checkSelfPermission(activity!!,
             Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (permission != PackageManager.PERMISSION_GRANTED) {
-            // We don't have permission so prompt the user
             ActivityCompat.requestPermissions(
                 activity,
                 PERMISSIONS_STORAGE,
