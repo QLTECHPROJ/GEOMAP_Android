@@ -5,12 +5,8 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Environment;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
@@ -23,17 +19,16 @@ import android.widget.Toast;
 
 import com.geomap.faqModule.activities.FaqActivity;
 import com.geomap.mapReportModule.activities.DashboardActivity;
+import com.geomap.mapReportModule.activities.SyncDataActivity;
+import com.geomap.mapReportModule.activities.ViewPdfActivity;
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastDetailActivity;
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity;
-import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormSecondStepActivity;
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastListActivity;
-import com.geomap.mapReportModule.activities.SyncDataActivity;
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundDetailActivity;
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity;
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormSecondStepActivity;
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormThirdStepActivity;
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundListActivity;
-import com.geomap.mapReportModule.activities.ViewPdfActivity;
 import com.geomap.userModule.activities.ContactUsActivity;
 import com.geomap.userModule.activities.MenuListActivity;
 import com.geomap.userModule.activities.SignInActivity;
@@ -47,9 +42,6 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -262,7 +254,7 @@ public class GeoMapApp extends Application {
         deleteCache(context);
     }
 
-    public static void saveLoginData(UserCommonDataModel.ResponseData responseData, Context ctx,String flag,Activity act) {
+    public static void saveLoginData(UserCommonDataModel.ResponseData responseData, Context ctx, String flag, Activity act) {
         Gson gson = new Gson();
         SharedPreferences shared = ctx.getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = shared.edit();
@@ -286,9 +278,9 @@ public class GeoMapApp extends Application {
         editor1.putString(CONSTANTS.typeOfGeologicalStructures, gson.toJson(responseData.getTypeOfGeologicalStructures()));
         editor1.putString(CONSTANTS.typeOfFaults, gson.toJson(responseData.getTypeOfFaults()));
         editor1.apply();
-        DataBaseFunctions.Companion.callLocalDBGetAndInsertFunction(responseData,ctx);
+        DataBaseFunctions.Companion.callLocalDBGetAndInsertFunction(responseData, ctx);
 
-        if(flag.equalsIgnoreCase("1")) {
+        if (flag.equalsIgnoreCase("1")) {
             callDashboardActivity(act, "0");
         }
     }
@@ -311,7 +303,7 @@ public class GeoMapApp extends Application {
         act.finish();
     }
 
-    public static void  callDashboardActivity(Activity act, String finish) {
+    public static void callDashboardActivity(Activity act, String finish) {
         Intent i = new Intent(act, DashboardActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         act.startActivity(i);
@@ -365,8 +357,9 @@ public class GeoMapApp extends Application {
         }
     }
 
-    public static void callUnderGroundDetailActivity(Activity act, String finish) {
+    public static void callUnderGroundDetailActivity(Activity act, String finish, String id) {
         Intent i = new Intent(act, UnderGroundDetailActivity.class);
+        i.putExtra("id", id);
         i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         act.startActivity(i);
         if (finish.equalsIgnoreCase("0")) {
@@ -374,8 +367,9 @@ public class GeoMapApp extends Application {
         }
     }
 
-    public static void callOpenCastDetailActivity(Activity act, String finish) {
+    public static void callOpenCastDetailActivity(Activity act, String finish, String id) {
         Intent i = new Intent(act, OpenCastDetailActivity.class);
+        i.putExtra("id", id);
         i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         act.startActivity(i);
         if (finish.equalsIgnoreCase("0")) {

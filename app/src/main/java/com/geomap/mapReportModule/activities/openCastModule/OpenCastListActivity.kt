@@ -122,7 +122,7 @@ class OpenCastListActivity : AppCompatActivity() {
             holder.binding.tvDate.text = listModel[position].ocDate
 
             holder.binding.llMainLayout.setOnClickListener {
-                callOpenCastDetailActivity(act, "1")
+                callOpenCastDetailActivity(act, "1", listModel[position].id)
             }
         }
 

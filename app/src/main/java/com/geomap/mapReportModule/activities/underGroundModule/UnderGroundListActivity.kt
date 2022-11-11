@@ -120,7 +120,7 @@ class UnderGroundListActivity : AppCompatActivity() {
             holder.binding.tvDate.text = listModel[position].ugDate
 
             holder.binding.llMainLayout.setOnClickListener {
-                callUnderGroundDetailActivity(act, "1")
+                callUnderGroundDetailActivity(act, "1", listModel[position].id)
             }
         }
 

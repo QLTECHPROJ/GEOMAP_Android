@@ -21,7 +21,7 @@ class DashboardModel {
         @SerializedName("openCast") @Expose var openCast : List<OpenCast>? = null
 
         class UnderGround {
-            @SerializedName("id") @Expose var id : Int? = null
+            @SerializedName("id") @Expose var id : String? = null
             @SerializedName("name") @Expose var name : String? = null
             @SerializedName("location") @Expose var location : String? = null
             @SerializedName("ugDate") @Expose var ugDate : String? = null
@@ -32,7 +32,7 @@ class DashboardModel {
         }
 
         class OpenCast {
-            @SerializedName("id") @Expose var id : Int? = null
+            @SerializedName("id") @Expose var id : String? = null
             @SerializedName("minesSiteName") @Expose var minesSiteName : String? = null
             @SerializedName("mappingSheetNo") @Expose var mappingSheetNo : String? = null
             @SerializedName("pitName") @Expose var pitName : String? = null

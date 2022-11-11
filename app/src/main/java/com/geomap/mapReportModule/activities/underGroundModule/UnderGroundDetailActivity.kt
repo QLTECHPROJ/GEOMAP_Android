@@ -29,6 +29,7 @@ class UnderGroundDetailActivity : AppCompatActivity() {
     private lateinit var act : Activity
     private var attributesListAdapter : AttributesListAdapter? = null
     private var userId : String? = null
+    private var id : String? = null
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +39,10 @@ class UnderGroundDetailActivity : AppCompatActivity() {
 
         val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
         userId = shared.getString(CONSTANTS.userId, "")
+
+        if (intent.extras != null){
+            id = intent.extras?.getString("id")
+        }
 
         binding.llBack.setOnClickListener {
             onBackPressed()

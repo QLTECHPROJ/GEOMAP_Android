@@ -20,11 +20,8 @@ import com.geomap.R
 import com.geomap.databinding.ActivityDashboardBinding
 import com.geomap.databinding.MappingReportListLayoutBinding
 import com.geomap.mapReportModule.models.DashboardModel
-import com.geomap.userModule.models.UserCommonDataModel
 import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -178,7 +175,7 @@ class DashboardActivity : AppCompatActivity() {
             holder.binding.tvDate.text = listModel[position].ugDate
 
             holder.binding.llMainLayout.setOnClickListener {
-                callUnderGroundDetailActivity(act, "1")
+                callUnderGroundDetailActivity(act, "1", listModel[position].id)
             }
         }
 
@@ -219,7 +216,7 @@ class DashboardActivity : AppCompatActivity() {
             holder.binding.tvDate.text = listModel[position].ocDate
 
             holder.binding.llMainLayout.setOnClickListener {
-                callOpenCastDetailActivity(act, "1")
+                callOpenCastDetailActivity(act, "1", listModel[position].id)
             }
         }
 
