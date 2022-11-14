@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -115,10 +117,14 @@ class UnderGroundListActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
             holder.binding.tvName.text = listModel[position].name
             holder.binding.tvArea.text = listModel[position].location
-            holder.binding.tvSubTitleOne.text = "Scale : ${listModel[position].scale}"
-            holder.binding.tvSubTitleTwo.text = "Map serial no : ${listModel[position].mapSerialNo}"
             holder.binding.tvDate.text = listModel[position].ugDate
 
+            holder.binding.tvSubTitleOne.setText(
+                Html.fromHtml("Scale : <font color='black'>${listModel[position].scale}</font>"),
+                TextView.BufferType.SPANNABLE)
+            holder.binding.tvSubTitleTwo.setText(Html.fromHtml(
+                "Map serial no : <font color='black'>${listModel[position].mapSerialNo}</font>"),
+                TextView.BufferType.SPANNABLE)
             holder.binding.llMainLayout.setOnClickListener {
                 callUnderGroundDetailActivity(act, "1", listModel[position].id)
             }

@@ -338,38 +338,25 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             addGeologistClientSignJpgSignatureToGallery(
                 binding.geologistClientSignPad.signatureBitmap)
             val gson = Gson()
-            val oc = OpenCastInsertModel()
-            oc.minesSiteName = binding.etMinesSiteName.text.toString()
-            oc.sheetNo = binding.etMappingSheetNo.text.toString()
-            oc.ocDate = binding.tvOCDate.text.toString()
-            oc.pitName = binding.etPitName.text.toString()
-            oc.pitLocation = binding.etPitLocation.text.toString()
-            oc.shiftInchargeName = binding.etShiftInchargeName.text.toString()
-            oc.geologistName = binding.etGeologistName.text.toString()
-            oc.faceLocation = binding.etFaceLocation.text.toString()
-            oc.faceLengthM = binding.etFaceLengthM.text.toString()
-            oc.faceAreaM2 = binding.etFaceAreaM2.text.toString()
-            oc.faceRockTypes = binding.etFaceRockTypes.text.toString()
-            oc.benchRL = binding.etBenchRL.text.toString()
-            oc.benchHeightWidth = binding.etBenchHeightWidth.text.toString()
-            oc.benchAngle = binding.etBenchAngle.text.toString()
-            oc.dipDirectionAngle = binding.etDipDirectionAngle.text.toString()
-            oc.thicknessOfOre = binding.etThicknessOfOre.text.toString()
-            oc.thinessOfOverburden = binding.etThinessOfOverburden.text.toString()
-            oc.thicknessOfInterburden = binding.etThicknessOfInterburden.text.toString()
-            oc.observedGradeOfOre = binding.etObservedGradeOfOre.text.toString()
-            oc.actualGradeOfOre = binding.etActualGradeOfOre.text.toString()
-            oc.sampleCollected = binding.tvSampleCollected.text.toString()
-            oc.weathering = binding.tvWeathering.text.toString()
-            oc.rockStregth = binding.tvRockStrength.text.toString()
-            oc.waterCondition = binding.tvWaterCondition.text.toString()
-            oc.typeOfGeologist = binding.tvTypeOfGeologicalStructures.text.toString()
-            oc.typeOfFaults = binding.tvTypeOfFaults.text.toString()
-            oc.shift = shift
-            oc.notes = binding.etNotes.text.toString()
-            oc.image = ""
-            oc.geologistSign = geologistSign
-            oc.clientsGeologistSign = geologistClientSign
+            val oc = OpenCastInsertModel(binding.etMinesSiteName.text.toString(),
+                binding.etMappingSheetNo.text.toString(), binding.tvOCDate.text.toString(),
+                binding.etPitName.text.toString(), binding.etPitLocation.text.toString(),
+                binding.etShiftInchargeName.text.toString(),
+                binding.etGeologistName.text.toString(), binding.etFaceLocation.text.toString(),
+                binding.etFaceLengthM.text.toString(), binding.etFaceAreaM2.text.toString(),
+                binding.etFaceRockTypes.text.toString(), binding.etBenchRL.text.toString(),
+                binding.etBenchHeightWidth.text.toString(), binding.etBenchAngle.text.toString(),
+                binding.etDipDirectionAngle.text.toString(),
+                binding.etThicknessOfOre.text.toString(),
+                binding.etThinessOfOverburden.text.toString(),
+                binding.etThicknessOfInterburden.text.toString(),
+                binding.etObservedGradeOfOre.text.toString(),
+                binding.etActualGradeOfOre.text.toString(),
+                binding.tvSampleCollected.text.toString(), binding.tvWeathering.text.toString(),
+                binding.tvRockStrength.text.toString(), binding.tvWaterCondition.text.toString(),
+                binding.tvTypeOfGeologicalStructures.text.toString(),
+                binding.tvTypeOfFaults.text.toString(), shift, binding.etNotes.text.toString(), "",
+                geologistSign, geologistClientSign)
             val i = Intent(act, OpenCastFormSecondStepActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             i.putExtra("ocData", gson.toJson(oc))

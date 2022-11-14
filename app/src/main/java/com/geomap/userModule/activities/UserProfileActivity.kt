@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
@@ -131,7 +132,7 @@ class UserProfileActivity : AppCompatActivity() {
         binding.etEmail.addTextChangedListener(userTextWatcher)
         binding.etMobileNo.addTextChangedListener(userTextWatcher)
 
-        prepareData("1")
+        prepareData()
 
         binding.etDob.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -153,9 +154,9 @@ class UserProfileActivity : AppCompatActivity() {
                 deleteDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
                 deleteDialog!!.setContentView(R.layout.logout_layout)
                 deleteDialog!!.window!!.setBackgroundDrawable(
-                    ColorDrawable(ContextCompat.getColor(ctx, R.color.primary_transparent)))
+                    ColorDrawable(Color.TRANSPARENT))
                 deleteDialog!!.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT)
+                    ViewGroup.LayoutParams.WRAP_CONTENT)
                 val tvGoBack = deleteDialog!!.findViewById<TextView>(R.id.tvGoBack)
                 val tvTitle = deleteDialog!!.findViewById<TextView>(R.id.tvTitle)
                 val tvHeader = deleteDialog!!.findViewById<TextView>(R.id.tvHeader)
@@ -198,6 +199,11 @@ class UserProfileActivity : AppCompatActivity() {
                 prepareUpdateData()
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        prepareData()
     }
 
     private fun deleteAcCall() {
@@ -262,7 +268,7 @@ class UserProfileActivity : AppCompatActivity() {
                                     CONSTANTS.profileImage, model.responseData?.profileImage
                                 )
                                 editor1.apply()
-                                prepareData("0")
+                                prepareData()
                                 finish()
                             } else if (model.responseCode.equals(
                                     ctx.getString(R.string.ResponseCodeDeleted))) {
@@ -283,7 +289,7 @@ class UserProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun prepareData(finishS : String) {
+    private fun prepareData() {
         showProgressBar(binding.progressBar, binding.progressBarHolder, act)
         if (isNetworkConnected(ctx)) {
             RetrofitService.getInstance().getUserDetails(userId)
@@ -305,8 +311,11 @@ class UserProfileActivity : AppCompatActivity() {
                                 binding.etEmail.setText(email)
                                 binding.etMobileNo.setText(mobileNo)
                                 binding.etDob.setText(dob)
+                                binding.ivCameraIconBg.visibility = View.VISIBLE
+                                binding.ivCameraIcon.visibility = View.VISIBLE
                                 if (coachStatusModel.responseData!!.profileImage == "") {
                                     binding.civProfile.visibility = View.GONE
+                                    binding.rlCameraBg.visibility = View.GONE
                                     val name = if (coachStatusModel.responseData!!.name == "") {
                                         "Guest"
                                     } else {
@@ -316,6 +325,7 @@ class UserProfileActivity : AppCompatActivity() {
                                     binding.tvLetter.text = name!!.substring(0, 1)
                                 } else {
                                     binding.civProfile.visibility = View.VISIBLE
+                                    binding.rlCameraBg.visibility = View.VISIBLE
                                     binding.rlLetter.visibility = View.GONE
                                     Glide.with(applicationContext)
                                         .load(coachStatusModel.responseData!!.profileImage)
@@ -350,6 +360,11 @@ class UserProfileActivity : AppCompatActivity() {
                 })
         } else {
             setProfilePic("")
+            binding.civProfile.visibility = View.GONE
+            binding.rlCameraBg.visibility = View.GONE
+            val name = "Guest"
+            binding.rlLetter.visibility = View.VISIBLE
+            binding.tvLetter.text = name.substring(0, 1)
         }
     }
 

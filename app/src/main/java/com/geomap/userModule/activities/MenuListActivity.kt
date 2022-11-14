@@ -3,6 +3,7 @@ package com.geomap.userModule.activities
 import android.app.Activity
 import android.app.Dialog
 import android.content.*
+import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.KeyEvent
@@ -15,7 +16,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -112,9 +112,9 @@ class MenuListActivity : AppCompatActivity() {
                 logoutDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
                 logoutDialog!!.setContentView(R.layout.logout_layout)
                 logoutDialog!!.window!!.setBackgroundDrawable(
-                    ColorDrawable(ContextCompat.getColor(ctx, R.color.primary_transparent)))
+                    ColorDrawable(Color.TRANSPARENT))
                 logoutDialog!!.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT)
+                    ViewGroup.LayoutParams.WRAP_CONTENT)
                 val tvGoBack = logoutDialog!!.findViewById<AppCompatButton>(R.id.tvGoBack)
                 val btn = logoutDialog!!.findViewById<Button>(R.id.Btn)
                 val progressBar = logoutDialog!!.findViewById<ProgressBar>(R.id.progressBar)
@@ -149,9 +149,9 @@ class MenuListActivity : AppCompatActivity() {
                 supportDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
                 supportDialog!!.setContentView(R.layout.support_layout)
                 supportDialog!!.window!!.setBackgroundDrawable(
-                    ColorDrawable(ContextCompat.getColor(ctx, R.color.primary_transparent)))
+                    ColorDrawable(Color.TRANSPARENT))
                 supportDialog!!.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT)
+                    ViewGroup.LayoutParams.WRAP_CONTENT)
                 val tvEmail = supportDialog!!.findViewById<TextView>(R.id.tvEmail)
                 val tvTitle = supportDialog!!.findViewById<TextView>(R.id.tvTitle)
                 val tvHeader = supportDialog!!.findViewById<TextView>(R.id.tvHeader)
@@ -232,21 +232,25 @@ class MenuListActivity : AppCompatActivity() {
                             getString(R.string.ResponseCodesuccess) -> {
                                 if (coachStatusModel.responseData!!.profileImage == "") {
                                     binding.civProfile.visibility = View.GONE
+                                    binding.rlCameraBg.visibility = View.GONE
                                     val name = if (coachStatusModel.responseData!!.name == "") {
                                         "Guest"
                                     } else {
                                         coachStatusModel.responseData!!.name
                                     }
+                                    binding.tvUserName.text = name
                                     binding.rlLetter.visibility = View.VISIBLE
                                     binding.tvLetter.text = name!!.substring(0, 1)
                                 } else {
                                     binding.civProfile.visibility = View.VISIBLE
+                                    binding.rlCameraBg.visibility = View.VISIBLE
                                     binding.rlLetter.visibility = View.GONE
                                     Glide.with(applicationContext)
                                         .load(coachStatusModel.responseData!!.profileImage)
                                         .thumbnail(0.10f)
                                         .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
                                         .into(binding.civProfile)
+                                    binding.tvUserName.text = coachStatusModel.responseData!!.name
                                 }
                             }
                             getString(R.string.ResponseCodefail) -> {
@@ -262,6 +266,13 @@ class MenuListActivity : AppCompatActivity() {
                         hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                     }
                 })
+        } else {
+            binding.civProfile.visibility = View.GONE
+            binding.rlCameraBg.visibility = View.GONE
+            val name = "Guest"
+            binding.tvUserName.text = name
+            binding.rlLetter.visibility = View.VISIBLE
+            binding.tvLetter.text = name.substring(0, 1)
         }
     }
 

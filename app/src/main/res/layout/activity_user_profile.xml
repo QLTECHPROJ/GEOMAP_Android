@@ -44,6 +44,28 @@
             app:layout_constraintTop_toBottomOf="@id/tvHeaderTitle"
             tools:ignore="RtlSymmetry">
 
+            <RelativeLayout
+                android:id="@+id/rlCameraBg"
+                android:layout_width="@dimen/_106sdp"
+                android:layout_height="@dimen/_106sdp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/profile_image_drawable"
+                android:padding="@dimen/_2sdp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:fontFamily="@font/inter_semi_bold"
+                    android:gravity="center"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_48sdp"
+                    tools:ignore="SpUsage" />
+
+            </RelativeLayout>
+
             <com.geomap.utils.RoundedImageView
                 android:id="@+id/civProfile"
                 android:layout_width="@dimen/_100sdp"
@@ -60,7 +82,7 @@
                 android:layout_centerInParent="true"
                 android:background="@drawable/profile_image_drawable"
                 android:padding="@dimen/_2sdp"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tvLetter"
@@ -86,7 +108,7 @@
                 android:layout_marginBottom="@dimen/_20sdp"
                 android:contentDescription="@string/todo"
                 android:src="@drawable/ic_camera_bg"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/ivCameraIcon"
@@ -98,7 +120,7 @@
                 android:layout_marginBottom="@dimen/_29sdp"
                 android:contentDescription="@string/todo"
                 android:src="@drawable/ic_camera_icon"
-                android:visibility="visible" />
+                android:visibility="gone" />
         </RelativeLayout>
 
         <androidx.cardview.widget.CardView

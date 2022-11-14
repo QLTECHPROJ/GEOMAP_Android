@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -115,12 +117,14 @@ class OpenCastListActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
             holder.binding.tvName.text = listModel[position].pitName
             holder.binding.tvArea.text = listModel[position].pitLoaction
-            holder.binding.tvSubTitleOne.text =
-                "Mines site name : ${listModel[position].minesSiteName}"
-            holder.binding.tvSubTitleTwo.text =
-                "Mapping sheet no : ${listModel[position].mappingSheetNo}"
             holder.binding.tvDate.text = listModel[position].ocDate
-
+            holder.binding.tvSubTitleOne.setText(
+                Html.fromHtml(
+                    "Mines site name : <font color='black'>${listModel[position].minesSiteName}</font>"),
+                TextView.BufferType.SPANNABLE)
+            holder.binding.tvSubTitleTwo.setText(Html.fromHtml(
+                "Mapping sheet no : <font color='black'>${listModel[position].mappingSheetNo}</font>"),
+                TextView.BufferType.SPANNABLE)
             holder.binding.llMainLayout.setOnClickListener {
                 callOpenCastDetailActivity(act, "1", listModel[position].id)
             }

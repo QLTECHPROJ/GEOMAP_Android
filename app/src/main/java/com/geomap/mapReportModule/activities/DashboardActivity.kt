@@ -5,13 +5,15 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Html
 import android.view.*
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -50,14 +52,13 @@ class DashboardActivity : AppCompatActivity() {
         }
 
         binding.tvAddReport.setOnClickListener {
-//            callAddReportActivity(act, "1")
             dialog = Dialog(ctx)
             dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog!!.setContentView(R.layout.add_report_layout)
             dialog!!.window!!.setBackgroundDrawable(
-                ColorDrawable(ContextCompat.getColor(ctx, R.color.primary_transparent)))
+                ColorDrawable(Color.TRANSPARENT))
             dialog!!.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT)
+                ViewGroup.LayoutParams.WRAP_CONTENT)
             val btnAddUnderGroundsReport =
                 dialog!!.findViewById<Button>(R.id.btnAddUnderGroundsReport)
             val btnAddOpenCastReport = dialog!!.findViewById<Button>(R.id.btnAddOpenCastReport)
@@ -200,10 +201,13 @@ class DashboardActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
             holder.binding.tvName.text = listModel[position].name
             holder.binding.tvArea.text = listModel[position].location
-            holder.binding.tvSubTitleOne.text = "Scale : ${listModel[position].scale}"
-            holder.binding.tvSubTitleTwo.text = "Map serial no : ${listModel[position].mapSerialNo}"
             holder.binding.tvDate.text = listModel[position].ugDate
-
+            holder.binding.tvSubTitleOne.setText(
+                Html.fromHtml("Scale : <font color='black'>${listModel[position].scale}</font>"),
+                TextView.BufferType.SPANNABLE)
+            holder.binding.tvSubTitleTwo.setText(Html.fromHtml(
+                "Map serial no : <font color='black'>${listModel[position].mapSerialNo}</font>"),
+                TextView.BufferType.SPANNABLE)
             holder.binding.llMainLayout.setOnClickListener {
                 callUnderGroundDetailActivity(act, "1", listModel[position].id)
             }
@@ -239,12 +243,15 @@ class DashboardActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
             holder.binding.tvName.text = listModel[position].pitName
             holder.binding.tvArea.text = listModel[position].pitLoaction
-            holder.binding.tvSubTitleOne.text =
-                "Mines site name : ${listModel[position].minesSiteName}"
-            holder.binding.tvSubTitleTwo.text =
-                "Mapping sheet no : ${listModel[position].mappingSheetNo}"
-            holder.binding.tvDate.text = listModel[position].ocDate
+            holder.binding.tvSubTitleOne.setText(
+                Html.fromHtml(
+                    "Mines site name : <font color='black'>${listModel[position].minesSiteName}</font>"),
+                TextView.BufferType.SPANNABLE)
+            holder.binding.tvSubTitleTwo.setText(Html.fromHtml(
+                "Mapping sheet no : <font color='black'>${listModel[position].mappingSheetNo}</font>"),
+                TextView.BufferType.SPANNABLE)
 
+            holder.binding.tvDate.text = listModel[position].ocDate
             holder.binding.llMainLayout.setOnClickListener {
                 callOpenCastDetailActivity(act, "1", listModel[position].id)
             }
