@@ -17,6 +17,8 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.room.Room;
+
 import com.geomap.faqModule.activities.FaqActivity;
 import com.geomap.mapReportModule.activities.DashboardActivity;
 import com.geomap.mapReportModule.activities.SyncDataActivity;
@@ -29,6 +31,8 @@ import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFi
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormSecondStepActivity;
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormThirdStepActivity;
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundListActivity;
+import com.geomap.mapReportModule.activities.ViewPdfActivity;
+import com.geomap.roomDataBase.GeoMapDatabase;
 import com.geomap.userModule.activities.ContactUsActivity;
 import com.geomap.userModule.activities.MenuListActivity;
 import com.geomap.userModule.activities.SignInActivity;
@@ -55,15 +59,29 @@ public class GeoMapApp extends Application {
     static Context mContext;
     static GeoMapApp GeoMapApp;
     public static String fcmId = "";
-
+    public static GeoMapDatabase DB;
     @Override
     public void onCreate() {
         super.onCreate();
         mContext = this;
         GeoMapApp = this;
-        callFCMRegMethod(mContext);
-        FirebaseApp.initializeApp(mContext);
-        Log.e("onCreate", "Called");
+        SharedPreferences sharedPreferences2 = mContext.getSharedPreferences(CONSTANTS.FCMToken, Context.MODE_PRIVATE);
+        fcmId = sharedPreferences2.getString(CONSTANTS.Token, "");
+        if (TextUtils.isEmpty(fcmId)) {
+            FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
+                if (!task.isSuccessful()) {
+                    return;
+                }
+                // Get new FCM registration token
+                String token = task.getResult();
+                // Log and toast
+                Log.e("newToken", token);
+                fcmId = token;
+                SharedPreferences.Editor editor = getContext().getSharedPreferences(CONSTANTS.FCMToken, Context.MODE_PRIVATE).edit();
+                editor.putString(CONSTANTS.Token, token); //Friend
+                editor.apply();
+            });
+        }
     }
 
     public static Context getContext() {
@@ -74,7 +92,6 @@ public class GeoMapApp extends Application {
         SharedPreferences sharedPreferences2 = ctx.getSharedPreferences(CONSTANTS.FCMToken, Context.MODE_PRIVATE);
         fcmId = sharedPreferences2.getString(CONSTANTS.Token, "");
         if (TextUtils.isEmpty(fcmId)) {
-            Log.e("Token called", ctx.toString());
             FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
                 if (!task.isSuccessful()) {
                     return;
@@ -293,6 +310,11 @@ public class GeoMapApp extends Application {
         editor.putString(CONSTANTS.PREF_KEY_SplashKey, appSignatureHashHelper.getAppSignatures().get(0));
         editor.apply();
         return key;
+    }
+
+    public static GeoMapDatabase getDataBase(Context ctx) {
+        DB = Room.databaseBuilder(ctx, GeoMapDatabase.class, "GeoMap_database").build();
+        return DB;
     }
 
     public static void callSignActivity(String mobile, Activity act) {

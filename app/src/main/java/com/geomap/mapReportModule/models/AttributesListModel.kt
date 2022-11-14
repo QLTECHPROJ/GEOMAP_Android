@@ -2,10 +2,11 @@ package com.geomap.mapReportModule.models
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import java.util.ArrayList
 
 class AttributesListModel {
     @SerializedName("ResponseData") @Expose
-    var responseData : List<ResponseData>? = null
+    var responseData : ArrayList<ResponseData>? = null
 
     @SerializedName("ResponseCode") @Expose
     var responseCode : String? = null
@@ -21,7 +22,7 @@ class AttributesListModel {
         @SerializedName("name") @Expose var name : String? = null
         @SerializedName("created_at") @Expose var createdAt : String? = null
         @SerializedName("updated_at") @Expose var updatedAt : String? = null
-        @SerializedName("nos") @Expose var nosList : List<Nos>? = null
+        @SerializedName("nos") @Expose var nosList : ArrayList<Nos>? = null
 
         class Nos {
             @SerializedName("id") @Expose var id : Int? = null

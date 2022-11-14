@@ -2,50 +2,47 @@ package com.geomap
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.LifecycleOwner
-import androidx.room.Room
+import com.geomap.GeoMapApp.DB
+import com.geomap.GeoMapApp.getDataBase
 import com.geomap.roomDataBase.*
 import com.geomap.userModule.models.UserCommonDataModel
+import com.google.gson.Gson
 
 class DataBaseFunctions {
     companion object {
-        var DB: GeoMapDatabase? = null
-        fun getDataBase(ctx: Context?): GeoMapDatabase? {
-            DB = Room.databaseBuilder(ctx!!, GeoMapDatabase::class.java, "GeoMap_database").build()
-            return DB
-        }
-
-        fun callUGReportObserver(ctx: Context): List<UnderGroundMappingReport> {
+        val gson = Gson()
+        fun callUGReportObserver(ctx: Context): ArrayList<UnderGroundMappingReport> {
             DB = getDataBase(ctx)
             var list = ArrayList<UnderGroundMappingReport>()
-            DB?.taskDao()?.geAllUnderGroundMappingReport()?.observe(
-                ctx as LifecycleOwner) { lists ->
-                list = lists as ArrayList<UnderGroundMappingReport>
-                DB!!.taskDao().geAllUnderGroundMappingReport().removeObserver {}
-            }
+            GeoMapDatabase.databaseWriteExecutor.execute {
+                list = DB.taskDao().geAllUnderGroundMappingReport() as ArrayList<UnderGroundMappingReport>
+
+                Log.e("List UnderGroundMappingReport", "true" + gson.toJson(list).toString())
+            } as (List<UnderGroundMappingReport>)
             return list
         }
 
         fun saveUGReport(obj: UnderGroundMappingReport, ctx: Context) {
             DB = getDataBase(ctx)
             GeoMapDatabase.databaseWriteExecutor.execute {
-                DB!!.taskDao()?.insertUGReport(obj)
+                DB!!.taskDao().insertUGReport(obj)
             }
         }
 
         fun deleteUGReport(ctx: Context) {
             DB = getDataBase(ctx)
             GeoMapDatabase.databaseWriteExecutor.execute {
-                DB!!.taskDao()?.deleteAllUnderGroundMappingReport()
+                DB!!.taskDao().deleteAllUnderGroundMappingReport()
             }
         }
 
-        fun callOcReportObserver(ctx: Context): List<OpenCastMappingReport> {
+        fun callOcReportObserver(ctx: Context): ArrayList<OpenCastMappingReport> {
             DB = getDataBase(ctx)
             var list = ArrayList<OpenCastMappingReport>()
-            DB?.taskDao()?.geAllOpenCastMappingReport()?.observe(ctx as LifecycleOwner) { lists ->
-                list = lists as ArrayList<OpenCastMappingReport>
-                DB!!.taskDao().geAllOpenCastMappingReport().removeObserver {}
+            GeoMapDatabase.databaseWriteExecutor.execute {
+                list = DB.taskDao().geAllOpenCastMappingReport() as ArrayList<OpenCastMappingReport>
+
+                Log.e("List OpenCastMappingReport", "true" + gson.toJson(list).toString())
             }
             return list
         }
@@ -53,41 +50,42 @@ class DataBaseFunctions {
         fun saveOCReport(obj: OpenCastMappingReport, ctx: Context) {
             DB = getDataBase(ctx)
             GeoMapDatabase.databaseWriteExecutor.execute {
-                DB!!.taskDao()?.insertOCReport(obj)
+                DB!!.taskDao().insertOCReport(obj)
             }
         }
 
         fun deleteOCReport(ctx: Context) {
             DB = getDataBase(ctx)
             GeoMapDatabase.databaseWriteExecutor.execute {
-                DB!!.taskDao()?.deleteAllOpenCastMappingReport()
+                DB!!.taskDao().deleteAllOpenCastMappingReport()
             }
         }
 
-        fun callAttributeDataObserver(ctx: Context): List<AttributeData> {
+        fun callAttributeDataObserver(ctx: Context): ArrayList<AttributeData> {
             DB = getDataBase(ctx)
             var list = ArrayList<AttributeData>()
-            DB?.taskDao()?.geAllAttributeData()?.observe(ctx as LifecycleOwner) { lists ->
-                list = lists as ArrayList<AttributeData>
-                DB!!.taskDao().geAllAttributeData().removeObserver {}
+            GeoMapDatabase.databaseWriteExecutor.execute {
+                list = DB.taskDao().geAllAttributeData() as ArrayList<AttributeData>
+
+                Log.e("List AttributeData", "true" + gson.toJson(list).toString())
             }
             return list
         }
 
-
-
         fun saveAttributeData(obj: AttributeData, ctx: Context) {
             DB = getDataBase(ctx)
             GeoMapDatabase.databaseWriteExecutor.execute {
-                DB!!.taskDao()?.insertAttributeData(obj)
+                DB!!.taskDao().insertAttributeData(obj)
             }
         }
 
-        fun callNosObserver(ctx: Context,attributeId:String): List<Nos> {
+        fun callNosObserver(ctx: Context, attributeId: Int): ArrayList<Nos> {
             DB = getDataBase(ctx)
             var list = ArrayList<Nos>()
-            DB?.taskDao()?.geAllNos(attributeId)?.observe(ctx as LifecycleOwner) { lists ->
-                list = lists as ArrayList<Nos>
+            GeoMapDatabase.databaseWriteExecutor.execute {
+                list = DB.taskDao().geAllNos(attributeId) as ArrayList<Nos>
+
+                Log.e("List Nos", "true" + gson.toJson(list).toString())
             }
             return list
         }
@@ -95,70 +93,67 @@ class DataBaseFunctions {
         fun saveNos(nos: Nos, ctx: Context) {
             DB = getDataBase(ctx)
             GeoMapDatabase.databaseWriteExecutor.execute {
-                DB!!.taskDao()?.insertNos(nos)
+                DB!!.taskDao().insertNos(nos)
             }
         }
 
-        fun callSampleCollectedObserver(ctx: Context): List<SampleCollected> {
+        fun callSampleCollectedObserver(responseData: UserCommonDataModel.ResponseData,
+            ctx: Context) {
             DB = getDataBase(ctx)
             var list = ArrayList<SampleCollected>()
-            DB?.taskDao()?.geAllSampleCollected()?.observe(ctx as LifecycleOwner) { lists ->
-                list = lists as ArrayList<SampleCollected>
-                DB!!.taskDao().geAllSampleCollected().removeObserver {}
+            GeoMapDatabase.databaseWriteExecutor.execute {
+                list = DB?.taskDao()?.geAllSampleCollected() as ArrayList<SampleCollected>
+                callSampleCollectedSave(list, responseData, ctx)
             }
-            return list
         }
 
         fun saveSampleCollected(obj: SampleCollected, ctx: Context) {
             DB = getDataBase(ctx)
             GeoMapDatabase.databaseWriteExecutor.execute {
-                DB!!.taskDao()?.insertSampleCollected(obj)
+                DB!!.taskDao().insertSampleCollected(obj)
             }
         }
 
-        fun callWeatheringDataObserver(ctx: Context): List<WeatheringData> {
+        fun callWeatheringDataObserver(ctx: Context): ArrayList<WeatheringData> {
             DB = getDataBase(ctx)
             var list = ArrayList<WeatheringData>()
-            DB?.taskDao()?.geAllWeatheringData()?.observe(ctx as LifecycleOwner) { lists ->
-                list = lists as ArrayList<WeatheringData>
-                DB!!.taskDao().geAllWeatheringData().removeObserver {}
+            GeoMapDatabase.databaseWriteExecutor.execute {
+                list = DB.taskDao().geAllWeatheringData() as ArrayList<WeatheringData>
+
+                Log.e("List WeatheringData", "true" + gson.toJson(list).toString())
             }
             return list
         }
-     //   UndergroundReport: [ { "name": "test","shift": "test shift","mappedBy": "test map","scale": "2*3","location": "test loc","venieLoad": "test load","xCordinate": "85","yCordinate": "88","zCordinate": "88","comment": "test conten","mapSerialNo": "123","ugDate": "1-Nov-2022","leftImage": "bfvbdf","roofImage": "nuvfxll","rightImage": "nvxvull","faceImage": "nvxvull","userId": "1","attribute": "[ {"undergroundId": 1,"name": "test","nose": "test nose",  "properties": "dssdv"},{"undergroundId": 1,"name": "test","nose": "test nose",  "properties": "dssdv"},{"undergroundId": 1,"name": "test","nose": "test nose",  "properties": "dssdv"}]" }]
-      //  OpenCastReport:[{"minesSiteName": "test name","mappingSheetNo": "12312","pitName": "9797","pitLoaction": "gkgk","shiftInchargeName": "gkjggkjg","geologistName": "jgjgkjgkjg","mappingParameter": "jgjkgkjgjkgjk","faceLocation": "gjkgkjgjg","faceLength": "gjhgg","faceArea": "gjhk","faceRockType": "kjgjgjgjg","benchRl": "jkgjgjkgkjgkj","benchHeightWidth": "gjkgkjgjgj","benchAngle": "gkjgjk","thicknessOfOre": "jgjkgj","thicknessOfOverburdan": "gkjgkjgkjgkjgjgjg","thicknessOfInterburden": "jg","observedGradeOfOre": "jgkjgkjgkjg","sampleColledted": "jhg","actualGradeOfOre": "jghkj","weathring": "jhgjk","rockStregth": "jgkjkkggg","waterCondition": "5+5","typeOfGeologist": "564","typeOfFaults": "456564","shift": "Day Shift","ocDate": "1-Nov-2022","userId": "1","dipDirectionAndAngle": "mbmbm","geologistSign": "mnbnmnbmnbm","clientsGeologistSign": "" }]
 
         fun saveWeatheringData(obj: WeatheringData, ctx: Context) {
             DB = getDataBase(ctx)
             GeoMapDatabase.databaseWriteExecutor.execute {
-                DB!!.taskDao()?.insertWeatheringData(obj)
+                DB!!.taskDao().insertWeatheringData(obj)
             }
         }
 
-        fun callRockStrengthObserver(ctx: Context): List<RockStrength> {
+        fun callRockStrengthObserver(responseData: UserCommonDataModel.ResponseData, ctx: Context) {
             DB = getDataBase(ctx)
-            var list = ArrayList<RockStrength>()
-            DB?.taskDao()?.geAllRockStrength()?.observe(ctx as LifecycleOwner) { lists ->
-                list = lists as ArrayList<RockStrength>
-                DB!!.taskDao().geAllRockStrength().removeObserver {}
+            var listRockStrength: ArrayList<RockStrength>
+            GeoMapDatabase.databaseWriteExecutor.execute {
+                listRockStrength = DB.taskDao().geAllRockStrength() as ArrayList<RockStrength>
+                callRockStrengthSave(listRockStrength, responseData, ctx)
             }
-            return list
         }
-
 
         fun saveRockStrength(obj: RockStrength, ctx: Context) {
             DB = getDataBase(ctx)
             GeoMapDatabase.databaseWriteExecutor.execute {
-                DB!!.taskDao()?.insertRockStrength(obj)
+                DB!!.taskDao().insertRockStrength(obj)
             }
         }
 
-        fun callWaterConditionObserver(ctx: Context): List<WaterCondition> {
+        fun callWaterConditionObserver(ctx: Context): ArrayList<WaterCondition> {
             DB = getDataBase(ctx)
             var list = ArrayList<WaterCondition>()
-            DB?.taskDao()?.geAllWaterCondition()?.observe(ctx as LifecycleOwner) { lists ->
-                list = lists as ArrayList<WaterCondition>
-                DB!!.taskDao().geAllWaterCondition().removeObserver {}
+            GeoMapDatabase.databaseWriteExecutor.execute {
+                list = DB.taskDao().geAllWaterCondition() as ArrayList<WaterCondition>
+                Log.e("List WaterCondition", "true" + gson.toJson(list).toString())
             }
             return list
         }
@@ -166,17 +161,17 @@ class DataBaseFunctions {
         fun saveWaterCondition(obj: WaterCondition, ctx: Context) {
             DB = getDataBase(ctx)
             GeoMapDatabase.databaseWriteExecutor.execute {
-                DB!!.taskDao()?.insertWaterCondition(obj)
+                DB!!.taskDao().insertWaterCondition(obj)
             }
         }
 
-        fun callTypeOfGeologicalStructuresObserver(ctx: Context): List<TypeOfGeologicalStructures> {
+        fun callTypeOfGeologicalStructuresObserver(
+            ctx: Context): ArrayList<TypeOfGeologicalStructures> {
             DB = getDataBase(ctx)
             var list = ArrayList<TypeOfGeologicalStructures>()
-            DB?.taskDao()?.geAllTypeOfGeologicalStructures()?.observe(
-                ctx as LifecycleOwner) { lists ->
-                list = lists as ArrayList<TypeOfGeologicalStructures>
-                DB!!.taskDao().geAllTypeOfGeologicalStructures().removeObserver {}
+            GeoMapDatabase.databaseWriteExecutor.execute {
+                list = DB.taskDao().geAllTypeOfGeologicalStructures() as ArrayList<TypeOfGeologicalStructures>
+                Log.e("List TypeOfGeologicalStructures", "true" + gson.toJson(list).toString())
             }
             return list
         }
@@ -184,30 +179,21 @@ class DataBaseFunctions {
         fun saveTypeOfGeologicalStructures(obj: TypeOfGeologicalStructures, ctx: Context) {
             DB = getDataBase(ctx)
             GeoMapDatabase.databaseWriteExecutor.execute {
-                DB!!.taskDao()?.insertTypeOfGeologicalStructures(obj)
+                DB!!.taskDao().insertTypeOfGeologicalStructures(obj)
             }
         }
 
-        fun callTypeOfFaultsObserver(ctx: Context): List<TypeOfFaults> {
+        fun callTypeOfFaultsObserver(ctx: Context, responseData: UserCommonDataModel.ResponseData) {
             DB = getDataBase(ctx)
             var list = ArrayList<TypeOfFaults>()
-            DB?.taskDao()?.geAllTypeOfFaults()?.observe(ctx as LifecycleOwner) { lists ->
-                list = lists as ArrayList<TypeOfFaults>
-                DB!!.taskDao().geAllTypeOfFaults().removeObserver {}
-            }
-            return list
-        }
-
-        fun saveTypeOfFaults(obj: TypeOfFaults, ctx: Context) {
-            DB = getDataBase(ctx)
             GeoMapDatabase.databaseWriteExecutor.execute {
-                DB!!.taskDao()?.insertTypeOfFaults(obj)
+                list = DB?.taskDao()?.geAllTypeOfFaults() as ArrayList<TypeOfFaults>
+                callTypeOfFaultsSave(list, responseData, ctx)
             }
         }
 
-        fun callLocalDBGetAndInsertFunction(responseData: UserCommonDataModel.ResponseData,
-            ctx: Context) {
-            val listTypeOfFaults = callTypeOfFaultsObserver(ctx)
+        fun callTypeOfFaultsSave(listTypeOfFaults: ArrayList<TypeOfFaults>,
+            responseData: UserCommonDataModel.ResponseData, ctx: Context) {
             if (listTypeOfFaults.isEmpty()) {
                 for (i in responseData.typeOfFaults!!.indices) {
                     val obj = TypeOfFaults()
@@ -217,6 +203,9 @@ class DataBaseFunctions {
                     obj.updateDate = responseData.typeOfFaults!![i].updatedAt
                     saveTypeOfFaults(obj, ctx)
                     Log.e("savetypeOfFaults", "true")
+                    if (i == responseData.typeOfFaults!!.size - 1) {
+                        callRockStrengthObserver(responseData, ctx)
+                    }
                 }
             } else {
                 for (i in responseData.typeOfFaults!!.indices) {
@@ -225,14 +214,23 @@ class DataBaseFunctions {
                     obj.name = responseData.typeOfFaults!![i].name
                     obj.createDate = responseData.typeOfFaults!![i].createdAt
                     obj.updateDate = responseData.typeOfFaults!![i].updatedAt
-                    if (!listTypeOfFaults.contains(obj)) {
-                        saveTypeOfFaults(obj, ctx)
-
-                        Log.e("savetypeOfFaults", "true   " + obj.name)
+                    for (j in listTypeOfFaults.indices) {
+                        if (listTypeOfFaults[j].iD == obj.iD) {
+                            break
+                        } else if (j == listTypeOfFaults.size - 1) {
+                            saveTypeOfFaults(obj, ctx)
+                            Log.e("savetypeOfFaults", "true   " + obj.name)
+                        }
+                    }
+                    if (i == responseData.typeOfFaults!!.size - 1) {
+                        callRockStrengthObserver(responseData, ctx)
                     }
                 }
             }
-            val listRockStrength = callRockStrengthObserver(ctx)
+        }
+
+        fun callRockStrengthSave(listRockStrength: ArrayList<RockStrength>,
+            responseData: UserCommonDataModel.ResponseData, ctx: Context) {
             if (listRockStrength.isEmpty()) {
                 for (i in responseData.rockStrength!!.indices) {
                     val obj = RockStrength()
@@ -242,6 +240,9 @@ class DataBaseFunctions {
                     obj.updateDate = responseData.rockStrength!![i].updatedAt
                     saveRockStrength(obj, ctx)
                     Log.e("saveRockStrength", "true")
+                    if (i == responseData.rockStrength!!.size - 1) {
+                        callSampleCollectedObserver(responseData, ctx)
+                    }
                 }
             } else {
                 for (i in responseData.rockStrength!!.indices) {
@@ -250,15 +251,22 @@ class DataBaseFunctions {
                     obj.name = responseData.rockStrength!![i].name
                     obj.createDate = responseData.rockStrength!![i].createdAt
                     obj.updateDate = responseData.rockStrength!![i].updatedAt
-
-                    if (!listRockStrength.contains(obj)) {
-                        saveRockStrength(obj, ctx)
-                        Log.e("saveRockStrength", "true   " + obj.name)
+                    for (j in listRockStrength.indices) {
+                        if (listRockStrength[j].iD == obj.iD) {
+                            break
+                        } else if (j == listRockStrength.size - 1) {
+                            saveRockStrength(obj, ctx)
+                            Log.e("saveRockStrength", "true   " + obj.name)
+                        }
+                    }
+                    if (i == responseData.rockStrength!!.size - 1) { //      callRockOb(responseData, ctx)
                     }
                 }
             }
+        }
 
-            val listSampleCollected = callSampleCollectedObserver(ctx)
+        fun callSampleCollectedSave(listSampleCollected: ArrayList<SampleCollected>,
+            responseData: UserCommonDataModel.ResponseData, ctx: Context) {
             if (listSampleCollected.isEmpty()) {
                 for (i in responseData.sampleCollected!!.indices) {
                     val obj = SampleCollected()
@@ -268,6 +276,9 @@ class DataBaseFunctions {
                     obj.updateDate = responseData.sampleCollected!![i].updatedAt
                     saveSampleCollected(obj, ctx)
                     Log.e("saveSampleCollected", "true")
+                    if (i == responseData.sampleCollected!!.size - 1) {
+                        callSampleCollectedObserver(responseData, ctx)
+                    }
                 }
             } else {
                 for (i in responseData.sampleCollected!!.indices) {
@@ -283,6 +294,20 @@ class DataBaseFunctions {
                     }
                 }
             }
+        }
+
+        fun saveTypeOfFaults(obj: TypeOfFaults, ctx: Context) {
+            DB = getDataBase(ctx)
+            GeoMapDatabase.databaseWriteExecutor.execute {
+                DB!!.taskDao().insertTypeOfFaults(obj)
+            }
+        }
+
+        fun callLocalDBGetAndInsertFunction(responseData: UserCommonDataModel.ResponseData,
+            ctx: Context) {
+            DB = getDataBase(ctx)
+
+            callTypeOfFaultsObserver(ctx, responseData)
             val listTypeOfGeologicalStructures = callTypeOfGeologicalStructuresObserver(ctx)
             if (listTypeOfGeologicalStructures.isEmpty()) {
                 for (i in responseData.typeOfGeologicalStructures!!.indices) {
@@ -358,7 +383,6 @@ class DataBaseFunctions {
                     }
                 }
             }
-
             val listAttributeData = callAttributeDataObserver(ctx)
             if (listAttributeData.isEmpty()) {
                 for (i in responseData.attributeData!!.indices) {
@@ -405,6 +429,6 @@ class DataBaseFunctions {
                 }
             }
         }
-    }
 
+    }
 }
