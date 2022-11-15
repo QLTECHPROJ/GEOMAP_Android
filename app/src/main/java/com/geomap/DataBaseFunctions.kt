@@ -83,7 +83,7 @@ class DataBaseFunctions {
             DB = getDataBase(ctx)
             var list = ArrayList<Nos>()
             GeoMapDatabase.databaseWriteExecutor.execute {
-                list = DB.taskDao().geAllNos(attributeId) as ArrayList<Nos>
+                list = DB.taskDao().geAllNos(attributeId.toString()) as ArrayList<Nos>
 
                 Log.e("List Nos", "true" + gson.toJson(list).toString())
             }

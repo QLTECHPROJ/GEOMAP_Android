@@ -295,7 +295,7 @@ public class GeoMapApp extends Application {
         editor1.putString(CONSTANTS.typeOfGeologicalStructures, gson.toJson(responseData.getTypeOfGeologicalStructures()));
         editor1.putString(CONSTANTS.typeOfFaults, gson.toJson(responseData.getTypeOfFaults()));
         editor1.apply();
-        DataBaseFunctions.Companion.callLocalDBGetAndInsertFunction(responseData, ctx);
+//        DataBaseFunctions.Companion.callLocalDBGetAndInsertFunction(responseData, ctx);
 
         if (flag.equalsIgnoreCase("1")) {
             callDashboardActivity(act, "0");

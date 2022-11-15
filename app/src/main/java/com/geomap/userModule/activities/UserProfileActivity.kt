@@ -62,10 +62,10 @@ class UserProfileActivity : AppCompatActivity() {
     private lateinit var binding : ActivityUserProfileBinding
     private lateinit var ctx : Context
     private lateinit var act : Activity
-    var name : String? = ""
-    var email : String? = ""
-    var mobileNo : String? = ""
-    var dob : String? = ""
+    var name : String? = null
+    var email : String? = null
+    var mobileNo : String? = null
+    var dob : String? = null
     private var id : String? = null
     private var userId : String? = null
     private var profileImage : String? = null
@@ -76,7 +76,7 @@ class UserProfileActivity : AppCompatActivity() {
     private var ageYear : Int = 0
     private var ageMonth : Int = 0
     private var ageDate : Int = 0
-    private var profilePicPath : String? = ""
+    private var profilePicPath : String? = null
     private var typedFile : TypedFile? = null
     private var mRequestPermissionHandler : RequestPermissionHandler? = null
     private var deleteDialog : Dialog? = null
@@ -106,6 +106,10 @@ class UserProfileActivity : AppCompatActivity() {
                     allDisable(binding.btnUpdate)
                 }
 
+                typedFile == null -> {
+                    allDisable(binding.btnUpdate)
+                }
+
                 else -> {
                     enableButton()
                 }
@@ -123,6 +127,7 @@ class UserProfileActivity : AppCompatActivity() {
 
         val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
         userId = shared.getString(CONSTANTS.userId, "")
+        mRequestPermissionHandler = RequestPermissionHandler()
 
         binding.llBack.setOnClickListener {
             onBackPressed()
@@ -201,11 +206,6 @@ class UserProfileActivity : AppCompatActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        prepareData()
-    }
-
     private fun deleteAcCall() {
         deleteCall(ctx)
         callDeleteAcApi()
@@ -244,6 +244,9 @@ class UserProfileActivity : AppCompatActivity() {
             .matches()
     }
 
+
+
+
     private fun prepareUpdateData() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
@@ -255,27 +258,23 @@ class UserProfileActivity : AppCompatActivity() {
                 object : retrofit.Callback<ProfileUpdateModel> {
                     override fun success(model : ProfileUpdateModel,
                         response : retrofit.client.Response) {
-                        try {
-                            if (model.responseCode.equals(
-                                    ctx.getString(R.string.ResponseCodesuccess))) {
-                                hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                                showToast(model.responseMessage, act)
-                                val shared1 =
-                                    getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA,
-                                        Context.MODE_PRIVATE)
-                                val editor1 = shared1.edit()
-                                editor1.putString(
-                                    CONSTANTS.profileImage, model.responseData?.profileImage
-                                )
-                                editor1.apply()
-                                prepareData()
-                                finish()
-                            } else if (model.responseCode.equals(
-                                    ctx.getString(R.string.ResponseCodeDeleted))) {
-                                callDelete403(act, model.responseMessage)
-                            }
-                        } catch (e : Exception) {
-                            e.printStackTrace()
+                        if (model.responseCode.equals(
+                                ctx.getString(R.string.ResponseCodesuccess))) {
+                            hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                            showToast(model.responseMessage, act)
+                            val shared1 =
+                                getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA,
+                                    Context.MODE_PRIVATE)
+                            val editor1 = shared1.edit()
+                            editor1.putString(
+                                CONSTANTS.profileImage, model.responseData?.profileImage
+                            )
+                            editor1.apply()
+                            prepareData()
+                            finish()
+                        } else if (model.responseCode.equals(
+                                ctx.getString(R.string.ResponseCodeDeleted))) {
+                            callDelete403(act, model.responseMessage)
                         }
                     }
 
@@ -389,7 +388,7 @@ class UserProfileActivity : AppCompatActivity() {
                 enableButton()
             }
         } else if (requestCode == Activity.RESULT_CANCELED) {
-            act.finish()
+            finish()
         }
     }
 
@@ -611,7 +610,7 @@ Tap Setting > permission, and turn "Files and media" on."""
                 ageMonth = monthOfYear
                 ageDate = dayOfMonth
                 birthYear = getAge(ageYear, ageMonth, ageDate)
-                if (birthYear < 3) {
+                if (birthYear < 18) {
                     binding.etDob.isFocusable = true
                     binding.etDob.requestFocus()
                     binding.ltDob.isErrorEnabled = true

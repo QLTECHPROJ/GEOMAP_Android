@@ -25,7 +25,7 @@
     <string name="not_now">Not Now</string>
     <string name="pls_provide_valid_email">Please provide a valid email address</string>
     <string name="pls_provide_valid_password">Password should contain at least one uppercase, one lowercase, one special symbol and minimum 8 character long</string>
-    <string name="check_dob">Please confirm whether you are above 3 years old</string>
+    <string name="check_dob">Please confirm whether you are above 18 years old</string>
     <string name="underground_report_list">Underground Report List</string>
     <string name="opencast_report_list">OpenCast Report List</string>
     <string name="edit_profile">Edit Profile</string>

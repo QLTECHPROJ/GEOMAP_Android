@@ -68,6 +68,29 @@ interface RetrofitService {
     @FormUrlEncoded
     fun getORViewAlllisting(@Field("userId") userId : String?) : Call<DashboardViewAllModel>
 
+    @POST("underground_insert")
+    @FormUrlEncoded
+    fun postUndergroundInsert(
+        @Field("userId") userId : String?,
+        @Field("name") name : String?,
+        @Field("shift") shift : String?,
+        @Field("mappedBy") mappedBy : String?,
+        @Field("scale") scale : String?,
+        @Field("location") location : String?,
+        @Field("venieLoad") venieLoad : String?,
+        @Field("xCordinate") xCordinate : String?,
+        @Field("yCordinate") yCordinate : String?,
+        @Field("zCordinate") zCordinate : String?,
+        @Field("comment") comment : String?,
+        @Field("mapSerialNo") mapSerialNo : String?,
+        @Field("ugDate") ugDate : String?,
+        @Field("leftImage") leftImage : String?,
+        @Field("roofImage") roofImage : String?,
+        @Field("rightImage") rightImage : String?,
+        @Field("faceImage") faceImage : String?,
+        @Field("attribute") attribute : String?
+    ) : Call<SuccessModel>
+
     @POST("open_cast_insert")
     @FormUrlEncoded
     fun postOpenCastInsert(
