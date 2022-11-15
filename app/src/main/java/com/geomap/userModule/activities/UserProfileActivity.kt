@@ -106,10 +106,6 @@ class UserProfileActivity : AppCompatActivity() {
                     allDisable(binding.btnUpdate)
                 }
 
-                typedFile == null -> {
-                    allDisable(binding.btnUpdate)
-                }
-
                 else -> {
                     enableButton()
                 }

@@ -69,7 +69,14 @@ class OpenCastListActivity : AppCompatActivity() {
                             val model : DashboardViewAllModel? = response.body()!!
                             when (model!!.responseCode) {
                                 getString(R.string.ResponseCodesuccess) -> {
-                                    binding.rvOpenCastList.visibility = View.VISIBLE
+                                    if (model.responseData!!.isEmpty()) {
+                                        binding.rvOpenCastList.visibility = View.GONE
+                                        binding.tvFound.visibility = View.VISIBLE
+                                    } else {
+                                        binding.rvOpenCastList.visibility = View.VISIBLE
+                                        binding.tvFound.visibility = View.GONE
+
+                                    }
                                     openCastListAdapter =
                                         OpenCastListAdapter(model.responseData!!)
                                     binding.rvOpenCastList.adapter = openCastListAdapter

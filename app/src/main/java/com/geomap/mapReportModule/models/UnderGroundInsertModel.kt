@@ -1,5 +1,7 @@
 package com.geomap.mapReportModule.models
 
+import retrofit.mime.TypedFile
+
 data class UnderGroundInsertModel(
     var minesSiteName : String? = null,
     var name : String? = null,
@@ -14,9 +16,9 @@ data class UnderGroundInsertModel(
     var comment : String? = null,
     var mapSerialNo : String? = null,
     var ugDate : String? = null,
-    var leftImage : String? = null,
-    var roofImage : String? = null,
-    var rightImage : String? = null,
-    var faceImage : String? = null,
+    var leftImage : TypedFile? = null,
+    var roofImage : TypedFile? = null,
+    var rightImage : TypedFile? = null,
+    var faceImage : TypedFile? = null,
     var attribute : String? = null
 )

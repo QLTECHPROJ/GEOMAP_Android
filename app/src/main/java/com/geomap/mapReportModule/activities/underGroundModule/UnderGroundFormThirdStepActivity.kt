@@ -9,8 +9,10 @@ import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundFormThirdStepBinding
 import com.geomap.mapReportModule.models.SuccessModel
+import com.geomap.utils.APIClientProfile
 import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
+import retrofit.RetrofitError
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,28 +44,33 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
 
     private fun postUndergroundInsert() {
         if (isNetworkConnected(ctx)) {
-            RetrofitService.getInstance().postUndergroundInsert(
+//            addJpgSignatureToGallery(binding.signPad.signatureBitmap)
+            showProgressBar(binding.progressBar, binding.progressBarHolder, act)
+            APIClientProfile.apiService!!.postUndergroundInsert(
                 userId, "", "", "", "", "",
                 "", "", "", "", "",
                 "", "", "", "", "",
                 "", ""
-            ).enqueue(object : Callback<SuccessModel?> {
-                override fun onResponse(call : Call<SuccessModel?>,
-                    response : Response<SuccessModel?>) {
-                    val model = response.body()
-                    if (model!!.responseCode.equals(
-                            getString(R.string.ResponseCodesuccess))) {
-                        hideProgressBar(binding.progressBar, binding.progressBarHolder,
-                            act)
-                        showToast(model.responseMessage, act)
-                        finish()
+                ,
+                object : retrofit.Callback<SuccessModel> {
+                    override fun success(model : SuccessModel,
+                        response : retrofit.client.Response) {
+                        if (model.responseCode.equals(
+                                ctx.getString(R.string.ResponseCodesuccess))) {
+                            hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                            showToast(model.responseMessage, act)
+                            finish()
+                        } else if (model.responseCode.equals(
+                                ctx.getString(R.string.ResponseCodeDeleted))) {
+                            callDelete403(act, model.responseMessage)
+                        }
                     }
-                }
 
-                override fun onFailure(call : Call<SuccessModel?>, t : Throwable) {
-                    hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                }
-            })
+                    override fun failure(e : RetrofitError) {
+                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                        showToast(e.message, act)
+                    }
+                })
         } else {
             showToast(getString(R.string.no_server_found), act)
         }

@@ -1,5 +1,7 @@
 package com.geomap.mapReportModule.models
 
+import retrofit.mime.TypedFile
+
 data class OpenCastInsertModel(
     var minesSiteName : String? = null,
     var sheetNo : String? = null,
@@ -29,7 +31,7 @@ data class OpenCastInsertModel(
     var typeOfFaults : String? = null,
     var shift : String? = null,
     var notes : String? = null,
-    var image : String? = null,
-    var geologistSign : String? = null,
-    var clientsGeologistSign : String? = null
+    var image : TypedFile? = null,
+    var geologistSign : TypedFile? = null,
+    var clientsGeologistSign : TypedFile? = null
 )

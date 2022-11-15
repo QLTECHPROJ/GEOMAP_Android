@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
+import android.text.method.PasswordTransformationMethod
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.geomap.GeoMapApp.*
 import com.geomap.R
@@ -46,8 +48,12 @@ class SignInActivity : AppCompatActivity() {
 
             if (password!!.isNotEmpty()) {
                 binding.ivLock.setImageResource(R.drawable.ic_password_filled_icon)
+                binding.ltPassword.endIconDrawable =
+                    ContextCompat.getDrawable(ctx, R.drawable.visibility_state_color)
             } else {
                 binding.ivLock.setImageResource(R.drawable.ic_password_unfilled_icon)
+                binding.ltPassword.endIconDrawable =
+                    ContextCompat.getDrawable(ctx, R.drawable.visibility_state)
             }
         }
 
@@ -62,6 +68,7 @@ class SignInActivity : AppCompatActivity() {
 
         binding.etName.addTextChangedListener(userTextWatcher)
         binding.etPassword.addTextChangedListener(userTextWatcher)
+        binding.etPassword.transformationMethod = PasswordTransformationMethod()
 
         binding.btnSignIn.setOnClickListener {
             if (!isValidPassword(binding.etPassword.text.toString())) {
@@ -103,7 +110,7 @@ class SignInActivity : AppCompatActivity() {
                             val model : UserCommonDataModel? = response.body()!!
                             when (model!!.responseCode) {
                                 getString(R.string.ResponseCodesuccess) -> {
-                                    saveLoginData(model.responseData, ctx,"1",act)
+                                    saveLoginData(model.responseData, ctx, "1", act)
                                 }
                                 getString(R.string.ResponseCodefail) -> {
                                     showToast(model.responseMessage, act)

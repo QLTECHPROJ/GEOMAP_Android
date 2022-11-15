@@ -68,65 +68,6 @@ interface RetrofitService {
     @FormUrlEncoded
     fun getORViewAlllisting(@Field("userId") userId : String?) : Call<DashboardViewAllModel>
 
-    @POST("underground_insert")
-    @FormUrlEncoded
-    fun postUndergroundInsert(
-        @Field("userId") userId : String?,
-        @Field("name") name : String?,
-        @Field("shift") shift : String?,
-        @Field("mappedBy") mappedBy : String?,
-        @Field("scale") scale : String?,
-        @Field("location") location : String?,
-        @Field("venieLoad") venieLoad : String?,
-        @Field("xCordinate") xCordinate : String?,
-        @Field("yCordinate") yCordinate : String?,
-        @Field("zCordinate") zCordinate : String?,
-        @Field("comment") comment : String?,
-        @Field("mapSerialNo") mapSerialNo : String?,
-        @Field("ugDate") ugDate : String?,
-        @Field("leftImage") leftImage : String?,
-        @Field("roofImage") roofImage : String?,
-        @Field("rightImage") rightImage : String?,
-        @Field("faceImage") faceImage : String?,
-        @Field("attribute") attribute : String?
-    ) : Call<SuccessModel>
-
-    @POST("open_cast_insert")
-    @FormUrlEncoded
-    fun postOpenCastInsert(
-        @Field("userId") userId : String?,
-        @Field("minesSiteName") minesSiteName : String?,
-        @Field("mappingSheetNo") mappingSheetNo : String?,
-        @Field("pitName") pitName : String?,
-        @Field("pitLoaction") pitLoaction : String?,
-        @Field("shiftInchargeName") shiftInchargeName : String?,
-        @Field("geologistName") geologistName : String?,
-        @Field("faceLocation") faceLocation : String?,
-        @Field("faceLength") faceLength : String?,
-        @Field("faceArea") faceArea : String?,
-        @Field("faceRockType") faceRockType : String?,
-        @Field("benchRl") benchRl : String?,
-        @Field("benchHeightWidth") benchHeightWidth : String?,
-        @Field("benchAngle") benchAngle : String?,
-        @Field("thicknessOfOre") thicknessOfOre : String?,
-        @Field("thicknessOfOverburdan") thicknessOfOverburdan : String?,
-        @Field("thicknessOfInterburden") thicknessOfInterburden : String?,
-        @Field("observedGradeOfOre") observedGradeOfOre : String?,
-        @Field("actualGradeOfOre") actualGradeOfOre : String?,
-        @Field("sampleColledted") sampleColledted : String?,
-        @Field("weathring") weathring : String?,
-        @Field("rockStregth") rockStregth : String?,
-        @Field("waterCondition") waterCondition : String?,
-        @Field("typeOfGeologist") typeOfGeologist : String?,
-        @Field("typeOfFaults") typeOfFaults : String?,
-        @Field("notes") notes : String?,
-        @Field("shift") shift : String?,
-        @Field("ocDate") ocDate : String?,
-        @Field("dipDirectionAndAngle") dipDirectionAndAngle : String?,
-        @Field("image") image : String?,
-        @Field("geologistSign") geologistSign : String?,
-        @Field("clientsGeologistSign") clientsGeologistSign : String?) : Call<SuccessModel>
-
     @POST("ur_detail")
     @FormUrlEncoded
     fun getUnderGroundDetails(@Field("id") id : String?) : Call<UnderGroundDetailsModel>

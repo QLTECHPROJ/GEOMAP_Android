@@ -69,7 +69,14 @@ class UnderGroundListActivity : AppCompatActivity() {
                             val model : DashboardViewAllModel? = response.body()!!
                             when (model!!.responseCode) {
                                 getString(R.string.ResponseCodesuccess) -> {
-                                    binding.rvUnderGroundList.visibility = View.VISIBLE
+                                    if(model.responseData!!.isEmpty()){
+                                        binding.rvUnderGroundList.visibility = View.GONE
+                                        binding.tvFound.visibility = View.VISIBLE
+                                    }else {
+                                        binding.rvUnderGroundList.visibility = View.VISIBLE
+                                        binding.tvFound.visibility = View.GONE
+
+                                    }
                                     underGroundListAdapter = UnderGroundListAdapter(
                                         model.responseData!!)
                                     binding.rvUnderGroundList.adapter = underGroundListAdapter

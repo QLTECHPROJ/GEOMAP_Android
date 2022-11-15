@@ -77,7 +77,6 @@
                         android:layout_weight="0.5"
                         android:fontFamily="@font/inter_semi_bold"
                         android:gravity="end"
-                        android:text="14 July 2022"
                         android:textColor="@color/light_black"
                         android:textSize="@dimen/_12sdp"
                         tools:ignore="SpUsage" />
@@ -1037,7 +1036,7 @@
                                 android:fontFamily="@font/inter_semi_bold"
                                 android:gravity="center_vertical"
                                 android:text="@string/sample_collected"
-                                android:textColor="@color/light_black"
+                                android:textColor="@color/gray"
                                 android:textSize="@dimen/_16sdp"
                                 tools:ignore="SpUsage" />
 
@@ -1158,7 +1157,7 @@
                                 android:fontFamily="@font/inter_semi_bold"
                                 android:gravity="center_vertical"
                                 android:text="@string/weathering_"
-                                android:textColor="@color/light_black"
+                                android:textColor="@color/gray"
                                 android:textSize="@dimen/_16sdp"
                                 tools:ignore="SpUsage" />
 
@@ -1233,7 +1232,7 @@
                                 android:fontFamily="@font/inter_semi_bold"
                                 android:gravity="center_vertical"
                                 android:text="@string/rock_strength_"
-                                android:textColor="@color/light_black"
+                                android:textColor="@color/gray"
                                 android:textSize="@dimen/_16sdp"
                                 tools:ignore="SpUsage" />
 
@@ -1308,7 +1307,7 @@
                                 android:fontFamily="@font/inter_semi_bold"
                                 android:gravity="center_vertical"
                                 android:text="@string/water_condition_"
-                                android:textColor="@color/light_black"
+                                android:textColor="@color/gray"
                                 android:textSize="@dimen/_16sdp"
                                 tools:ignore="SpUsage" />
 
@@ -1383,7 +1382,7 @@
                                 android:fontFamily="@font/inter_semi_bold"
                                 android:gravity="center_vertical"
                                 android:text="@string/type_of_geological_structures_"
-                                android:textColor="@color/light_black"
+                                android:textColor="@color/gray"
                                 android:textSize="@dimen/_16sdp"
                                 tools:ignore="SpUsage" />
 
@@ -1458,7 +1457,7 @@
                                 android:fontFamily="@font/inter_semi_bold"
                                 android:gravity="center_vertical"
                                 android:text="@string/type_of_faults_"
-                                android:textColor="@color/light_black"
+                                android:textColor="@color/gray"
                                 android:textSize="@dimen/_16sdp"
                                 tools:ignore="SpUsage" />
 

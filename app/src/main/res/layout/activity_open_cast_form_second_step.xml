@@ -55,7 +55,7 @@
                     android:background="@drawable/text_bg"
                     android:gravity="center"
                     android:padding="@dimen/_2sdp"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <ImageView
                         android:layout_width="@dimen/_42sdp"
@@ -79,7 +79,7 @@
                     <com.github.gcacace.signaturepad.views.SignaturePad
                         android:id="@+id/signPad"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_220sdp"
+                        android:layout_height="@dimen/_240sdp"
                         android:padding="@dimen/_6sdp"
                         app:penColor="@android:color/black" />
 
@@ -95,7 +95,7 @@
                     android:enabled="false"
                     android:fontFamily="@font/inter_bold"
                     android:paddingHorizontal="@dimen/_20sdp"
-                    android:text="@string/clear_signature"
+                    android:text="@string/clear"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14sdp"
