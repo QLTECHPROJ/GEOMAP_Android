@@ -57,6 +57,8 @@
     <string name="undergrounds_mapping_report_details">Underground Mapping Report Details</string>
     <string name="opencast_mapping_report_details">OpenCast Mapping Report Details</string>
     <string name="geological_attributes">Geological Attributes</string>
+    <string name="select_attributes">Select Attributes</string>
+    <string name="select_nos">Select Nos</string>
     <string name="geological_mapping">Geological Mapping</string>
     <string name="email">Email</string>
     <string name="mobile_no">Mobile no</string>
@@ -189,4 +191,5 @@
     <string name="enter_mobile_no">Enter mobile no</string>
     <string name="enter_subject">Enter subject</string>
     <string name="enter_message">Enter message</string>
+    <string name="please_select_attribute">Please Select Attribute</string>
 </resources>

@@ -611,7 +611,7 @@ Tap Setting > permission, and turn "Files and media" on."""
                 ageMonth = monthOfYear
                 ageDate = dayOfMonth
                 birthYear = getAge(ageYear, ageMonth, ageDate)
-                if (birthYear < 3) {
+                if (birthYear < 18) {
                     binding.etDob.isFocusable = true
                     binding.etDob.requestFocus()
                     binding.ltDob.isErrorEnabled = true

@@ -19,16 +19,18 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.geomap.DataBaseFunctions.Companion.callAttributeDataObserver
-import com.geomap.DataBaseFunctions.Companion.callNosObserver
+import androidx.room.Room
+import com.geomap.DataBaseFunctions
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundFormFirstStepBinding
 import com.geomap.databinding.CommonPopupLayoutBinding
 import com.geomap.mapReportModule.models.AttributesListModel
 import com.geomap.roomDataBase.AttributeData
+import com.geomap.roomDataBase.GeoMapDatabase
 import com.geomap.roomDataBase.Nos
 import com.geomap.utils.RetrofitService
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -40,7 +42,7 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
     private lateinit var act: Activity
     private lateinit var dialog: Dialog
     lateinit var rvList: RecyclerView
-    lateinit var tvFound: TextView
+   lateinit var tvFound: TextView
     lateinit var pb: ProgressBar
     lateinit var pbh: FrameLayout
     lateinit var searchView: SearchView
@@ -120,9 +122,17 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
                     return false
                 }
             })
-            attributesAdapter = AttributesAdapter(dialog, binding,
-                attributeModel, rvList, tvFound)
-            rvList.adapter = attributesAdapter
+            if (attributeModel.isEmpty()) {
+                tvFound.visibility = View.VISIBLE
+                rvList.visibility = View.GONE
+                tvFound.text = getString(R.string.no_result_found)
+            } else {
+                tvFound.visibility = View.GONE
+                rvList.visibility = View.VISIBLE
+                attributesAdapter = AttributesAdapter(dialog, binding, attributeModel, rvList,
+                    tvFound, ctx)
+                rvList.adapter = attributesAdapter
+            }
             dialog.show()
             dialog.setCanceledOnTouchOutside(true)
             dialog.setCancelable(true)
@@ -136,16 +146,6 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
             tvTilte.text = getString(R.string.choose_your_nos)
             rvList.layoutManager = LinearLayoutManager(ctx)
 
-            if (nosModel.isEmpty()) {
-                tvFound.visibility = View.VISIBLE
-                rvList.visibility = View.GONE
-                tvFound.text = getString(R.string.no_result_found)
-            } else {
-                tvFound.visibility = View.GONE
-                rvList.visibility = View.VISIBLE
-                nosAdapter = NosAdapter(dialog, binding, nosModel, rvList, tvFound)
-                rvList.adapter = nosAdapter
-            }
             dialog.setOnKeyListener { _: DialogInterface?, keyCode: Int, _: KeyEvent? ->
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
                     dialog.dismiss()
@@ -177,7 +177,20 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
                     return false
                 }
             })
-
+            if (attributesId == 0) {
+                showToast("Please Select Attribute",act)
+            } else {
+                if (nosModel.isEmpty()) {
+                    tvFound.visibility = View.VISIBLE
+                    rvList.visibility = View.GONE
+                    tvFound.text = getString(R.string.no_result_found)
+                } else {
+                    tvFound.visibility = View.GONE
+                    rvList.visibility = View.VISIBLE
+                    nosAdapter = NosAdapter(dialog, binding, nosModel, rvList, tvFound, ctx)
+                    rvList.adapter = nosAdapter
+                }
+            }
             dialog.show()
             dialog.setCanceledOnTouchOutside(true)
             dialog.setCancelable(true)
@@ -233,39 +246,60 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
                 }
             })
         } else {
-            attributeList = callAttributeDataObserver(ctx)
-            Log.e("attributeList", attributeList.toString())
+            DB = Room.databaseBuilder(ctx, GeoMapDatabase::class.java, "GeoMap_database").build()
 
-            for (i in attributeList.indices) {
-
-                val obj = AttributesListModel.ResponseData()
-                obj.id = attributeList[i].iD
-                obj.name =attributeList[i].name
-
-                nosList = callNosObserver(ctx,attributeList[i].iD!!)
-
-                Log.e("nosList", nosList.toString())
-                for (j in nosList.indices) {
-                    val objNos = AttributesListModel.ResponseData.Nos()
-                    objNos.id = nosList[j].iD
-                    objNos.name = nosList[j].name
-                    objNos.attributeId = nosList[j].attributeId
-                    nosModel.add(objNos)
-                    obj.nosList!!.add(i,objNos)
-                }
-                attributeModel.add(obj)
-                Log.e("nos list response data", obj.nosList.toString())
-
+            GeoMapDatabase.databaseWriteExecutor.execute {
+                attributeList = DB.taskDao().geAllAttributeData() as ArrayList<AttributeData>
+                Log.e("List AttributeData",
+                    "true" + DataBaseFunctions.gson.toJson(attributeList).toString())
+                callGetNos(0)
             }
-            //showToast(getString(R.string.no_server_found), act)
+
+        }
+    }
+
+    private fun callGetNos(i: Int) {
+        GeoMapDatabase.databaseWriteExecutor.execute {
+            nosList = DB.taskDao().geAllNos(attributeList[i].iD) as ArrayList<Nos>
+
+            Log.e("List Nos",  gson.toJson(nosList).toString())
+            callSaveNos(i)
+        }
+    }
+
+    private fun callSaveNos(i: Int) {
+        var x = i
+        val obj = AttributesListModel.ResponseData()
+        obj.id = attributeList[i].iD
+        obj.name = attributeList[i].name
+        for (j in nosList.indices) {
+            val objNos = AttributesListModel.ResponseData.Nos()
+            objNos.id = nosList[j].iD
+            objNos.name = nosList[j].name
+            objNos.attributeId = nosList[j].attributeId
+            nosModel.add(objNos)
+            if(j == 0) {
+                obj.nosList = ArrayList<AttributesListModel.ResponseData.Nos>()
+            }
+            obj.nosList!!.add(objNos)
+            Log.e("nos list response data", gson.toJson(obj.nosList).toString())
+            if (j == nosList.size - 1) {
+                attributeModel.add(obj)
+                Log.e(" response data", gson.toJson(attributeModel).toString())
+                if (x < attributeList.size) {
+                    Log.e(" x data", x.toString())
+                    x++
+                    callGetNos(x)
+                }
+            }
         }
     }
 
     class AttributesAdapter(private var dialog: Dialog,
         private var binding: ActivityUnderGroundFormFirstStepBinding,
         private val modelList: ArrayList<AttributesListModel.ResponseData>,
-        private var rvList: RecyclerView,
-        private var tvFound: TextView) : RecyclerView.Adapter<AttributesAdapter.MyViewHolder>(), Filterable {
+        private var rvList: RecyclerView, private var tvFound: TextView,
+        var ctx: Context) : RecyclerView.Adapter<AttributesAdapter.MyViewHolder>(), Filterable {
         private var listFilterData: List<AttributesListModel.ResponseData> = modelList
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
             val v: CommonPopupLayoutBinding = DataBindingUtil.inflate(
@@ -279,14 +313,22 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
             holder.bindingAdapter.tvName.text = mData.name
             holder.bindingAdapter.llMainLayout.setOnClickListener {
                 if (attributesId != mData.id) {
-                    binding.tvHintMineralization.text = ""
-                    binding.tvHintMineralization.text = ""
+                    nosId = 0
+                    binding.tvNos.text = ctx.getString(R.string.select_nos)
                 }
                 attributesId = mData.id
-                binding.tvMineralization.text = mData.name
-                binding.tvHintMineralization.text = mData.id.toString()
+                binding.tvAttributeName.text = mData.name
                 nosModel = mData.nosList!!
-                nosAdapter?.notifyDataSetChanged()
+                if (nosModel.isEmpty()) {
+                    tvFound.visibility = View.VISIBLE
+                    rvList.visibility = View.GONE
+                    tvFound.text = ctx.getString(R.string.no_result_found)
+                } else {
+                    tvFound.visibility = View.GONE
+                    rvList.visibility = View.VISIBLE
+                    nosAdapter = NosAdapter(dialog, binding, nosModel, rvList, tvFound,ctx)
+                    rvList.adapter = nosAdapter
+                }
                 dialog.dismiss()
             }
 
@@ -342,8 +384,8 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
     class NosAdapter(private var dialog: Dialog,
         private var binding: ActivityUnderGroundFormFirstStepBinding,
         private val modelList: ArrayList<AttributesListModel.ResponseData.Nos>,
-        private var rvList: RecyclerView,
-        private var tvFound: TextView) : RecyclerView.Adapter<NosAdapter.MyViewHolder>(), Filterable {
+        private var rvList: RecyclerView, private var tvFound: TextView,
+        var ctx: Context) : RecyclerView.Adapter<NosAdapter.MyViewHolder>(), Filterable {
         private var listFilterData: List<AttributesListModel.ResponseData.Nos> = modelList
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
             val v: CommonPopupLayoutBinding = DataBindingUtil.inflate(
@@ -356,13 +398,8 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
             val mData: AttributesListModel.ResponseData.Nos = listFilterData[position]
             holder.bindingAdapter.tvName.text = mData.name
             holder.bindingAdapter.llMainLayout.setOnClickListener {
-                if (nosId != mData.id) {
-                    binding.tvHintMineralizationOne.text = ""
-                    binding.tvHintMineralizationOne.text = ""
-                }
                 nosId = mData.id
-                binding.tvMineralizationOne.text = mData.name
-                binding.tvHintMineralizationOne.text = mData.id.toString()
+                binding.tvNos.text = mData.name
                 dialog.dismiss()
             }
 
@@ -422,9 +459,10 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
         var desc: String? = ""
         var attributeSearchFilter: String = ""
         var nosSearchFilter: String = ""
-        var nosModel= ArrayList<AttributesListModel.ResponseData.Nos>()
-        var attributeModel= ArrayList<AttributesListModel.ResponseData>()
+        var nosModel = ArrayList<AttributesListModel.ResponseData.Nos>()
+        var attributeModel = ArrayList<AttributesListModel.ResponseData>()
         var attributesAdapter: AttributesAdapter? = null
         var nosAdapter: NosAdapter? = null
+        val gson = Gson()
     }
 }

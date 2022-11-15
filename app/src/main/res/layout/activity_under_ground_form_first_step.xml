@@ -104,25 +104,16 @@
                                 android:orientation="vertical">
 
                                 <TextView
-                                    android:id="@+id/tvMineralization"
+                                    android:id="@+id/tvAttributeName"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_gravity="center_vertical"
                                     android:fontFamily="@font/inter_semi_bold"
                                     android:gravity="center_vertical"
-                                    android:text="@string/mineralization"
+                                    android:text="@string/select_attributes"
                                     android:textColor="@color/light_black"
                                     android:textSize="@dimen/_16sdp"
                                     tools:ignore="SpUsage" />
-
-                                <TextView
-                                    android:id="@+id/tvHintMineralization"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="@dimen/_1sdp"
-                                    android:visibility="gone"
-                                    tools:ignore="SpUsage"
-                                    tools:targetApi="lollipop" />
 
                             </LinearLayout>
 
@@ -134,7 +125,7 @@
                                 android:paddingEnd="@dimen/_14sdp">
 
                                 <ImageView
-                                    android:id="@+id/ivMineralization"
+                                    android:id="@+id/ivAttribute"
                                     android:layout_width="@dimen/_20sdp"
                                     android:layout_height="@dimen/_20sdp"
                                     android:layout_alignParentEnd="true"
@@ -192,25 +183,16 @@
                                 android:orientation="vertical">
 
                                 <TextView
-                                    android:id="@+id/tvMineralizationOne"
+                                    android:id="@+id/tvNos"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_gravity="center_vertical"
                                     android:fontFamily="@font/inter_semi_bold"
                                     android:gravity="center_vertical"
-                                    android:text="@string/mineralization_1"
+                                    android:text="@string/select_nos"
                                     android:textColor="@color/light_black"
                                     android:textSize="@dimen/_16sdp"
                                     tools:ignore="SpUsage" />
-
-                                <TextView
-                                    android:id="@+id/tvHintMineralizationOne"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textSize="@dimen/_1sdp"
-                                    android:visibility="gone"
-                                    tools:ignore="SpUsage"
-                                    tools:targetApi="lollipop" />
 
                             </LinearLayout>
 

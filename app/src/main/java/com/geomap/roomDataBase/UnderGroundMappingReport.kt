@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
-@Entity(tableName = "UnderGroundMappingReport")
+@Entity(tableName = "undergroundmappingreport")
 class UnderGroundMappingReport : Serializable {
     @PrimaryKey(autoGenerate = true)
     var uid = 0

@@ -8,73 +8,98 @@ import androidx.room.Query
 @Dao
 interface GeoMapDetailsDao {
 
-    @Query("SELECT * FROM UnderGroundMappingReport ORDER BY uid DESC")
+    @Query("SELECT * FROM undergroundmappingreport ORDER BY uid DESC")
     fun geAllData1ForAll(): List<UnderGroundMappingReport?>
 
     @Insert
     fun insertUGReport(underGroundMappingReport: UnderGroundMappingReport?)
 
-    @Query("SELECT * FROM UnderGroundMappingReport")
-    fun geAllUnderGroundMappingReport(): LiveData<List<UnderGroundMappingReport>>
+    @Query("SELECT * FROM undergroundmappingreport")
+    fun geAllUnderGroundMappingReport(): List<UnderGroundMappingReport>
 
     @Query("DELETE FROM UnderGroundMappingReport")
-    fun deleteAllUnderGroundMappingReport()
+    fun deleteUnderGroundMappingReport()
 
     @Insert
     fun insertOCReport(openCastMappingReport: OpenCastMappingReport?)
 
-    @Query("SELECT * FROM OpenCastMappingReport")
-    fun geAllOpenCastMappingReport(): LiveData<List<OpenCastMappingReport>>
+    @Query("SELECT * FROM opencastmappingreport")
+    fun geAllOpenCastMappingReport(): List<OpenCastMappingReport>
 
     @Query("DELETE FROM OpenCastMappingReport")
-    fun deleteAllOpenCastMappingReport()
+    fun deleteOpenCastMappingReport()
 
     @Insert
     fun insertAttributeData(attributeData: AttributeData?)
 
-    @Query("SELECT * FROM AttributeData")
-    fun geAllAttributeData(): LiveData<List<AttributeData>>
+    @Query("SELECT * FROM attributdata")
+    fun geAllAttributeData(): List<AttributeData>
+
+    @Query("DELETE FROM attributdata")
+    fun deleteAttributeData()
 
     @Insert
     fun insertNos(nos: Nos?)
 
-    @Query("SELECT * FROM Nos WHERE attributeId =:attributeId")
-    fun geAllNos(attributeId: String?): LiveData<List<Nos?>?>?
+    @Query("SELECT * FROM nos WHERE attributeId =:attributeId")
+    fun geAllNos(attributeId: Int?): List<Nos>
+
+    @Query("DELETE FROM nos")
+    fun deleteNos()
 
     @Insert
     fun insertSampleCollected(sampleCollected: SampleCollected?)
 
-    @Query("SELECT * FROM SampleCollected")
-    fun geAllSampleCollected(): LiveData<List<SampleCollected>>
+    @Query("SELECT * FROM samplecollected")
+    fun geAllSampleCollected(): List<SampleCollected>
+
+    @Query("DELETE FROM samplecollected")
+    fun deleteSampleCollected()
 
     @Insert
     fun insertWeatheringData(weathering: WeatheringData?)
 
-    @Query("SELECT * FROM WeatheringData")
-    fun geAllWeatheringData(): LiveData<List<WeatheringData>>
+    @Query("SELECT * FROM weatheringdata")
+    fun geAllWeatheringData(): List<WeatheringData>
+
+    @Query("DELETE FROM weatheringdata")
+    fun deleteWeatheringData()
 
     @Insert
     fun insertRockStrength(rockStrength: RockStrength?)
 
-    @Query("SELECT * FROM RockStrength")
-    fun geAllRockStrength(): LiveData<List<RockStrength>>
+    @Query("SELECT * FROM rocksStrength")
+    fun geAllRockStrength(): List<RockStrength>
+
+    @Query("DELETE FROM rocksStrength")
+    fun deleteRockStrength()
 
     @Insert
     fun insertWaterCondition(waterCondition: WaterCondition?)
 
-    @Query("SELECT * FROM WaterCondition")
-    fun geAllWaterCondition(): LiveData<List<WaterCondition>>
+    @Query("SELECT * FROM watercondition")
+    fun geAllWaterCondition(): List<WaterCondition>
+
+    @Query("DELETE FROM watercondition")
+    fun deleteWaterCondition()
 
     @Insert
     fun insertTypeOfGeologicalStructures(typeOfGeologicalStructures: TypeOfGeologicalStructures?)
 
-    @Query("SELECT * FROM TypeOfGeologicalStructures")
-    fun geAllTypeOfGeologicalStructures(): LiveData<List<TypeOfGeologicalStructures>>
+    @Query("SELECT * FROM typeofgeologicalstructures")
+    fun geAllTypeOfGeologicalStructures(): List<TypeOfGeologicalStructures>
+
+    @Query("DELETE FROM typeofgeologicalstructures")
+    fun deleteTypeOfGeologicalStructures()
 
     @Insert
     fun insertTypeOfFaults(typeOfFaults: TypeOfFaults?)
 
-    @Query("SELECT * FROM TypeOfFaults")
-    fun geAllTypeOfFaults(): LiveData<List<TypeOfFaults>>
+    @Query("SELECT * FROM typeoffaults")
+    fun geAllTypeOfFaults():List<TypeOfFaults>
 
+    @Query("DELETE FROM typeoffaults")
+    fun deleteTypeOfFaults()
+
+// ORDER BY uid ASC
 }

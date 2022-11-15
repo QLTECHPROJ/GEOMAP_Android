@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
-@Entity(tableName = "OpenCastMappingReport")
+@Entity(tableName = "opencastmappingreport")
 class OpenCastMappingReport : Serializable {
     @PrimaryKey(autoGenerate = true)
     var uid = 0

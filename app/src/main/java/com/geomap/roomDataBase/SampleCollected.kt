@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
-@Entity(tableName = "SampleCollected")
+@Entity(tableName = "samplecollected")
 class SampleCollected : Serializable {
     @PrimaryKey(autoGenerate = true)
     var uid = 0

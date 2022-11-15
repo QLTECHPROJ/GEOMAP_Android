@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
-@Entity(tableName = "TypeOfGeologicalStructures")
+@Entity(tableName = "typeofgeologicalstructures")
 class TypeOfGeologicalStructures : Serializable {
     @PrimaryKey(autoGenerate = true)
     var uid = 0

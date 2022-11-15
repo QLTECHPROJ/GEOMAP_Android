@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "Nos")
+@Entity(tableName = "nos")
 class Nos {
     @PrimaryKey(autoGenerate = true)
     var uid = 0
