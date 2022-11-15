@@ -122,7 +122,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:layout_marginHorizontal="@dimen/_18sdp"
-                    android:fontFamily="@font/inter_bold"
+                    android:fontFamily="@font/inter_medium"
                     android:gravity="center"
                     android:textColor="@color/light_black"
                     android:textSize="@dimen/_18sdp"

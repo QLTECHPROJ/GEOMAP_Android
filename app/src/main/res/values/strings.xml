@@ -25,7 +25,7 @@
     <string name="not_now">Not Now</string>
     <string name="pls_provide_valid_email">Please provide a valid email address</string>
     <string name="pls_provide_valid_password">Password should contain at least one uppercase, one lowercase, one special symbol and minimum 8 character long</string>
-    <string name="check_dob">Please confirm whether you are above 3 years old</string>
+    <string name="check_dob">Please confirm whether you are above 18 years old</string>
     <string name="underground_report_list">Underground Report List</string>
     <string name="opencast_report_list">OpenCast Report List</string>
     <string name="edit_profile">Edit Profile</string>
@@ -159,6 +159,7 @@
     <string name="data">DATA</string>
     <string name="vein_load_">Vein/load</string>
     <string name="clear_signature">Clear Signature</string>
+    <string name="clear">Clear</string>
     <string name="clear_geologist_signature">Clear Geologist Signature</string>
     <string name="clear_geologist_client_signature">Clear Client’s Geologist Signature</string>
     <string name="choose_your_attributes">Choose your attributes</string>
@@ -169,7 +170,6 @@
     <string name="choose_your_water_condition">Choose your water condition</string>
     <string name="choose_your_type_of_geological_structures">Choose your type of geological structures</string>
     <string name="choose_your_Type_of_faults">Choose your type of faults</string>
-    <string name="pls_select_sample_collected">Please select sample collected</string>
     <string name="pls_select_weathering">Please select weathering</string>
     <string name="pls_select_rock_strength">Please select rock strength</string>
     <string name="pls_select_water_condition">Please select water condition</string>

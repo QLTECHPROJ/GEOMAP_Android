@@ -78,10 +78,12 @@ class DashboardActivity : AppCompatActivity() {
             }
 
             btnAddUnderGroundsReport.setOnClickListener {
+                dialog!!.dismiss()
                 callUnderGroundFormFirstStepActivity(act, "1")
             }
 
             btnAddOpenCastReport.setOnClickListener {
+                dialog!!.dismiss()
                 callOpenCastFormFirstStepActivity(act, "1")
             }
             dialog!!.show()
@@ -131,16 +133,17 @@ class DashboardActivity : AppCompatActivity() {
                                         binding.llOpenCastList.visibility = View.GONE
                                         binding.rvOpenCastList.visibility = View.GONE
                                         binding.tvFound.visibility = View.VISIBLE
+                                    }else {
+
+                                        binding.tvFound.visibility = View.GONE
                                     }
 
                                     if (model.responseData?.underGround!!.isEmpty()) {
                                         binding.llUnderGroundList.visibility = View.GONE
                                         binding.rvUnderGroundList.visibility = View.GONE
-                                        binding.tvFound.visibility = View.GONE
                                     } else {
                                         binding.llUnderGroundList.visibility = View.VISIBLE
                                         binding.rvUnderGroundList.visibility = View.VISIBLE
-                                        binding.tvFound.visibility = View.GONE
                                         underGroundListAdapter = UnderGroundListAdapter(
                                             model.responseData?.underGround!!)
                                         binding.rvUnderGroundList.adapter = underGroundListAdapter
@@ -149,11 +152,9 @@ class DashboardActivity : AppCompatActivity() {
                                     if (model.responseData?.openCast!!.isEmpty()) {
                                         binding.llOpenCastList.visibility = View.GONE
                                         binding.rvOpenCastList.visibility = View.GONE
-                                        binding.tvFound.visibility = View.GONE
                                     } else {
                                         binding.llOpenCastList.visibility = View.VISIBLE
                                         binding.rvOpenCastList.visibility = View.VISIBLE
-                                        binding.tvFound.visibility = View.GONE
                                         openCastListAdapter =
                                             OpenCastListAdapter(model.responseData?.openCast!!)
                                         binding.rvOpenCastList.adapter = openCastListAdapter

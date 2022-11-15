@@ -40,6 +40,7 @@ import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
 import com.github.gcacace.signaturepad.views.SignaturePad
 import com.google.gson.Gson
+import retrofit.mime.TypedFile
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -75,8 +76,8 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
     var actualGradeOfOre : String? = null
     var notes : String? = null
     var shift : String? = null
-    var geologistSign : String? = null
-    var geologistClientSign : String? = null
+    var geologistSign : TypedFile? = null
+    var geologistClientSign : TypedFile? = null
     var geologistSignCheck : String? = ""
     var geologistClientSignCheck : String? = ""
     var searchFilter : String = ""
@@ -107,6 +108,12 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             thicknessOfInterburden = binding.etThicknessOfInterburden.text.toString()
             observedGradeOfOre = binding.etObservedGradeOfOre.text.toString()
             actualGradeOfOre = binding.etActualGradeOfOre.text.toString()
+            sampleCollected = binding.tvSampleCollected.text.toString()
+            weathering = binding.tvWeathering.text.toString()
+            rockStrength = binding.tvRockStrength.text.toString()
+            waterCondition = binding.tvWaterCondition.text.toString()
+            typeOfGeologicalStructures = binding.tvTypeOfGeologicalStructures.text.toString()
+            typeOfFaults = binding.tvTypeOfFaults.text.toString()
             notes = binding.etNotes.text.toString()
 
             when {
@@ -164,6 +171,25 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 observedGradeOfOre.equals("") -> {
                     allDisable(binding.btnSubmit)
                 }
+                sampleCollected.equals(getString(R.string.sample_collected)) -> {
+                    allDisable(binding.btnSubmit)
+                }
+                weathering.equals(getString(R.string.weathering_)) -> {
+                    allDisable(binding.btnSubmit)
+                }
+                rockStrength.equals(getString(R.string.rock_strength_)) -> {
+                    allDisable(binding.btnSubmit)
+                }
+                waterCondition.equals(getString(R.string.water_condition_)) -> {
+                    allDisable(binding.btnSubmit)
+                }
+                typeOfGeologicalStructures.equals(
+                    getString(R.string.type_of_geological_structures_)) -> {
+                    allDisable(binding.btnSubmit)
+                }
+                typeOfFaults.equals(getString(R.string.type_of_faults_)) -> {
+                    allDisable(binding.btnSubmit)
+                }
                 actualGradeOfOre.equals("") -> {
                     allDisable(binding.btnSubmit)
                 }
@@ -215,6 +241,12 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         binding.etThinessOfOverburden.addTextChangedListener(userTextWatcher)
         binding.etThicknessOfInterburden.addTextChangedListener(userTextWatcher)
         binding.etObservedGradeOfOre.addTextChangedListener(userTextWatcher)
+        binding.tvSampleCollected.addTextChangedListener(userTextWatcher)
+        binding.tvWeathering.addTextChangedListener(userTextWatcher)
+        binding.tvRockStrength.addTextChangedListener(userTextWatcher)
+        binding.tvWaterCondition.addTextChangedListener(userTextWatcher)
+        binding.tvTypeOfGeologicalStructures.addTextChangedListener(userTextWatcher)
+        binding.tvTypeOfFaults.addTextChangedListener(userTextWatcher)
         binding.etActualGradeOfOre.addTextChangedListener(userTextWatcher)
         binding.etNotes.addTextChangedListener(userTextWatcher)
 
@@ -254,11 +286,6 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             callPopupList(getString(R.string.choose_your_Type_of_faults),
                 getString(R.string.pls_select_your_Type_of_faults), "6")
         }
-
-
-        binding.btnSubmit.isEnabled = true
-        binding.btnSubmit.setBackgroundResource(R.drawable.enable_button)
-
 
         binding.btnGeologistSignPadClear.setOnClickListener {
             binding.geologistSignPad.clear()
@@ -313,56 +340,39 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
     }
 
     private fun postData() {
-        if (binding.tvSampleCollected.text.toString() == getString(R.string.sample_collected)) {
-            showToast(getString(R.string.pls_select_sample_collected), act)
-        } else if (binding.tvWeathering.text.toString() == getString(R.string.weathering_)) {
-            showToast(getString(R.string.pls_select_weathering), act)
-        } else if (binding.tvRockStrength.text.toString() == getString(
-                R.string.rock_strength_)) {
-            showToast(getString(R.string.pls_select_rock_strength), act)
-        } else if (binding.tvWaterCondition.text.toString() == getString(
-                R.string.water_condition_)) {
-            showToast(getString(R.string.pls_select_water_condition), act)
-        } else if (binding.tvTypeOfGeologicalStructures.text.toString() == getString(
-                R.string.type_of_geological_structures_)) {
-            showToast(getString(R.string.pls_select_type_of_geological_structures), act)
-        } else if (binding.tvTypeOfFaults.text.toString() == getString(
-                R.string.type_of_faults_)) {
-            showToast(getString(R.string.pls_select_type_of_faults), act)
-        } else if (geologistSignCheck == "") {
+        if (geologistSignCheck == "") {
             showToast(getString(R.string.pls_add_geologist_sign), act)
         } else if (geologistClientSignCheck == "") {
             showToast(getString(R.string.pls_add_geologist_client_sign), act)
-        } else {
-            addGeologistSignJpgSignatureToGallery(binding.geologistSignPad.signatureBitmap)
-            addGeologistClientSignJpgSignatureToGallery(
-                binding.geologistClientSignPad.signatureBitmap)
-            val gson = Gson()
-            val oc = OpenCastInsertModel(binding.etMinesSiteName.text.toString(),
-                binding.etMappingSheetNo.text.toString(), binding.tvOCDate.text.toString(),
-                binding.etPitName.text.toString(), binding.etPitLocation.text.toString(),
-                binding.etShiftInchargeName.text.toString(),
-                binding.etGeologistName.text.toString(), binding.etFaceLocation.text.toString(),
-                binding.etFaceLengthM.text.toString(), binding.etFaceAreaM2.text.toString(),
-                binding.etFaceRockTypes.text.toString(), binding.etBenchRL.text.toString(),
-                binding.etBenchHeightWidth.text.toString(), binding.etBenchAngle.text.toString(),
-                binding.etDipDirectionAngle.text.toString(),
-                binding.etThicknessOfOre.text.toString(),
-                binding.etThinessOfOverburden.text.toString(),
-                binding.etThicknessOfInterburden.text.toString(),
-                binding.etObservedGradeOfOre.text.toString(),
-                binding.etActualGradeOfOre.text.toString(),
-                binding.tvSampleCollected.text.toString(), binding.tvWeathering.text.toString(),
-                binding.tvRockStrength.text.toString(), binding.tvWaterCondition.text.toString(),
-                binding.tvTypeOfGeologicalStructures.text.toString(),
-                binding.tvTypeOfFaults.text.toString(), shift, binding.etNotes.text.toString(), "",
-                geologistSign, geologistClientSign)
-            val i = Intent(act, OpenCastFormSecondStepActivity::class.java)
-            i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            i.putExtra("ocData", gson.toJson(oc))
-            startActivity(i)
-            finish()
         }
+        addGeologistSignJpgSignatureToGallery(binding.geologistSignPad.signatureBitmap)
+        addGeologistClientSignJpgSignatureToGallery(
+            binding.geologistClientSignPad.signatureBitmap)
+        val gson = Gson()
+        val oc = OpenCastInsertModel(binding.etMinesSiteName.text.toString(),
+            binding.etMappingSheetNo.text.toString(), binding.tvOCDate.text.toString(),
+            binding.etPitName.text.toString(), binding.etPitLocation.text.toString(),
+            binding.etShiftInchargeName.text.toString(),
+            binding.etGeologistName.text.toString(), binding.etFaceLocation.text.toString(),
+            binding.etFaceLengthM.text.toString(), binding.etFaceAreaM2.text.toString(),
+            binding.etFaceRockTypes.text.toString(), binding.etBenchRL.text.toString(),
+            binding.etBenchHeightWidth.text.toString(), binding.etBenchAngle.text.toString(),
+            binding.etDipDirectionAngle.text.toString(),
+            binding.etThicknessOfOre.text.toString(),
+            binding.etThinessOfOverburden.text.toString(),
+            binding.etThicknessOfInterburden.text.toString(),
+            binding.etObservedGradeOfOre.text.toString(),
+            binding.etActualGradeOfOre.text.toString(),
+            binding.tvSampleCollected.text.toString(), binding.tvWeathering.text.toString(),
+            binding.tvRockStrength.text.toString(), binding.tvWaterCondition.text.toString(),
+            binding.tvTypeOfGeologicalStructures.text.toString(),
+            binding.tvTypeOfFaults.text.toString(), shift, binding.etNotes.text.toString(), null,
+            geologistSign, geologistClientSign)
+        val i = Intent(act, OpenCastFormSecondStepActivity::class.java)
+        i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        i.putExtra("ocData", gson.toJson(oc))
+        startActivity(i)
+        finish()
     }
 
     private fun callPopupList(title : String, searchHint : String, keyS : String) {
@@ -482,7 +492,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                             rvList.layoutManager = LinearLayoutManager(ctx)
                             popupAdapter =
                                 PopupAdapter(dialog, binding,
-                                    model.responseData!!, rvList, tvFound, keyS)
+                                    model.responseData!!, rvList, tvFound, keyS, ctx)
                             rvList.adapter = popupAdapter
                         }
                         model.responseCode!! == getString(R.string.ResponseCodefail) -> {
@@ -508,7 +518,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         private var binding : ActivityOpenCastFormFirstStepBinding,
         private val modelList : List<CommonPopupListModel.ResponseData>,
         private var rvCountryList : RecyclerView,
-        private var tvFound : TextView, private var keyS : String) :
+        private var tvFound : TextView, private var keyS : String, private var ctx : Context) :
         RecyclerView.Adapter<PopupAdapter.MyViewHolder>(),
         Filterable {
         private var listFilterData : List<CommonPopupListModel.ResponseData> = modelList
@@ -531,6 +541,9 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                         }
                         sampleCollectedId = mData.id
                         binding.tvSampleCollected.text = mData.name
+                        binding.tvSampleCollected.setTextColor(
+                            ContextCompat.getColor(ctx, R.color.light_black))
+                        sampleCollected = mData.name
                         binding.tvHintSampleCollected.text = mData.id.toString()
                     }
                     "2" -> {
@@ -540,6 +553,8 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                         }
                         weatheringId = mData.id
                         binding.tvWeathering.text = mData.name
+                        binding.tvWeathering.setTextColor(
+                            ContextCompat.getColor(ctx, R.color.light_black))
                         binding.tvHintWeathering.text = mData.id.toString()
                     }
                     "3" -> {
@@ -549,6 +564,8 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                         }
                         rockStrengthId = mData.id
                         binding.tvRockStrength.text = mData.name
+                        binding.tvRockStrength.setTextColor(
+                            ContextCompat.getColor(ctx, R.color.light_black))
                         binding.tvHintRockStrength.text = mData.id.toString()
                     }
                     "4" -> {
@@ -558,6 +575,8 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                         }
                         waterConditionId = mData.id
                         binding.tvWaterCondition.text = mData.name
+                        binding.tvWaterCondition.setTextColor(
+                            ContextCompat.getColor(ctx, R.color.light_black))
                         binding.tvHintWaterCondition.text = mData.id.toString()
                     }
                     "5" -> {
@@ -567,6 +586,8 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                         }
                         typeOfGeologicalStructuresId = mData.id
                         binding.tvTypeOfGeologicalStructures.text = mData.name
+                        binding.tvTypeOfGeologicalStructures.setTextColor(
+                            ContextCompat.getColor(ctx, R.color.light_black))
                         binding.tvHintTypeOfGeologicalStructures.text = mData.id.toString()
                     }
                     "6" -> {
@@ -576,6 +597,8 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                         }
                         typeOfFaultsId = mData.id
                         binding.tvTypeOfFaults.text = mData.name
+                        binding.tvTypeOfFaults.setTextColor(
+                            ContextCompat.getColor(ctx, R.color.light_black))
                         binding.tvHintTypeOfFaults.text = mData.id.toString()
                     }
                 }
@@ -660,8 +683,8 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 String.format("geologistSign.jpg", System.currentTimeMillis()))
             saveBitmapToJPG(signature, photo)
             scanMediaFile(photo)
-            geologistSign = photo.toString()
-            Log.e("geologistSign", geologistSign!!)
+            geologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
+            Log.e("geologistSign", geologistSign!!.toString())
             result = true
         } catch (e : IOException) {
             e.printStackTrace()
@@ -676,8 +699,8 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 String.format("geologistClientSign.jpg", System.currentTimeMillis()))
             saveBitmapToJPG(signature, photo)
             scanMediaFile(photo)
-            geologistClientSign = photo.toString()
-            Log.e("geologistClientSign", geologistClientSign!!)
+            geologistClientSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
+            Log.e("geologistClientSign", geologistClientSign!!.toString())
             result = true
         } catch (e : IOException) {
             e.printStackTrace()
@@ -717,17 +740,11 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             ) == PackageManager.PERMISSION_DENIED && ContextCompat.checkSelfPermission(
                 ctx, Manifest.permission.READ_EXTERNAL_STORAGE
             ) == PackageManager.PERMISSION_DENIED) {
-            callFilesPermission()
-        } else {
-            val permission = ContextCompat.checkSelfPermission(activity!!,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            if (permission != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(
-                    activity,
-                    PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE
-                )
-            }
+            ActivityCompat.requestPermissions(
+                activity!!,
+                PERMISSIONS_STORAGE,
+                REQUEST_EXTERNAL_STORAGE
+            )
         }
     }
 
@@ -764,6 +781,12 @@ Tap Setting > permission, and turn "Files and media" on."""
     }
 
     companion object {
+        var sampleCollected : String? = null
+        var weathering : String? = null
+        var rockStrength : String? = null
+        var waterCondition : String? = null
+        var typeOfGeologicalStructures : String? = null
+        var typeOfFaults : String? = null
         var sampleCollectedId : String? = null
         var weatheringId : String? = null
         var rockStrengthId : String? = null

@@ -21,14 +21,13 @@ import com.geomap.R
 import com.geomap.databinding.ActivityOpenCastFormSecondStepBinding
 import com.geomap.mapReportModule.models.OpenCastInsertModel
 import com.geomap.mapReportModule.models.SuccessModel
+import com.geomap.utils.APIClientProfile
 import com.geomap.utils.CONSTANTS
-import com.geomap.utils.RetrofitService
 import com.github.gcacace.signaturepad.views.SignaturePad
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import retrofit.RetrofitError
+import retrofit.mime.TypedFile
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -39,30 +38,12 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
     private lateinit var ctx : Context
     private lateinit var act : Activity
     private var ocDataModel = OpenCastInsertModel()
-    var desc : String? = ""
     private var userId : String? = null
     private var signCheck : String? = null
-    var sign : String? = null
+    private var sign : TypedFile? = null
     private val REQUEST_EXTERNAL_STORAGE = 1
-    private val PERMISSIONS_STORAGE = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-
-/*
-    private var userTextWatcher : TextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s : CharSequence, start : Int, count : Int, after : Int) {}
-        override fun onTextChanged(s : CharSequence, start : Int, before : Int, count : Int) {
-            desc = binding.edtDescription.text.toString()
-
-            if (desc.equals("")) {
-                allDisable(binding.btnSubmit)
-            } else {
-                binding.btnSubmit.isEnabled = true
-                binding.btnSubmit.setBackgroundResource(R.drawable.enable_button)
-            }
-        }
-
-        override fun afterTextChanged(s : Editable) {}
-    }
-*/
+    private val PERMISSIONS_STORAGE = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.READ_EXTERNAL_STORAGE)
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,8 +70,6 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         binding.llBack.setOnClickListener {
             onBackPressed()
         }
-
-//        binding.edtDescription.addTextChangedListener(userTextWatcher)
 
         binding.btnSignPadClear.setOnClickListener {
             binding.signPad.clear()
@@ -126,7 +105,8 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
     private fun postOpenCastInsert() {
         if (isNetworkConnected(ctx)) {
             addJpgSignatureToGallery(binding.signPad.signatureBitmap)
-            RetrofitService.getInstance().postOpenCastInsert(
+            showProgressBar(binding.progressBar, binding.progressBarHolder, act)
+            APIClientProfile.apiService!!.postOpenCastInsert(
                 userId, ocDataModel.minesSiteName, ocDataModel.sheetNo, ocDataModel.pitName,
                 ocDataModel.pitLocation, ocDataModel.shiftInchargeName,
                 ocDataModel.geologistName, ocDataModel.faceLocation, ocDataModel.faceLengthM,
@@ -140,24 +120,26 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                 ocDataModel.typeOfFaults,
                 ocDataModel.notes, ocDataModel.shift, ocDataModel.ocDate,
                 ocDataModel.dipDirectionAngle,
-                sign, ocDataModel.geologistSign, ocDataModel.clientsGeologistSign
-            ).enqueue(object : Callback<SuccessModel?> {
-                override fun onResponse(call : Call<SuccessModel?>,
-                    response : Response<SuccessModel?>) {
-                    val model = response.body()
-                    if (model!!.responseCode.equals(
-                            getString(R.string.ResponseCodesuccess))) {
-                        hideProgressBar(binding.progressBar, binding.progressBarHolder,
-                            act)
-                        showToast(model.responseMessage, act)
-                        finish()
+                sign, ocDataModel.geologistSign, ocDataModel.clientsGeologistSign,
+                object : retrofit.Callback<SuccessModel> {
+                    override fun success(model : SuccessModel,
+                        response : retrofit.client.Response) {
+                        if (model.responseCode.equals(
+                                ctx.getString(R.string.ResponseCodesuccess))) {
+                            hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                            showToast(model.responseMessage, act)
+                            finish()
+                        } else if (model.responseCode.equals(
+                                ctx.getString(R.string.ResponseCodeDeleted))) {
+                            callDelete403(act, model.responseMessage)
+                        }
                     }
-                }
 
-                override fun onFailure(call : Call<SuccessModel?>, t : Throwable) {
-                    hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                }
-            })
+                    override fun failure(e : RetrofitError) {
+                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                        showToast(e.message, act)
+                    }
+                })
         } else {
             showToast(getString(R.string.no_server_found), act)
         }
@@ -168,7 +150,6 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             REQUEST_EXTERNAL_STORAGE -> {
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.isEmpty()
                     || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Log.e("onRequestPermissionsResult", "Cannot write images to external storage")
@@ -184,8 +165,8 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                 String.format("geologistSign.jpg", System.currentTimeMillis()))
             saveBitmapToJPG(signature, photo)
             scanMediaFile(photo)
-            sign = photo.toString()
-            Log.e("geologistSign", sign!!)
+            sign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
+            Log.e("geologistSign", sign!!.toString())
             result = true
         } catch (e : IOException) {
             e.printStackTrace()
@@ -220,14 +201,16 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
     }
 
     fun verifyStoragePermissions(activity : Activity?) {
-        val permission = ActivityCompat.checkSelfPermission(activity!!,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        if (permission != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(ctx,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                ctx, Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(
-                activity,
+                act,
                 PERMISSIONS_STORAGE,
                 REQUEST_EXTERNAL_STORAGE
             )
+
         }
     }
 

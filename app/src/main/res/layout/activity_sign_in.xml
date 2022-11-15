@@ -128,7 +128,7 @@
                 app:cardCornerRadius="@dimen/_10sdp"
                 app:cardElevation="@dimen/_2sdp">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
@@ -137,6 +137,8 @@
                         android:id="@+id/ivLock"
                         android:layout_width="@dimen/_30sdp"
                         android:layout_height="@dimen/_30sdp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="@dimen/_8sdp"
                         android:contentDescription="@string/todo"
@@ -147,14 +149,19 @@
                         android:id="@+id/ltPassword"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_centerVertical="true"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginHorizontal="@dimen/_20sdp"
+                        android:layout_marginStart="@dimen/_58sdp"
                         android:layout_marginTop="@dimen/_2sdp"
+                        android:layout_marginEnd="@dimen/_6sdp"
                         android:focusableInTouchMode="true"
                         android:gravity="center_vertical"
                         android:textColorHint="@color/gray"
-                        app:boxStrokeColor="@color/primary_theme"
+                        app:endIconDrawable="@drawable/visibility_state"
+                        app:endIconMode="password_toggle"
+                        app:endIconTintMode="multiply"
                         app:errorEnabled="true"
+                        app:passwordToggleEnabled="true"
                         app:errorTextAppearance="@style/ErrorText"
                         app:hintTextAppearance="@style/HintText"
                         app:hintTextColor="@color/primary_theme">
@@ -180,7 +187,22 @@
                             tools:ignore="SpUsage" />
 
                     </com.google.android.material.textfield.TextInputLayout>
-                </LinearLayout>
+
+                    <!--
+                                        <ImageView
+                                            android:id="@+id/ivPasswordStatus"
+                                            android:layout_width="@dimen/_30sdp"
+                                            android:layout_height="@dimen/_30sdp"
+                                            android:layout_alignParentEnd="true"
+                                            android:layout_centerVertical="true"
+                                            android:layout_gravity="center_vertical"
+                                            android:layout_marginEnd="@dimen/_14sdp"
+                                            android:contentDescription="@string/todo"
+                                            android:padding="@dimen/_6sdp"
+                                            android:src="@drawable/ic_password_unfilled_icon" />
+                    -->
+
+                </RelativeLayout>
             </androidx.cardview.widget.CardView>
 
             <TextView
