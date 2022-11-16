@@ -254,7 +254,7 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
             Log.e("attribute Data Model", gson.toJson(attributeDataModelList).toString())
             val i = Intent(act, UnderGroundFormSecondStepActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            i.putExtra("attribute Data" , gson.toJson(attributeDataModelList).toString())
+            i.putExtra("attributeData" , gson.toJson(attributeDataModelList).toString())
             act.startActivity(i)
             act.finish()
             callUnderGroundFormSecondStepActivity(act, "0")
