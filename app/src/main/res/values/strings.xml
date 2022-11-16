@@ -196,4 +196,5 @@
     <string name="please_select_attribute">Please select attribute</string>
     <string name="please_select_nos">Please select nos</string>
     <string name="please_add_propery">Please add property</string>
+    <string name="comment">Comment</string>
 </resources>

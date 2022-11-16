@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundFormThirdStepBinding
+import com.geomap.mapReportModule.models.AttributeDataModel
 import com.geomap.mapReportModule.models.SuccessModel
 import com.geomap.mapReportModule.models.UnderGroundInsertModel
 import com.geomap.utils.APIClientProfile
@@ -23,6 +24,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
     private lateinit var act : Activity
     private var userId : String? = null
     private var ugDataModel = UnderGroundInsertModel()
+    var attributeDataModelList = ArrayList<AttributeDataModel>()
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +43,13 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             ugDataModel = gson.fromJson(data, type1)
         }
 
+        if (intent.extras != null) {
+            val gson = Gson()
+            val data = intent.getStringExtra("attributeData")
+            val type1 = object : TypeToken<ArrayList<AttributeDataModel>>() {}.type
+            attributeDataModelList = gson.fromJson(data, type1)
+        }
+
         val gson = Gson()
         Log.e("UGData", gson.toJson(ugDataModel).toString())
         binding.llBack.setOnClickListener {
@@ -57,7 +66,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
 //            addJpgSignatureToGallery(binding.signPad.signatureBitmap)
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             APIClientProfile.apiService!!.postUndergroundInsert(
-                userId, ugDataModel.name, ugDataModel.comment, ugDataModel.attribute,
+                userId, ugDataModel.name, ugDataModel.comment, attributeDataModelList,
                 ugDataModel.ugDate,
                 ugDataModel.mapSerialNo,
                 ugDataModel.shift, ugDataModel.mappedBy, ugDataModel.scale, ugDataModel.location,

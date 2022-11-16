@@ -60,6 +60,8 @@ public class GeoMapApp extends Application {
     static GeoMapApp GeoMapApp;
     public static String fcmId = "";
     public static GeoMapDatabase DB;
+
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -428,15 +430,6 @@ public class GeoMapApp extends Application {
 
     public static void callUnderGroundFormFirstStepActivity(Activity act, String finish) {
         Intent i = new Intent(act, UnderGroundFormFirstStepActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        act.startActivity(i);
-        if (finish.equalsIgnoreCase("0")) {
-            act.finish();
-        }
-    }
-
-    public static void callUnderGroundFormSecondStepActivity(Activity act, String finish) {
-        Intent i = new Intent(act, UnderGroundFormSecondStepActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         act.startActivity(i);
         if (finish.equalsIgnoreCase("0")) {

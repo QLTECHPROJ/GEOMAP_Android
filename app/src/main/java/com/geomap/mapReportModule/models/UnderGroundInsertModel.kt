@@ -1,10 +1,10 @@
 package com.geomap.mapReportModule.models
 
 import retrofit.mime.TypedFile
+import java.util.ArrayList
 
 data class UnderGroundInsertModel(
-    var attribute : String? = null,
-    var minesSiteName : String? = null,
+    var attribute : ArrayList<AttributeDataModel>? = null,
     var name : String? = null,
     var comment : String? = null,
     var ugDate : String? = null,

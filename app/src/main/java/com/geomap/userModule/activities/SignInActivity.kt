@@ -102,6 +102,9 @@ class SignInActivity : AppCompatActivity() {
     private fun postLoginData() {
         if (isNetworkConnected(ctx)) {
             binding.ltPassword.isErrorEnabled = false
+            if (fcmId.equals("")) {
+                callFCMRegMethod(ctx)
+            }
             fcmId = getSharedPreferences(CONSTANTS.FCMToken, Context.MODE_PRIVATE).getString(
                 CONSTANTS.Token, "").toString()
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
@@ -140,5 +143,4 @@ class SignInActivity : AppCompatActivity() {
             showToast(getString(R.string.no_server_found), act)
         }
     }
-
 }

@@ -1,5 +1,6 @@
 package com.geomap.utils
 
+import com.geomap.mapReportModule.models.AttributeDataModel
 import com.geomap.mapReportModule.models.SuccessModel
 import com.geomap.userModule.models.ProfileUpdateModel
 import retrofit.Callback
@@ -8,6 +9,7 @@ import retrofit.http.POST
 import retrofit.http.Part
 import retrofit.mime.TypedFile
 import retrofit2.http.Field
+import java.util.ArrayList
 
 interface APIInterfaceProfile {
     @Multipart @POST("/profile_update") fun getProfileUpdate(
@@ -58,7 +60,7 @@ interface APIInterfaceProfile {
         @Field("userId") userId : String?,
         @Field("name") name : String?,
         @Field("comment") comment : String?,
-        @Field("attribute") attribute : String?,
+        @Field("attribute") attribute : ArrayList<AttributeDataModel>?,
         @Field("ugDate") ugDate : String?,
         @Field("mapSerialNo") mapSerialNo : String?,
         @Field("shift") shift : String?,
