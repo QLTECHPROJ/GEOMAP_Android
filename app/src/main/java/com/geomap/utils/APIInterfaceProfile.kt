@@ -57,6 +57,10 @@ interface APIInterfaceProfile {
     @Multipart @POST("underground_insert") fun postUndergroundInsert(
         @Field("userId") userId : String?,
         @Field("name") name : String?,
+        @Field("comment") comment : String?,
+        @Field("attribute") attribute : String?,
+        @Field("ugDate") ugDate : String?,
+        @Field("mapSerialNo") mapSerialNo : String?,
         @Field("shift") shift : String?,
         @Field("mappedBy") mappedBy : String?,
         @Field("scale") scale : String?,
@@ -65,13 +69,9 @@ interface APIInterfaceProfile {
         @Field("xCordinate") xCordinate : String?,
         @Field("yCordinate") yCordinate : String?,
         @Field("zCordinate") zCordinate : String?,
-        @Field("comment") comment : String?,
-        @Field("mapSerialNo") mapSerialNo : String?,
-        @Field("ugDate") ugDate : String?,
-        @Field("leftImage") leftImage : String?,
-        @Field("roofImage") roofImage : String?,
-        @Field("rightImage") rightImage : String?,
-        @Field("faceImage") faceImage : String?,
-        @Field("attribute") attribute : String?,
+        @Field("leftImage") leftImage : TypedFile?,
+        @Field("roofImage") roofImage : TypedFile?,
+        @Field("rightImage") rightImage : TypedFile?,
+        @Field("faceImage") faceImage : TypedFile?,
         modelCallback : Callback<SuccessModel>?)
 }

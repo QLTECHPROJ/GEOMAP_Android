@@ -444,15 +444,6 @@ public class GeoMapApp extends Application {
         }
     }
 
-    public static void callUnderGroundFormThirdStepActivity(Activity act, String finish) {
-        Intent i = new Intent(act, UnderGroundFormThirdStepActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        act.startActivity(i);
-        if (finish.equalsIgnoreCase("0")) {
-            act.finish();
-        }
-    }
-
     public static void callOpenCastFormFirstStepActivity(Activity act, String finish) {
         Intent i = new Intent(act, OpenCastFormFirstStepActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);

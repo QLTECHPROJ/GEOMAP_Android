@@ -110,6 +110,12 @@ class ContactUsActivity : AppCompatActivity() {
                         hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                         showToast(model.responseMessage, act)
                         finish()
+                    } else if (model.responseCode.equals(
+                            ctx.getString(R.string.ResponseCodefail))) {
+                        showToast(model.responseMessage, act)
+                    } else if (model.responseCode.equals(
+                            ctx.getString(R.string.ResponseCodeDeleted))) {
+                        callDelete403(act, model.responseMessage)
                     }
                 }
 

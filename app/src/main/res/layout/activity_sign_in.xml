@@ -56,7 +56,7 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_66sdp"
+                android:layout_height="@dimen/_72sdp"
                 android:layout_marginHorizontal="@dimen/_25sdp"
                 android:layout_marginVertical="@dimen/_6sdp"
                 app:cardCornerRadius="@dimen/_10sdp"
@@ -122,7 +122,7 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_66sdp"
+                android:layout_height="@dimen/_72sdp"
                 android:layout_marginHorizontal="@dimen/_25sdp"
                 android:layout_marginVertical="@dimen/_6sdp"
                 app:cardCornerRadius="@dimen/_10sdp"

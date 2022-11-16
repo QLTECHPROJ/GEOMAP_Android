@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.geomap.DataBaseFunctions
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityFaqBinding
@@ -65,6 +64,12 @@ class FaqActivity : AppCompatActivity() {
                                 FaqListAdapter(listModel.responseData!!)
                             binding.rvFAQList.adapter = adapter
 
+                        } else if (listModel.responseCode.equals(
+                                ctx.getString(R.string.ResponseCodefail))) {
+                            showToast(listModel.responseMessage, act)
+                        } else if (listModel.responseCode.equals(
+                                ctx.getString(R.string.ResponseCodeDeleted))) {
+                            callDelete403(act, listModel.responseMessage)
                         }
                     } catch (e : Exception) {
                         e.printStackTrace()

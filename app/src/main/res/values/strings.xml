@@ -24,7 +24,9 @@
     <string name="Settings">Settings</string>
     <string name="not_now">Not Now</string>
     <string name="pls_provide_valid_email">Please provide a valid email address</string>
-    <string name="pls_provide_valid_password">Password should contain at least one uppercase, one lowercase, one special symbol and minimum 8 character long</string>
+    <string name="pls_provide_valid_password">Password should contain at least one lowercase, one special symbol and minimum 8 character long</string>
+    <string name="invalid_password_less_than_8_chars">Password should be more than 8 characters</string>
+    <string name="invalid_password_not_mix_of_char_types">Password must contain lowercase, digits and special characters</string>
     <string name="check_dob">Please confirm whether you are above 18 years old</string>
     <string name="underground_report_list">Underground Report List</string>
     <string name="opencast_report_list">OpenCast Report List</string>

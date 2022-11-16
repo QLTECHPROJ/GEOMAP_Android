@@ -88,6 +88,7 @@ class UserProfileActivity : AppCompatActivity() {
             val nameUser = binding.etName.text.toString()
             val emailUser = binding.etEmail.text.toString()
             val mobileNoUser = binding.etMobileNo.text.toString()
+            val dob = binding.etDob.text.toString()
 
             when {
                 nameUser == name && emailUser == email && mobileNoUser == mobileNo -> {
@@ -103,6 +104,10 @@ class UserProfileActivity : AppCompatActivity() {
                 }
 
                 mobileNoUser.equals("", ignoreCase = true) -> {
+                    allDisable(binding.btnUpdate)
+                }
+
+                binding.ltDob.isErrorEnabled -> {
                     allDisable(binding.btnUpdate)
                 }
 
@@ -223,6 +228,9 @@ class UserProfileActivity : AppCompatActivity() {
                         hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                         showToast(model.responseMessage, act)
                         callSignActivity("", act)
+                    } else if (model.responseCode.equals(
+                            ctx.getString(R.string.ResponseCodefail))) {
+                        showToast(model.responseMessage, act)
                     }
                 }
 
@@ -239,9 +247,6 @@ class UserProfileActivity : AppCompatActivity() {
         return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this)
             .matches()
     }
-
-
-
 
     private fun prepareUpdateData() {
         if (isNetworkConnected(ctx)) {
@@ -268,6 +273,9 @@ class UserProfileActivity : AppCompatActivity() {
                             editor1.apply()
                             prepareData()
                             finish()
+                        } else if (model.responseCode.equals(
+                                ctx.getString(R.string.ResponseCodefail))) {
+                            showToast(model.responseMessage, act)
                         } else if (model.responseCode.equals(
                                 ctx.getString(R.string.ResponseCodeDeleted))) {
                             callDelete403(act, model.responseMessage)
@@ -612,15 +620,9 @@ Tap Setting > permission, and turn "Files and media" on."""
                     binding.ltDob.isErrorEnabled = true
                     binding.ltDob.error = getString(R.string.check_dob)
                     allDisable(binding.btnUpdate)
-                    binding.btnUpdate.setTextColor(
-                        ContextCompat.getColor(applicationContext, R.color.white))
-                    binding.btnUpdate.setBackgroundResource(R.drawable.disable_button)
                 } else {
                     binding.ltDob.isErrorEnabled = false
                     enableButton()
-                    binding.btnUpdate.setTextColor(
-                        ContextCompat.getColor(applicationContext, R.color.white))
-                    binding.btnUpdate.setBackgroundResource(R.drawable.enable_button)
                 }
             }, mYear, mMonth, mDay)
         datePickerDialog.datePicker.maxDate = Calendar.getInstance().timeInMillis

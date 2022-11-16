@@ -344,35 +344,37 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             showToast(getString(R.string.pls_add_geologist_sign), act)
         } else if (geologistClientSignCheck == "") {
             showToast(getString(R.string.pls_add_geologist_client_sign), act)
+        } else {
+            addGeologistSignJpgSignatureToGallery(binding.geologistSignPad.signatureBitmap)
+            addGeologistClientSignJpgSignatureToGallery(
+                binding.geologistClientSignPad.signatureBitmap)
+            val gson = Gson()
+            val oc = OpenCastInsertModel(binding.etMinesSiteName.text.toString(),
+                binding.etMappingSheetNo.text.toString(), binding.tvOCDate.text.toString(),
+                binding.etPitName.text.toString(), binding.etPitLocation.text.toString(),
+                binding.etShiftInchargeName.text.toString(),
+                binding.etGeologistName.text.toString(), binding.etFaceLocation.text.toString(),
+                binding.etFaceLengthM.text.toString(), binding.etFaceAreaM2.text.toString(),
+                binding.etFaceRockTypes.text.toString(), binding.etBenchRL.text.toString(),
+                binding.etBenchHeightWidth.text.toString(), binding.etBenchAngle.text.toString(),
+                binding.etDipDirectionAngle.text.toString(),
+                binding.etThicknessOfOre.text.toString(),
+                binding.etThinessOfOverburden.text.toString(),
+                binding.etThicknessOfInterburden.text.toString(),
+                binding.etObservedGradeOfOre.text.toString(),
+                binding.etActualGradeOfOre.text.toString(),
+                binding.tvSampleCollected.text.toString(), binding.tvWeathering.text.toString(),
+                binding.tvRockStrength.text.toString(), binding.tvWaterCondition.text.toString(),
+                binding.tvTypeOfGeologicalStructures.text.toString(),
+                binding.tvTypeOfFaults.text.toString(), shift, binding.etNotes.text.toString(),
+                null,
+                geologistSign, geologistClientSign)
+            val i = Intent(act, OpenCastFormSecondStepActivity::class.java)
+            i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            i.putExtra("ocData", gson.toJson(oc))
+            startActivity(i)
+            finish()
         }
-        addGeologistSignJpgSignatureToGallery(binding.geologistSignPad.signatureBitmap)
-        addGeologistClientSignJpgSignatureToGallery(
-            binding.geologistClientSignPad.signatureBitmap)
-        val gson = Gson()
-        val oc = OpenCastInsertModel(binding.etMinesSiteName.text.toString(),
-            binding.etMappingSheetNo.text.toString(), binding.tvOCDate.text.toString(),
-            binding.etPitName.text.toString(), binding.etPitLocation.text.toString(),
-            binding.etShiftInchargeName.text.toString(),
-            binding.etGeologistName.text.toString(), binding.etFaceLocation.text.toString(),
-            binding.etFaceLengthM.text.toString(), binding.etFaceAreaM2.text.toString(),
-            binding.etFaceRockTypes.text.toString(), binding.etBenchRL.text.toString(),
-            binding.etBenchHeightWidth.text.toString(), binding.etBenchAngle.text.toString(),
-            binding.etDipDirectionAngle.text.toString(),
-            binding.etThicknessOfOre.text.toString(),
-            binding.etThinessOfOverburden.text.toString(),
-            binding.etThicknessOfInterburden.text.toString(),
-            binding.etObservedGradeOfOre.text.toString(),
-            binding.etActualGradeOfOre.text.toString(),
-            binding.tvSampleCollected.text.toString(), binding.tvWeathering.text.toString(),
-            binding.tvRockStrength.text.toString(), binding.tvWaterCondition.text.toString(),
-            binding.tvTypeOfGeologicalStructures.text.toString(),
-            binding.tvTypeOfFaults.text.toString(), shift, binding.etNotes.text.toString(), null,
-            geologistSign, geologistClientSign)
-        val i = Intent(act, OpenCastFormSecondStepActivity::class.java)
-        i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-        i.putExtra("ocData", gson.toJson(oc))
-        startActivity(i)
-        finish()
     }
 
     private fun callPopupList(title : String, searchHint : String, keyS : String) {

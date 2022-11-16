@@ -1,22 +1,19 @@
 package com.geomap.mapReportModule.activities.underGroundModule
 
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.DatePickerDialog
 import android.content.Context
-import android.os.Build
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.DatePicker
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.geomap.GeoMapApp.allDisable
-import com.geomap.GeoMapApp.callUnderGroundFormThirdStepActivity
 import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundFormSecondStepBinding
+import com.geomap.mapReportModule.models.UnderGroundInsertModel
 import com.geomap.utils.CONSTANTS
+import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -122,66 +119,23 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
         binding.etYCoordinate.addTextChangedListener(userTextWatcher)
         binding.etZCoordinate.addTextChangedListener(userTextWatcher)
 
-        binding.etDate.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                setDate()
-            }
-        }
+        binding.tvUGDate.text = SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT).format(Date())
 
         binding.btnNextStep.setOnClickListener {
-            callUnderGroundFormThirdStepActivity(act, "0")
+            val gson = Gson()
+            val ug = UnderGroundInsertModel("", "", "",
+                "", binding.tvUGDate.text.toString(), binding.etMapSerialNo.text.toString(),
+                binding.etShift.text.toString(),
+                binding.etMappedBy.text.toString(), binding.etScale.text.toString(),
+                binding.etLocation.text.toString(), binding.etVeinLoad.text.toString(),
+                binding.etXCoordinate.text.toString(), binding.etYCoordinate.text.toString(),
+                binding.etZCoordinate.text.toString(), null,
+                null, null, null)
+            val i = Intent(act, UnderGroundFormThirdStepActivity::class.java)
+            i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            i.putExtra("ugData", gson.toJson(ug))
+            startActivity(i)
         }
-    }
-
-    @SuppressLint("SimpleDateFormat")
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    fun setDate() {
-        val c = Calendar.getInstance()
-        mYear = c[Calendar.YEAR]
-        mMonth = c[Calendar.MONTH]
-        mDay = c[Calendar.DAY_OF_MONTH]
-        val datePickerDialog = DatePickerDialog(this, R.style.DialogTheme,
-            { view : DatePicker, year : Int, monthOfYear : Int, dayOfMonth : Int ->
-                view.minDate = System.currentTimeMillis() - 1000
-                val cal = Calendar.getInstance()
-                cal.timeInMillis
-                cal[year, monthOfYear] = dayOfMonth
-                val date = cal.time
-                val sdf = SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT)
-                val strDate = sdf.format(date)
-                binding.etDate.setText(strDate)
-                ageYear = year
-                ageMonth = monthOfYear
-                ageDate = dayOfMonth
-                birthYear = getAge(ageYear, ageMonth, ageDate)
-                if (birthYear < 3) {
-                    binding.etDate.isFocusable = true
-                    binding.etDate.requestFocus()
-                    binding.ltDate.isErrorEnabled = true
-                    binding.ltDate.error = getString(R.string.check_dob)
-                    binding.btnNextStep.isEnabled = false
-                    binding.btnNextStep.isClickable = false
-                    binding.btnNextStep.setBackgroundResource(R.drawable.disable_button)
-                } else {
-                    binding.ltDate.isErrorEnabled = false
-                    binding.btnNextStep.isEnabled = true
-                    binding.btnNextStep.isClickable = true
-                    binding.btnNextStep.setBackgroundResource(R.drawable.enable_button)
-                }
-            }, mYear, mMonth, mDay)
-        datePickerDialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
-        datePickerDialog.show()
-    }
-
-    private fun getAge(year : Int, month : Int, day : Int) : Int {
-        val dob = Calendar.getInstance()
-        val today = Calendar.getInstance()
-        dob[year, month] = day
-        var age = today[Calendar.YEAR] - dob[Calendar.YEAR]
-        if (today[Calendar.DAY_OF_YEAR] < dob[Calendar.DAY_OF_YEAR]) {
-            age--
-        }
-        return age
     }
 
     override fun onBackPressed() {

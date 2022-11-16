@@ -71,29 +71,37 @@ class SignInActivity : AppCompatActivity() {
         binding.etPassword.transformationMethod = PasswordTransformationMethod()
 
         binding.btnSignIn.setOnClickListener {
-            if (!isValidPassword(binding.etPassword.text.toString())) {
-                showToast(getString(R.string.pls_provide_valid_password), act)
-            } else {
-//                Snackbar.make(it, "Done", Snackbar.LENGTH_LONG).show()
+            if (isValidPassword(binding.etPassword.text.toString())) {
                 postLoginData()
             }
         }
     }
 
     private fun isValidPassword(password : String) : Boolean {
-        if (password.length < 8) return false
-        if (password.filter { it.isDigit() }.firstOrNull() == null) return false
-//        if (password.filter { it.isLetter() }.filter { it.isUpperCase() }
-//                .firstOrNull() == null) return false
-        if (password.filter { it.isLetter() }.filter { it.isLowerCase() }
-                .firstOrNull() == null) return false
-        if (password.filter { !it.isLetterOrDigit() }.firstOrNull() == null) return false
+        if (password.length < 8) {
+            binding.etPassword.isFocusable = true
+            binding.etPassword.requestFocus()
+            binding.ltPassword.isErrorEnabled = true
+            binding.ltPassword.error = getString(R.string.invalid_password_less_than_8_chars)
+            return false
+        }
 
+        if (password.filter { it.isDigit() }
+                .firstOrNull() == null || password.filter { it.isLetter() }
+                .firstOrNull() == null || password.filter { !it.isLetterOrDigit() }
+                .firstOrNull() == null) {
+            binding.etPassword.isFocusable = true
+            binding.etPassword.requestFocus()
+            binding.ltPassword.isErrorEnabled = true
+            binding.ltPassword.error = getString(R.string.invalid_password_not_mix_of_char_types)
+            return false
+        }
         return true
     }
 
     private fun postLoginData() {
         if (isNetworkConnected(ctx)) {
+            binding.ltPassword.isErrorEnabled = false
             fcmId = getSharedPreferences(CONSTANTS.FCMToken, Context.MODE_PRIVATE).getString(
                 CONSTANTS.Token, "").toString()
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)

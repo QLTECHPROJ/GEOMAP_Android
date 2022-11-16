@@ -34,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/_56sdp"
+            android:layout_marginBottom="@dimen/_110sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvHeaderTitle">
@@ -42,15 +43,46 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/_25sdp"
-                android:layout_marginTop="@dimen/_28sdp"
-                android:orientation="vertical"
-                android:paddingBottom="@dimen/_76sdp">
+                android:layout_marginTop="@dimen/_18sdp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+
+                    <TextView
+                        android:layout_width="@dimen/_0sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:gravity="start"
+                        android:text="@string/mapping_sheet_no_1523"
+                        android:textColor="@color/light_black"
+                        android:textSize="@dimen/_12sdp"
+                        android:visibility="invisible"
+                        tools:ignore="SpUsage" />
+
+                    <TextView
+                        android:id="@+id/tvUGDate"
+                        android:layout_width="@dimen/_0sdp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.5"
+                        android:fontFamily="@font/inter_semi_bold"
+                        android:gravity="end"
+                        android:textColor="@color/light_black"
+                        android:textSize="@dimen/_12sdp"
+                        tools:ignore="SpUsage" />
+                </LinearLayout>
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_24sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -79,9 +111,9 @@
                             android:cursorVisible="true"
                             android:fontFamily="@font/inter_semi_bold"
                             android:hint="@string/map_serial_no"
-                            android:inputType="text"
+                            android:inputType="number"
                             android:maxLines="1"
-                            android:nextFocusDown="@id/etDate"
+                            android:nextFocusDown="@id/etShift"
                             android:singleLine="true"
                             android:textColor="@color/light_black"
                             android:textColorHint="@color/gray"
@@ -99,6 +131,7 @@
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_16sdp"
+                    android:visibility="gone"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -546,11 +579,11 @@
 
         <ProgressBar
             android:id="@+id/progressBar"
+            style="@style/screenProgressBar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/screenProgressBar"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <FrameLayout
             android:id="@+id/progressBarHolder"
