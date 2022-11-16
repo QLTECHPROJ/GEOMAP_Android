@@ -220,6 +220,26 @@ class DataBaseFunctions {
                 }
             }
         }
+            /*            if (list.isEmpty()) { }    else {
+                for (i in responseData.typeOfFaults!!.indices) {
+                    val obj = TypeOfFaults()
+                    obj.iD = responseData.typeOfFaults!![i].id
+                    obj.name = responseData.typeOfFaults!![i].name
+                    obj.createDate = responseData.typeOfFaults!![i].createdAt
+                    obj.updateDate = responseData.typeOfFaults!![i].updatedAt
+                    Log.e("savetypeOfFaults", "true")
+                    for (j in list.indices) {
+                        if (list[j].iD == obj.iD && list[j].name == obj.name && list[j].createDate == obj.createDate && list[j].updateDate == obj.updateDate) {
+                            break
+                        } else if (j == list.size - 1) {
+                            saveTypeOfFaults(obj, ctx)
+                            Log.e("saveRockStrength", "true   " + obj.name)
+                        }
+                    }
+                    if (i == responseData.typeOfFaults!!.size - 1) {
+                        callRockStrengthObserver(responseData, ctx)
+                    }
+                }*/
 
         fun callRockStrengthSave(list: ArrayList<RockStrength>,
             responseData: UserCommonDataModel.ResponseData, ctx: Context) {
@@ -337,6 +357,9 @@ class DataBaseFunctions {
                 DB = getDataBase(ctx)
                 GeoMapDatabase.databaseWriteExecutor.execute {
                     DB!!.taskDao().deleteAttributeData()
+                }
+                GeoMapDatabase.databaseWriteExecutor.execute {
+                    DB!!.taskDao().deleteNos()
                 }
             }
             for (i in responseData.attributeData!!.indices) {

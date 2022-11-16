@@ -191,5 +191,7 @@
     <string name="enter_mobile_no">Enter mobile no</string>
     <string name="enter_subject">Enter subject</string>
     <string name="enter_message">Enter message</string>
-    <string name="please_select_attribute">Please Select Attribute</string>
+    <string name="please_select_attribute">Please select attribute</string>
+    <string name="please_select_nos">Please select nos</string>
+    <string name="please_add_propery">Please add property</string>
 </resources>

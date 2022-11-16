@@ -242,7 +242,7 @@
                         app:cardElevation="@dimen/_1sdp">
 
                         <EditText
-                            android:id="@+id/edtDescription"
+                            android:id="@+id/edtProperty"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_140sdp"
                             android:layout_marginHorizontal="@dimen/_18sdp"

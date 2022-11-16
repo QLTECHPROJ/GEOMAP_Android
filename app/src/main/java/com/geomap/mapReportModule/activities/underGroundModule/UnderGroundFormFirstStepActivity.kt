@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -25,6 +26,7 @@ import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundFormFirstStepBinding
 import com.geomap.databinding.CommonPopupLayoutBinding
+import com.geomap.mapReportModule.models.AttributeDataModel
 import com.geomap.mapReportModule.models.AttributesListModel
 import com.geomap.roomDataBase.AttributeData
 import com.geomap.roomDataBase.GeoMapDatabase
@@ -42,19 +44,20 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
     private lateinit var act: Activity
     private lateinit var dialog: Dialog
     lateinit var rvList: RecyclerView
-   lateinit var tvFound: TextView
+    lateinit var tvFound: TextView
     lateinit var pb: ProgressBar
     lateinit var pbh: FrameLayout
     lateinit var searchView: SearchView
     lateinit var tvTilte: TextView
     var attributeList = ArrayList<AttributeData>()
+    var attributeDataModel = AttributeDataModel()
     var nosList = ArrayList<Nos>()
     private var userTextWatcher: TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            desc = binding.edtDescription.text.toString()
+            property = binding.edtProperty.text.toString()
 
-            if (desc.equals("")) {
+            if (property.equals("")) {
                 allDisable(binding.btnNextStep)
             } else {
                 binding.btnNextStep.isEnabled = true
@@ -85,9 +88,19 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
         pb = dialog.findViewById(R.id.progressBar)
         pbh = dialog.findViewById(R.id.progressBarHolder)
         tvTilte = dialog.findViewById(R.id.tvTilte)
-        binding.edtDescription.addTextChangedListener(userTextWatcher)
+        binding.edtProperty.addTextChangedListener(userTextWatcher)
 
         binding.cvAttributes.setOnClickListener {
+            dialog = Dialog(ctx)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setContentView(R.layout.common_list_layout)
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            rvList = dialog.findViewById(R.id.rvList)
+            searchView = dialog.findViewById(R.id.searchView)
+            tvFound = dialog.findViewById(R.id.tvFound)
+            pb = dialog.findViewById(R.id.progressBar)
+            pbh = dialog.findViewById(R.id.progressBarHolder)
+            tvTilte = dialog.findViewById(R.id.tvTilte)
             tvTilte.text = getString(R.string.choose_your_attributes)
             rvList.visibility = View.VISIBLE
             rvList.layoutManager = LinearLayoutManager(ctx)
@@ -122,14 +135,14 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
                     return false
                 }
             })
-            if (attributeModel.isEmpty()) {
+            if (attributeModelList.isEmpty()) {
                 tvFound.visibility = View.VISIBLE
                 rvList.visibility = View.GONE
                 tvFound.text = getString(R.string.no_result_found)
             } else {
                 tvFound.visibility = View.GONE
                 rvList.visibility = View.VISIBLE
-                attributesAdapter = AttributesAdapter(dialog, binding, attributeModel, rvList,
+                attributesAdapter = AttributesAdapter(dialog, binding, attributeModelList, rvList,
                     tvFound, ctx)
                 rvList.adapter = attributesAdapter
             }
@@ -139,10 +152,16 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
         }
 
         binding.cvNos.setOnClickListener {
-            val dialog = Dialog(ctx)
+            dialog = Dialog(ctx)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.setContentView(R.layout.common_list_layout)
             dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            rvList = dialog.findViewById(R.id.rvList)
+            searchView = dialog.findViewById(R.id.searchView)
+            tvFound = dialog.findViewById(R.id.tvFound)
+            pb = dialog.findViewById(R.id.progressBar)
+            pbh = dialog.findViewById(R.id.progressBarHolder)
+            tvTilte = dialog.findViewById(R.id.tvTilte)
             tvTilte.text = getString(R.string.choose_your_nos)
             rvList.layoutManager = LinearLayoutManager(ctx)
 
@@ -178,34 +197,84 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
                 }
             })
             if (attributesId == 0) {
-                showToast("Please Select Attribute",act)
+                showToast(getString(R.string.please_select_attribute), act)
             } else {
-                if (nosModel.isEmpty()) {
+                if (nosModelList.isEmpty()) {
                     tvFound.visibility = View.VISIBLE
                     rvList.visibility = View.GONE
                     tvFound.text = getString(R.string.no_result_found)
                 } else {
                     tvFound.visibility = View.GONE
                     rvList.visibility = View.VISIBLE
-                    nosAdapter = NosAdapter(dialog, binding, nosModel, rvList, tvFound, ctx)
+                    nosAdapter = NosAdapter(dialog, binding, nosModelList, rvList, tvFound, ctx)
                     rvList.adapter = nosAdapter
+                    dialog.show()
+                    dialog.setCanceledOnTouchOutside(true)
+                    dialog.setCancelable(true)
                 }
             }
-            dialog.show()
-            dialog.setCanceledOnTouchOutside(true)
-            dialog.setCancelable(true)
         }
 
         binding.tvAddAttributes.setOnClickListener {
-            binding.llMainLayout.visibility = View.VISIBLE
+            if (attributesName != "" && nosName != "" && property != "") {
+                attributeDataModel = AttributeDataModel()
+                attributeDataModel.name = attributesName!!
+                attributeDataModel.nose = nosName!!
+                attributeDataModel.properties = property!!
+                attributeDataModelList.add(attributeDataModel)
+                Log.e("attribute Data Model", gson.toJson(attributeDataModelList).toString())
+                binding.llMainLayout.visibility = View.VISIBLE
+                attributesId = 0
+                nosId = 0
+                attributesName = ""
+                nosName = ""
+                property = ""
+                binding.tvAttributeName.text = getString(R.string.select_attributes)
+                binding.tvNos.text = getString(R.string.select_nos)
+                binding.edtProperty.setText("")
+
+            } else if (attributesName != "" && nosName != "" && property == "") {
+                showToast(getString(R.string.please_add_propery), act)
+            } else if (attributesName != "" && nosName == "" && property != "") {
+                showToast(getString(R.string.please_select_nos), act)
+            }else{
+                binding.llMainLayout.visibility = View.VISIBLE
+                attributesId = 0
+                nosId = 0
+                attributesName = ""
+                nosName = ""
+                property = ""
+                binding.tvAttributeName.text = getString(R.string.select_attributes)
+                binding.tvNos.text = getString(R.string.select_nos)
+                binding.edtProperty.setText("")
+            }
         }
 
         binding.btnNextStep.setOnClickListener {
+            Log.e("attribute Data Model", gson.toJson(attributeDataModelList).toString())
+            val i = Intent(act, UnderGroundFormSecondStepActivity::class.java)
+            i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            i.putExtra("attribute Data" , gson.toJson(attributeDataModelList).toString())
+            act.startActivity(i)
+            act.finish()
             callUnderGroundFormSecondStepActivity(act, "0")
         }
     }
 
     override fun onBackPressed() {
+        sdt = 3
+        attributesId = 0
+        nosId = 0
+        attributesName = ""
+        nosName = ""
+        property = ""
+        attributeSearchFilter = ""
+        nosSearchFilter = ""
+        nosModelList = ArrayList<AttributesListModel.ResponseData.Nos>()
+        attributeModelList = ArrayList<AttributesListModel.ResponseData>()
+        attributeDataModelList = ArrayList<AttributeDataModel>()
+        attributesAdapter = null
+        nosAdapter = null
         finish()
     }
 
@@ -228,7 +297,7 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
                         model!!.responseCode!! == getString(R.string.ResponseCodesuccess) -> {
                             searchView.isEnabled = true
                             searchView.isClickable = true
-                            attributeModel = model.responseData!!
+                            attributeModelList = model.responseData!!
 
                         }
                         model.responseCode!! == getString(R.string.ResponseCodefail) -> {
@@ -262,7 +331,7 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
         GeoMapDatabase.databaseWriteExecutor.execute {
             nosList = DB.taskDao().geAllNos(attributeList[i].iD) as ArrayList<Nos>
 
-            Log.e("List Nos",  gson.toJson(nosList).toString())
+            Log.e("List Nos", gson.toJson(nosList).toString())
             callSaveNos(i)
         }
     }
@@ -272,26 +341,22 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
         val obj = AttributesListModel.ResponseData()
         obj.id = attributeList[i].iD
         obj.name = attributeList[i].name
+        obj.nosList = ArrayList<AttributesListModel.ResponseData.Nos>()
         for (j in nosList.indices) {
             val objNos = AttributesListModel.ResponseData.Nos()
             objNos.id = nosList[j].iD
             objNos.name = nosList[j].name
             objNos.attributeId = nosList[j].attributeId
-            nosModel.add(objNos)
-            if(j == 0) {
-                obj.nosList = ArrayList<AttributesListModel.ResponseData.Nos>()
-            }
+            nosModelList.add(objNos)
             obj.nosList!!.add(objNos)
-            Log.e("nos list response data", gson.toJson(obj.nosList).toString())
-            if (j == nosList.size - 1) {
-                attributeModel.add(obj)
-                Log.e(" response data", gson.toJson(attributeModel).toString())
-                if (x < attributeList.size) {
-                    Log.e(" x data", x.toString())
-                    x++
-                    callGetNos(x)
-                }
-            }
+        }
+        attributeModelList.add(obj)
+        Log.e(" response data", gson.toJson(attributeModelList).toString())
+        x++
+        if (x < attributeList.size) {
+            Log.e(" x data", x.toString())
+
+            callGetNos(x)
         }
     }
 
@@ -317,16 +382,17 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
                     binding.tvNos.text = ctx.getString(R.string.select_nos)
                 }
                 attributesId = mData.id
+                attributesName = mData.name
                 binding.tvAttributeName.text = mData.name
-                nosModel = mData.nosList!!
-                if (nosModel.isEmpty()) {
+                nosModelList = mData.nosList!!
+                if (nosModelList.isEmpty()) {
                     tvFound.visibility = View.VISIBLE
                     rvList.visibility = View.GONE
                     tvFound.text = ctx.getString(R.string.no_result_found)
                 } else {
                     tvFound.visibility = View.GONE
                     rvList.visibility = View.VISIBLE
-                    nosAdapter = NosAdapter(dialog, binding, nosModel, rvList, tvFound,ctx)
+                    nosAdapter = NosAdapter(dialog, binding, nosModelList, rvList, tvFound, ctx)
                     rvList.adapter = nosAdapter
                 }
                 dialog.dismiss()
@@ -400,6 +466,7 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
             holder.bindingAdapter.llMainLayout.setOnClickListener {
                 nosId = mData.id
                 binding.tvNos.text = mData.name
+                nosName = mData.name
                 dialog.dismiss()
             }
 
@@ -455,12 +522,15 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
     companion object {
         var sdt = 3
         var attributesId: Int? = 0
+        var attributesName: String? = ""
+        var nosName: String? = ""
         var nosId: Int? = 0
-        var desc: String? = ""
+        var property: String? = ""
         var attributeSearchFilter: String = ""
         var nosSearchFilter: String = ""
-        var nosModel = ArrayList<AttributesListModel.ResponseData.Nos>()
-        var attributeModel = ArrayList<AttributesListModel.ResponseData>()
+        var nosModelList = ArrayList<AttributesListModel.ResponseData.Nos>()
+        var attributeModelList = ArrayList<AttributesListModel.ResponseData>()
+        var attributeDataModelList = ArrayList<AttributeDataModel>()
         var attributesAdapter: AttributesAdapter? = null
         var nosAdapter: NosAdapter? = null
         val gson = Gson()
