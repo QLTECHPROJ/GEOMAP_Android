@@ -344,7 +344,6 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
     }
 
     private fun postOpenCastInsert() {
-        if (isNetworkConnected(ctx)) {
         if (geologistSignCheck == "") {
             showToast(getString(R.string.pls_add_geologist_sign), act)
         } else if (geologistClientSignCheck == "") {
@@ -387,9 +386,6 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             i.putExtra("clientSign",byteArray)
             i.putExtra("geoSign", byteArray1)
             startActivity(i)
-        }
-        } else {
-            showToast(getString(R.string.no_server_found), act)
         }
     }
 
