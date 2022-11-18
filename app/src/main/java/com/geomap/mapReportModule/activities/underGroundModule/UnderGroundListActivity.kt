@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,9 @@ import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundListBinding
 import com.geomap.databinding.MappingReportListLayoutBinding
 import com.geomap.mapReportModule.models.DashboardViewAllModel
+import com.geomap.mvvm.AllViewModel
+import com.geomap.mvvm.UserModelFactory
+import com.geomap.mvvm.UserRepository
 import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
 import retrofit2.Call
@@ -30,6 +34,8 @@ class UnderGroundListActivity : AppCompatActivity() {
     private lateinit var ctx : Context
     private lateinit var act : Activity
     private var userId : String? = null
+    private lateinit var viewModel : AllViewModel
+    private val retrofitService = RetrofitService.getInstance()
     private var underGroundListAdapter : UnderGroundListAdapter? = null
 
     override fun onCreate(savedInstanceState : Bundle?) {
@@ -45,59 +51,41 @@ class UnderGroundListActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        val mLayoutManager : RecyclerView.LayoutManager = LinearLayoutManager(applicationContext)
-        binding.rvUnderGroundList.layoutManager = mLayoutManager
+        binding.rvUnderGroundList.layoutManager = LinearLayoutManager(applicationContext)
         binding.rvUnderGroundList.itemAnimator = DefaultItemAnimator()
-    }
-
-    override fun onResume() {
-        super.onResume()
         postData()
     }
 
-    private fun postData() {
+    fun postData() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            RetrofitService.getInstance()
-                .getURViewAlllisting(userId)
-                .enqueue(object : Callback<DashboardViewAllModel> {
-                    override fun onResponse(call : Call<DashboardViewAllModel>,
-                        response : Response<DashboardViewAllModel>) {
-                        try {
-                            hideProgressBar(binding.progressBar,
-                                binding.progressBarHolder, act)
-                            val model : DashboardViewAllModel? = response.body()!!
-                            when (model!!.responseCode) {
-                                getString(R.string.ResponseCodesuccess) -> {
-                                    if(model.responseData!!.isEmpty()){
-                                        binding.rvUnderGroundList.visibility = View.GONE
-                                        binding.tvFound.visibility = View.VISIBLE
-                                    }else {
-                                        binding.rvUnderGroundList.visibility = View.VISIBLE
-                                        binding.tvFound.visibility = View.GONE
+            viewModel = ViewModelProvider(this, UserModelFactory(
+                UserRepository(retrofitService)))[AllViewModel::class.java]
+            viewModel.getURViewAllListing(userId.toString())
+            viewModel.getURViewAllListing.observe(this) {
+                hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                when {
+                    it?.responseCode == getString(R.string.ResponseCodesuccess) -> {
+                        if(it.responseData!!.isEmpty()){
+                            binding.rvUnderGroundList.visibility = View.GONE
+                            binding.tvFound.visibility = View.VISIBLE
+                        }else {
+                            binding.rvUnderGroundList.visibility = View.VISIBLE
+                            binding.tvFound.visibility = View.GONE
 
-                                    }
-                                    underGroundListAdapter = UnderGroundListAdapter(
-                                        model.responseData!!)
-                                    binding.rvUnderGroundList.adapter = underGroundListAdapter
-                                }
-                                getString(R.string.ResponseCodefail) -> {
-                                    showToast(model.responseMessage, act)
-                                }
-                                getString(R.string.ResponseCodeDeleted) -> {
-                                    callDelete403(act, model.responseMessage)
-                                }
-                            }
-                        } catch (e : Exception) {
-                            e.printStackTrace()
                         }
+                        underGroundListAdapter = UnderGroundListAdapter(
+                            it.responseData!!)
+                        binding.rvUnderGroundList.adapter = underGroundListAdapter
                     }
-
-                    override fun onFailure(call : Call<DashboardViewAllModel>, t : Throwable) {
-                        hideProgressBar(binding.progressBar, binding.progressBarHolder,
-                            act)
+                    it.responseCode == act.getString(R.string.ResponseCodefail) -> {
+                        showToast(it.responseMessage, act)
                     }
-                })
+                    it.responseCode == act.getString(R.string.ResponseCodeDeleted) -> {
+                        callDelete403(act, it.responseMessage)
+                    }
+                }
+            }
         } else {
             showToast(getString(R.string.no_server_found), act)
         }

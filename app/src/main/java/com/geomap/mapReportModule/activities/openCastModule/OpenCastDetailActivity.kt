@@ -6,21 +6,24 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityOpenCastDetailBinding
 import com.geomap.mapReportModule.models.OpenCastDetailsModel
-import com.geomap.utils.CONSTANTS
+import com.geomap.mvvm.AllViewModel
+import com.geomap.mvvm.UserModelFactory
+import com.geomap.mvvm.UserRepository
 import com.geomap.utils.RetrofitService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class OpenCastDetailActivity : AppCompatActivity() {
     private lateinit var binding : ActivityOpenCastDetailBinding
     private lateinit var ctx : Context
     private lateinit var act : Activity
     private var id : String? = null
+    private var userId : String? = ""
+    private lateinit var viewModel : AllViewModel
+    private val retrofitService = RetrofitService.getInstance()
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,41 +49,29 @@ class OpenCastDetailActivity : AppCompatActivity() {
     fun postData() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            RetrofitService.getInstance()
-                .getOpenCastDetails(id)
-                .enqueue(object : Callback<OpenCastDetailsModel> {
-                    override fun onResponse(call : Call<OpenCastDetailsModel>,
-                        response : Response<OpenCastDetailsModel>) {
-                        try {
-                            hideProgressBar(binding.progressBar,
-                                binding.progressBarHolder, act)
-                            val model : OpenCastDetailsModel? = response.body()!!
-                            when (model!!.ResponseCode) {
-                                getString(R.string.ResponseCodesuccess) -> {
-                                    binding.llMainLayout.visibility = View.VISIBLE
-                                    binding.btnViewPdf.visibility = View.VISIBLE
-                                    val ocDetail =
-                                        OpenCastDetailsModel(model.ResponseCode, model.ResponseData,
-                                            model.ResponseMessage, model.ResponseStatus)
-                                    binding.ocDetail = ocDetail
-                                }
-                                getString(R.string.ResponseCodefail) -> {
-                                    showToast(model.ResponseMessage, act)
-                                }
-                                getString(R.string.ResponseCodeDeleted) -> {
-                                    callDelete403(act, model.ResponseMessage)
-                                }
-                            }
-                        } catch (e : Exception) {
-                            e.printStackTrace()
-                        }
+            viewModel = ViewModelProvider(this, UserModelFactory(
+                UserRepository(retrofitService)))[AllViewModel::class.java]
+            viewModel.getOpenCastDetails(id.toString())
+            viewModel.getOpenCastDetails.observe(this) {
+                hideProgressBar(binding.progressBar,
+                    binding.progressBarHolder, act)
+                when {
+                    it?.ResponseCode == getString(R.string.ResponseCodesuccess) -> {
+                        binding.llMainLayout.visibility = View.VISIBLE
+                        binding.btnViewPdf.visibility = View.VISIBLE
+                        val ocDetail =
+                            OpenCastDetailsModel(it.ResponseCode, it.ResponseData,
+                                it.ResponseMessage, it.ResponseStatus)
+                        binding.ocDetail = ocDetail
                     }
-
-                    override fun onFailure(call : Call<OpenCastDetailsModel>, t : Throwable) {
-                        hideProgressBar(binding.progressBar, binding.progressBarHolder,
-                            act)
+                    it.ResponseCode == act.getString(R.string.ResponseCodefail) -> {
+                        showToast(it.ResponseMessage, act)
                     }
-                })
+                    it.ResponseCode == act.getString(R.string.ResponseCodeDeleted) -> {
+                        callDelete403(act, it.ResponseMessage)
+                    }
+                }
+            }
         } else {
             showToast(getString(R.string.no_server_found), act)
         }

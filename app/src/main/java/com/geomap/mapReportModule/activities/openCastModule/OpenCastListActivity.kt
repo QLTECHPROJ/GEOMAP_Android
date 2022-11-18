@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,17 +20,19 @@ import com.geomap.R
 import com.geomap.databinding.ActivityOpenCastListBinding
 import com.geomap.databinding.MappingReportListLayoutBinding
 import com.geomap.mapReportModule.models.DashboardViewAllModel
+import com.geomap.mvvm.AllViewModel
+import com.geomap.mvvm.UserModelFactory
+import com.geomap.mvvm.UserRepository
 import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class OpenCastListActivity : AppCompatActivity() {
     private lateinit var binding : ActivityOpenCastListBinding
     private lateinit var ctx : Context
     private lateinit var act : Activity
     private var userId : String? = null
+    private lateinit var viewModel : AllViewModel
+    private val retrofitService = RetrofitService.getInstance()
     private var openCastListAdapter : OpenCastListAdapter? = null
 
     override fun onCreate(savedInstanceState : Bundle?) {
@@ -45,59 +48,41 @@ class OpenCastListActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        val mLayoutManage : RecyclerView.LayoutManager = LinearLayoutManager(applicationContext)
-        binding.rvOpenCastList.layoutManager = mLayoutManage
+        binding.rvOpenCastList.layoutManager = LinearLayoutManager(applicationContext)
         binding.rvOpenCastList.itemAnimator = DefaultItemAnimator()
-    }
-
-    override fun onResume() {
-        super.onResume()
         postData()
     }
 
-    private fun postData() {
+    fun postData() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            RetrofitService.getInstance()
-                .getORViewAlllisting(userId)
-                .enqueue(object : Callback<DashboardViewAllModel> {
-                    override fun onResponse(call : Call<DashboardViewAllModel>,
-                        response : Response<DashboardViewAllModel>) {
-                        try {
-                            hideProgressBar(binding.progressBar,
-                                binding.progressBarHolder, act)
-                            val model : DashboardViewAllModel? = response.body()!!
-                            when (model!!.responseCode) {
-                                getString(R.string.ResponseCodesuccess) -> {
-                                    if (model.responseData!!.isEmpty()) {
-                                        binding.rvOpenCastList.visibility = View.GONE
-                                        binding.tvFound.visibility = View.VISIBLE
-                                    } else {
-                                        binding.rvOpenCastList.visibility = View.VISIBLE
-                                        binding.tvFound.visibility = View.GONE
+            viewModel = ViewModelProvider(this, UserModelFactory(
+                UserRepository(retrofitService)))[AllViewModel::class.java]
+            viewModel.getORViewAllListing(userId.toString())
+            viewModel.getORViewAllListing.observe(this) { it ->
+                hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                when {
+                    it?.responseCode == getString(R.string.ResponseCodesuccess) -> {
+                        if (it.responseData!!.isEmpty()) {
+                            binding.rvOpenCastList.visibility = View.GONE
+                            binding.tvFound.visibility = View.VISIBLE
+                        } else {
+                            binding.rvOpenCastList.visibility = View.VISIBLE
+                            binding.tvFound.visibility = View.GONE
 
-                                    }
-                                    openCastListAdapter =
-                                        OpenCastListAdapter(model.responseData!!)
-                                    binding.rvOpenCastList.adapter = openCastListAdapter
-                                }
-                                getString(R.string.ResponseCodefail) -> {
-                                    showToast(model.responseMessage, act)
-                                }
-                                getString(R.string.ResponseCodeDeleted) -> {
-                                    callDelete403(act, model.responseMessage)
-                                }
-                            }
-                        } catch (e : Exception) {
-                            e.printStackTrace()
                         }
+                        openCastListAdapter =
+                            OpenCastListAdapter(it.responseData!!)
+                        binding.rvOpenCastList.adapter = openCastListAdapter
                     }
-
-                    override fun onFailure(call : Call<DashboardViewAllModel>, t : Throwable) {
-                        hideProgressBar(binding.progressBar, binding.progressBarHolder,
-                            act)
+                    it.responseCode == act.getString(R.string.ResponseCodefail) -> {
+                        showToast(it.responseMessage, act)
                     }
-                })
+                    it.responseCode == act.getString(R.string.ResponseCodeDeleted) -> {
+                        callDelete403(act, it.responseMessage)
+                    }
+                }
+            }
         } else {
             showToast(getString(R.string.no_server_found), act)
         }

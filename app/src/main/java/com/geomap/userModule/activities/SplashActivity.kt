@@ -178,10 +178,8 @@ class SplashActivity : AppCompatActivity() {
             callDashboardActivity(act, "0")
             if (isNetworkConnected(ctx)) {
                 viewModel = ViewModelProvider(this, UserModelFactory(
-                    UserRepository(retrofitService,
-                        userId.toString())))[AllViewModel::class.java]
-
-                viewModel.getUserDetails()
+                    UserRepository(retrofitService)))[AllViewModel::class.java]
+                viewModel.getUserDetails(userId.toString())
                 viewModel.userDetails.observe(this) {
                     when {
                         it?.responseCode == getString(R.string.ResponseCodesuccess) -> {

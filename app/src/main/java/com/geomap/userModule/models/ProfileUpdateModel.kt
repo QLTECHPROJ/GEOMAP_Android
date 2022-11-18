@@ -23,20 +23,26 @@ class ProfileUpdateModel {
         @SerializedName("mobile") @Expose var mobile : String? = null
         @SerializedName("dob") @Expose var dob : String? = null
         @SerializedName("profileImage") @Expose var profileImage : String? = null
+
         @SerializedName("attributeData") @Expose
         var attributeData : List<AttributeData>? = null
+
         @SerializedName("rockStrength") @Expose
         var rockStrength : List<RockStrength>? = null
+
         @SerializedName("sampleCollected") @Expose
         var sampleCollected : List<SampleCollected>? = null
+
         @SerializedName("typeOfFaults") @Expose
         var typeOfFaults : List<TypeOfFaults>? = null
 
         @SerializedName("typeOfGeologicalStructures") @Expose
         var typeOfGeologicalStructures : List<TypeOfGeologicalStructures>? =
             null
+
         @SerializedName("waterCondition") @Expose
         var waterCondition : List<WaterCondition>? = null
+
         @SerializedName("weatheringData") @Expose
         var weatheringData : List<WeatheringData>? = null
 

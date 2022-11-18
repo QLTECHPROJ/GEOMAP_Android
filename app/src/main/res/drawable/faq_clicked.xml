@@ -6,12 +6,6 @@
         android:width="1.3dp"
         android:color="@color/primary_theme" />
 
-    <padding
-        android:bottom="10dp"
-        android:left="10dp"
-        android:right="10dp"
-        android:top="10dp" />
-
     <corners
         android:topLeftRadius="@dimen/_10sdp"
         android:topRightRadius="@dimen/_10sdp" />

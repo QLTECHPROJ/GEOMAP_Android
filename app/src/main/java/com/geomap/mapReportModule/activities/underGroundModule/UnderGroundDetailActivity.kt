@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,12 +18,11 @@ import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundDetailBinding
 import com.geomap.databinding.AttributeLayoutBinding
 import com.geomap.mapReportModule.models.Attribute
-import com.geomap.mapReportModule.models.OpenCastDetailsModel
 import com.geomap.mapReportModule.models.UnderGroundDetailsModel
+import com.geomap.mvvm.AllViewModel
+import com.geomap.mvvm.UserModelFactory
+import com.geomap.mvvm.UserRepository
 import com.geomap.utils.RetrofitService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class UnderGroundDetailActivity : AppCompatActivity() {
     private lateinit var binding : ActivityUnderGroundDetailBinding
@@ -30,6 +30,8 @@ class UnderGroundDetailActivity : AppCompatActivity() {
     private lateinit var act : Activity
     private var attributesListAdapter : AttributesListAdapter? = null
     private var id : String? = null
+    private lateinit var viewModel : AllViewModel
+    private val retrofitService = RetrofitService.getInstance()
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,54 +61,41 @@ class UnderGroundDetailActivity : AppCompatActivity() {
     fun postData() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            RetrofitService.getInstance()
-                .getUnderGroundDetails(id)
-                .enqueue(object : Callback<UnderGroundDetailsModel> {
-                    override fun onResponse(call : Call<UnderGroundDetailsModel>,
-                        response : Response<UnderGroundDetailsModel>) {
-                        try {
-                            hideProgressBar(binding.progressBar,
-                                binding.progressBarHolder, act)
-                            val model : UnderGroundDetailsModel? = response.body()!!
-                            when (model!!.ResponseCode) {
-                                getString(R.string.ResponseCodesuccess) -> {
-                                    binding.llMainLayout.visibility = View.VISIBLE
-                                    binding.btnViewPdf.visibility = View.VISIBLE
-                                    val ugDetail =
-                                        UnderGroundDetailsModel(model.ResponseCode, model.ResponseData,
-                                            model.ResponseMessage, model.ResponseStatus)
-                                    binding.ugDetail = ugDetail
-                                    model.ResponseData.let {
-                                        if (it.attribute.isEmpty()) {
-                                            binding.tvAttributes.visibility = View.GONE
-                                            binding.rvAttributesList.visibility = View.GONE
-                                        } else {
-                                            binding.tvAttributes.visibility = View.VISIBLE
-                                            binding.rvAttributesList.visibility = View.VISIBLE
-                                            attributesListAdapter =
-                                                AttributesListAdapter(
-                                                    it.attribute)
-                                            binding.rvAttributesList.adapter = attributesListAdapter
-                                        }
-                                    }
-                                }
-                                getString(R.string.ResponseCodefail) -> {
-                                    showToast(model.ResponseMessage, act)
-                                }
-                                getString(R.string.ResponseCodeDeleted) -> {
-                                    callDelete403(act, model.ResponseMessage)
-                                }
+            viewModel = ViewModelProvider(this, UserModelFactory(
+                UserRepository(retrofitService)))[AllViewModel::class.java]
+            viewModel.getUnderGroundDetails(id.toString())
+            viewModel.getUnderGroundDetails.observe(this) { it ->
+                hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                when {
+                    it?.ResponseCode == getString(R.string.ResponseCodesuccess) -> {
+                        binding.llMainLayout.visibility = View.VISIBLE
+                        binding.btnViewPdf.visibility = View.VISIBLE
+                        val ugDetail =
+                            UnderGroundDetailsModel(it.ResponseCode, it.ResponseData,
+                                it.ResponseMessage, it.ResponseStatus)
+                        binding.ugDetail = ugDetail
+                        it.ResponseData.let {
+                            if (it.attribute.isEmpty()) {
+                                binding.tvAttributes.visibility = View.GONE
+                                binding.rvAttributesList.visibility = View.GONE
+                            } else {
+                                binding.tvAttributes.visibility = View.VISIBLE
+                                binding.rvAttributesList.visibility = View.VISIBLE
+                                attributesListAdapter =
+                                    AttributesListAdapter(
+                                        it.attribute)
+                                binding.rvAttributesList.adapter = attributesListAdapter
                             }
-                        } catch (e : Exception) {
-                            e.printStackTrace()
                         }
                     }
-
-                    override fun onFailure(call : Call<UnderGroundDetailsModel>, t : Throwable) {
-                        hideProgressBar(binding.progressBar, binding.progressBarHolder,
-                            act)
+                    it.ResponseCode == act.getString(R.string.ResponseCodefail) -> {
+                        showToast(it.ResponseMessage, act)
                     }
-                })
+                    it.ResponseCode == act.getString(R.string.ResponseCodeDeleted) -> {
+                        callDelete403(act, it.ResponseMessage)
+                    }
+                }
+            }
         } else {
             showToast(getString(R.string.no_server_found), act)
         }

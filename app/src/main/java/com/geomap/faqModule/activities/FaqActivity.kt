@@ -1,6 +1,5 @@
 package com.geomap.faqModule.activities
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
@@ -10,83 +9,72 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityFaqBinding
 import com.geomap.databinding.FaqLayoutBinding
-import com.geomap.faqModule.models.FaqListModel
+import com.geomap.faqModule.models.FaQResponseData
+import com.geomap.mvvm.AllViewModel
+import com.geomap.mvvm.UserModelFactory
+import com.geomap.mvvm.UserRepository
 import com.geomap.utils.RetrofitService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class FaqActivity : AppCompatActivity() {
     lateinit var binding : ActivityFaqBinding
-    var faqListModel : FaqListModel? = null
-    private var modelList : ArrayList<FaqListModel.ResponseData>? = null
     lateinit var adapter : FaqListAdapter
     lateinit var act : Activity
     lateinit var ctx : Context
-    lateinit var section : ArrayList<String>
+    private lateinit var viewModel : AllViewModel
+    private val retrofitService = RetrofitService.getInstance()
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_faq)
         act = this@FaqActivity
         ctx = this@FaqActivity
-        modelList = ArrayList()
-        section = ArrayList()
-        prepareData()
+        getData()
+
         binding.llBack.setOnClickListener {
             onBackPressed()
         }
     }
 
-    private fun prepareData() {
-        if (isNetworkConnected(this)) {
+    private fun getData() {
+        if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            val listCall = RetrofitService.getInstance().faqLists
-            listCall.enqueue(object : Callback<FaqListModel?> {
-                override fun onResponse(call : Call<FaqListModel?>,
-                    response : Response<FaqListModel?>) {
-                    try {
-                        val listModel = response.body()
-                        if (listModel!!.responseCode.equals(getString(R.string.ResponseCodesuccess),
-                                ignoreCase = true)) {
-                            binding.rvFAQList.visibility = View.VISIBLE
-                            hideProgressBar(binding.progressBar,
-                                binding.progressBarHolder, act)
-                            faqListModel = listModel
-                            binding.rvFAQList.layoutManager = LinearLayoutManager(act)
-                            adapter =
-                                FaqListAdapter(listModel.responseData!!)
-                            binding.rvFAQList.adapter = adapter
-
-                        } else if (listModel.responseCode.equals(
-                                ctx.getString(R.string.ResponseCodefail))) {
-                            showToast(listModel.responseMessage, act)
-                        } else if (listModel.responseCode.equals(
-                                ctx.getString(R.string.ResponseCodeDeleted))) {
-                            callDelete403(act, listModel.responseMessage)
-                        }
-                    } catch (e : Exception) {
-                        e.printStackTrace()
+            viewModel = ViewModelProvider(this, UserModelFactory(
+                UserRepository(retrofitService)))[AllViewModel::class.java]
+            viewModel.faqLists()
+            viewModel.faqLists.observe(this) {
+                hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                when {
+                    it?.ResponseCode == getString(R.string.ResponseCodesuccess) -> {
+                        binding.rvFAQList.visibility = View.VISIBLE
+                        hideProgressBar(binding.progressBar,
+                            binding.progressBarHolder, act)
+                        binding.rvFAQList.layoutManager = LinearLayoutManager(act)
+                        adapter = FaqListAdapter(it.ResponseData)
+                        binding.rvFAQList.adapter = adapter
+                    }
+                    it.ResponseCode == act.getString(R.string.ResponseCodefail) -> {
+                        showToast(it.ResponseMessage, act)
+                    }
+                    it.ResponseCode == act.getString(R.string.ResponseCodeDeleted) -> {
+                        callDelete403(act, it.ResponseMessage)
                     }
                 }
-
-                override fun onFailure(call : Call<FaqListModel?>, t : Throwable) {
-                    hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                }
-            })
+            }
         } else {
             showToast(getString(R.string.no_server_found), act)
         }
     }
 
-    inner class FaqListAdapter(private val modelList : List<FaqListModel.ResponseData>) :
+    inner class FaqListAdapter(private val modelList : List<FaQResponseData>) :
         RecyclerView.Adapter<FaqListAdapter.MyViewHolder>() {
+        var expandedPosition = -1
         override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : MyViewHolder {
             val v : FaqLayoutBinding =
                 DataBindingUtil.inflate(LayoutInflater.from(parent.context),
@@ -94,41 +82,9 @@ class FaqActivity : AppCompatActivity() {
             return MyViewHolder(v)
         }
 
-        @SuppressLint("ResourceType") override fun onBindViewHolder(holder : MyViewHolder,
+        override fun onBindViewHolder(holder : MyViewHolder,
             position : Int) {
-            for (i in modelList.indices) {
-                section.add(modelList[position].question.toString())
-                section.add(modelList[position].answer.toString())
-            }
 
-            holder.binding.tvTitle.text = modelList[position].question
-            holder.binding.tvDesc.text = modelList[position].answer
-
-            holder.binding.llMainLayout.setOnClickListener {
-                callChangeArrow(holder)
-            }
-            /* holder.binding.ivClickRight.setOnClickListener {
-                 myBackPress = true
-                 holder.binding.tvTitle.setTextColor(ContextCompat.getColor(ctx, R.color.white))
-                 holder.binding.tvDesc.isFocusable = true
-                 holder.binding.tvDesc.requestFocus()
-                 holder.binding.tvDesc.visibility = View.VISIBLE
-                 holder.binding.ivClickRight.visibility = View.GONE
-                 holder.binding.ivClickDown.visibility = View.VISIBLE
-                 holder.binding.llBgChange.setBackgroundResource(R.drawable.faq_not_clicked)
-                 holder.binding.llMainLayout.setBackgroundResource(R.drawable.faq_clicked)
-                 holder.binding.ivClickDown.setImageResource(R.drawable.ic_white_arrow_down_icon)
-             }
-             holder.binding.ivClickDown.setOnClickListener {
-                 myBackPress = true
-                 holder.binding.llBgChange.setBackgroundResource(R.color.transparent_white)
-                 holder.binding.llMainLayout.setBackgroundResource(R.drawable.faq_not_clicked)
-                 holder.binding.tvTitle.setTextColor(ContextCompat.getColor(ctx, R.color.light_black))
-                 holder.binding.tvDesc.visibility = View.GONE
-                 holder.binding.ivClickRight.visibility = View.VISIBLE
-                 holder.binding.ivClickDown.visibility = View.GONE
-                 holder.binding.ivClickDown.setImageResource(R.drawable.ic_right_gray_arrow_icon)
-             }*/
             if (modelList.isEmpty()) {
                 binding.tvFound.visibility = View.VISIBLE
                 binding.rvFAQList.visibility = View.GONE
@@ -136,30 +92,50 @@ class FaqActivity : AppCompatActivity() {
                 binding.tvFound.visibility = View.GONE
                 binding.rvFAQList.visibility = View.VISIBLE
             }
-        }
 
-        private fun callChangeArrow(holder : MyViewHolder) {
-            if (holder.binding.ivClickDown.visibility == View.VISIBLE) {
-                holder.binding.llBgChange.setBackgroundResource(R.color.transparent_white)
-                holder.binding.llMainLayout.setBackgroundResource(R.drawable.faq_not_clicked)
-                holder.binding.tvTitle.setTextColor(
-                    ContextCompat.getColor(ctx, R.color.light_black))
-                holder.binding.tvDesc.visibility = View.GONE
-                holder.binding.ivClickRight.visibility = View.VISIBLE
-                holder.binding.ivClickDown.visibility = View.GONE
-                holder.binding.ivClickDown.setImageResource(R.drawable.ic_arrow_icon)
+            holder.binding.tvTitle.text = modelList[position].question
+            holder.binding.tvDesc.text = modelList[position].answer
+            if (position == expandedPosition) {
+                callExpandView(holder)
             } else {
-                holder.binding.tvTitle.setTextColor(ContextCompat.getColor(ctx, R.color.white))
-                holder.binding.tvDesc.isFocusable = true
-                holder.binding.tvDesc.requestFocus()
-                holder.binding.tvDesc.visibility = View.VISIBLE
-                holder.binding.ivClickRight.visibility = View.GONE
-                holder.binding.ivClickDown.visibility = View.VISIBLE
-                holder.binding.llBgChange.setBackgroundResource(R.drawable.faq_not_clicked)
-                holder.binding.llMainLayout.setBackgroundResource(R.drawable.faq_clicked)
-                holder.binding.ivClickDown.setImageResource(R.drawable.ic_down_arrow_white_icon)
+                callCollapseView(holder)
             }
 
+            holder.binding.llMainLayout.setOnClickListener {
+                if (expandedPosition >= -1) {
+                    val prev = expandedPosition
+                    notifyItemChanged(prev)
+                    callExpandView(holder)
+                } else {
+                    callCollapseView(holder)
+                }
+                expandedPosition = holder.position
+                notifyItemChanged(expandedPosition)
+            }
+        }
+
+        private fun callExpandView(holder : MyViewHolder) {
+            holder.binding.llBgChange.isFocusable = true
+            holder.binding.tvTitle.setTextColor(ContextCompat.getColor(ctx, R.color.white))
+            holder.binding.tvDesc.requestFocus()
+            holder.binding.tvDesc.visibility = View.VISIBLE
+            holder.binding.ivClickRight.visibility = View.GONE
+            holder.binding.ivClickDown.visibility = View.VISIBLE
+            holder.binding.llBgChange.setBackgroundResource(R.drawable.faq_not_clicked)
+            holder.binding.llMainLayout.setBackgroundResource(R.drawable.faq_clicked)
+            holder.binding.ivClickDown.setImageResource(R.drawable.ic_down_arrow_white_icon)
+        }
+
+        private fun callCollapseView(holder : MyViewHolder) {
+            holder.binding.llBgChange.isFocusable = false
+            holder.binding.llBgChange.setBackgroundResource(R.color.transparent_white)
+            holder.binding.llMainLayout.setBackgroundResource(R.drawable.faq_not_clicked)
+            holder.binding.tvTitle.setTextColor(
+                ContextCompat.getColor(ctx, R.color.light_black))
+            holder.binding.tvDesc.visibility = View.GONE
+            holder.binding.ivClickRight.visibility = View.VISIBLE
+            holder.binding.ivClickDown.visibility = View.GONE
+            holder.binding.ivClickDown.setImageResource(R.drawable.ic_arrow_icon)
         }
 
         override fun getItemCount() : Int {

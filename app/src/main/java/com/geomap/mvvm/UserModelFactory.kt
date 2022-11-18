@@ -10,7 +10,7 @@ class UserModelFactory constructor(private val repository : UserRepository) :
         return if (modelClass.isAssignableFrom(AllViewModel::class.java)) {
             AllViewModel(repository) as T
         } else {
-            throw IllegalArgumentException("AllViewModel Not Found")
+            throw IllegalArgumentException("Data Not Found")
         }
     }
 }

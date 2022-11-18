@@ -10,6 +10,4 @@ object AppUtils : Application() {
     var tncs_url = "$MAIN_URL/term_condition.php"
     var privacy_policy_url = "$MAIN_URL/privacy.php"
     var about_us = "$MAIN_URL/about/"
-    var chat_Support_url = "$MAIN_URL/chatbot.php"
-    var how_refer_works_url = "$MAIN_URL/how-refer-works/"
 }

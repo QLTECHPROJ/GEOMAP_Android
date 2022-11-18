@@ -74,11 +74,11 @@ interface RetrofitService {
 
     @POST("ur_listing_view_all")
     @FormUrlEncoded
-    fun getURViewAlllisting(@Field("userId") userId : String?) : Call<DashboardViewAllModel>
+    fun getURViewAllListing(@Field("userId") userId : String?) : Call<DashboardViewAllModel>
 
     @POST("or_listing_view_all")
     @FormUrlEncoded
-    fun getORViewAlllisting(@Field("userId") userId : String?) : Call<DashboardViewAllModel>
+    fun getORViewAllListing(@Field("userId") userId : String?) : Call<DashboardViewAllModel>
 
     @POST("ur_detail")
     @FormUrlEncoded
