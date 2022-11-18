@@ -28,6 +28,7 @@ import com.geomap.databinding.ActivityUnderGroundFormFirstStepBinding
 import com.geomap.databinding.CommonPopupLayoutBinding
 import com.geomap.mapReportModule.models.AttributeDataModel
 import com.geomap.mapReportModule.models.AttributesListModel
+import com.geomap.mapReportModule.models.UnderGroundInsertModel
 import com.geomap.roomDataBase.AttributeData
 import com.geomap.roomDataBase.GeoMapDatabase
 import com.geomap.roomDataBase.Nos
@@ -255,9 +256,8 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
             val i = Intent(act, UnderGroundFormSecondStepActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             i.putExtra("attributeData" , gson.toJson(attributeDataModelList).toString())
-            act.startActivity(i)
-            act.finish()
-            callUnderGroundFormSecondStepActivity(act, "0")
+            startActivity(i)
+            finish()
         }
     }
 

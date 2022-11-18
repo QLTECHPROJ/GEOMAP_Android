@@ -6,6 +6,9 @@ import android.content.*
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.os.SystemClock
+import android.provider.Settings
+import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +26,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityMenuListBinding
+import com.geomap.mapReportModule.models.SuccessModel
 import com.geomap.userModule.models.UserCommonDataModel
 import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
@@ -42,6 +46,7 @@ class MenuListActivity : AppCompatActivity() {
     private var supportEmail : String? = null
     private var logoutDialog : Dialog? = null
     val shared : SharedPreferences? = null
+    private var mLastClickTime: Long = 0
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -138,9 +143,7 @@ class MenuListActivity : AppCompatActivity() {
                 btn.setOnClickListener {
                     logoutDialog!!.dismiss()
                     showProgressBar(progressBar, progressBarHolder, act)
-//                    logoutCall(binding.progressBar)
-
-                    callSignActivity("", act)
+                    callLogoutApi(binding.progressBar)
                 }
                 tvGoBack.setOnClickListener { logoutDialog!!.dismiss() }
                 logoutDialog!!.show()
@@ -284,12 +287,52 @@ class MenuListActivity : AppCompatActivity() {
         }
     }
 
-/*
-    private fun logoutCall(progressBar : ProgressBar) {
-        deleteCall(ctx)
-        callLogoutApi(progressBar)
+    private fun callLogoutApi(progressBar : ProgressBar) {
+        val shared = getSharedPreferences(CONSTANTS.FCMToken, MODE_PRIVATE)
+        val fcmId = shared.getString(CONSTANTS.Token, "")
+        if (fcmId != null) {
+            callFCMRegMethod(ctx)
+            Log.e("fcmId",fcmId)
+        }
+        val deviceId = Settings.Secure.getString(getContext().contentResolver,
+            Settings.Secure.ANDROID_ID)
+        if (isNetworkConnected(ctx)) {
+            RetrofitService.getInstance().postLogout(userId, CONSTANTS.FLAG_ONE, fcmId, deviceId)
+                .enqueue(object : Callback<SuccessModel?> {
+                    override fun onResponse(call : Call<SuccessModel?>,
+                        response : Response<SuccessModel?>) {
+                        val successModel = response.body()!!
+                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
+                            return
+                        }
+                        mLastClickTime = SystemClock.elapsedRealtime()
+                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                        hideProgressBar(progressBar, null,
+                            act)
+                        when (successModel.responseCode) {
+                            (getString(R.string.ResponseCodesuccess)) -> {
+                                //                    dialog.hide()
+                                deleteCall(ctx)
+                                showToast(successModel.responseMessage, act)
+                                callSignActivity("", act)
+                            }
+                            getString(R.string.ResponseCodefail) -> {
+                                showToast(successModel.responseMessage, act)
+                            }
+                            getString(R.string.ResponseCodeDeleted) -> {
+                                callDelete403(act, successModel.responseMessage)
+                            }
+                        }
+                    }
+
+                    override fun onFailure(call : Call<SuccessModel?>, t : Throwable) {
+                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                    }
+                })
+        } else {
+            showToast(getString(R.string.no_server_found), act)
+        }
     }
-*/
 
     override fun onBackPressed() {
         finish()

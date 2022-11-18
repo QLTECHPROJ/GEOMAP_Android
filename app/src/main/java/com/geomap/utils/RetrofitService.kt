@@ -42,6 +42,13 @@ interface RetrofitService {
     @FormUrlEncoded
     fun getUserDetails(@Field("userId") userId : String?) : Call<UserCommonDataModel>
 
+    @POST("logout")
+    @FormUrlEncoded
+    fun postLogout(@Field("userId") userId : String?,
+        @Field("deviceType") deviceType : String?,
+        @Field("deviceToken") deviceToken : String?,
+        @Field("deviceId") deviceId : String?) : Call<SuccessModel>
+
     @POST("contact_insert")
     @FormUrlEncoded
     fun postContactUs(@Field("userId") userId : String?, @Field("name") name : String?,
