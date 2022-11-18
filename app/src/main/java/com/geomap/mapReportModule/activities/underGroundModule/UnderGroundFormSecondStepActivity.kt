@@ -6,7 +6,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.RadioGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatRadioButton
 import androidx.databinding.DataBindingUtil
 import com.geomap.GeoMapApp.allDisable
 import com.geomap.R
@@ -47,7 +49,6 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
         override fun onTextChanged(s : CharSequence, start : Int, before : Int, count : Int) {
             mapSerialNo = binding.etMapSerialNo.text.toString()
             name = binding.etName.text.toString()
-            shift = binding.etShift.text.toString()
             mappedBy = binding.etMappedBy.text.toString()
             scale = binding.etScale.text.toString()
             location = binding.etLocation.text.toString()
@@ -62,9 +63,6 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
                     allDisable(binding.btnNextStep)
                 }
                 name.equals("", ignoreCase = true) -> {
-                    allDisable(binding.btnNextStep)
-                }
-                shift.equals("", ignoreCase = true) -> {
                     allDisable(binding.btnNextStep)
                 }
                 mappedBy.equals("", ignoreCase = true) -> {
@@ -120,7 +118,6 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
 
         binding.etMapSerialNo.addTextChangedListener(userTextWatcher)
         binding.etName.addTextChangedListener(userTextWatcher)
-        binding.etShift.addTextChangedListener(userTextWatcher)
         binding.etMappedBy.addTextChangedListener(userTextWatcher)
         binding.etScale.addTextChangedListener(userTextWatcher)
         binding.etLocation.addTextChangedListener(userTextWatcher)
@@ -130,19 +127,22 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
         binding.etZCoordinate.addTextChangedListener(userTextWatcher)
         binding.etComment.addTextChangedListener(userTextWatcher)
 
+        shift = getString(R.string.night_shift)
         binding.tvUGDate.text = SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT).format(Date())
+
+        binding.rbRadioGroup.setOnCheckedChangeListener { radioGroup : RadioGroup, id : Int ->
+            shift = radioGroup.findViewById<AppCompatRadioButton>(id).text.toString()
+        }
 
         binding.btnNextStep.setOnClickListener {
             val gson = Gson()
-            val ug =
-                UnderGroundInsertModel(attributeDataModelList, binding.etName.text.toString(),
-                    binding.etComment.text.toString(),
-                    binding.tvUGDate.text.toString(),
-                    binding.etMapSerialNo.text.toString(), binding.etShift.text.toString(),
-                    binding.etMappedBy.text.toString(), binding.etScale.text.toString(),
-                    binding.etLocation.text.toString(), binding.etVeinLoad.text.toString(),
-                    binding.etXCoordinate.text.toString(), binding.etYCoordinate.text.toString(),
-                    binding.etZCoordinate.text.toString(), null, null, null, null)
+            val ug = UnderGroundInsertModel(attributeDataModelList, binding.etName.text.toString(),
+                binding.etComment.text.toString(), binding.tvUGDate.text.toString(),
+                binding.etMapSerialNo.text.toString(), shift, binding.etMappedBy.text.toString(),
+                binding.etScale.text.toString(), binding.etLocation.text.toString(),
+                binding.etVeinLoad.text.toString(), binding.etXCoordinate.text.toString(),
+                binding.etYCoordinate.text.toString(), binding.etZCoordinate.text.toString(),
+                null, null, null, null)
             val i = Intent(act, UnderGroundFormThirdStepActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             i.putExtra("ugData", gson.toJson(ug))

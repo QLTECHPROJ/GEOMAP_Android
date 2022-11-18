@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -87,13 +88,25 @@ class ContactUsActivity : AppCompatActivity() {
         }
 
         binding.btnSubmit.setOnClickListener {
-            postContactUs()
+            if (!binding.etEmail.text.toString().isEmailValid()) {
+                binding.etEmail.isFocusable = true
+                binding.etEmail.requestFocus()
+                binding.ltEmail.isErrorEnabled = true
+                binding.ltEmail.error = getString(R.string.pls_provide_valid_email)
+            } else {
+                postContactUs()
+            }
         }
     }
 
     private fun enableButton() {
         binding.btnSubmit.isEnabled = true
         binding.btnSubmit.setBackgroundResource(R.drawable.enable_button)
+    }
+
+    private fun String.isEmailValid() : Boolean {
+        return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this)
+            .matches()
     }
 
     private fun postContactUs() {

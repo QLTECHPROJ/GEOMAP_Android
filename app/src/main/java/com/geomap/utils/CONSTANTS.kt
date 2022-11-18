@@ -53,6 +53,7 @@ object CONSTANTS {
     const val createdAt = "createdAt"
     const val updatedAt = "updatedAt"
     const val attributeId = "attributeId"
+    const val checkLogin = "checkLogin"
 
 
     const val supportTitle = "supportTitle"

@@ -13,6 +13,8 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
+import android.os.Build
+import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
@@ -85,7 +87,8 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
     private var popupAdapter : PopupAdapter? = null
     private val REQUEST_EXTERNAL_STORAGE = 1
     private val PERMISSIONS_STORAGE = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.MANAGE_EXTERNAL_STORAGE)
 
     private var userTextWatcher : TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s : CharSequence, start : Int, count : Int, after : Int) {}
@@ -217,7 +220,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         binding.btnSubmit.visibility = View.VISIBLE
 
 
-        verifyStoragePermissions(act)
+        verifyStoragePermissions()
 
         binding.llBack.setOnClickListener {
             onBackPressed()
@@ -298,7 +301,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
 
         binding.geologistSignPad.setOnSignedListener(object : SignaturePad.OnSignedListener {
             override fun onStartSigning() {
-                verifyStoragePermissions(act)
+                verifyStoragePermissions()
             }
 
             override fun onSigned() {
@@ -316,7 +319,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
 
         binding.geologistClientSignPad.setOnSignedListener(object : SignaturePad.OnSignedListener {
             override fun onStartSigning() {
-                verifyStoragePermissions(act)
+                verifyStoragePermissions()
             }
 
             override fun onSigned() {
@@ -336,11 +339,12 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         })
 
         binding.btnSubmit.setOnClickListener {
-            postData()
+            postOpenCastInsert()
         }
     }
 
-    private fun postData() {
+    private fun postOpenCastInsert() {
+        if (isNetworkConnected(ctx)) {
         if (geologistSignCheck == "") {
             showToast(getString(R.string.pls_add_geologist_sign), act)
         } else if (geologistClientSignCheck == "") {
@@ -383,7 +387,9 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             i.putExtra("clientSign",byteArray)
             i.putExtra("geoSign", byteArray1)
             startActivity(i)
-            finish()
+        }
+        } else {
+            showToast(getString(R.string.no_server_found), act)
         }
     }
 
@@ -923,7 +929,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
 
     private fun getAlbumStorageDir(albumName : String?) : File {
         val file = File(Environment.getExternalStoragePublicDirectory(
-            Environment.DIRECTORY_PICTURES), albumName)
+            Environment.DIRECTORY_DOWNLOADS), albumName)
         if (!file.exists() && !file.mkdirs()) {
             Log.e("SignaturePad", "Directory not created")
         }
@@ -940,17 +946,24 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         stream.close()
     }
 
-    fun verifyStoragePermissions(activity : Activity?) {
-        if (ContextCompat.checkSelfPermission(
-                ctx, Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_DENIED && ContextCompat.checkSelfPermission(
-                ctx, Manifest.permission.READ_EXTERNAL_STORAGE
-            ) == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(
-                activity!!,
-                PERMISSIONS_STORAGE,
-                REQUEST_EXTERNAL_STORAGE
-            )
+    fun verifyStoragePermissions() {
+        if (SDK_INT >= Build.VERSION_CODES.R) {
+            if (!Environment.isExternalStorageManager()) {
+                callFilesPermission()
+            }
+        } else {
+            if (ActivityCompat.checkSelfPermission(ctx,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    ctx, Manifest.permission.READ_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    ctx, Manifest.permission.MANAGE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(
+                    act,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+                )
+            }
         }
     }
 
@@ -968,8 +981,8 @@ Tap Setting > permission, and turn "Files and media" on."""
         building.setPositiveButton(
             ctx.getString(R.string.Settings)
         ) { dialogs : DialogInterface, _ : Int ->
-            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            val uri = Uri.fromParts("package", ctx.packageName, null)
+            val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+            val uri = Uri.fromParts("package", packageName, null)
             intent.data = uri
             startActivity(intent)
             dialogs.dismiss()

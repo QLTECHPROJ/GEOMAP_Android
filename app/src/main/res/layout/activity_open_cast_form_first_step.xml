@@ -48,7 +48,7 @@
                 android:layout_marginHorizontal="@dimen/_18sdp"
                 android:layout_marginTop="@dimen/_24sdp"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="match_parent"

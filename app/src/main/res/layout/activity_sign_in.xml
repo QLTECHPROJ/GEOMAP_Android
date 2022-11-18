@@ -161,10 +161,10 @@
                         app:endIconMode="password_toggle"
                         app:endIconTintMode="multiply"
                         app:errorEnabled="true"
-                        app:passwordToggleEnabled="true"
                         app:errorTextAppearance="@style/ErrorText"
                         app:hintTextAppearance="@style/HintText"
-                        app:hintTextColor="@color/primary_theme">
+                        app:hintTextColor="@color/primary_theme"
+                        app:passwordToggleEnabled="true">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/etPassword"
@@ -207,12 +207,13 @@
 
             <TextView
                 android:id="@+id/tvForgotPswd"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_25sdp"
+                android:layout_gravity="end"
                 android:fontFamily="@font/inter_medium"
                 android:gravity="end"
                 android:lineSpacingExtra="@dimen/_4sdp"
+                android:paddingHorizontal="@dimen/_25sdp"
                 android:paddingTop="@dimen/_11sdp"
                 android:text="@string/forgot_password"
                 android:textColor="@color/gray"

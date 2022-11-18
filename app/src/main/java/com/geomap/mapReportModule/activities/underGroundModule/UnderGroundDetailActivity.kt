@@ -16,8 +16,9 @@ import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundDetailBinding
 import com.geomap.databinding.AttributeLayoutBinding
+import com.geomap.mapReportModule.models.Attribute
+import com.geomap.mapReportModule.models.OpenCastDetailsModel
 import com.geomap.mapReportModule.models.UnderGroundDetailsModel
-import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,7 +29,6 @@ class UnderGroundDetailActivity : AppCompatActivity() {
     private lateinit var ctx : Context
     private lateinit var act : Activity
     private var attributesListAdapter : AttributesListAdapter? = null
-    private var userId : String? = null
     private var id : String? = null
 
     override fun onCreate(savedInstanceState : Bundle?) {
@@ -36,9 +36,6 @@ class UnderGroundDetailActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_under_ground_detail)
         ctx = this@UnderGroundDetailActivity
         act = this@UnderGroundDetailActivity
-
-        val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
-        userId = shared.getString(CONSTANTS.userId, "")
 
         if (intent.extras != null) {
             id = intent.extras?.getString("id")
@@ -59,7 +56,7 @@ class UnderGroundDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun postData() {
+    fun postData() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             RetrofitService.getInstance()
@@ -71,22 +68,16 @@ class UnderGroundDetailActivity : AppCompatActivity() {
                             hideProgressBar(binding.progressBar,
                                 binding.progressBarHolder, act)
                             val model : UnderGroundDetailsModel? = response.body()!!
-                            when (model!!.responseCode) {
+                            when (model!!.ResponseCode) {
                                 getString(R.string.ResponseCodesuccess) -> {
                                     binding.llMainLayout.visibility = View.VISIBLE
                                     binding.btnViewPdf.visibility = View.VISIBLE
-                                    model.responseData?.let {
-                                        binding.tvSerialNo.text = it.mapSerialNo
-                                        binding.tvDate.text = it.ugDate
-                                        binding.tvShift.text = it.shift
-                                        binding.tvMappedBy.text = it.mappedBy
-                                        binding.tvScale.text = it.scale
-                                        binding.tvLocation.text = it.location
-                                        binding.tvLoadName.text = it.venieLoad
-                                        binding.tvXCoordinate.text = it.xCordinate
-                                        binding.tvYCoordinate.text = it.yCordinate
-                                        binding.tvZCoordinate.text = it.zCordinate
-                                        if (it.attribute?.size == 0) {
+                                    val ugDetail =
+                                        UnderGroundDetailsModel(model.ResponseCode, model.ResponseData,
+                                            model.ResponseMessage, model.ResponseStatus)
+                                    binding.ugDetail = ugDetail
+                                    model.ResponseData.let {
+                                        if (it.attribute.isEmpty()) {
                                             binding.tvAttributes.visibility = View.GONE
                                             binding.rvAttributesList.visibility = View.GONE
                                         } else {
@@ -94,16 +85,16 @@ class UnderGroundDetailActivity : AppCompatActivity() {
                                             binding.rvAttributesList.visibility = View.VISIBLE
                                             attributesListAdapter =
                                                 AttributesListAdapter(
-                                                    it.attribute!!)
+                                                    it.attribute)
                                             binding.rvAttributesList.adapter = attributesListAdapter
                                         }
                                     }
                                 }
                                 getString(R.string.ResponseCodefail) -> {
-                                    showToast(model.responseMessage, act)
+                                    showToast(model.ResponseMessage, act)
                                 }
                                 getString(R.string.ResponseCodeDeleted) -> {
-                                    callDelete403(act, model.responseMessage)
+                                    callDelete403(act, model.ResponseMessage)
                                 }
                             }
                         } catch (e : Exception) {
@@ -122,7 +113,7 @@ class UnderGroundDetailActivity : AppCompatActivity() {
     }
 
     inner class AttributesListAdapter(
-        private val listModel : List<UnderGroundDetailsModel.ResponseData.Attribute>
+        private val listModel : List<Attribute>
     ) : RecyclerView.Adapter<AttributesListAdapter.MyViewHolder>() {
 
         override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : MyViewHolder {

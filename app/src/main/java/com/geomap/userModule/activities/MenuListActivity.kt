@@ -6,9 +6,7 @@ import android.content.*
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.SystemClock
 import android.provider.Settings
-import android.util.Log
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
@@ -26,7 +24,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityMenuListBinding
-import com.geomap.mapReportModule.models.SuccessModel
+import com.geomap.userModule.models.ConfirmSuccessModel
 import com.geomap.userModule.models.UserCommonDataModel
 import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
@@ -46,7 +44,6 @@ class MenuListActivity : AppCompatActivity() {
     private var supportEmail : String? = null
     private var logoutDialog : Dialog? = null
     val shared : SharedPreferences? = null
-    private var mLastClickTime: Long = 0
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,11 +73,19 @@ class MenuListActivity : AppCompatActivity() {
         }
 
         binding.llUnderGroundList.setOnClickListener {
-            callUnderGroundListActivity(act, "1")
+            if (isNetworkConnected(ctx)) {
+                callUnderGroundListActivity(act, "1")
+            } else {
+                showToast(ctx.getString(R.string.no_server_found), act)
+            }
         }
 
         binding.llOpenCastList.setOnClickListener {
-            callOpenCastListActivity(act, "1")
+            if (isNetworkConnected(ctx)) {
+                callOpenCastListActivity(act, "1")
+            } else {
+                showToast(ctx.getString(R.string.no_server_found), act)
+            }
         }
 
         binding.llUnderGroundListDraft.setOnClickListener {
@@ -90,9 +95,14 @@ class MenuListActivity : AppCompatActivity() {
         binding.llOpenCastListDraft.setOnClickListener {
             callOpenCastListDraftActivity(act, "1")
         }
+
         binding.llAboutUs.setOnClickListener {
-            startActivity(Intent(ctx, TncActivity::class.java).putExtra(CONSTANTS.Web,
-                getString(R.string.about_us)))
+            if (isNetworkConnected(ctx)) {
+                startActivity(Intent(ctx, TncActivity::class.java).putExtra(CONSTANTS.Web,
+                    getString(R.string.about_us)))
+            } else {
+                showToast(ctx.getString(R.string.no_server_found), act)
+            }
         }
 
         binding.llFAQ.setOnClickListener {
@@ -143,7 +153,7 @@ class MenuListActivity : AppCompatActivity() {
                 btn.setOnClickListener {
                     logoutDialog!!.dismiss()
                     showProgressBar(progressBar, progressBarHolder, act)
-                    callLogoutApi(binding.progressBar)
+                    callLogoutApi()
                 }
                 tvGoBack.setOnClickListener { logoutDialog!!.dismiss() }
                 logoutDialog!!.show()
@@ -287,46 +297,33 @@ class MenuListActivity : AppCompatActivity() {
         }
     }
 
-    private fun callLogoutApi(progressBar : ProgressBar) {
+    fun callLogoutApi() {
         val shared = getSharedPreferences(CONSTANTS.FCMToken, MODE_PRIVATE)
         val fcmId = shared.getString(CONSTANTS.Token, "")
-        if (fcmId != null) {
-            callFCMRegMethod(ctx)
-            Log.e("fcmId",fcmId)
-        }
         val deviceId = Settings.Secure.getString(getContext().contentResolver,
             Settings.Secure.ANDROID_ID)
         if (isNetworkConnected(ctx)) {
             RetrofitService.getInstance().postLogout(userId, CONSTANTS.FLAG_ONE, fcmId, deviceId)
-                .enqueue(object : Callback<SuccessModel?> {
-                    override fun onResponse(call : Call<SuccessModel?>,
-                        response : Response<SuccessModel?>) {
-                        val successModel = response.body()!!
-                        if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
-                            return
-                        }
-                        mLastClickTime = SystemClock.elapsedRealtime()
-                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                        hideProgressBar(progressBar, null,
-                            act)
-                        when (successModel.responseCode) {
-                            (getString(R.string.ResponseCodesuccess)) -> {
-                                //                    dialog.hide()
-                                deleteCall(ctx)
-                                showToast(successModel.responseMessage, act)
-                                callSignActivity("", act)
-                            }
-                            getString(R.string.ResponseCodefail) -> {
-                                showToast(successModel.responseMessage, act)
-                            }
-                            getString(R.string.ResponseCodeDeleted) -> {
-                                callDelete403(act, successModel.responseMessage)
+                .enqueue(object : Callback<ConfirmSuccessModel?> {
+                    override fun onResponse(call : Call<ConfirmSuccessModel?>,
+                        response : Response<ConfirmSuccessModel?>) {
+                        val successModel = response.body()
+                        if (successModel != null) {
+                            when (successModel.ResponseCode) {
+                                (getString(R.string.ResponseCodesuccess)) -> {
+                                    callDelete403(act, successModel.ResponseMessage)
+                                }
+                                getString(R.string.ResponseCodefail) -> {
+                                    showToast(successModel.ResponseMessage, act)
+                                }
+                                getString(R.string.ResponseCodeDeleted) -> {
+                                    callDelete403(act, successModel.ResponseMessage)
+                                }
                             }
                         }
                     }
 
-                    override fun onFailure(call : Call<SuccessModel?>, t : Throwable) {
-                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                    override fun onFailure(call : Call<ConfirmSuccessModel?>, t : Throwable) {
                     }
                 })
         } else {

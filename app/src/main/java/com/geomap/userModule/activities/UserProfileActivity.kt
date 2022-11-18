@@ -88,7 +88,6 @@ class UserProfileActivity : AppCompatActivity() {
             val nameUser = binding.etName.text.toString()
             val emailUser = binding.etEmail.text.toString()
             val mobileNoUser = binding.etMobileNo.text.toString()
-            val dob = binding.etDob.text.toString()
 
             when {
                 nameUser == name && emailUser == email && mobileNoUser == mobileNo -> {
@@ -183,7 +182,7 @@ class UserProfileActivity : AppCompatActivity() {
                 btn.setOnClickListener {
                     deleteDialog!!.dismiss()
                     showProgressBar(progressBar, progressBarHolder, act)
-                    deleteAcCall()
+                    callDeleteAcApi()
                 }
                 tvGoBack.setOnClickListener { deleteDialog!!.dismiss() }
                 deleteDialog!!.show()
@@ -207,11 +206,6 @@ class UserProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun deleteAcCall() {
-        deleteCall(ctx)
-        callDeleteAcApi()
-    }
-
     private fun callDeleteAcApi() {
         if (isNetworkConnected(ctx)) {
             RetrofitService.getInstance().postDeleteUser(
@@ -219,18 +213,17 @@ class UserProfileActivity : AppCompatActivity() {
                 override fun onResponse(call : Call<SuccessModel?>,
                     response : Response<SuccessModel?>) {
                     val model = response.body()
+                    hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                     if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                         return
                     }
                     mLastClickTime = SystemClock.elapsedRealtime()
-                    if (model!!.responseCode.equals(
-                            getString(R.string.ResponseCodesuccess))) {
-                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                        showToast(model.responseMessage, act)
-                        callSignActivity("", act)
-                    } else if (model.responseCode.equals(
-                            ctx.getString(R.string.ResponseCodefail))) {
-                        showToast(model.responseMessage, act)
+                    if (model!!.ResponseCode == getString(R.string.ResponseCodesuccess)) {
+                        callDelete403(act, model.ResponseMessage)
+                    } else if (model.ResponseCode == ctx.getString(R.string.ResponseCodefail)) {
+                        showToast(model.ResponseMessage, act)
+                    } else if (model.ResponseCode == ctx.getString(R.string.ResponseCodeDeleted)) {
+                        callDelete403(act, model.ResponseMessage)
                     }
                 }
 

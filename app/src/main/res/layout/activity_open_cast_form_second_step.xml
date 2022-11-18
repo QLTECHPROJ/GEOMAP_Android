@@ -30,133 +30,79 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.core.widget.NestedScrollView
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/_56sdp"
-            android:layout_marginBottom="@dimen/_90sdp"
-            android:overScrollMode="never"
+            android:layout_marginHorizontal="@dimen/_18sdp"
+            android:layout_marginTop="@dimen/_60sdp"
+            android:layout_marginBottom="@dimen/_110sdp"
+            app:cardCornerRadius="@dimen/_24sdp"
+            app:cardElevation="@dimen/_2sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvHeaderTitle">
 
-            <LinearLayout
+            <com.github.gcacace.signaturepad.views.SignaturePad
+                android:id="@+id/signPad"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:paddingTop="@dimen/_50sdp">
+                android:padding="@dimen/_6sdp"
+                app:penColor="@android:color/black" />
 
-                <RelativeLayout
-                    android:id="@+id/rlCamera"
-                    android:layout_width="@dimen/_160sdp"
-                    android:layout_height="@dimen/_160sdp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_56sdp"
-                    android:background="@drawable/text_bg"
-                    android:gravity="center"
-                    android:padding="@dimen/_2sdp"
-                    android:visibility="gone">
+        </androidx.cardview.widget.CardView>
 
-                    <ImageView
-                        android:layout_width="@dimen/_42sdp"
-                        android:layout_height="@dimen/_38sdp"
-                        android:contentDescription="@string/todo"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_camera_icon"
-                        app:tint="@color/white" />
-
-                </RelativeLayout>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginHorizontal="@dimen/_18sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    android:layout_marginBottom="@dimen/_20sdp"
-                    app:cardCornerRadius="@dimen/_24sdp"
-                    app:cardElevation="@dimen/_2sdp">
-
-                    <com.github.gcacace.signaturepad.views.SignaturePad
-                        android:id="@+id/signPad"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_240sdp"
-                        android:padding="@dimen/_6sdp"
-                        app:penColor="@android:color/black" />
-
-                </androidx.cardview.widget.CardView>
-
-                <Button
-                    android:id="@+id/btnSignPadClear"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginHorizontal="@dimen/_20sdp"
-                    android:background="@drawable/disable_button"
-                    android:enabled="false"
-                    android:fontFamily="@font/inter_bold"
-                    android:paddingHorizontal="@dimen/_20sdp"
-                    android:text="@string/clear"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_14sdp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:ignore="SpUsage" />
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_26sdp"
-                    android:layout_marginBottom="@dimen/_2sdp"
-                    android:visibility="gone"
-                    app:cardCornerRadius="@dimen/_24sdp"
-                    app:cardElevation="@dimen/_1sdp">
-
-                    <EditText
-                        android:id="@+id/edtDescription"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_220sdp"
-                        android:layout_marginHorizontal="@dimen/_18sdp"
-                        android:layout_marginVertical="@dimen/_10sdp"
-                        android:background="@android:color/transparent"
-                        android:cursorVisible="true"
-                        android:fontFamily="@font/inter_medium"
-                        android:gravity="top"
-                        android:hint="@string/add_description"
-                        android:imeOptions="actionDone"
-                        android:importantForAutofill="no"
-                        android:inputType="textMultiLine|textVisiblePassword"
-                        android:overScrollMode="always"
-                        android:paddingLeft="@dimen/_8sdp"
-                        android:paddingTop="@dimen/_8sdp"
-                        android:paddingRight="@dimen/_8sdp"
-                        android:scrollbarStyle="insideInset"
-                        android:scrollbars="vertical"
-                        android:singleLine="false"
-                        android:textColor="@color/light_black"
-                        android:textCursorDrawable="@null"
-                        android:textSize="@dimen/_14sdp"
-                        android:visibility="visible"
-                        tools:ignore="SpUsage" />
-
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-
-        </androidx.core.widget.NestedScrollView>
-
-        <Button
-            android:id="@+id/btnSubmit"
-            style="@style/screenButton"
-            android:layout_marginHorizontal="@dimen/_20sdp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_20sdp"
-            android:background="@drawable/enable_button"
-            android:enabled="true"
-            android:text="@string/submit"
+            android:orientation="horizontal"
+            android:weightSum="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent">
+
+            <Button
+                android:id="@+id/btnSignPadClear"
+                android:layout_width="@dimen/_0sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_weight="0.5"
+                android:background="@drawable/disable_button"
+                android:enabled="false"
+                android:fontFamily="@font/inter_bold"
+                android:paddingHorizontal="@dimen/_20sdp"
+                android:text="@string/clear"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="SpUsage" />
+
+            <Button
+                android:id="@+id/btnSubmit"
+                android:layout_width="@dimen/_0sdp"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_weight="0.5"
+                android:background="@drawable/enable_button"
+                android:enabled="true"
+                android:fontFamily="@font/inter_bold"
+                android:paddingHorizontal="@dimen/_20sdp"
+                android:text="@string/submit"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="SpUsage" />
+
+        </LinearLayout>
 
         <ProgressBar
             android:id="@+id/progressBar"

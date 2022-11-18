@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/_28sdp"
+    android:background="@drawable/popup_background"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/_24sdp"
+            android:layout_marginTop="@dimen/_33sdp"
+            android:fontFamily="@font/inter_bold"
+            android:gravity="center"
+            android:text="@string/forgot_password"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_18sdp"
+            android:visibility="visible"
+            tools:ignore="SpUsage" />
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ltEmail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="@dimen/_25sdp"
+            android:layout_marginTop="@dimen/_46sdp"
+            android:focusableInTouchMode="true"
+            android:gravity="center_vertical"
+            android:textColorHint="@color/gray"
+            app:boxStrokeColor="@color/primary_theme"
+            app:errorEnabled="true"
+            app:errorTextAppearance="@style/ErrorText"
+            app:hintTextAppearance="@style/HintText"
+            app:hintTextColor="@color/primary_theme">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/black"
+                android:cursorVisible="true"
+                android:fontFamily="@font/inter_semi_bold"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:nextFocusDown="@id/etSubject"
+                android:singleLine="true"
+                android:textColor="@color/light_black"
+                android:textColorHint="@color/gray"
+                android:textSize="@dimen/_16sdp"
+                app:hintTextAppearance="@style/HintText"
+                tools:ignore="SpUsage" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="@dimen/_16sdp"
+            android:layout_marginTop="@dimen/_28sdp"
+            android:layout_marginBottom="@dimen/_26sdp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/_10sdp">
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/tvGoBack"
+                android:layout_width="120dp"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_gravity="center"
+                android:background="@drawable/border_enable_button"
+                android:fontFamily="@font/inter_semi_bold"
+                android:gravity="center"
+                android:text="@string/cancel_small"
+                android:textAllCaps="false"
+                android:textColor="@color/primary_theme"
+                android:textSize="@dimen/_14sdp"
+                tools:ignore="SpUsage" />
+
+            <Button
+                android:id="@+id/Btn"
+                android:layout_width="120dp"
+                android:layout_height="@dimen/_60sdp"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:background="@drawable/disable_button"
+                android:enabled="false"
+                android:fontFamily="@font/inter_semi_bold"
+                android:gravity="center"
+                android:text="@string/confirm"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp"
+                tools:ignore="SpUsage" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="@dimen/_60sdp">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
+            android:indeterminateTint="@color/primary_theme"
+            android:scaleType="centerInside"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/progressBarHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="0.4"
+        android:animateLayoutChanges="true"
+        android:background="#A6EFEFEF"
+        android:visibility="gone" />
+</RelativeLayout>

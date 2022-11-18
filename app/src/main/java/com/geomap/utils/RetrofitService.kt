@@ -5,6 +5,7 @@ import com.geomap.GeoMapApp.getContext
 import com.geomap.GeoMapApp.securityKey
 import com.geomap.faqModule.models.FaqListModel
 import com.geomap.mapReportModule.models.*
+import com.geomap.userModule.models.ConfirmSuccessModel
 import com.geomap.userModule.models.ContactUsModel
 import com.geomap.userModule.models.UserCommonDataModel
 import com.geomap.userModule.models.VersionModel
@@ -42,12 +43,16 @@ interface RetrofitService {
     @FormUrlEncoded
     fun getUserDetails(@Field("userId") userId : String?) : Call<UserCommonDataModel>
 
+    @POST("forgot_password")
+    @FormUrlEncoded
+    fun postForgotPassword(@Field("email") email : String?) : Call<SuccessModel>
+
     @POST("logout")
     @FormUrlEncoded
     fun postLogout(@Field("userId") userId : String?,
         @Field("deviceType") deviceType : String?,
         @Field("deviceToken") deviceToken : String?,
-        @Field("deviceId") deviceId : String?) : Call<SuccessModel>
+        @Field("deviceId") deviceId : String?) : Call<ConfirmSuccessModel>
 
     @POST("contact_insert")
     @FormUrlEncoded

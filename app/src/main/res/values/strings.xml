@@ -64,6 +64,7 @@
     <string name="select_attributes">Select Attributes</string>
     <string name="select_nos">Select Nos</string>
     <string name="geological_mapping">Geological Mapping</string>
+    <string name="opencast_mapping">Open Cast Mapping</string>
     <string name="email">Email</string>
     <string name="mobile_no">Mobile no</string>
     <string name="delete_account">Delete Account</string>
@@ -143,10 +144,10 @@
     <string name="submit">Submit</string>
     <string name="next_step">Next Step</string>
     <string name="add_attributes">Add Attributes</string>
-    <string name="roof">ROOF</string>
-    <string name="face">FACE</string>
-    <string name="left">LEFT</string>
-    <string name="right">RIGHT</string>
+    <string name="roof">Roof</string>
+    <string name="face">Face</string>
+    <string name="left">Left</string>
+    <string name="right">Right</string>
     <string name="mineralization">Mineralization</string>
     <string name="mineralization_1">Mineralization 1</string>
     <string name="add_description">Add description....</string>
@@ -164,6 +165,10 @@
     <string name="vein_load_">Vein/load</string>
     <string name="clear_signature">Clear Signature</string>
     <string name="clear">Clear</string>
+    <string name="clear_roof">Clear Roof</string>
+    <string name="clear_left">Clear Left</string>
+    <string name="clear_right">Clear Right</string>
+    <string name="clear_face">Clear Face</string>
     <string name="clear_geologist_signature">Clear Geologist Signature</string>
     <string name="clear_geologist_client_signature">Clear Client’s Geologist Signature</string>
     <string name="choose_your_attributes">Choose your attributes</string>
@@ -198,5 +203,8 @@
     <string name="please_select_attribute">Please select attribute</string>
     <string name="please_select_nos">Please select nos</string>
     <string name="please_add_propery">Please add property</string>
+    <string name="please_add_attribute_data">Please add attribute data</string>
     <string name="comment">Comment</string>
+    <string name="welcome_msg">Welcome to Geo Map App!!</string>
+    <string name="next">Next</string>
 </resources>

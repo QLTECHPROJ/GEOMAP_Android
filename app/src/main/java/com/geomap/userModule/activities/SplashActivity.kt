@@ -7,8 +7,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
@@ -33,15 +31,13 @@ import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.text.SimpleDateFormat
-import java.util.*
 
 class SplashActivity : AppCompatActivity() {
     private lateinit var binding : ActivitySplashBinding
     private lateinit var ctx : Context
     private lateinit var act : Activity
-    private var timezoneName : String? = ""
     private var userId : String? = ""
+    private var checkLogin : String? = ""
     private var key : String? = ""
     private lateinit var viewModel : AllViewModel
     private val retrofitService = RetrofitService.getInstance()
@@ -53,58 +49,53 @@ class SplashActivity : AppCompatActivity() {
         act = this@SplashActivity
 
         DB = Room.databaseBuilder(ctx, GeoMapDatabase::class.java, "GeoMap_database").build()
-        callFCMRegMethod(ctx)
         val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
         userId = shared.getString(CONSTANTS.userId, "")
+        checkLogin = shared.getString(CONSTANTS.checkLogin, "")
+
+        if (checkLogin.equals("1")) {
+            showToast(getString(R.string.welcome_msg), act)
+        }
+
         key = AppSignatureHashHelper(this).appSignatures[0]
-
-        callFCMRegMethod(ctx)
-
         if (key.equals("")) {
             key = getKey(ctx)
         }
+
+        fcmCall()
     }
 
-    override fun onResume() {
-        checkAppVersion()
-        super.onResume()
+    private fun fcmCall() {
+        val sharedPreferences2 = ctx.getSharedPreferences(CONSTANTS.FCMToken, MODE_PRIVATE)
+        fcmId = sharedPreferences2.getString(CONSTANTS.Token, "")
+        if (TextUtils.isEmpty(fcmId)) {
+            FirebaseMessaging.getInstance().token.addOnCompleteListener { task : Task<String?> ->
+                if (!task.isSuccessful) {
+                    Log.e("Token", fcmId)
+                    return@addOnCompleteListener
+                }
+                // Get new FCM registration token
+                val token = task.result
+                // Log and toast
+                Log.e("newToken", token!!)
+                fcmId = token
+                val editor = getContext()
+                    .getSharedPreferences(CONSTANTS.FCMToken, MODE_PRIVATE).edit()
+                editor.putString(CONSTANTS.Token, token) //Friend
+                editor.apply()
+                checkAppVersion()
+            }
+        } else {
+            checkAppVersion()
+        }
     }
 
     private fun checkAppVersion() {
-        if (fcmId.equals("")) {
-            if (TextUtils.isEmpty(fcmId)) {
-                Log.e("Token called", ctx.toString())
-                FirebaseMessaging.getInstance().token.addOnCompleteListener { task : Task<String?> ->
-                    if (!task.isSuccessful) {
-                        return@addOnCompleteListener
-                    }
-                    val token = task.result
-                    fcmId = token
-                    val editor = getContext().getSharedPreferences(CONSTANTS.FCMToken,
-                        MODE_PRIVATE).edit()
-                    editor.putString(CONSTANTS.Token, token) //Friend
-                    editor.apply()
-                }
-            }
-        }
-        val sharedPreferences2 = ctx.getSharedPreferences(CONSTANTS.FCMToken, MODE_PRIVATE)
-        fcmId = sharedPreferences2.getString(CONSTANTS.Token, "")
-
-        Log.e("Token", fcmId)
-        val simpleDateFormat1 = SimpleDateFormat("hh:mm a")
-        simpleDateFormat1.timeZone = TimeZone.getDefault()
-        timezoneName = simpleDateFormat1.timeZone.id
         fcmId = getSharedPreferences(CONSTANTS.FCMToken, Context.MODE_PRIVATE).getString(
             CONSTANTS.Token, "").toString()
-
-        if (fcmId == "") {
-            callFCMRegMethod(act)
-        }
-
+        Log.e("Token", fcmId)
         val deviceId = Settings.Secure.getString(getContext().contentResolver,
             Settings.Secure.ANDROID_ID)
-        Log.e("deviceId", deviceId)
-        Log.e("Token", fcmId)
         val appURI = "https://play.google.com/store/apps/details?id=com.geomap"
         if (isNetworkConnected(ctx)) {
             RetrofitService.getInstance().getAppVersions(/*"1", */
@@ -140,10 +131,10 @@ class SplashActivity : AppCompatActivity() {
                                                     Uri.parse(appURI)))
                                                 dialog.cancel()
                                             }.setNegativeButton(
-                                            "NOT NOW") { dialog : DialogInterface, _ : Int -> //                                        askBattyPermission()
-                                            callSplashData()
-                                            dialog.dismiss()
-                                        }.create().show()
+                                                "NOT NOW") { dialog : DialogInterface, _ : Int -> //                                        askBattyPermission()
+                                                callSplashData()
+                                                dialog.dismiss()
+                                            }.create().show()
                                     }
                                     "1" -> {
                                         AlertDialog.Builder(ctx).setTitle(
@@ -151,10 +142,10 @@ class SplashActivity : AppCompatActivity() {
                                             "To keep using Geo Map App, download the latest version")
                                             .setCancelable(
                                                 false).setPositiveButton(
-                                            "UPDATE") { _ : DialogInterface?, _ : Int ->
-                                            startActivity(Intent(Intent.ACTION_VIEW,
-                                                Uri.parse(appURI)))
-                                        }.create().show()
+                                                "UPDATE") { _ : DialogInterface?, _ : Int ->
+                                                startActivity(Intent(Intent.ACTION_VIEW,
+                                                    Uri.parse(appURI)))
+                                            }.create().show()
                                     }
                                     "" -> {
                                         callSplashData()
@@ -183,33 +174,32 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun callSplashData() {
-        Handler(Looper.getMainLooper()).postDelayed({
-            if (userId != "") {
-                if (isNetworkConnected(ctx)) {
-                    viewModel = ViewModelProvider(this, UserModelFactory(
-                        UserRepository(retrofitService,
-                            userId.toString())))[AllViewModel::class.java]
+        if (userId != "") {
+            callDashboardActivity(act, "0")
+            if (isNetworkConnected(ctx)) {
+                viewModel = ViewModelProvider(this, UserModelFactory(
+                    UserRepository(retrofitService,
+                        userId.toString())))[AllViewModel::class.java]
 
-                    viewModel.getUserDetails()
-                    viewModel.userDetails.observe(this) {
-                        when {
-                            it?.responseCode == getString(R.string.ResponseCodesuccess) -> {
-                                saveLoginData(it.responseData, ctx, "1", act)
-                            }
-                            it.responseCode == act.getString(R.string.ResponseCodefail) -> {
-                                showToast(it.responseMessage, act)
-                            }
-                            it.responseCode == act.getString(R.string.ResponseCodeDeleted) -> {
-                                callDelete403(act, it.responseMessage)
-                            }
+                viewModel.getUserDetails()
+                viewModel.userDetails.observe(this) {
+                    when {
+                        it?.responseCode == getString(R.string.ResponseCodesuccess) -> {
+                            saveLoginData(it.responseData, ctx, "1", act, "0")
+                        }
+                        it.responseCode == act.getString(R.string.ResponseCodefail) -> {
+                            showToast(it.responseMessage, act)
+                        }
+                        it.responseCode == act.getString(R.string.ResponseCodeDeleted) -> {
+                            callDelete403(act, it.responseMessage)
                         }
                     }
-                } else {
-                    callDashboardActivity(act, "0")
                 }
             } else {
-                callSignActivity("", act)
+                callDashboardActivity(act, "0")
             }
-        }, 1600)
+        } else {
+            callSignActivity("", act)
+        }
     }
 }

@@ -45,7 +45,6 @@ import com.geomap.userModule.models.UserCommonDataModel;
 import com.geomap.utils.AppSignatureHashHelper;
 import com.geomap.utils.CONSTANTS;
 import com.geomap.utils.CryptLib;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
@@ -59,6 +58,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.TimeZone;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function0;
+
 public class GeoMapApp extends Application {
     static Context mContext;
     static GeoMapApp GeoMapApp;
@@ -71,49 +73,10 @@ public class GeoMapApp extends Application {
         super.onCreate();
         mContext = this;
         GeoMapApp = this;
-        SharedPreferences sharedPreferences2 = mContext.getSharedPreferences(CONSTANTS.FCMToken, Context.MODE_PRIVATE);
-        fcmId = sharedPreferences2.getString(CONSTANTS.Token, "");
-        if (TextUtils.isEmpty(fcmId)) {
-            FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
-                if (!task.isSuccessful()) {
-                    return;
-                }
-                // Get new FCM registration token
-                String token = task.getResult();
-                // Log and toast
-                Log.e("newToken", token);
-                fcmId = token;
-                SharedPreferences.Editor editor = getContext().getSharedPreferences(CONSTANTS.FCMToken, Context.MODE_PRIVATE).edit();
-                editor.putString(CONSTANTS.Token, token); //Friend
-                editor.apply();
-            });
-        }
     }
 
     public static Context getContext() {
         return mContext;
-    }
-
-    public static void callFCMRegMethod(Context ctx) {
-        SharedPreferences sharedPreferences2 = ctx.getSharedPreferences(CONSTANTS.FCMToken, Context.MODE_PRIVATE);
-        fcmId = sharedPreferences2.getString(CONSTANTS.Token, "");
-        if (TextUtils.isEmpty(fcmId)) {
-            FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
-                if (!task.isSuccessful()) {
-                    return;
-                }
-                // Get new FCM registration token
-                String token = task.getResult();
-                // Log and toast
-                Log.e("newToken", token);
-                fcmId = token;
-                SharedPreferences.Editor editor = getContext().getSharedPreferences(CONSTANTS.FCMToken, Context.MODE_PRIVATE).edit();
-                editor.putString(CONSTANTS.Token, token); //Friend
-                editor.apply();
-            });
-        }
-
-        Log.e("Token", fcmId);
     }
 
     public static boolean isNetworkConnected(Context context) {
@@ -267,6 +230,7 @@ public class GeoMapApp extends Application {
         edit.remove(CONSTANTS.supportTitle);
         edit.remove(CONSTANTS.supportText);
         edit.remove(CONSTANTS.supportEmail);
+        edit.remove(CONSTANTS.checkLogin);
         edit.apply();
 
         SharedPreferences preferencess = context.getSharedPreferences(CONSTANTS.FCMToken, Context.MODE_PRIVATE);
@@ -277,7 +241,7 @@ public class GeoMapApp extends Application {
         deleteCache(context);
     }
 
-    public static void saveLoginData(UserCommonDataModel.ResponseData responseData, Context ctx, String flag, Activity act) {
+    public static void saveLoginData(UserCommonDataModel.ResponseData responseData, Context ctx, String flag, Activity act, String checkLogin) {
         Gson gson = new Gson();
         SharedPreferences shared = ctx.getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = shared.edit();
@@ -290,6 +254,7 @@ public class GeoMapApp extends Application {
         editor.putString(CONSTANTS.mobile, responseData.getMobile());
         editor.putString(CONSTANTS.dob, responseData.getDob());
         editor.putString(CONSTANTS.profileImage, responseData.getProfileImage());
+        editor.putString(CONSTANTS.checkLogin, checkLogin);
         editor.apply();
         SharedPreferences shared1 = ctx.getSharedPreferences(CONSTANTS.PREFE_ACCESS_ArrayData, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor1 = shared1.edit();
@@ -302,7 +267,6 @@ public class GeoMapApp extends Application {
         editor1.putString(CONSTANTS.typeOfFaults, gson.toJson(responseData.getTypeOfFaults()));
         editor1.apply();
         DataBaseFunctions.Companion.callLocalDBGetAndInsertFunction(responseData, ctx);
-
         if (flag.equalsIgnoreCase("1")) {
             callDashboardActivity(act, "0");
         }
@@ -481,6 +445,25 @@ public class GeoMapApp extends Application {
 
     public static void callOpenCastFormFirstStepActivity(Activity act, String finish) {
         Intent i = new Intent(act, OpenCastFormFirstStepActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        act.startActivity(i);
+        if (finish.equalsIgnoreCase("0")) {
+            act.finish();
+        }
+    }
+
+    public static void callUnderGroundFormSecondStepActivity(Activity act, String finish, String gsons) {
+        Intent i = new Intent(act, UnderGroundFormSecondStepActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        i.putExtra("attributeData", gsons);
+        act.startActivity(i);
+        if (finish.equalsIgnoreCase("0")) {
+            act.finish();
+        }
+    }
+
+    public static void callUnderGroundFormThirdStepActivity(Activity act, String finish) {
+        Intent i = new Intent(act, UnderGroundFormThirdStepActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         act.startActivity(i);
         if (finish.equalsIgnoreCase("0")) {

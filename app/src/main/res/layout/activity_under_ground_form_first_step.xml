@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/screen_bg"
@@ -14,30 +14,42 @@
             android:id="@+id/llBack"
             android:layout_width="@dimen/_56sdp"
             android:layout_height="@dimen/_56sdp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:contentDescription="@string/todo"
             android:padding="@dimen/_20sdp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_arrow_left_icon"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/black" />
 
         <TextView
             android:id="@+id/tvHeaderTitle"
             style="@style/screenTitle"
-            android:text="@string/geological_attributes"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="@string/geological_attributes" />
+
+        <TextView
+            android:id="@+id/tvAddAttributes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvHeaderTitle"
+            android:fontFamily="@font/inter_semi_bold"
+            android:gravity="center|end"
+            android:paddingStart="@dimen/_0sdp"
+            android:paddingEnd="@dimen/_22sdp"
+            android:paddingBottom="@dimen/_10sdp"
+            android:text="@string/add_attributes"
+            android:textColor="@color/primary_theme"
+            android:textSize="@dimen/_16sdp"
+            tools:ignore="SpUsage" />
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/_56sdp"
-            android:overScrollMode="never"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvHeaderTitle">
+            android:layout_below="@id/tvAddAttributes"
+            android:layout_marginBottom="@dimen/_90sdp"
+            android:overScrollMode="never">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,29 +57,18 @@
                 android:layout_marginHorizontal="@dimen/_18sdp"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tvAddAttributes"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/inter_semi_bold"
-                    android:gravity="center|end"
-                    android:text="@string/add_attributes"
-                    android:textColor="@color/primary_theme"
-                    android:textSize="@dimen/_16sdp"
-                    tools:ignore="SpUsage" />
-
                 <LinearLayout
                     android:id="@+id/llMainLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="visible">
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_24sdp"
+                        android:layout_marginTop="@dimen/_14sdp"
                         android:fontFamily="@font/inter_semi_bold"
                         android:gravity="start"
                         android:text="@string/attributes_"
@@ -271,38 +272,75 @@
                     </androidx.cardview.widget.CardView>
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/tvAttributes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:fontFamily="@font/inter_semi_bold"
+                    android:gravity="start"
+                    android:text="@string/attributes"
+                    android:textColor="@color/light_black"
+                    android:textSize="@dimen/_16sdp"
+                    android:visibility="gone"
+                    tools:ignore="SpUsage" />
 
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cvAttributesList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
+                    android:layout_marginBottom="@dimen/_2sdp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="@dimen/_14sdp"
+                    app:cardElevation="@dimen/_1sdp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvAttributesList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:nestedScrollingEnabled="false"
+                            android:orientation="horizontal"
+                            android:overScrollMode="never"
+                            android:scrollbars="vertical"
+                            android:visibility="visible"
+                            tools:itemCount="4"
+                            tools:listitem="@layout/attribute_layout" />
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
 
-
         <Button
             android:id="@+id/btnNextStep"
             style="@style/screenButton"
+            android:layout_alignParentBottom="true"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginBottom="@dimen/_20sdp"
             android:background="@drawable/disable_button"
             android:enabled="false"
-            android:text="@string/next_step"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:text="@string/next_step" />
 
         <ProgressBar
             android:id="@+id/progressBar"
             style="@style/screenProgressBar"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_centerInParent="true" />
 
         <FrameLayout
             android:id="@+id/progressBarHolder"
             style="@style/screenFrameLayout"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
 </layout>

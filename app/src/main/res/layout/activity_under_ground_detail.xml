@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="ugDetail"
+            type="com.geomap.mapReportModule.models.UnderGroundDetailsModel" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -60,250 +66,102 @@
                         android:layout_height="match_parent"
                         android:orientation="vertical"
                         android:paddingHorizontal="@dimen/_15sdp"
-                        android:paddingVertical="@dimen/_8sdp">
+                        android:paddingBottom="@dimen/_8sdp">
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/map_serial_no"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/map_serial_no" />
 
                         <TextView
                             android:id="@+id/tvSerialNo"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{ugDetail.responseData.mapSerialNo}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/date"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/date" />
 
                         <TextView
                             android:id="@+id/tvDate"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{ugDetail.responseData.ugDate}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/shift"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/shift" />
 
                         <TextView
                             android:id="@+id/tvShift"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{ugDetail.responseData.shift}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/mapped_by"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/mapped_by" />
 
                         <TextView
                             android:id="@+id/tvMappedBy"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{ugDetail.responseData.mappedBy}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/scale"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/scale" />
 
                         <TextView
                             android:id="@+id/tvScale"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{ugDetail.responseData.scale}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/location"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/location" />
 
                         <TextView
                             android:id="@+id/tvLocation"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{ugDetail.responseData.location}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/vein_load"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/vein_load" />
 
                         <TextView
                             android:id="@+id/tvLoadName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
-
+                            style="@style/subTitle"
+                            android:text="@{ugDetail.responseData.venieLoad}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/x_coordinate"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/x_coordinate" />
 
                         <TextView
                             android:id="@+id/tvXCoordinate"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{ugDetail.responseData.XCordinate}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/y_coordinate"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/y_coordinate" />
 
                         <TextView
                             android:id="@+id/tvYCoordinate"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{ugDetail.responseData.YCordinate}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/z_coordinate"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/z_coordinate" />
 
                         <TextView
                             android:id="@+id/tvZCoordinate"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{ugDetail.responseData.ZCordinate}" />
 
                         <TextView
                             android:id="@+id/tvAttributes"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/attributes"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/attributes" />
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvAttributesList"
@@ -311,10 +169,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:nestedScrollingEnabled="true"
-                            android:orientation="horizontal"
                             android:overScrollMode="never"
-                            android:scrollbars="vertical"
-                            android:visibility="visible"
                             tools:itemCount="4"
                             tools:listitem="@layout/attribute_layout" />
 

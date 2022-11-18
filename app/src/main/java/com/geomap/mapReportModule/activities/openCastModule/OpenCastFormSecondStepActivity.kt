@@ -3,6 +3,7 @@ package com.geomap.mapReportModule.activities.openCastModule
 import android.Manifest
 import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -10,17 +11,22 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.provider.Settings
 import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.geomap.DataBaseFunctions.Companion.saveOCReport
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityOpenCastFormSecondStepBinding
+import com.geomap.mapReportModule.activities.DashboardActivity
 import com.geomap.mapReportModule.models.OpenCastInsertModel
 import com.geomap.mapReportModule.models.SuccessModel
 import com.geomap.roomDataBase.OpenCastMappingReport
@@ -48,7 +54,8 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
     private lateinit var clientSign : Bitmap
     private lateinit var geoSign : Bitmap
     private val PERMISSIONS_STORAGE = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.READ_EXTERNAL_STORAGE)
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.MANAGE_EXTERNAL_STORAGE)
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,9 +74,10 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             val data = intent.getStringExtra("ocData")
             val type1 = object : TypeToken<OpenCastInsertModel>() {}.type
             ocDataModel = gson.fromJson(data, type1)
-            val clientSignbyteArray :ByteArray = intent.getByteArrayExtra("clientSign")!!
-            val geoSignbyteArray  :ByteArray  = intent.getByteArrayExtra("geoSign")!!
-            clientSign = BitmapFactory.decodeByteArray(clientSignbyteArray, 0, clientSignbyteArray.size)
+            val clientSignbyteArray : ByteArray = intent.getByteArrayExtra("clientSign")!!
+            val geoSignbyteArray : ByteArray = intent.getByteArrayExtra("geoSign")!!
+            clientSign =
+                BitmapFactory.decodeByteArray(clientSignbyteArray, 0, clientSignbyteArray.size)
             geoSign = BitmapFactory.decodeByteArray(geoSignbyteArray, 0, geoSignbyteArray.size)
         }
 
@@ -86,7 +94,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
 
         binding.signPad.setOnSignedListener(object : SignaturePad.OnSignedListener {
             override fun onStartSigning() {
-                verifyStoragePermissions(act)
+                verifyStoragePermissions()
             }
 
             override fun onSigned() {
@@ -103,6 +111,12 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         })
 
         binding.btnSubmit.setOnClickListener {
+            postData()
+        }
+    }
+
+    private fun postData() {
+        if (isNetworkConnected(ctx)) {
             if (signCheck == "") {
                 showToast(getString(R.string.pls_add_geologist_sign), act)
             } else {
@@ -125,7 +139,8 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                 ocDataModel.thicknessOfInterburden, ocDataModel.observedGradeOfOre,
                 ocDataModel.actualGradeOfOre,
                 ocDataModel.sampleCollected, ocDataModel.weathering,
-                ocDataModel.rockStregth, ocDataModel.waterCondition, ocDataModel.typeOfGeologicalStructures,
+                ocDataModel.rockStregth, ocDataModel.waterCondition,
+                ocDataModel.typeOfGeologicalStructures,
                 ocDataModel.typeOfFaults,
                 ocDataModel.notes, ocDataModel.shift, ocDataModel.ocDate,
                 ocDataModel.dipDirectionAngle,
@@ -133,17 +148,24 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                 object : retrofit.Callback<SuccessModel> {
                     override fun success(model : SuccessModel,
                         response : retrofit.client.Response) {
-                        if (model.responseCode.equals(
-                                ctx.getString(R.string.ResponseCodesuccess))) {
+                        if (model.ResponseCode == ctx.getString(R.string.ResponseCodesuccess)) {
                             hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                            showToast(model.responseMessage, act)
-                            finish()
-                        } else if (model.responseCode.equals(
-                                ctx.getString(R.string.ResponseCodefail))) {
-                            showToast(model.responseMessage, act)
-                        } else if (model.responseCode.equals(
-                                ctx.getString(R.string.ResponseCodeDeleted))) {
-                            callDelete403(act, model.responseMessage)
+                            when (model.ResponseCode) {
+                                ctx.getString(R.string.ResponseCodesuccess) -> {
+                                    showToast(model.ResponseMessage, act)
+                                    val i = Intent(ctx, DashboardActivity::class.java)
+                                    startActivity(i)
+                                    finishAffinity()
+                                }
+                                ctx.getString(
+                                    R.string.ResponseCodefail) -> {
+                                    showToast(model.ResponseMessage, act)
+                                }
+                                ctx.getString(
+                                    R.string.ResponseCodeDeleted) -> {
+                                    callDelete403(act, model.ResponseMessage)
+                                }
+                            }
                         }
                     }
 
@@ -153,42 +175,41 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                     }
                 })
         } else {
-
             addJpgSignatureToGallery(binding.signPad.signatureBitmap)
-            var obj = OpenCastMappingReport()
-            obj.ocDate=  ocDataModel.ocDate
-            obj.mappingSheetNo=  ocDataModel.sheetNo
-            obj.minesSiteName=  ocDataModel.minesSiteName
-            obj.pitName=  ocDataModel.pitName
-            obj.pitLocation=  ocDataModel.pitLocation
-            obj.shiftInChargeName=  ocDataModel.shiftInchargeName
-            obj.geologistName=  ocDataModel.geologistName
-            obj.shift =  ocDataModel.shift
-            obj.faceLocation=  ocDataModel.faceLocation
-            obj.faceLength=  ocDataModel.faceLengthM
-            obj.faceArea=  ocDataModel.faceAreaM2
-            obj.faceRockTypes=  ocDataModel.faceRockTypes
-            obj.benchRL=  ocDataModel.benchRL
-            obj.benchHeightWidth=  ocDataModel.benchHeightWidth
-            obj.benchAngle=  ocDataModel.benchAngle
-            obj.dipDirectionAngle =  ocDataModel.dipDirectionAngle
-            obj.thicknessOfOre=  ocDataModel.thicknessOfOre
-            obj.thicknessOfOverburden=  ocDataModel.thinessOfOverburden
-            obj.thicknessOfInterBurden =  ocDataModel.thicknessOfInterburden
-            obj.observedGradeOfOre=  ocDataModel.observedGradeOfOre
-            obj.sampleCollected=  ocDataModel.sampleCollected
-            obj.actualGradOfOre =  ocDataModel.actualGradeOfOre
-            obj.weathering=  ocDataModel.weathering
-            obj.rockStrength =  ocDataModel.rockStregth
-            obj.waterCondition=  ocDataModel.waterCondition
-            obj.typeOfGeologicalStructures =  ocDataModel.typeOfGeologicalStructures
-            obj.typeOfFaults=  ocDataModel.typeOfFaults
-            obj.notes=  ocDataModel.notes
-            obj.geologistSign  = geoSign
-            obj.clientsGeologistSign=  clientSign
+            val obj = OpenCastMappingReport()
+            obj.ocDate = ocDataModel.ocDate
+            obj.mappingSheetNo = ocDataModel.sheetNo
+            obj.minesSiteName = ocDataModel.minesSiteName
+            obj.pitName = ocDataModel.pitName
+            obj.pitLocation = ocDataModel.pitLocation
+            obj.shiftInChargeName = ocDataModel.shiftInchargeName
+            obj.geologistName = ocDataModel.geologistName
+            obj.shift = ocDataModel.shift
+            obj.faceLocation = ocDataModel.faceLocation
+            obj.faceLength = ocDataModel.faceLengthM
+            obj.faceArea = ocDataModel.faceAreaM2
+            obj.faceRockTypes = ocDataModel.faceRockTypes
+            obj.benchRL = ocDataModel.benchRL
+            obj.benchHeightWidth = ocDataModel.benchHeightWidth
+            obj.benchAngle = ocDataModel.benchAngle
+            obj.dipDirectionAngle = ocDataModel.dipDirectionAngle
+            obj.thicknessOfOre = ocDataModel.thicknessOfOre
+            obj.thicknessOfOverburden = ocDataModel.thinessOfOverburden
+            obj.thicknessOfInterBurden = ocDataModel.thicknessOfInterburden
+            obj.observedGradeOfOre = ocDataModel.observedGradeOfOre
+            obj.sampleCollected = ocDataModel.sampleCollected
+            obj.actualGradOfOre = ocDataModel.actualGradeOfOre
+            obj.weathering = ocDataModel.weathering
+            obj.rockStrength = ocDataModel.rockStregth
+            obj.waterCondition = ocDataModel.waterCondition
+            obj.typeOfGeologicalStructures = ocDataModel.typeOfGeologicalStructures
+            obj.typeOfFaults = ocDataModel.typeOfFaults
+            obj.notes = ocDataModel.notes
+            obj.geologistSign = geoSign
+            obj.clientsGeologistSign = clientSign
             obj.image = binding.signPad.signatureBitmap
 
-            saveOCReport(obj,ctx)
+            saveOCReport(obj, ctx)
             binding.signPad.clear()
             showToast("OpenCastReport Saved", act)
             finish()
@@ -250,18 +271,59 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         stream.close()
     }
 
-    fun verifyStoragePermissions(activity : Activity?) {
-        if (ActivityCompat.checkSelfPermission(ctx,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                ctx, Manifest.permission.READ_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(
-                act,
-                PERMISSIONS_STORAGE,
-                REQUEST_EXTERNAL_STORAGE
-            )
-
+    fun verifyStoragePermissions() {
+        fun verifyStoragePermissions() {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                if (!Environment.isExternalStorageManager()) {
+                    callFilesPermission()
+                }
+            } else {
+                if (ActivityCompat.checkSelfPermission(ctx,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        ctx, Manifest.permission.READ_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        ctx, Manifest.permission.MANAGE_EXTERNAL_STORAGE
+                    ) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(
+                        act,
+                        PERMISSIONS_STORAGE,
+                        REQUEST_EXTERNAL_STORAGE
+                    )
+                }
+            }
         }
+    }
+
+    private fun callFilesPermission() {
+        val building = AlertDialog.Builder(ctx)
+        building.setMessage(
+            """To upload image allow ${
+                ctx.getString(
+                    R.string.app_name
+                )
+            } access to your device's files. 
+Tap Setting > permission, and turn "Files and media" on."""
+        )
+        building.setCancelable(true)
+        building.setPositiveButton(
+            ctx.getString(R.string.Settings)
+        ) { dialogs : DialogInterface, _ : Int ->
+            val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+            val uri = Uri.fromParts("package", packageName, null)
+            intent.data = uri
+            startActivity(intent)
+            dialogs.dismiss()
+        }
+        building.setNegativeButton(
+            ctx.getString(R.string.not_now)
+        ) { dialogs : DialogInterface, _ : Int -> dialogs.dismiss() }
+        val alert11 = building.create()
+        alert11.window!!.setBackgroundDrawableResource(R.drawable.dialog_bg)
+        alert11.show()
+        alert11.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
+            .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
+        alert11.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
+            .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
     }
 
     override fun onBackPressed() {
