@@ -29,7 +29,9 @@
     <string name="invalid_password_not_mix_of_char_types">Password must contain lowercase, digits and special characters</string>
     <string name="check_dob">Please confirm whether you are above 18 years old</string>
     <string name="underground_report_list">Underground Report List</string>
+    <string name="underground_report_list_draft">Underground Report List Draft</string>
     <string name="opencast_report_list">OpenCast Report List</string>
+    <string name="opencast_report_list_draft">OpenCast Report List Draft</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="sync_data">Sync Data</string>
     <string name="faq">FAQ</string>

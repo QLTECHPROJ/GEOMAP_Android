@@ -3,6 +3,7 @@ package com.geomap.roomDataBase
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
@@ -11,7 +12,7 @@ interface GeoMapDetailsDao {
     @Query("SELECT * FROM undergroundmappingreport ORDER BY uid DESC")
     fun geAllData1ForAll(): List<UnderGroundMappingReport?>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUGReport(underGroundMappingReport: UnderGroundMappingReport?)
 
     @Query("SELECT * FROM undergroundmappingreport")
@@ -20,7 +21,7 @@ interface GeoMapDetailsDao {
     @Query("DELETE FROM UnderGroundMappingReport")
     fun deleteUnderGroundMappingReport()
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOCReport(openCastMappingReport: OpenCastMappingReport?)
 
     @Query("SELECT * FROM opencastmappingreport")
@@ -29,7 +30,7 @@ interface GeoMapDetailsDao {
     @Query("DELETE FROM OpenCastMappingReport")
     fun deleteOpenCastMappingReport()
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAttributeData(attributeData: AttributeData?)
 
     @Query("SELECT * FROM attributdata")
@@ -38,7 +39,7 @@ interface GeoMapDetailsDao {
     @Query("DELETE FROM attributdata")
     fun deleteAttributeData()
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertNos(nos: Nos?)
 
     @Query("SELECT * FROM nos WHERE attributeId =:attributeId")
@@ -47,7 +48,7 @@ interface GeoMapDetailsDao {
     @Query("DELETE FROM nos")
     fun deleteNos()
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertSampleCollected(sampleCollected: SampleCollected?)
 
     @Query("SELECT * FROM samplecollected")
@@ -56,7 +57,7 @@ interface GeoMapDetailsDao {
     @Query("DELETE FROM samplecollected")
     fun deleteSampleCollected()
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertWeatheringData(weathering: WeatheringData?)
 
     @Query("SELECT * FROM weatheringdata")
@@ -65,7 +66,7 @@ interface GeoMapDetailsDao {
     @Query("DELETE FROM weatheringdata")
     fun deleteWeatheringData()
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertRockStrength(rockStrength: RockStrength?)
 
     @Query("SELECT * FROM rocksStrength")
@@ -74,7 +75,7 @@ interface GeoMapDetailsDao {
     @Query("DELETE FROM rocksStrength")
     fun deleteRockStrength()
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertWaterCondition(waterCondition: WaterCondition?)
 
     @Query("SELECT * FROM watercondition")
@@ -83,7 +84,7 @@ interface GeoMapDetailsDao {
     @Query("DELETE FROM watercondition")
     fun deleteWaterCondition()
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTypeOfGeologicalStructures(typeOfGeologicalStructures: TypeOfGeologicalStructures?)
 
     @Query("SELECT * FROM typeofgeologicalstructures")
@@ -92,7 +93,7 @@ interface GeoMapDetailsDao {
     @Query("DELETE FROM typeofgeologicalstructures")
     fun deleteTypeOfGeologicalStructures()
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertTypeOfFaults(typeOfFaults: TypeOfFaults?)
 
     @Query("SELECT * FROM typeoffaults")

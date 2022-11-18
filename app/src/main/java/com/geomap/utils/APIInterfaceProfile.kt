@@ -74,4 +74,9 @@ interface APIInterfaceProfile {
         @Field("rightImage") rightImage : TypedFile?,
         @Field("faceImage") faceImage : TypedFile?,
         modelCallback : Callback<SuccessModel>?)
+
+    @Multipart @POST("/sync_data") fun postSyncDataInsert(
+        @Field("UndergroundReport") undergroundReport : String?,
+        @Field("OpenCastReport") openCastReport : String?,
+        modelCallback : Callback<SuccessModel>?)
 }

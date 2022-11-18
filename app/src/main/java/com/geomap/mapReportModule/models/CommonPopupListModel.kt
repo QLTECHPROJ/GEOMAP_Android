@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 class CommonPopupListModel {
     @SerializedName("ResponseData") @Expose
-    var responseData : List<ResponseData>? = null
+    var responseData : ArrayList<ResponseData>? = null
 
     @SerializedName("ResponseCode") @Expose
     var responseCode : String? = null

@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.net.Uri
@@ -16,11 +17,13 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
+import com.geomap.DataBaseFunctions.Companion.saveOCReport
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityOpenCastFormSecondStepBinding
 import com.geomap.mapReportModule.models.OpenCastInsertModel
 import com.geomap.mapReportModule.models.SuccessModel
+import com.geomap.roomDataBase.OpenCastMappingReport
 import com.geomap.utils.APIClientProfile
 import com.geomap.utils.CONSTANTS
 import com.github.gcacace.signaturepad.views.SignaturePad
@@ -42,6 +45,8 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
     private var signCheck : String? = null
     private var sign : TypedFile? = null
     private val REQUEST_EXTERNAL_STORAGE = 1
+    private lateinit var clientSign : Bitmap
+    private lateinit var geoSign : Bitmap
     private val PERMISSIONS_STORAGE = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.READ_EXTERNAL_STORAGE)
 
@@ -62,6 +67,10 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             val data = intent.getStringExtra("ocData")
             val type1 = object : TypeToken<OpenCastInsertModel>() {}.type
             ocDataModel = gson.fromJson(data, type1)
+            val clientSignbyteArray :ByteArray = intent.getByteArrayExtra("clientSign")!!
+            val geoSignbyteArray  :ByteArray  = intent.getByteArrayExtra("geoSign")!!
+            clientSign = BitmapFactory.decodeByteArray(clientSignbyteArray, 0, clientSignbyteArray.size)
+            geoSign = BitmapFactory.decodeByteArray(geoSignbyteArray, 0, geoSignbyteArray.size)
         }
 
         val gson = Gson()
@@ -116,7 +125,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                 ocDataModel.thicknessOfInterburden, ocDataModel.observedGradeOfOre,
                 ocDataModel.actualGradeOfOre,
                 ocDataModel.sampleCollected, ocDataModel.weathering,
-                ocDataModel.rockStregth, ocDataModel.waterCondition, ocDataModel.typeOfGeologist,
+                ocDataModel.rockStregth, ocDataModel.waterCondition, ocDataModel.typeOfGeologicalStructures,
                 ocDataModel.typeOfFaults,
                 ocDataModel.notes, ocDataModel.shift, ocDataModel.ocDate,
                 ocDataModel.dipDirectionAngle,
@@ -144,7 +153,45 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                     }
                 })
         } else {
-            showToast(getString(R.string.no_server_found), act)
+
+            addJpgSignatureToGallery(binding.signPad.signatureBitmap)
+            var obj = OpenCastMappingReport()
+            obj.ocDate=  ocDataModel.ocDate
+            obj.mappingSheetNo=  ocDataModel.sheetNo
+            obj.minesSiteName=  ocDataModel.minesSiteName
+            obj.pitName=  ocDataModel.pitName
+            obj.pitLocation=  ocDataModel.pitLocation
+            obj.shiftInChargeName=  ocDataModel.shiftInchargeName
+            obj.geologistName=  ocDataModel.geologistName
+            obj.shift =  ocDataModel.shift
+            obj.faceLocation=  ocDataModel.faceLocation
+            obj.faceLength=  ocDataModel.faceLengthM
+            obj.faceArea=  ocDataModel.faceAreaM2
+            obj.faceRockTypes=  ocDataModel.faceRockTypes
+            obj.benchRL=  ocDataModel.benchRL
+            obj.benchHeightWidth=  ocDataModel.benchHeightWidth
+            obj.benchAngle=  ocDataModel.benchAngle
+            obj.dipDirectionAngle =  ocDataModel.dipDirectionAngle
+            obj.thicknessOfOre=  ocDataModel.thicknessOfOre
+            obj.thicknessOfOverburden=  ocDataModel.thinessOfOverburden
+            obj.thicknessOfInterBurden =  ocDataModel.thicknessOfInterburden
+            obj.observedGradeOfOre=  ocDataModel.observedGradeOfOre
+            obj.sampleCollected=  ocDataModel.sampleCollected
+            obj.actualGradOfOre =  ocDataModel.actualGradeOfOre
+            obj.weathering=  ocDataModel.weathering
+            obj.rockStrength =  ocDataModel.rockStregth
+            obj.waterCondition=  ocDataModel.waterCondition
+            obj.typeOfGeologicalStructures =  ocDataModel.typeOfGeologicalStructures
+            obj.typeOfFaults=  ocDataModel.typeOfFaults
+            obj.notes=  ocDataModel.notes
+            obj.geologistSign  = geoSign
+            obj.clientsGeologistSign=  clientSign
+            obj.image = binding.signPad.signatureBitmap
+
+            saveOCReport(obj,ctx)
+            binding.signPad.clear()
+            showToast("OpenCastReport Saved", act)
+            finish()
         }
     }
 

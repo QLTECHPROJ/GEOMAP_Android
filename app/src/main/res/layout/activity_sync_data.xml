@@ -84,7 +84,7 @@
         </LinearLayout>
 
         <ImageButton
-            android:id="@+id/btnViewPdf"
+            android:id="@+id/btnSyncData"
             style="@style/screenButton"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginBottom="@dimen/_20sdp"

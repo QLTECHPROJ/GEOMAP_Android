@@ -1,8 +1,10 @@
 package com.geomap.roomDataBase
 
+import android.graphics.Bitmap
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import java.io.Serializable
 
 @Entity(tableName = "opencastmappingreport")
@@ -10,7 +12,7 @@ class OpenCastMappingReport : Serializable {
     @PrimaryKey(autoGenerate = true)
     var uid = 0
 
-    @ColumnInfo(name = "Id")
+    @ColumnInfo(name = "Id", defaultValue = "")
     var iD: Int? = null
 
     @ColumnInfo(name = "ocDate")
@@ -58,8 +60,8 @@ class OpenCastMappingReport : Serializable {
     @ColumnInfo(name = "benchAngle")
     var benchAngle: String? = null
 
-    @ColumnInfo(name = "dipdirectionandAngle")
-    var dipdirectionandAngle: String? = null
+    @ColumnInfo(name = "dipDirectionAngle")
+    var dipDirectionAngle: String? = null
 
     @ColumnInfo(name = "thicknessOfOre")
     var thicknessOfOre: String? = null
@@ -94,11 +96,20 @@ class OpenCastMappingReport : Serializable {
     @ColumnInfo(name = "typeOfFaults")
     var typeOfFaults :String? = null
 
+    @ColumnInfo(name = "notes")
+    var notes :String? = null
+
     @ColumnInfo(name = "geologistSign")
-    var geologistSign :String? = null
+    @TypeConverters(Converters::class)
+    var geologistSign : Bitmap? = null
 
     @ColumnInfo(name = "clientsGeologistSign")
-    var clientsGeologistSign :String? = null
+    @TypeConverters(Converters::class)
+    var clientsGeologistSign : Bitmap? = null
+
+    @ColumnInfo(name = "image")
+    @TypeConverters(Converters::class)
+    var image : Bitmap? = null
 
     @ColumnInfo(name = "createDate")
     var createDate :String? = null

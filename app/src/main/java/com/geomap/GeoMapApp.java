@@ -24,14 +24,18 @@ import com.geomap.mapReportModule.activities.DashboardActivity;
 import com.geomap.mapReportModule.activities.SyncDataActivity;
 import com.geomap.mapReportModule.activities.ViewPdfActivity;
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastDetailActivity;
+import com.geomap.mapReportModule.activities.openCastModule.OpenCastDetailDraftActivity;
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity;
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastListActivity;
+import com.geomap.mapReportModule.activities.openCastModule.OpenCastListDraftActivity;
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundDetailActivity;
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundDetailDraftActivity;
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity;
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormSecondStepActivity;
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormThirdStepActivity;
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundListActivity;
 import com.geomap.mapReportModule.activities.ViewPdfActivity;
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundListDraftActivity;
 import com.geomap.roomDataBase.GeoMapDatabase;
 import com.geomap.userModule.activities.ContactUsActivity;
 import com.geomap.userModule.activities.MenuListActivity;
@@ -379,6 +383,24 @@ public class GeoMapApp extends Application {
         }
     }
 
+    public static void callUnderGroundListDraftActivity(Activity act, String finish) {
+        Intent i = new Intent(act, UnderGroundListDraftActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        act.startActivity(i);
+        if (finish.equalsIgnoreCase("0")) {
+            act.finish();
+        }
+    }
+
+    public static void callOpenCastListDraftActivity(Activity act, String finish) {
+        Intent i = new Intent(act, OpenCastListDraftActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        act.startActivity(i);
+        if (finish.equalsIgnoreCase("0")) {
+            act.finish();
+        }
+    }
+
     public static void callUnderGroundDetailActivity(Activity act, String finish, String id) {
         Intent i = new Intent(act, UnderGroundDetailActivity.class);
         i.putExtra("id", id);
@@ -392,6 +414,26 @@ public class GeoMapApp extends Application {
     public static void callOpenCastDetailActivity(Activity act, String finish, String id) {
         Intent i = new Intent(act, OpenCastDetailActivity.class);
         i.putExtra("id", id);
+        i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        act.startActivity(i);
+        if (finish.equalsIgnoreCase("0")) {
+            act.finish();
+        }
+    }
+
+    public static void callUnderGroundDetailDraftActivity(Activity act, String finish, String reportData) {
+        Intent i = new Intent(act, UnderGroundDetailDraftActivity.class);
+        i.putExtra("report", reportData);
+        i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        act.startActivity(i);
+        if (finish.equalsIgnoreCase("0")) {
+            act.finish();
+        }
+    }
+
+    public static void callOpenCastDetailDraftActivity(Activity act, String finish, String reportData) {
+        Intent i = new Intent(act, OpenCastDetailDraftActivity.class);
+        i.putExtra("report", reportData);
         i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         act.startActivity(i);
         if (finish.equalsIgnoreCase("0")) {

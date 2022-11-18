@@ -27,7 +27,7 @@ data class OpenCastInsertModel(
     var weathering : String? = null,
     var rockStregth : String? = null,
     var waterCondition : String? = null,
-    var typeOfGeologist : String? = null,
+    var typeOfGeologicalStructures : String? = null,
     var typeOfFaults : String? = null,
     var shift : String? = null,
     var notes : String? = null,

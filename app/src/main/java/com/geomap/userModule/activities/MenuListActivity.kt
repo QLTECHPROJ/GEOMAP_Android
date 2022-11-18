@@ -77,6 +77,14 @@ class MenuListActivity : AppCompatActivity() {
         binding.llOpenCastList.setOnClickListener {
             callOpenCastListActivity(act, "1")
         }
+
+        binding.llUnderGroundListDraft.setOnClickListener {
+            callUnderGroundListDraftActivity(act, "1")
+        }
+
+        binding.llOpenCastListDraft.setOnClickListener {
+            callOpenCastListDraftActivity(act, "1")
+        }
         binding.llAboutUs.setOnClickListener {
             startActivity(Intent(ctx, TncActivity::class.java).putExtra(CONSTANTS.Web,
                 getString(R.string.about_us)))
@@ -219,8 +227,8 @@ class MenuListActivity : AppCompatActivity() {
     }
 
     private fun prepareData() {
-        showProgressBar(binding.progressBar, binding.progressBarHolder, act)
         if (isNetworkConnected(ctx)) {
+            showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             RetrofitService.getInstance().getUserDetails(userId)
                 .enqueue(object : Callback<UserCommonDataModel> {
                     override fun onResponse(call : Call<UserCommonDataModel>,

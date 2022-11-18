@@ -30,12 +30,14 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.geomap.DataBaseFunctions
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityOpenCastFormFirstStepBinding
 import com.geomap.databinding.CommonPopupLayoutBinding
 import com.geomap.mapReportModule.models.CommonPopupListModel
 import com.geomap.mapReportModule.models.OpenCastInsertModel
+import com.geomap.roomDataBase.*
 import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
 import com.github.gcacace.signaturepad.views.SignaturePad
@@ -44,12 +46,10 @@ import retrofit.mime.TypedFile
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.OutputStream
+import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class OpenCastFormFirstStepActivity : AppCompatActivity() {
     private lateinit var binding : ActivityOpenCastFormFirstStepBinding
@@ -81,6 +81,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
     var geologistSignCheck : String? = ""
     var geologistClientSignCheck : String? = ""
     var searchFilter : String = ""
+    val modelList = CommonPopupListModel()
     private var popupAdapter : PopupAdapter? = null
     private val REQUEST_EXTERNAL_STORAGE = 1
     private val PERMISSIONS_STORAGE = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -371,7 +372,16 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 geologistSign, geologistClientSign)
             val i = Intent(act, OpenCastFormSecondStepActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            val stream = ByteArrayOutputStream()
+            binding.geologistClientSignPad.signatureBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            val byteArray: ByteArray = stream.toByteArray()
+
+            val stream1 = ByteArrayOutputStream()
+            binding.geologistSignPad.signatureBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream1)
+            val byteArray1: ByteArray = stream1.toByteArray()
             i.putExtra("ocData", gson.toJson(oc))
+            i.putExtra("clientSign",byteArray)
+            i.putExtra("geoSign", byteArray1)
             startActivity(i)
             finish()
         }
@@ -507,18 +517,212 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
 
                 }
 
-                override fun onFailure(call : Call<CommonPopupListModel>, t : Throwable) {
+                override fun onFailure(call: Call<CommonPopupListModel>, t: Throwable) {
                     hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                 }
             })
         } else {
-            showToast(getString(R.string.no_server_found), act)
+            DB = getDataBase(ctx)
+
+            modelList.responseData = ArrayList<CommonPopupListModel.ResponseData>()
+            when (keyS) {
+                "1" -> {
+                    var list : ArrayList<SampleCollected>
+                    GeoMapDatabase.databaseWriteExecutor.execute {
+                        list = DB?.taskDao()?.geAllSampleCollected() as ArrayList<SampleCollected>
+                        Log.e("List SampleCollected",
+                            "true" + DataBaseFunctions.gson.toJson(list).toString())
+                        callSampleCollectedAdapter(list,searchView,rvList,tvFound,keyS,dialog)
+                    }
+                }
+                "2" -> {
+                    var list : ArrayList<WeatheringData>
+                    GeoMapDatabase.databaseWriteExecutor.execute {
+                        list = DB?.taskDao()?.geAllWeatheringData() as ArrayList<WeatheringData>
+                        Log.e("List SampleCollected",
+                            "true" + DataBaseFunctions.gson.toJson(list).toString())
+
+                        callWeatheringDataAdapter(list,searchView,rvList,tvFound,keyS,dialog)
+                    }
+                }
+                "3" -> {
+                    var list : ArrayList<RockStrength>
+                    GeoMapDatabase.databaseWriteExecutor.execute {
+                        list = DB?.taskDao()?.geAllRockStrength() as ArrayList<RockStrength>
+                        Log.e("List SampleCollected",
+                            "true" + DataBaseFunctions.gson.toJson(list).toString())
+                        callRockStrengthAdapter(list,searchView,rvList,tvFound,keyS,dialog)
+                    }
+                }
+                "4" -> {
+                    var list: ArrayList<WaterCondition>
+                    GeoMapDatabase.databaseWriteExecutor.execute {
+                        list = DB?.taskDao()?.geAllWaterCondition() as ArrayList<WaterCondition>
+                        Log.e("List SampleCollected",
+                            "true" + DataBaseFunctions.gson.toJson(list).toString())
+                        callWaterConditionAdapter(list,searchView,rvList,tvFound,keyS,dialog)
+                    }
+                }
+                "5" -> {
+                    var list : ArrayList<TypeOfGeologicalStructures>
+                    GeoMapDatabase.databaseWriteExecutor.execute {
+                        list = DB?.taskDao()?.geAllTypeOfGeologicalStructures() as ArrayList<TypeOfGeologicalStructures>
+                        Log.e("List SampleCollected",
+                            "true" + DataBaseFunctions.gson.toJson(list).toString())
+                        callTypeOfGeologicalStructuresAdapter(list,searchView,rvList,tvFound,keyS,dialog)
+                    }
+                }
+                "6" -> {
+                    var list : ArrayList<TypeOfFaults>
+                    GeoMapDatabase.databaseWriteExecutor.execute {
+                        list = DB?.taskDao()?.geAllTypeOfFaults() as ArrayList<TypeOfFaults>
+                        Log.e("List SampleCollected",
+                            "true" + DataBaseFunctions.gson.toJson(list).toString())
+                        callTypeOfFaultsAdapter(list,searchView,rvList,tvFound,keyS,dialog)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun callTypeOfFaultsAdapter(list: ArrayList<TypeOfFaults>, searchView: SearchView, rvList: RecyclerView, tvFound: TextView, keyS: String, dialog: Dialog) {
+        for (i in list.indices) {
+            val obj = CommonPopupListModel.ResponseData()
+            obj.id = list[i].iD.toString()
+            obj.name = list[i].name
+            obj.createdAt = list[i].createDate
+            obj.updatedAt = list[i].updateDate
+            Log.e("saveSampleCollected", "true")
+
+            modelList.responseData!!.add(obj)
+            if(i == list.size - 1) {
+                searchView.isEnabled = true
+                searchView.isClickable = true
+                rvList.layoutManager = LinearLayoutManager(ctx)
+                popupAdapter = PopupAdapter(dialog, binding, modelList.responseData!!, rvList,
+                    tvFound, keyS, ctx)
+                rvList.adapter = popupAdapter
+            }
+        }
+    }
+
+    private fun callTypeOfGeologicalStructuresAdapter(list: ArrayList<TypeOfGeologicalStructures>, searchView: SearchView, rvList: RecyclerView, tvFound: TextView,
+        keyS: String, dialog: Dialog) {
+        searchView.isEnabled = true
+        searchView.isClickable = true
+        rvList.layoutManager = LinearLayoutManager(ctx)
+        popupAdapter =
+            PopupAdapter(dialog, binding,
+                modelList.responseData!!, rvList, tvFound, keyS, ctx)
+        rvList.adapter = popupAdapter
+        for (i in list.indices) {
+            val obj = CommonPopupListModel.ResponseData()
+            obj.id = list[i].iD.toString()
+            obj.name = list[i].name
+            obj.createdAt = list[i].createDate
+            obj.updatedAt = list[i].updateDate
+            Log.e("saveSampleCollected", "true")
+
+            modelList.responseData!!.add(obj)
+            if(i == list.size - 1) {
+                searchView.isEnabled = true
+                searchView.isClickable = true
+                rvList.layoutManager = LinearLayoutManager(ctx)
+                popupAdapter = PopupAdapter(dialog, binding, modelList.responseData!!, rvList,
+                    tvFound, keyS, ctx)
+                rvList.adapter = popupAdapter
+            }
+        }
+    }
+
+    private fun callWaterConditionAdapter(list: ArrayList<WaterCondition>, searchView: SearchView, rvList: RecyclerView, tvFound: TextView, keyS: String, dialog: Dialog) {
+        for (i in list.indices) {
+            val obj = CommonPopupListModel.ResponseData()
+            obj.id = list[i].iD.toString()
+            obj.name = list[i].name
+            obj.createdAt = list[i].createDate
+            obj.updatedAt = list[i].updateDate
+            Log.e("saveSampleCollected", "true")
+
+            modelList.responseData!!.add(obj)
+            if(i == list.size - 1) {
+                searchView.isEnabled = true
+                searchView.isClickable = true
+                rvList.layoutManager = LinearLayoutManager(ctx)
+                popupAdapter = PopupAdapter(dialog, binding, modelList.responseData!!, rvList,
+                    tvFound, keyS, ctx)
+                rvList.adapter = popupAdapter
+            }
+        }
+    }
+
+    private fun callRockStrengthAdapter(list: ArrayList<RockStrength>, searchView: SearchView, rvList: RecyclerView, tvFound: TextView, keyS: String, dialog: Dialog) {
+        for (i in list.indices) {
+            val obj = CommonPopupListModel.ResponseData()
+            obj.id = list[i].iD.toString()
+            obj.name = list[i].name
+            obj.createdAt = list[i].createDate
+            obj.updatedAt = list[i].updateDate
+            Log.e("saveSampleCollected", "true")
+
+            modelList.responseData!!.add(obj)
+            if(i == list.size - 1) {
+                searchView.isEnabled = true
+                searchView.isClickable = true
+                rvList.layoutManager = LinearLayoutManager(ctx)
+                popupAdapter = PopupAdapter(dialog, binding, modelList.responseData!!, rvList,
+                    tvFound, keyS, ctx)
+                rvList.adapter = popupAdapter
+            }
+        }
+    }
+
+    private fun callWeatheringDataAdapter(list: ArrayList<WeatheringData>, searchView: SearchView, rvList: RecyclerView, tvFound: TextView, keyS: String, dialog: Dialog) {
+
+        for (i in list.indices) {
+            val obj = CommonPopupListModel.ResponseData()
+            obj.id = list[i].iD.toString()
+            obj.name = list[i].name
+            obj.createdAt = list[i].createDate
+            obj.updatedAt = list[i].updateDate
+            Log.e("saveSampleCollected", "true")
+
+            modelList.responseData!!.add(obj)
+            if(i == list.size - 1) {
+                searchView.isEnabled = true
+                searchView.isClickable = true
+                rvList.layoutManager = LinearLayoutManager(ctx)
+                popupAdapter = PopupAdapter(dialog, binding, modelList.responseData!!, rvList,
+                    tvFound, keyS, ctx)
+                rvList.adapter = popupAdapter
+            }
+        }
+    }
+
+    private fun callSampleCollectedAdapter(list: ArrayList<SampleCollected>, searchView: SearchView,
+        rvList: RecyclerView, tvFound: TextView, keys: String?, dialog: Dialog) {
+        for (i in list.indices) {
+            val obj = CommonPopupListModel.ResponseData()
+            obj.id = list[i].iD.toString()
+            obj.name = list[i].name
+            obj.createdAt = list[i].createDate
+            obj.updatedAt = list[i].updateDate
+            Log.e("saveSampleCollected", "true")
+            modelList.responseData!!.add(obj)
+            if(i == list.size - 1) {
+                searchView.isEnabled = true
+                searchView.isClickable = true
+                rvList.layoutManager = LinearLayoutManager(ctx)
+                popupAdapter = PopupAdapter(dialog, binding, modelList.responseData!!, rvList,
+                    tvFound, keys!!, ctx)
+                rvList.adapter = popupAdapter
+            }
         }
     }
 
     class PopupAdapter(private var dialog : Dialog,
         private var binding : ActivityOpenCastFormFirstStepBinding,
-        private val modelList : List<CommonPopupListModel.ResponseData>,
+        private val modelList : ArrayList<CommonPopupListModel.ResponseData>,
         private var rvCountryList : RecyclerView,
         private var tvFound : TextView, private var keyS : String, private var ctx : Context) :
         RecyclerView.Adapter<PopupAdapter.MyViewHolder>(),
