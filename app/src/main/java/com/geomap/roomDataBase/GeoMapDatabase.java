@@ -14,6 +14,7 @@ public abstract class GeoMapDatabase extends RoomDatabase {
     public static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
     public static final ExecutorService databaseWriteExecutor1 = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
     public static final ExecutorService databaseWriteExecutor2 = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+    public static final ExecutorService databaseWriteExecutor3 = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
     public abstract GeoMapDetailsDao taskDao();
 }

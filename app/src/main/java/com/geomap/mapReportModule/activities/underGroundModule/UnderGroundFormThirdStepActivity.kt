@@ -20,13 +20,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.room.ColumnInfo
+import androidx.room.TypeConverters
+import com.geomap.DataBaseFunctions
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundFormThirdStepBinding
 import com.geomap.mapReportModule.activities.DashboardActivity
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity.Companion.attributeDataModelList
 import com.geomap.mapReportModule.models.AttributeDataModel
 import com.geomap.mapReportModule.models.SuccessModel
 import com.geomap.mapReportModule.models.UnderGroundInsertModel
+import com.geomap.roomDataBase.Converters
+import com.geomap.roomDataBase.OpenCastMappingReport
+import com.geomap.roomDataBase.UnderGroundMappingReport
 import com.geomap.utils.APIClientProfile
 import com.geomap.utils.CONSTANTS
 import com.github.gcacace.signaturepad.views.SignaturePad
@@ -44,10 +51,6 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
     private lateinit var ctx : Context
     private lateinit var act : Activity
     private var userId : String? = null
-    private var signRoofCheck : String? = null
-    private var signLeftCheck : String? = null
-    private var signRightCheck : String? = null
-    private var signFaceCheck : String? = null
     private var signRoofBitMap : Bitmap? = null
     private var signLeftBitMap : Bitmap? = null
     private var signRightBitMap : Bitmap? = null
@@ -58,13 +61,13 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
     private var signFace : TypedFile? = null
 
     var i = 0
-    private var ugDataModel = UnderGroundInsertModel()
-    private var attributeDataModelList = ArrayList<AttributeDataModel>()
     private val REQUEST_EXTERNAL_STORAGE = 1
     private val PERMISSIONS_STORAGE = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.MANAGE_EXTERNAL_STORAGE)
-
+    companion object {
+        var ugDataModel = UnderGroundInsertModel()
+    }
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         binding =
@@ -75,12 +78,13 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
         userId = shared.getString(CONSTANTS.userId, "")
 
-        if (intent.extras != null) {
+      /*  if (intent.extras != null) {
             val gson = Gson()
             val data = intent.getStringExtra("ugData")
             val type1 = object : TypeToken<UnderGroundInsertModel>() {}.type
             ugDataModel = gson.fromJson(data, type1)
-        }
+            intent.extras!!.clear()
+        }*/
 
         if (intent.extras != null) {
             val gson = Gson()
@@ -148,6 +152,8 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                                 i.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
                                 startActivity(i)
                                 finishAffinity()
+                                ugDataModel = UnderGroundInsertModel()
+                                attributeDataModelList = java.util.ArrayList<AttributeDataModel>()
                             }
                             ctx.getString(R.string.ResponseCodefail) -> {
                                 showToast(model.ResponseCode, act)
@@ -165,7 +171,35 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                     }
                 })
         } else {
-            showToast(getString(R.string.no_server_found), act)
+            val obj = UnderGroundMappingReport()
+            val gson = Gson()
+            obj.iD = 0
+            obj.name = ugDataModel.name
+            obj.comment = ugDataModel.comment
+            obj.attributes = gson.toJson(attributeDataModelList)
+            obj.ugDate = ugDataModel.ugDate
+            obj.mapSerialNo = ugDataModel.mapSerialNo
+            obj.shift = ugDataModel.shift
+            obj.mappedBy = ugDataModel.mappedBy
+            obj.scale = ugDataModel.scale
+            obj.locations = ugDataModel.location
+            obj.veinOrLoad = ugDataModel.venieLoad
+            obj.xCordinate = ugDataModel.xCordinate
+            obj.yCordinate = ugDataModel.yCordinate
+            obj.zCordinate = ugDataModel.zCordinate
+            obj.roofImage =  signRoofBitMap
+            obj.leftImage =  signLeftBitMap
+            obj.rightImage = signRightBitMap
+            obj.faceImage =  signFaceBitMap
+            DataBaseFunctions.saveUGReport(obj, ctx)
+            binding.signPad.clear()
+            showToast("UnderGround Report Saved", act)
+            val i = Intent(ctx, DashboardActivity::class.java)
+            i.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
+            startActivity(i)
+            ugDataModel = UnderGroundInsertModel()
+            attributeDataModelList = java.util.ArrayList<AttributeDataModel>()
+            finishAffinity()
         }
     }
 

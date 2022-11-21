@@ -51,11 +51,13 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
     private var signCheck : String? = null
     private var sign : TypedFile? = null
     private val REQUEST_EXTERNAL_STORAGE = 1
-    private lateinit var clientSign : Bitmap
-    private lateinit var geoSign : Bitmap
+    val gson = Gson()
     private val PERMISSIONS_STORAGE = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.MANAGE_EXTERNAL_STORAGE)
+    companion object{
+        var ocDataModel = OpenCastInsertModel()
+    }
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,17 +71,20 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         binding.llMainLayout.visibility = View.VISIBLE
         binding.btnSubmit.visibility = View.VISIBLE
 
-        if (intent.extras != null) {
+      /*  if (intent.extras != null) {
             val gson = Gson()
             val data = intent.getStringExtra("ocData")
             val type1 = object : TypeToken<OpenCastInsertModel>() {}.type
-            ocDataModel = gson.fromJson(data, type1)
-            val clientSignbyteArray : ByteArray = intent.getByteArrayExtra("clientSign")!!
-            val geoSignbyteArray : ByteArray = intent.getByteArrayExtra("geoSign")!!
-            clientSign =
-                BitmapFactory.decodeByteArray(clientSignbyteArray, 0, clientSignbyteArray.size)
-            geoSign = BitmapFactory.decodeByteArray(geoSignbyteArray, 0, geoSignbyteArray.size)
-        }
+            ocDataModel = gson.fromJson(data, type1)*/
+ /*           val clientSignbyteArray : ByteArray = intent.getByteArrayExtra("clientSign")!!
+            val geoSignbyteArray : ByteArray = intent.getByteArrayExtra("geoSign")!!*/
+
+     /*       intent.extras!!.clear()
+        }*/
+/*        val shared1 = getSharedPreferences(CONSTANTS.PREFE_ACCESS_OC_REPORT, MODE_PRIVATE)
+        val data =  shared1.getString(CONSTANTS.reportData, gson.toString())
+        val type1 = object : TypeToken<OpenCastInsertModel>() {}.type
+        ocDataModel = gson.fromJson(data, type1)*/
 
         val gson = Gson()
         Log.e("OCData", gson.toJson(ocDataModel).toString())
@@ -126,8 +131,8 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
     }
 
     private fun postOpenCastInsert() {
+        addJpgSignatureToGallery(binding.signPad.signatureBitmap)
         if (isNetworkConnected(ctx)) {
-            addJpgSignatureToGallery(binding.signPad.signatureBitmap)
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             APIClientProfile.apiService!!.postOpenCastInsert(
                 userId, ocDataModel.minesSiteName, ocDataModel.sheetNo, ocDataModel.pitName,
@@ -156,6 +161,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                                     val i = Intent(ctx, DashboardActivity::class.java)
                                     startActivity(i)
                                     finishAffinity()
+                                    ocDataModel = OpenCastInsertModel()
                                 }
                                 ctx.getString(
                                     R.string.ResponseCodefail) -> {
@@ -175,8 +181,8 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                     }
                 })
         } else {
-            addJpgSignatureToGallery(binding.signPad.signatureBitmap)
             val obj = OpenCastMappingReport()
+            obj.iD = 0
             obj.ocDate = ocDataModel.ocDate
             obj.mappingSheetNo = ocDataModel.sheetNo
             obj.minesSiteName = ocDataModel.minesSiteName
@@ -205,13 +211,12 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             obj.typeOfGeologicalStructures = ocDataModel.typeOfGeologicalStructures
             obj.typeOfFaults = ocDataModel.typeOfFaults
             obj.notes = ocDataModel.notes
-            obj.geologistSign = geoSign
-            obj.clientsGeologistSign = clientSign
+            obj.geologistSign = ocDataModel.geologistSignBitMap!!
+            obj.clientsGeologistSign = ocDataModel.clientsGeologistSignBitMap!!
             obj.image = binding.signPad.signatureBitmap
-
             saveOCReport(obj, ctx)
             binding.signPad.clear()
-            showToast("OpenCastReport Saved", act)
+            showToast("OpenCast Report Saved", act)
             finish()
         }
     }

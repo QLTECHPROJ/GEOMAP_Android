@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundDetailBinding
+import com.geomap.databinding.ActivityUnderGroundDetailDraftBinding
 import com.geomap.databinding.AttributeLayoutBinding
 import com.geomap.mapReportModule.models.AttributeDataModel
 import com.geomap.mapReportModule.models.UnderGroundDetailsModel
@@ -29,7 +30,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class UnderGroundDetailDraftActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityUnderGroundDetailBinding
+    private lateinit var binding: ActivityUnderGroundDetailDraftBinding
     private lateinit var ctx: Context
     private lateinit var act: Activity
     private var attributesListAdapter: AttributesListAdapter? = null
@@ -41,7 +42,7 @@ class UnderGroundDetailDraftActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_under_ground_detail)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_under_ground_detail_draft)
         ctx = this@UnderGroundDetailDraftActivity
         act = this@UnderGroundDetailDraftActivity
         val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
@@ -68,8 +69,9 @@ class UnderGroundDetailDraftActivity : AppCompatActivity() {
     }
 
     private fun postData() {
+        binding.ugDetail = ugReportData
         binding.llMainLayout.visibility = View.VISIBLE
-        binding.btnViewPdf.visibility = View.VISIBLE
+      /*
         binding.tvSerialNo.text = ugReportData.mapSerialNo
         binding.tvDate.text = ugReportData.ugDate
         binding.tvShift.text = ugReportData.shift
@@ -79,8 +81,8 @@ class UnderGroundDetailDraftActivity : AppCompatActivity() {
         binding.tvLoadName.text = ugReportData.veinOrLoad
         binding.tvXCoordinate.text = ugReportData.xCordinate
         binding.tvYCoordinate.text = ugReportData.yCordinate
-        binding.tvZCoordinate.text = ugReportData.zCordinate
-        val type1 = object : TypeToken<UnderGroundMappingReport>() {}.type
+        binding.tvZCoordinate.text = ugReportData.zCordinate*/
+        val type1 = object : TypeToken<java.util.ArrayList<AttributeDataModel>>() {}.type
         attributeDataList = gson.fromJson(ugReportData.attributes, type1)
         if (attributeDataList.size == 0) {
             binding.tvAttributes.visibility = View.GONE

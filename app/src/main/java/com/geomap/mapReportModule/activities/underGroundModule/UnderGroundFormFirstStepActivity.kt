@@ -222,6 +222,8 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
         attributesName = ""
         nosName = ""
         property = ""
+        attributesAdapter = null
+        nosAdapter = null
         binding.tvAttributeName.text = getString(R.string.select_attributes)
         binding.tvNos.text = getString(R.string.select_nos)
         binding.edtProperty.setText("")
@@ -230,6 +232,8 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
             if (attributeDataModelList.isEmpty()) {
                 showToast(getString(R.string.please_add_attribute_data), act)
             } else {
+                nosModelList = ArrayList<AttributesListModel.ResponseData.Nos>()
+                attributeModelList = ArrayList<AttributesListModel.ResponseData>()
                 callUnderGroundFormSecondStepActivity(act, "1",
                     gson.toJson(attributeDataModelList).toString())
 
@@ -366,7 +370,7 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
             })
         } else {
             DB = Room.databaseBuilder(ctx, GeoMapDatabase::class.java, "GeoMap_database").build()
-
+            attributeList = ArrayList<AttributeData>()
             GeoMapDatabase.databaseWriteExecutor.execute {
                 attributeList = DB.taskDao().geAllAttributeData() as ArrayList<AttributeData>
                 Log.e("List AttributeData",

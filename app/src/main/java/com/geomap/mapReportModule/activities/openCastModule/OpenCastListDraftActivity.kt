@@ -12,30 +12,34 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.geomap.DataBaseFunctions
 import com.geomap.GeoMapApp.*
 import com.geomap.R
+import com.geomap.databinding.ActivityOpenCastDraftListBinding
 import com.geomap.databinding.ActivityOpenCastListBinding
 import com.geomap.databinding.MappingReportListLayoutBinding
 import com.geomap.roomDataBase.GeoMapDatabase
 import com.geomap.roomDataBase.OpenCastMappingReport
+import com.geomap.roomDataBase.UnderGroundMappingReport
 import com.geomap.utils.CONSTANTS
 import com.google.gson.Gson
 
 class OpenCastListDraftActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityOpenCastListBinding
+    private lateinit var binding : ActivityOpenCastDraftListBinding
     private lateinit var ctx : Context
     private lateinit var act : Activity
     private var userId : String? = null
     private var gson = Gson()
     private var openCastListAdapter : OpenCastListAdapter? = null
+    var list =  java.util.ArrayList<OpenCastMappingReport>()
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_open_cast_list)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_open_cast_draft_list)
         ctx = this@OpenCastListDraftActivity
         act = this@OpenCastListDraftActivity
 
@@ -49,19 +53,20 @@ class OpenCastListDraftActivity : AppCompatActivity() {
         val mLayoutManage : RecyclerView.LayoutManager = LinearLayoutManager(applicationContext)
         binding.rvOpenCastList.layoutManager = mLayoutManage
         binding.rvOpenCastList.itemAnimator = DefaultItemAnimator()
+        DB = getDataBase(ctx)
         postData()
     }
 
     private fun postData() {
+
         DB = getDataBase(ctx)
-        var list: ArrayList<OpenCastMappingReport>
-        GeoMapDatabase.databaseWriteExecutor2.execute {
-            list = DB.taskDao().geAllOpenCastMappingReport() as ArrayList<OpenCastMappingReport>
+        DB.taskDao().geAllOpenCastMappingReport1().observe(ctx as LifecycleOwner){lists ->
+            list = lists as java.util.ArrayList<OpenCastMappingReport>
             callAdapter(list)
         }
     }
 
-    private fun callAdapter(list: ArrayList<OpenCastMappingReport>) {
+    private fun callAdapter(list: java.util.ArrayList<OpenCastMappingReport>) {
         if (list.isEmpty()) {
             binding.rvOpenCastList.visibility = View.GONE
             binding.tvFound.visibility = View.VISIBLE
@@ -77,7 +82,7 @@ class OpenCastListDraftActivity : AppCompatActivity() {
     }
 
     inner class OpenCastListAdapter(
-        private val listModel : List<OpenCastMappingReport>
+        private val listModel : ArrayList<OpenCastMappingReport>
     ) : RecyclerView.Adapter<OpenCastListAdapter.MyViewHolder>() {
 
         override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : MyViewHolder {

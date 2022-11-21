@@ -48,9 +48,6 @@ class UnderGroundMappingReport : Serializable {
     @ColumnInfo(name = "zCordinate")
     var zCordinate :String? = null
 
-    @ColumnInfo(name = "waterCondition")
-    var waterCondition :String? = null
-
     @ColumnInfo(name = "comment")
     var comment :String? = null
 

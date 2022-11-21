@@ -18,6 +18,9 @@ interface GeoMapDetailsDao {
     @Query("SELECT * FROM undergroundmappingreport")
     fun geAllUnderGroundMappingReport(): List<UnderGroundMappingReport>
 
+    @Query("SELECT * FROM undergroundmappingreport")
+    fun geAllUnderGroundMappingReport1(): LiveData<List<UnderGroundMappingReport>>
+
     @Query("DELETE FROM UnderGroundMappingReport")
     fun deleteUnderGroundMappingReport()
 
@@ -26,6 +29,9 @@ interface GeoMapDetailsDao {
 
     @Query("SELECT * FROM opencastmappingreport")
     fun geAllOpenCastMappingReport(): List<OpenCastMappingReport>
+
+    @Query("SELECT * FROM opencastmappingreport")
+    fun geAllOpenCastMappingReport1(): LiveData<List<OpenCastMappingReport>>
 
     @Query("DELETE FROM OpenCastMappingReport")
     fun deleteOpenCastMappingReport()

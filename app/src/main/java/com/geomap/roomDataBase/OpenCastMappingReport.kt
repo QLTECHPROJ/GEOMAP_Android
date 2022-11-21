@@ -12,7 +12,7 @@ class OpenCastMappingReport : Serializable {
     @PrimaryKey(autoGenerate = true)
     var uid = 0
 
-    @ColumnInfo(name = "Id", defaultValue = "")
+    @ColumnInfo(name = "Id")
     var iD: Int? = null
 
     @ColumnInfo(name = "ocDate")

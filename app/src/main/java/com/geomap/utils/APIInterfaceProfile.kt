@@ -2,6 +2,8 @@ package com.geomap.utils
 
 import com.geomap.mapReportModule.models.AttributeDataModel
 import com.geomap.mapReportModule.models.SuccessModel
+import com.geomap.mapReportModule.models.SyncDataOcModel
+import com.geomap.mapReportModule.models.SyncDataUgModel
 import com.geomap.userModule.models.ProfileUpdateModel
 import retrofit.Callback
 import retrofit.http.Multipart
@@ -78,7 +80,7 @@ interface APIInterfaceProfile {
         modelCallback : Callback<SuccessModel>?)
 
     @Multipart @POST("/sync_data") fun postSyncDataInsert(
-        @Field("UndergroundReport") undergroundReport : String?,
-        @Field("OpenCastReport") openCastReport : String?,
+        @Part("UndergroundReport") undergroundReport : ArrayList<SyncDataUgModel>?,
+        @Part("OpenCastReport") openCastReport : ArrayList<SyncDataOcModel>?,
         modelCallback : Callback<SuccessModel>?)
 }

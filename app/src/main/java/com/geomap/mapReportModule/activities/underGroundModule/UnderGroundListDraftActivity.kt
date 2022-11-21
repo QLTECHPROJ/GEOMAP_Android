@@ -12,36 +12,33 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.geomap.DataBaseFunctions
 import com.geomap.GeoMapApp.*
 import com.geomap.R
-import com.geomap.databinding.ActivityUnderGroundListBinding
+import com.geomap.databinding.ActivityUnderGroundDraftListBinding
 import com.geomap.databinding.MappingReportListLayoutBinding
-import com.geomap.mapReportModule.models.DashboardViewAllModel
 import com.geomap.roomDataBase.GeoMapDatabase
-import com.geomap.roomDataBase.OpenCastMappingReport
 import com.geomap.roomDataBase.UnderGroundMappingReport
 import com.geomap.utils.CONSTANTS
-import com.geomap.utils.RetrofitService
 import com.google.gson.Gson
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class UnderGroundListDraftActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityUnderGroundListBinding
+    private lateinit var binding: ActivityUnderGroundDraftListBinding
     private lateinit var ctx: Context
     private lateinit var act: Activity
     private var userId: String? = null
     private var gson = Gson()
     private var underGroundListAdapter: UnderGroundListAdapter? = null
+    var list = java.util.ArrayList<UnderGroundMappingReport>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_under_ground_list)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_under_ground_draft_list)
         ctx = this@UnderGroundListDraftActivity
         act = this@UnderGroundListDraftActivity
         val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
@@ -57,30 +54,42 @@ class UnderGroundListDraftActivity : AppCompatActivity() {
     }
 
     private fun postData() {
-        binding.rvUnderGroundList.adapter = underGroundListAdapter
         DB = getDataBase(ctx)
-        var list : ArrayList<UnderGroundMappingReport>
-        GeoMapDatabase.databaseWriteExecutor1.execute {
-            list = DB.taskDao().geAllUnderGroundMappingReport() as ArrayList<UnderGroundMappingReport>
+        DB.taskDao().geAllUnderGroundMappingReport1().observe(ctx as LifecycleOwner){lists ->
+            list = lists as java.util.ArrayList<UnderGroundMappingReport>
             callAdapter(list)
-        } as (List<UnderGroundMappingReport>)
+        }
+/*        try {
+            GeoMapDatabase.databaseWriteExecutor3.execute {
+                list = DB.taskDao().geAllUnderGroundMappingReport() as java.util.ArrayList<UnderGroundMappingReport>
+                callAdapter(list)
+            }
+        }catch (e: Exception){
+            e.printStackTrace();
+        }*/
     }
 
-    private fun callAdapter(list: ArrayList<UnderGroundMappingReport>) {
-        Log.e("List UnderGroundMappingReport",
-            "true" + DataBaseFunctions.gson.toJson(list).toString())
+    private fun callAdapter(list: java.util.ArrayList<UnderGroundMappingReport>) {
         if (list.isEmpty()) {
             binding.rvUnderGroundList.visibility = View.GONE
             binding.tvFound.visibility = View.VISIBLE
         } else {
-            binding.rvUnderGroundList.visibility = View.VISIBLE
-            binding.tvFound.visibility = View.GONE
+            callData(list)
         }
+    }
+
+    private fun callData(list: ArrayList<UnderGroundMappingReport>) {
+
+        binding.rvUnderGroundList.visibility = View.VISIBLE
+        binding.tvFound.visibility = View.GONE
         underGroundListAdapter = UnderGroundListAdapter(list)
+        binding.rvUnderGroundList.adapter = underGroundListAdapter
+        Log.e("List UnderGroundMappingReport",
+            "true" + DataBaseFunctions.gson.toJson(list).toString())
     }
 
     inner class UnderGroundListAdapter(
-        private val listModel: List<UnderGroundMappingReport>) : RecyclerView.Adapter<UnderGroundListAdapter.MyViewHolder>() {
+        private val listModel: ArrayList<UnderGroundMappingReport>) : RecyclerView.Adapter<UnderGroundListAdapter.MyViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
             val v: MappingReportListLayoutBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context), R.layout.mapping_report_list_layout, parent,

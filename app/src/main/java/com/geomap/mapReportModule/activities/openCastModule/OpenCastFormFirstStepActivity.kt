@@ -37,6 +37,7 @@ import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityOpenCastFormFirstStepBinding
 import com.geomap.databinding.CommonPopupLayoutBinding
+import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormSecondStepActivity.Companion.ocDataModel
 import com.geomap.mapReportModule.models.CommonPopupListModel
 import com.geomap.mapReportModule.models.OpenCastInsertModel
 import com.geomap.roomDataBase.*
@@ -51,7 +52,6 @@ import retrofit2.Response
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class OpenCastFormFirstStepActivity : AppCompatActivity() {
     private lateinit var binding : ActivityOpenCastFormFirstStepBinding
@@ -353,7 +353,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             addGeologistClientSignJpgSignatureToGallery(
                 binding.geologistClientSignPad.signatureBitmap)
             val gson = Gson()
-            val oc = OpenCastInsertModel(binding.etMinesSiteName.text.toString(),
+            ocDataModel = OpenCastInsertModel(binding.etMinesSiteName.text.toString(),
                 binding.etMappingSheetNo.text.toString(), binding.tvOCDate.text.toString(),
                 binding.etPitName.text.toString(), binding.etPitLocation.text.toString(),
                 binding.etShiftInchargeName.text.toString(),
@@ -371,20 +371,10 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 binding.tvRockStrength.text.toString(), binding.tvWaterCondition.text.toString(),
                 binding.tvTypeOfGeologicalStructures.text.toString(),
                 binding.tvTypeOfFaults.text.toString(), shift, binding.etNotes.text.toString(),
-                null,
-                geologistSign, geologistClientSign)
+                null, geologistSign, geologistClientSign ,binding.geologistSignPad.signatureBitmap, binding.geologistClientSignPad.signatureBitmap)
             val i = Intent(act, OpenCastFormSecondStepActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            val stream = ByteArrayOutputStream()
-            binding.geologistClientSignPad.signatureBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-            val byteArray: ByteArray = stream.toByteArray()
-
-            val stream1 = ByteArrayOutputStream()
-            binding.geologistSignPad.signatureBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream1)
-            val byteArray1: ByteArray = stream1.toByteArray()
-            i.putExtra("ocData", gson.toJson(oc))
-            i.putExtra("clientSign",byteArray)
-            i.putExtra("geoSign", byteArray1)
+//            i.putExtra("ocData", gson.toJson(oc).toString())
             startActivity(i)
         }
     }

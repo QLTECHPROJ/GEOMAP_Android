@@ -1,5 +1,6 @@
 package com.geomap.mapReportModule.models
 
+import android.graphics.Bitmap
 import retrofit.mime.TypedFile
 
 data class OpenCastInsertModel(
@@ -33,5 +34,7 @@ data class OpenCastInsertModel(
     var notes : String? = null,
     var image : TypedFile? = null,
     var geologistSign : TypedFile? = null,
-    var clientsGeologistSign : TypedFile? = null
+    var clientsGeologistSign : TypedFile? = null,
+    var geologistSignBitMap : Bitmap? = null,
+    var clientsGeologistSignBitMap : Bitmap? = null
 )

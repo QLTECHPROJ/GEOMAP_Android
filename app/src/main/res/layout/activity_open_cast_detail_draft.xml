@@ -1,0 +1,754 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="ocDetail"
+            type="com.geomap.roomDataBase.OpenCastMappingReport" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/screen_bg"
+        tools:context=".mapReportModule.activities.openCastModule.OpenCastDetailDraftActivity">
+
+        <ImageView
+            android:id="@+id/llBack"
+            android:layout_width="@dimen/_56sdp"
+            android:layout_height="@dimen/_56sdp"
+            android:contentDescription="@string/todo"
+            android:padding="@dimen/_20sdp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_arrow_left_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/black" />
+
+        <TextView
+            android:id="@+id/tvHeaderTitle"
+            style="@style/screenTitle"
+            android:text="@string/opencast_mapping_report_details"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_56sdp"
+            android:layout_marginBottom="@dimen/_96sdp"
+            android:overScrollMode="never"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvHeaderTitle">
+
+            <LinearLayout
+                android:id="@+id/llMainLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginBottom="@dimen/_6sdp"
+                    app:cardCornerRadius="@dimen/_10sdp"
+                    app:cardElevation="@dimen/_2sdp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="@dimen/_15sdp"
+                        android:paddingVertical="@dimen/_10sdp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/mapping_sheet_no"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvMappingSheetNo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.mappingSheetNo}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/date"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.ocDate}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/mine_site_name"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvMineSiteName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.minesSiteName}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/pit_name"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvPitName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.pitName}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/pit_location"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvPitLocation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.pitLocation}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/shift_incharge_name"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvShiftInchargeName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.shiftInChargeName}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/geologist_name"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvGeologistName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.geologistName}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/mapping_parameters"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            android:visibility="gone"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvMappingParameters"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            android:visibility="gone"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/face_location"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvFaceLocation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.faceLocation}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/face_length_m"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvFaceLength"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.faceLength}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/face_area_m2"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvFaceArea"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.faceArea}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/face_rock_types"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvFaceRockTypes"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.faceRockTypes}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/bench_rl"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvBenchRL"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.benchRL}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/bench_height_amp_width_m"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvBenchHeightWidth"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.benchHeightWidth}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/bench_angle"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvBenchAngle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.benchAngle}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/dip_direction_and_angle"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvDipDirectionAngle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.dipDirectionAngle}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/thickness_of_ore_coal_seam"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvThicknessOfOre"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.thicknessOfOre}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/thiness_of_overburden_m"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvThinessOfOverburden"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.thicknessOfOverburden}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/thickness_of_interburden_m"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvThicknessOfInterburden"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.thicknessOfInterBurden}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/observed_grade_of_ore"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvObservedGradeOfOre"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.observedGradeOfOre}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/sample_collected"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvSampleCollected"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.sampleCollected}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/actual_grade_of_ore_lab_grade"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvActualGradeOfOre"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.actualGradOfOre}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/weathering"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvWeathering"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.weathering}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/rock_strength"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvRockStrength"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.rockStrength}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/water_condition"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvWaterCondition"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.waterCondition}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/type_of_geological_structures"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvTypeOfGeologicalStructures"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.typeOfGeologicalStructures}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@string/type_of_faults"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/_12sdp"
+                            tools:ignore="SpUsage" />
+
+                        <TextView
+                            android:id="@+id/tvTypeOfFaults"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:fontFamily="@font/inter_medium"
+                            android:gravity="start"
+                            android:text="@{ocDetail.typeOfFaults}"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <Button
+            android:id="@+id/btnViewPdf"
+            style="@style/screenButton"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:background="@drawable/enable_button"
+            android:enabled="true"
+            android:text="@string/view_pdf"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/screenProgressBar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/progressBarHolder"
+            style="@style/screenFrameLayout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
