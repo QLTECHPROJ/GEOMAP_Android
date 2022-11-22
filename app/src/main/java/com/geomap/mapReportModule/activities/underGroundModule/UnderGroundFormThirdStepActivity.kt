@@ -59,15 +59,13 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
     private var signLeft : TypedFile? = null
     private var signRight : TypedFile? = null
     private var signFace : TypedFile? = null
-
+    var ugDataModel = UnderGroundInsertModel()
     var i = 0
     private val REQUEST_EXTERNAL_STORAGE = 1
     private val PERMISSIONS_STORAGE = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.MANAGE_EXTERNAL_STORAGE)
-    companion object {
-        var ugDataModel = UnderGroundInsertModel()
-    }
+
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         binding =
@@ -78,13 +76,13 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
         userId = shared.getString(CONSTANTS.userId, "")
 
-      /*  if (intent.extras != null) {
+        if (intent.extras != null) {
             val gson = Gson()
             val data = intent.getStringExtra("ugData")
             val type1 = object : TypeToken<UnderGroundInsertModel>() {}.type
             ugDataModel = gson.fromJson(data, type1)
             intent.extras!!.clear()
-        }*/
+        }
 
         if (intent.extras != null) {
             val gson = Gson()

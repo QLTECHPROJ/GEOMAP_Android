@@ -3,7 +3,6 @@ package com.geomap.mapReportModule.activities.underGroundModule
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,9 +14,7 @@ import com.geomap.GeoMapApp.allDisable
 import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundFormSecondStepBinding
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity.Companion.attributeDataModelList
-import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormThirdStepActivity.Companion.ugDataModel
 import com.geomap.mapReportModule.models.AttributeDataModel
-import com.geomap.mapReportModule.models.OpenCastInsertModel
 import com.geomap.mapReportModule.models.UnderGroundInsertModel
 import com.geomap.utils.CONSTANTS
 import com.google.gson.Gson
@@ -47,6 +44,7 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
     var yCoordinate : String? = ""
     var zCoordinate : String? = ""
     var comment : String? = ""
+    var ugDataModel = UnderGroundInsertModel()
     private var userTextWatcher : TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s : CharSequence, start : Int, count : Int, after : Int) {}
         override fun onTextChanged(s : CharSequence, start : Int, before : Int, count : Int) {
@@ -101,6 +99,7 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
 
         override fun afterTextChanged(s : Editable) {}
     }
+
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,
@@ -138,16 +137,18 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
 
         binding.btnNextStep.setOnClickListener {
             val gson = Gson()
-            ugDataModel = UnderGroundInsertModel(attributeDataModelList, binding.etName.text.toString(),
-                binding.etComment.text.toString(), binding.tvUGDate.text.toString(),
-                binding.etMapSerialNo.text.toString(), shift, binding.etMappedBy.text.toString(),
-                binding.etScale.text.toString(), binding.etLocation.text.toString(),
-                binding.etVeinLoad.text.toString(), binding.etXCoordinate.text.toString(),
-                binding.etYCoordinate.text.toString(), binding.etZCoordinate.text.toString(),
-                null, null, null, null)
+            ugDataModel =
+                UnderGroundInsertModel(attributeDataModelList, binding.etName.text.toString(),
+                    binding.etComment.text.toString(), binding.tvUGDate.text.toString(),
+                    binding.etMapSerialNo.text.toString(), shift,
+                    binding.etMappedBy.text.toString(),
+                    binding.etScale.text.toString(), binding.etLocation.text.toString(),
+                    binding.etVeinLoad.text.toString(), binding.etXCoordinate.text.toString(),
+                    binding.etYCoordinate.text.toString(), binding.etZCoordinate.text.toString(),
+                    null, null, null, null)
             val i = Intent(act, UnderGroundFormThirdStepActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-//            i.putExtra("ugData", gson.toJson(ug))
+            i.putExtra("ugData", gson.toJson(ugDataModel))
             i.putExtra("attributeData", gson.toJson(attributeDataModelList).toString())
             startActivity(i)
         }

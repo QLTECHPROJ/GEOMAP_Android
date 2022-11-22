@@ -1560,6 +1560,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_180sdp"
                         android:padding="@dimen/_6sdp"
+                        android:saveEnabled="false"
                         app:penColor="@android:color/black" />
 
                 </androidx.cardview.widget.CardView>

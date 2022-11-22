@@ -55,9 +55,11 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
     private val PERMISSIONS_STORAGE = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.MANAGE_EXTERNAL_STORAGE)
+/*
     companion object{
         var ocDataModel = OpenCastInsertModel()
     }
+*/
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,16 +73,16 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         binding.llMainLayout.visibility = View.VISIBLE
         binding.btnSubmit.visibility = View.VISIBLE
 
-      /*  if (intent.extras != null) {
+        if (intent.extras != null) {
             val gson = Gson()
             val data = intent.getStringExtra("ocData")
             val type1 = object : TypeToken<OpenCastInsertModel>() {}.type
-            ocDataModel = gson.fromJson(data, type1)*/
- /*           val clientSignbyteArray : ByteArray = intent.getByteArrayExtra("clientSign")!!
-            val geoSignbyteArray : ByteArray = intent.getByteArrayExtra("geoSign")!!*/
+            ocDataModel = gson.fromJson(data, type1)
+            val clientSignbyteArray : ByteArray = intent.getByteArrayExtra("clientSign")!!
+            val geoSignbyteArray : ByteArray = intent.getByteArrayExtra("geoSign")!!
 
-     /*       intent.extras!!.clear()
-        }*/
+            intent.extras!!.clear()
+        }
 /*        val shared1 = getSharedPreferences(CONSTANTS.PREFE_ACCESS_OC_REPORT, MODE_PRIVATE)
         val data =  shared1.getString(CONSTANTS.reportData, gson.toString())
         val type1 = object : TypeToken<OpenCastInsertModel>() {}.type
@@ -159,6 +161,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                                 ctx.getString(R.string.ResponseCodesuccess) -> {
                                     showToast(model.ResponseMessage, act)
                                     val i = Intent(ctx, DashboardActivity::class.java)
+                                    i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                                     startActivity(i)
                                     finishAffinity()
                                     ocDataModel = OpenCastInsertModel()
