@@ -25,6 +25,7 @@ import com.geomap.mapReportModule.models.*
 import com.geomap.mvvm.AllViewModel
 import com.geomap.mvvm.UserModelFactory
 import com.geomap.mvvm.UserRepository
+import com.geomap.roomDataBase.GeoMapDatabase
 import com.geomap.roomDataBase.OpenCastMappingReport
 import com.geomap.roomDataBase.UnderGroundMappingReport
 import com.geomap.utils.APIClientProfile
@@ -39,6 +40,10 @@ import java.io.OutputStream
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class SyncDataActivity : AppCompatActivity() {
     private lateinit var binding : ActivitySyncDataBinding
@@ -46,8 +51,6 @@ class SyncDataActivity : AppCompatActivity() {
     private lateinit var act : Activity
     private lateinit var ugList : java.util.ArrayList<UnderGroundMappingReport>
     private lateinit var ocList : java.util.ArrayList<OpenCastMappingReport>
-    private var setUg = false
-    private var setOc = false
     private var userId = ""
     private var gson = Gson()
 
@@ -107,75 +110,43 @@ class SyncDataActivity : AppCompatActivity() {
                 sdu.yCordinate = ugList[i].yCordinate
                 sdu.zCordinate = ugList[i].zCordinate
                 sdu.attribute = ugList[i].attributes
+                var datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(
+                    Date())
 
                 var photo = File(getAlbumStorageDir("Pictures"),
-                    String.format("geologistSign.jpg", System.currentTimeMillis()))
-                var newBitmap = Bitmap.createBitmap(ugList[i].roofImage!!.width,
-                    ugList[i].roofImage!!.height, Bitmap.Config.ARGB_8888)
-                var canvas = Canvas(newBitmap)
-                canvas.drawColor(Color.WHITE)
-                canvas.drawBitmap(ugList[i].roofImage!!, 0f, 0f, null)
-                var stream: OutputStream = FileOutputStream(photo)
-                newBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
-                stream.close()
-                var mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-                var contentUri = Uri.fromFile(photo)
-                mediaScanIntent.data = contentUri
-                ctx.sendBroadcast(mediaScanIntent)
+                    String.format(datetime + "roofImage.jpg", System.currentTimeMillis()))
+                saveBitmapToJPG(ugList[i].roofImage!!, photo)
+                scanMediaFile(photo)
 
                 sdu.roofImage = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
 
+                datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(
+                    Date())
                 photo = File(getAlbumStorageDir("Pictures"),
-                    String.format("geologistSign.jpg", System.currentTimeMillis()))
-                newBitmap = Bitmap.createBitmap(ugList[i].leftImage!!.width,
-                    ugList[i].leftImage!!.height, Bitmap.Config.ARGB_8888)
-                canvas = Canvas(newBitmap)
-                canvas.drawColor(Color.WHITE)
-                canvas.drawBitmap(ugList[i].leftImage!!, 0f, 0f, null)
-                stream = FileOutputStream(photo)
-                newBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
-                stream.close()
-                mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-                contentUri = Uri.fromFile(photo)
-                mediaScanIntent.data = contentUri
-                ctx.sendBroadcast(mediaScanIntent)
+                    String.format(datetime + "leftImage.jpg", System.currentTimeMillis()))
+                saveBitmapToJPG(ugList[i].leftImage!!, photo)
+                scanMediaFile(photo)
 
                 sdu.leftImage = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
 
+                datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(
+                    Date())
                 photo = File(getAlbumStorageDir("Pictures"),
-                    String.format("geologistSign.jpg", System.currentTimeMillis()))
-                newBitmap = Bitmap.createBitmap(ugList[i].rightImage!!.width,
-                    ugList[i].rightImage!!.height, Bitmap.Config.ARGB_8888)
-                canvas = Canvas(newBitmap)
-                canvas.drawColor(Color.WHITE)
-                canvas.drawBitmap(ugList[i].rightImage!!, 0f, 0f, null)
-                stream = FileOutputStream(photo)
-                newBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
-                stream.close()
-                mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-                contentUri = Uri.fromFile(photo)
-                mediaScanIntent.data = contentUri
-                ctx.sendBroadcast(mediaScanIntent)
+                    String.format(datetime + "rightImage.jpg", System.currentTimeMillis()))
+                saveBitmapToJPG(ugList[i].rightImage!!, photo)
+                scanMediaFile(photo)
 
                 sdu.rightImage = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
-
+                datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(
+                    Date())
                 photo = File(getAlbumStorageDir("Pictures"),
-                    String.format("geologistSign.jpg", System.currentTimeMillis()))
-                newBitmap = Bitmap.createBitmap(ugList[i].faceImage!!.width,
-                    ugList[i].faceImage!!.height, Bitmap.Config.ARGB_8888)
-                canvas = Canvas(newBitmap)
-                canvas.drawColor(Color.WHITE)
-                canvas.drawBitmap(ugList[i].faceImage!!, 0f, 0f, null)
-                stream = FileOutputStream(photo)
-                newBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
-                stream.close()
-                mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-                contentUri = Uri.fromFile(photo)
-                mediaScanIntent.data = contentUri
-                ctx.sendBroadcast(mediaScanIntent)
+                    String.format(datetime + "faceImage.jpg", System.currentTimeMillis()))
+                saveBitmapToJPG(ugList[i].faceImage!!, photo)
+                scanMediaFile(photo)
                 sdu.faceImage = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
+
                 ugModelList.add(sdu)
-                if(i < ugList.size - 1){
+                if(i == ugList.size - 1){
                     callOcMethod()
                 }
             }
@@ -185,7 +156,6 @@ class SyncDataActivity : AppCompatActivity() {
     }
 
     private fun callOcMethod() {
-        setUg = true
 
         DB.taskDao().geAllOpenCastMappingReportASC().observe(ctx as LifecycleOwner){lists ->
             ocList = lists as java.util.ArrayList<OpenCastMappingReport>
@@ -228,59 +198,35 @@ class SyncDataActivity : AppCompatActivity() {
                 sdu.ocDate = ocList[i].ocDate
                 sdu.dipDirectionAndAngle = ocList[i].dipDirectionAngle
 
+                var datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(
+                    Date())
                 var photo = File(getAlbumStorageDir("Pictures"),
-                    String.format("geologistSign.jpg", System.currentTimeMillis()))
-                var newBitmap = Bitmap.createBitmap(ocList[i].image!!.width,
-                    ocList[i].image!!.height, Bitmap.Config.ARGB_8888)
-                var canvas = Canvas(newBitmap)
-                canvas.drawColor(Color.WHITE)
-                canvas.drawBitmap(ocList[i].image!!, 0f, 0f, null)
-                var stream: OutputStream = FileOutputStream(photo)
-                newBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
-                stream.close()
-                var mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-                var contentUri = Uri.fromFile(photo)
-                mediaScanIntent.data = contentUri
-                ctx.sendBroadcast(mediaScanIntent)
+                    String.format(datetime + "image.jpg", System.currentTimeMillis()))
+                saveBitmapToJPG(ocList[i].image!!, photo)
+                scanMediaFile(photo)
 
-                sdu.image = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
+                sdu.image  = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
 
+                datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(
+                    Date())
                 photo = File(getAlbumStorageDir("Pictures"),
-                    String.format("geologistSign.jpg", System.currentTimeMillis()))
-                newBitmap = Bitmap.createBitmap(ocList[i].geologistSign!!.width,
-                    ocList[i].geologistSign!!.height, Bitmap.Config.ARGB_8888)
-                canvas = Canvas(newBitmap)
-                canvas.drawColor(Color.WHITE)
-                canvas.drawBitmap(ocList[i].geologistSign!!, 0f, 0f, null)
-                stream = FileOutputStream(photo)
-                newBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
-                stream.close()
-                mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-                contentUri = Uri.fromFile(photo)
-                mediaScanIntent.data = contentUri
-                ctx.sendBroadcast(mediaScanIntent)
+                    String.format(datetime + "geologistSign.jpg", System.currentTimeMillis()))
+                saveBitmapToJPG(ocList[i].geologistSign!!, photo)
+                scanMediaFile(photo)
 
                 sdu.geologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
 
+                datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(
+                    Date())
                 photo = File(getAlbumStorageDir("Pictures"),
-                    String.format("geologistSign.jpg", System.currentTimeMillis()))
-                newBitmap = Bitmap.createBitmap(ocList[i].clientsGeologistSign!!.width,
-                    ocList[i].clientsGeologistSign!!.height, Bitmap.Config.ARGB_8888)
-                canvas = Canvas(newBitmap)
-                canvas.drawColor(Color.WHITE)
-                canvas.drawBitmap(ocList[i].clientsGeologistSign!!, 0f, 0f, null)
-                stream = FileOutputStream(photo)
-                newBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
-                stream.close()
-                mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-                contentUri = Uri.fromFile(photo)
-                mediaScanIntent.data = contentUri
-                ctx.sendBroadcast(mediaScanIntent)
+                    String.format(datetime + "ClientSign.jpg", System.currentTimeMillis()))
+                saveBitmapToJPG(ocList[i].clientsGeologistSign!!, photo)
+                scanMediaFile(photo)
 
                 sdu.clientsGeologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
 
                 ocModelList.add(sdu)
-                if(i < ocList.size - 1){
+                if(i == ocList.size - 1){
                     callPostData()
                 }
             }
@@ -288,22 +234,37 @@ class SyncDataActivity : AppCompatActivity() {
             callPostData()
         }
     }
+    @Throws(IOException::class) fun saveBitmapToJPG(bitmap : Bitmap, photo : File?) {
+        val newBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(newBitmap)
+        canvas.drawColor(Color.WHITE)
+        canvas.drawBitmap(bitmap, 0f, 0f, null)
+        val stream : OutputStream = FileOutputStream(photo)
+        newBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
+        stream.close()
+    }
 
+    private fun scanMediaFile(photo : File) {
+        val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+        val contentUri = Uri.fromFile(photo)
+        mediaScanIntent.data = contentUri
+        ctx.sendBroadcast(mediaScanIntent)
+    }
     private fun callPostData() {
+        Log.e("SyncData UG Report", gson.toJson(ugModelList).toString())
+        Log.e("SyncData OC Report",   gson.toJson(ocModelList).toString())
 
-        setOc = true
-        Log.e("List UG MappingReport", "true" + gson.toJson(ugModelList).toString())
-        Log.e("List OpenCast MappingReport", "true" + gson.toJson(ocModelList).toString())
-        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
         if(ocModelList.isNotEmpty() || ugModelList.isNotEmpty() ) {
             postData()
+        }else if(ocModelList.isEmpty() && ugModelList.isEmpty()){
+            showToast("Data is not available in Your Draft",act)
         }
     }
 
     private fun postData() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            APIClientProfile.apiService!!.postSyncDataInsert(gson.toJson(ugModelList),gson.toJson(ocModelList),
+            APIClientProfile.apiService!!.postSyncDataInsert(ugModelList,ocModelList,
             object : retrofit.Callback<SuccessModel> {
                 override fun success(model : SuccessModel,
                     response : retrofit.client.Response) {

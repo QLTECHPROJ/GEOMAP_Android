@@ -40,6 +40,8 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 
 class OpenCastFormSecondStepActivity : AppCompatActivity() {
     private lateinit var binding : ActivityOpenCastFormSecondStepBinding
@@ -242,7 +244,10 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             saveOCReport(obj, ctx)
             binding.signPad.clear()
             showToast("OpenCast Report Saved", act)
-            finish()
+            val i = Intent(ctx, DashboardActivity::class.java)
+            i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(i)
+            finishAffinity()
         }
     }
 

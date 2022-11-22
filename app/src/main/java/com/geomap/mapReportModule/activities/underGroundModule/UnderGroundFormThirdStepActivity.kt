@@ -45,6 +45,9 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class UnderGroundFormThirdStepActivity : AppCompatActivity() {
     private lateinit var binding : ActivityUnderGroundFormThirdStepBinding
@@ -203,13 +206,14 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
 
     private fun addJpgSignToGallery(signature : Bitmap) : Boolean {
         var result = false
+        val datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         try {
-            val photo = File(getAlbumStorageDir("Pictures"),
-                String.format("geologistSign.jpg", System.currentTimeMillis()))
-            saveBitmapToJPG(signature, photo)
-            scanMediaFile(photo)
             when (i) {
                 0 -> {
+                    val photo = File(getAlbumStorageDir("Pictures"),
+                    String.format(datetime + "signRoof.jpg", System.currentTimeMillis()))
+                    saveBitmapToJPG(signature, photo)
+                    scanMediaFile(photo)
                     signRoof = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
                     i++
                     binding.tvName.text = getString(R.string.left)
@@ -217,6 +221,10 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                     Log.e("geologistSign", signRoof!!.toString() + i)
                 }
                 1 -> {
+                    val photo = File(getAlbumStorageDir("Pictures"),
+                    String.format(datetime + "signLeft.jpg", System.currentTimeMillis()))
+                    saveBitmapToJPG(signature, photo)
+                    scanMediaFile(photo)
                     signLeft = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
                     i++
                     binding.tvName.text = getString(R.string.right)
@@ -224,6 +232,10 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                     Log.e("geologistSign", signLeft!!.toString() + i)
                 }
                 2 -> {
+                    val photo = File(getAlbumStorageDir("Pictures"),
+                        String.format(datetime + "signRight.jpg", System.currentTimeMillis()))
+                    saveBitmapToJPG(signature, photo)
+                    scanMediaFile(photo)
                     binding.btnNext.text = getString(R.string.submit)
                     signRight = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
                     i++
@@ -232,6 +244,10 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                     Log.e("geologistSign", signRight!!.toString() + i)
                 }
                 3 -> {
+                    val photo = File(getAlbumStorageDir("Pictures"),
+                        String.format(datetime + "signFace.jpg", System.currentTimeMillis()))
+                    saveBitmapToJPG(signature, photo)
+                    scanMediaFile(photo)
                     signFace = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
                     signFaceBitMap = signature
                     postUndergroundInsert()

@@ -883,6 +883,41 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         }
     }
 
+    private fun addGeologistSignJpgSignatureToGallery(signature : Bitmap) : Boolean {
+        var result = false
+        val datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+
+        try {
+            val photo = File(getAlbumStorageDir("Pictures"),
+                String.format(datetime + "geologistSign.jpg", System.currentTimeMillis()))
+            saveBitmapToJPG(signature, photo)
+            scanMediaFile(photo)
+            geologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
+            Log.e("geologistSign", geologistSign!!.toString())
+            result = true
+        } catch (e : IOException) {
+            e.printStackTrace()
+        }
+        return result
+    }
+
+    private fun addGeologistClientSignJpgSignatureToGallery(signature : Bitmap) : Boolean {
+        var result = false
+        val datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        try {
+            val photo = File(getAlbumStorageDir("Pictures"),
+                String.format(datetime + "geologistClientSign.jpg", System.currentTimeMillis()))
+            saveBitmapToJPG(signature, photo)
+            scanMediaFile(photo)
+            geologistClientSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
+            Log.e("geologistClientSign", geologistClientSign!!.toString())
+            result = true
+        } catch (e : IOException) {
+            e.printStackTrace()
+        }
+        return result
+    }
+
     private fun scanMediaFile(photo : File) {
         val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
         val contentUri = Uri.fromFile(photo)
