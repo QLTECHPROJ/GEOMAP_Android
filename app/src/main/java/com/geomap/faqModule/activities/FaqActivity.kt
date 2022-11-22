@@ -53,8 +53,6 @@ class FaqActivity : AppCompatActivity() {
                 when {
                     it?.ResponseCode == getString(R.string.ResponseCodesuccess) -> {
                         binding.rvFAQList.visibility = View.VISIBLE
-                        hideProgressBar(binding.progressBar,
-                            binding.progressBarHolder, act)
                         binding.rvFAQList.layoutManager = LinearLayoutManager(act)
                         adapter = FaqListAdapter(it.ResponseData)
                         binding.rvFAQList.adapter = adapter
