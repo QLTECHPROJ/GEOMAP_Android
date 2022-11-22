@@ -79,9 +79,8 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
         val mLayoutManager : RecyclerView.LayoutManager = LinearLayoutManager(applicationContext)
         binding.rvAttributesList.layoutManager = mLayoutManager
         binding.rvAttributesList.itemAnimator = DefaultItemAnimator()
-        binding.tvAttributes.visibility = View.GONE
-        binding.cvAttributesList.visibility = View.GONE
 
+        binding.llMainLayout.visibility = View.VISIBLE
         binding.cvAttributes.setOnClickListener {
             dialog = Dialog(ctx)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)

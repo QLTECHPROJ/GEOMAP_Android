@@ -41,6 +41,8 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 
 class OpenCastFormSecondStepActivity : AppCompatActivity() {
     private lateinit var binding : ActivityOpenCastFormSecondStepBinding
@@ -78,8 +80,8 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             val data = intent.getStringExtra("ocData")
             val type1 = object : TypeToken<OpenCastInsertModel>() {}.type
             ocDataModel = gson.fromJson(data, type1)
-            val clientSignbyteArray : ByteArray = intent.getByteArrayExtra("clientSign")!!
-            val geoSignbyteArray : ByteArray = intent.getByteArrayExtra("geoSign")!!
+//            val clientSignbyteArray : ByteArray = intent.getByteArrayExtra("clientSign")!!
+//            val geoSignbyteArray : ByteArray = intent.getByteArrayExtra("geoSign")!!
 
             intent.extras!!.clear()
         }
@@ -220,7 +222,10 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             saveOCReport(obj, ctx)
             binding.signPad.clear()
             showToast("OpenCast Report Saved", act)
-            finish()
+            val i = Intent(ctx, DashboardActivity::class.java)
+            i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            startActivity(i)
+            finishAffinity()
         }
     }
 
@@ -239,9 +244,12 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
 
     private fun addJpgSignatureToGallery(signature : Bitmap) : Boolean {
         var result = false
+        val datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(
+            Date())
+
         try {
             val photo = File(getAlbumStorageDir("Pictures"),
-                String.format("geologistSign.jpg", System.currentTimeMillis()))
+                String.format(datetime + "image.jpg", System.currentTimeMillis()))
             saveBitmapToJPG(signature, photo)
             scanMediaFile(photo)
             sign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)

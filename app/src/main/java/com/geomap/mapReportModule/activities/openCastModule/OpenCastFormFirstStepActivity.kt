@@ -377,17 +377,17 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 null, geologistSign, geologistClientSign, binding.geologistSignPad.signatureBitmap,
                 binding.geologistClientSignPad.signatureBitmap)
             val i = Intent(act, OpenCastFormSecondStepActivity::class.java)
-            i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            val stream = ByteArrayOutputStream()
-            binding.geologistClientSignPad.signatureBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-            val byteArray: ByteArray = stream.toByteArray()
-
-            val stream1 = ByteArrayOutputStream()
-            binding.geologistSignPad.signatureBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream1)
-            val byteArray1: ByteArray = stream1.toByteArray()
+//            i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+//            val stream = ByteArrayOutputStream()
+//            binding.geologistClientSignPad.signatureBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+//            val byteArray: ByteArray = stream.toByteArray()
+//
+//            val stream1 = ByteArrayOutputStream()
+//            binding.geologistSignPad.signatureBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream1)
+//            val byteArray1: ByteArray = stream1.toByteArray()
             i.putExtra("ocData", gson.toJson(ocDataModel).toString())
-            i.putExtra("clientSign",byteArray)
-            i.putExtra("geoSign", byteArray1)
+//            i.putExtra("clientSign",byteArray)
+//            i.putExtra("geoSign", byteArray1)
             startActivity(i)
         }
     }
@@ -897,9 +897,11 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
 
     private fun addGeologistSignJpgSignatureToGallery(signature : Bitmap) : Boolean {
         var result = false
+        val datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+
         try {
             val photo = File(getAlbumStorageDir("Pictures"),
-                String.format("geologistSign.jpg", System.currentTimeMillis()))
+                String.format(datetime + "geologistSign.jpg", System.currentTimeMillis()))
             saveBitmapToJPG(signature, photo)
             scanMediaFile(photo)
             geologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
@@ -913,9 +915,10 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
 
     private fun addGeologistClientSignJpgSignatureToGallery(signature : Bitmap) : Boolean {
         var result = false
+        val datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         try {
             val photo = File(getAlbumStorageDir("Pictures"),
-                String.format("geologistClientSign.jpg", System.currentTimeMillis()))
+                String.format(datetime + "geologistClientSign.jpg", System.currentTimeMillis()))
             saveBitmapToJPG(signature, photo)
             scanMediaFile(photo)
             geologistClientSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
