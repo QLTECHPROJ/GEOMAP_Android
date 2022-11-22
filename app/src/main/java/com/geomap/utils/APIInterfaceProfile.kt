@@ -80,7 +80,8 @@ interface APIInterfaceProfile {
         modelCallback : Callback<SuccessModel>?)
 
     @Multipart @POST("/sync_data") fun postSyncDataInsert(
-        @Part("UndergroundReport") undergroundReport : ArrayList<SyncDataUgModel>?,
-        @Part("OpenCastReport") openCastReport : ArrayList<SyncDataOcModel>?,
+        @Part("UndergroundReport") undergroundReport : String?,
+        @Part("OpenCastReport") openCastReport : String,
+//        @Part("OpenCastReport") openCastReport : List<Mutip>,
         modelCallback : Callback<SuccessModel>?)
 }

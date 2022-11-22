@@ -10,9 +10,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProvider
 import com.geomap.DataBaseFunctions
 import com.geomap.DataBaseFunctions.Companion.deleteOCReport
 import com.geomap.DataBaseFunctions.Companion.deleteUGReport
@@ -20,16 +22,23 @@ import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivitySyncDataBinding
 import com.geomap.mapReportModule.models.*
+import com.geomap.mvvm.AllViewModel
+import com.geomap.mvvm.UserModelFactory
+import com.geomap.mvvm.UserRepository
 import com.geomap.roomDataBase.OpenCastMappingReport
 import com.geomap.roomDataBase.UnderGroundMappingReport
 import com.geomap.utils.APIClientProfile
 import com.geomap.utils.CONSTANTS
+import com.geomap.utils.RetrofitService
 import com.google.gson.Gson
 import retrofit.RetrofitError
 import retrofit.mime.TypedFile
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SyncDataActivity : AppCompatActivity() {
     private lateinit var binding : ActivitySyncDataBinding
@@ -65,7 +74,7 @@ class SyncDataActivity : AppCompatActivity() {
     private fun getData() {
 
         DB = getDataBase(ctx)
-        DB.taskDao().geAllUnderGroundMappingReport1().observe(ctx as LifecycleOwner){lists ->
+        DB.taskDao().geAllUnderGroundMappingReportASC().observe(ctx as LifecycleOwner){lists ->
             ugList  = lists as java.util.ArrayList<UnderGroundMappingReport>
             setugObjArray(ugList)
             Log.e("List UnderGroundMappingReport", "true" + DataBaseFunctions.gson.toJson(ugList).toString())
@@ -178,7 +187,7 @@ class SyncDataActivity : AppCompatActivity() {
     private fun callOcMethod() {
         setUg = true
 
-        DB.taskDao().geAllOpenCastMappingReport1().observe(ctx as LifecycleOwner){lists ->
+        DB.taskDao().geAllOpenCastMappingReportASC().observe(ctx as LifecycleOwner){lists ->
             ocList = lists as java.util.ArrayList<OpenCastMappingReport>
             Log.e("List OpenCastMappingReport", "true" + DataBaseFunctions.gson.toJson(ocList).toString())
             setocObjArray(ocList)
@@ -294,7 +303,7 @@ class SyncDataActivity : AppCompatActivity() {
     private fun postData() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            APIClientProfile.apiService!!.postSyncDataInsert(ugModelList,ocModelList,
+            APIClientProfile.apiService!!.postSyncDataInsert(gson.toJson(ugModelList),gson.toJson(ocModelList),
             object : retrofit.Callback<SuccessModel> {
                 override fun success(model : SuccessModel,
                     response : retrofit.client.Response) {
@@ -321,6 +330,37 @@ class SyncDataActivity : AppCompatActivity() {
         } else {
             showToast(getString(R.string.no_server_found), act)
         }
+
+        /*if (isNetworkConnected(ctx)) {
+            RetrofitService.getInstance().postSyncDataInsert(gson.toJson(ugModelList),gson.toJson(ocModelList)).enqueue(object : Callback<SuccessModel> {
+                override fun onResponse(call : Call<SuccessModel>,
+                    response : Response<SuccessModel>) {
+                    try {
+                        val model : SuccessModel = response.body()!!
+                        when (model.ResponseCode) {
+                            getString(R.string.ResponseCodesuccess) -> {
+                                showToast(model.ResponseMessage, act)
+                                deleteDB()
+                                finish()
+                            }
+                            getString(R.string.ResponseCodefail) -> {
+                                showToast(model.ResponseMessage, act)
+                            }
+                            getString(R.string.ResponseCodeDeleted) -> {
+                                callDelete403(act, model.ResponseMessage)
+                            }
+                        }
+                    } catch (e : Exception) {
+                        e.printStackTrace()
+                    }
+                }
+
+                override fun onFailure(call : Call<SuccessModel>, t : Throwable) {
+
+                }
+            })
+        } else {
+        }*/
     }
 
     private fun deleteDB() {
