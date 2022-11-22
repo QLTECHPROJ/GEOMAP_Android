@@ -7,7 +7,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.net.Uri
@@ -50,16 +49,13 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
     private var userId : String? = null
     private var signCheck : String? = null
     private var sign : TypedFile? = null
+    private var geologistSign : TypedFile? = null
+    private var clientsGeologistSign : TypedFile? = null
     private val REQUEST_EXTERNAL_STORAGE = 1
     val gson = Gson()
     private val PERMISSIONS_STORAGE = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.MANAGE_EXTERNAL_STORAGE)
-/*
-    companion object{
-        var ocDataModel = OpenCastInsertModel()
-    }
-*/
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,15 +74,22 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             val data = intent.getStringExtra("ocData")
             val type1 = object : TypeToken<OpenCastInsertModel>() {}.type
             ocDataModel = gson.fromJson(data, type1)
-            val clientSignbyteArray : ByteArray = intent.getByteArrayExtra("clientSign")!!
-            val geoSignbyteArray : ByteArray = intent.getByteArrayExtra("geoSign")!!
 
-            intent.extras!!.clear()
+            val photogeologistSign = File(getAlbumStorageDir("Pictures"),
+                String.format("geologistSign.jpg", System.currentTimeMillis()))
+            saveBitmapToJPG(ocDataModel.geologistSignBitMap!!, photogeologistSign)
+            scanMediaFile(photogeologistSign)
+            geologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photogeologistSign)
+            Log.e("Ib sign", geologistSign.toString())
+
+            val photoclientsGeologistSign = File(getAlbumStorageDir("Pictures"),
+                String.format("clientsGeologistSign.jpg", System.currentTimeMillis()))
+            saveBitmapToJPG(ocDataModel.clientsGeologistSignBitMap!!, photoclientsGeologistSign)
+            scanMediaFile(photoclientsGeologistSign)
+            clientsGeologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photoclientsGeologistSign)
+            Log.e("Ib client", clientsGeologistSign.toString())
         }
-/*        val shared1 = getSharedPreferences(CONSTANTS.PREFE_ACCESS_OC_REPORT, MODE_PRIVATE)
-        val data =  shared1.getString(CONSTANTS.reportData, gson.toString())
-        val type1 = object : TypeToken<OpenCastInsertModel>() {}.type
-        ocDataModel = gson.fromJson(data, type1)*/
+
 
         val gson = Gson()
         Log.e("OCData", gson.toJson(ocDataModel).toString())
@@ -123,35 +126,54 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
     }
 
     private fun postData() {
-        if (isNetworkConnected(ctx)) {
-            if (signCheck == "") {
-                showToast(getString(R.string.pls_add_geologist_sign), act)
-            } else {
-                postOpenCastInsert()
-            }
+        if (signCheck == "") {
+            showToast(getString(R.string.pls_add_geologist_sign), act)
+        } else {
+            postOpenCastInsert()
         }
     }
 
     private fun postOpenCastInsert() {
-        addJpgSignatureToGallery(binding.signPad.signatureBitmap)
+        val photoImage = File(getAlbumStorageDir("Pictures"),
+            String.format("clientsGeologistSign.jpg", System.currentTimeMillis()))
+        saveBitmapToJPG(binding.signPad.signatureBitmap, photoImage)
+        scanMediaFile(photoImage)
+        sign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photoImage)
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             APIClientProfile.apiService!!.postOpenCastInsert(
-                userId, ocDataModel.minesSiteName, ocDataModel.sheetNo, ocDataModel.pitName,
-                ocDataModel.pitLocation, ocDataModel.shiftInchargeName,
-                ocDataModel.geologistName, ocDataModel.faceLocation, ocDataModel.faceLengthM,
-                ocDataModel.faceAreaM2, ocDataModel.faceRockTypes, ocDataModel.benchRL,
-                ocDataModel.benchHeightWidth, ocDataModel.benchAngle, ocDataModel.thicknessOfOre,
+                userId,
+                ocDataModel.minesSiteName,
+                ocDataModel.sheetNo,
+                ocDataModel.pitName,
+                ocDataModel.pitLocation,
+                ocDataModel.shiftInchargeName,
+                ocDataModel.geologistName,
+                ocDataModel.faceLocation,
+                ocDataModel.faceLengthM,
+                ocDataModel.faceAreaM2,
+                ocDataModel.faceRockTypes,
+                ocDataModel.benchRL,
+                ocDataModel.benchHeightWidth,
+                ocDataModel.benchAngle,
+                ocDataModel.thicknessOfOre,
                 ocDataModel.thinessOfOverburden,
-                ocDataModel.thicknessOfInterburden, ocDataModel.observedGradeOfOre,
+                ocDataModel.thicknessOfInterburden,
+                ocDataModel.observedGradeOfOre,
                 ocDataModel.actualGradeOfOre,
-                ocDataModel.sampleCollected, ocDataModel.weathering,
-                ocDataModel.rockStregth, ocDataModel.waterCondition,
+                ocDataModel.sampleCollected,
+                ocDataModel.weathering,
+                ocDataModel.rockStregth,
+                ocDataModel.waterCondition,
                 ocDataModel.typeOfGeologicalStructures,
                 ocDataModel.typeOfFaults,
-                ocDataModel.notes, ocDataModel.shift, ocDataModel.ocDate,
+                ocDataModel.notes,
+                ocDataModel.shift,
+                ocDataModel.ocDate,
                 ocDataModel.dipDirectionAngle,
-                sign, ocDataModel.geologistSign, ocDataModel.clientsGeologistSign,
+                sign,
+                geologistSign,
+                clientsGeologistSign,
                 object : retrofit.Callback<SuccessModel> {
                     override fun success(model : SuccessModel,
                         response : retrofit.client.Response) {
@@ -237,22 +259,6 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         }
     }
 
-    private fun addJpgSignatureToGallery(signature : Bitmap) : Boolean {
-        var result = false
-        try {
-            val photo = File(getAlbumStorageDir("Pictures"),
-                String.format("geologistSign.jpg", System.currentTimeMillis()))
-            saveBitmapToJPG(signature, photo)
-            scanMediaFile(photo)
-            sign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
-            Log.e("geologistSign", sign!!.toString())
-            result = true
-        } catch (e : IOException) {
-            e.printStackTrace()
-        }
-        return result
-    }
-
     private fun scanMediaFile(photo : File) {
         val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
         val contentUri = Uri.fromFile(photo)
@@ -280,24 +286,22 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
     }
 
     fun verifyStoragePermissions() {
-        fun verifyStoragePermissions() {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                if (!Environment.isExternalStorageManager()) {
-                    callFilesPermission()
-                }
-            } else {
-                if (ActivityCompat.checkSelfPermission(ctx,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                        ctx, Manifest.permission.READ_EXTERNAL_STORAGE
-                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                        ctx, Manifest.permission.MANAGE_EXTERNAL_STORAGE
-                    ) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(
-                        act,
-                        PERMISSIONS_STORAGE,
-                        REQUEST_EXTERNAL_STORAGE
-                    )
-                }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (!Environment.isExternalStorageManager()) {
+                callFilesPermission()
+            }
+        } else {
+            if (ActivityCompat.checkSelfPermission(ctx,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    ctx, Manifest.permission.READ_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    ctx, Manifest.permission.MANAGE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(
+                    act,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+                )
             }
         }
     }

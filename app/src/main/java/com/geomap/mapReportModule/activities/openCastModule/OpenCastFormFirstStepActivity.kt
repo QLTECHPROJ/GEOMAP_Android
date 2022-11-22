@@ -352,9 +352,6 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         } else if (geologistClientSignCheck == "") {
             showToast(getString(R.string.pls_add_geologist_client_sign), act)
         } else {
-            addGeologistSignJpgSignatureToGallery(binding.geologistSignPad.signatureBitmap)
-            addGeologistClientSignJpgSignatureToGallery(
-                binding.geologistClientSignPad.signatureBitmap)
             val gson = Gson()
             ocDataModel = OpenCastInsertModel(binding.etMinesSiteName.text.toString(),
                 binding.etMappingSheetNo.text.toString(), binding.tvOCDate.text.toString(),
@@ -374,20 +371,11 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 binding.tvRockStrength.text.toString(), binding.tvWaterCondition.text.toString(),
                 binding.tvTypeOfGeologicalStructures.text.toString(),
                 binding.tvTypeOfFaults.text.toString(), shift, binding.etNotes.text.toString(),
-                null, geologistSign, geologistClientSign, binding.geologistSignPad.signatureBitmap,
+                binding.geologistSignPad.signatureBitmap,
                 binding.geologistClientSignPad.signatureBitmap)
-            val i = Intent(act, OpenCastFormSecondStepActivity::class.java)
+            val i = Intent(ctx, OpenCastFormSecondStepActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            val stream = ByteArrayOutputStream()
-            binding.geologistClientSignPad.signatureBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-            val byteArray: ByteArray = stream.toByteArray()
-
-            val stream1 = ByteArrayOutputStream()
-            binding.geologistSignPad.signatureBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream1)
-            val byteArray1: ByteArray = stream1.toByteArray()
-            i.putExtra("ocData", gson.toJson(ocDataModel).toString())
-            i.putExtra("clientSign",byteArray)
-            i.putExtra("geoSign", byteArray1)
+            i.putExtra("ocData", gson.toJson(ocDataModel))
             startActivity(i)
         }
     }
@@ -893,38 +881,6 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-
-    private fun addGeologistSignJpgSignatureToGallery(signature : Bitmap) : Boolean {
-        var result = false
-        try {
-            val photo = File(getAlbumStorageDir("Pictures"),
-                String.format("geologistSign.jpg", System.currentTimeMillis()))
-            saveBitmapToJPG(signature, photo)
-            scanMediaFile(photo)
-            geologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
-            Log.e("geologistSign", geologistSign!!.toString())
-            result = true
-        } catch (e : IOException) {
-            e.printStackTrace()
-        }
-        return result
-    }
-
-    private fun addGeologistClientSignJpgSignatureToGallery(signature : Bitmap) : Boolean {
-        var result = false
-        try {
-            val photo = File(getAlbumStorageDir("Pictures"),
-                String.format("geologistClientSign.jpg", System.currentTimeMillis()))
-            saveBitmapToJPG(signature, photo)
-            scanMediaFile(photo)
-            geologistClientSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
-            Log.e("geologistClientSign", geologistClientSign!!.toString())
-            result = true
-        } catch (e : IOException) {
-            e.printStackTrace()
-        }
-        return result
     }
 
     private fun scanMediaFile(photo : File) {

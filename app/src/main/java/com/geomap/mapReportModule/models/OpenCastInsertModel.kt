@@ -32,9 +32,6 @@ data class OpenCastInsertModel(
     var typeOfFaults : String? = null,
     var shift : String? = null,
     var notes : String? = null,
-    var image : TypedFile? = null,
-    var geologistSign : TypedFile? = null,
-    var clientsGeologistSign : TypedFile? = null,
     var geologistSignBitMap : Bitmap? = null,
     var clientsGeologistSignBitMap : Bitmap? = null
 )

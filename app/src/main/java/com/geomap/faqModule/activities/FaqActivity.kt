@@ -129,7 +129,7 @@ class FaqActivity : AppCompatActivity() {
             holder.binding.llBgChange.setBackgroundResource(R.color.transparent_white)
             holder.binding.llMainLayout.setBackgroundResource(R.drawable.faq_not_clicked)
             holder.binding.tvTitle.setTextColor(
-                ContextCompat.getColor(ctx, R.color.light_black))
+                ContextCompat.getColor(ctx, R.color.gray))
             holder.binding.tvDesc.visibility = View.GONE
             holder.binding.ivClickRight.visibility = View.VISIBLE
             holder.binding.ivClickDown.visibility = View.GONE

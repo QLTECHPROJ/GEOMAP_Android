@@ -50,7 +50,7 @@
                             android:layout_marginStart="@dimen/_14sdp"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="center_vertical"
-                            android:textColor="@color/light_black"
+                            android:textColor="@color/gray"
                             android:textSize="@dimen/_14sdp"
                             tools:ignore="SpUsage" />
                     </LinearLayout>
@@ -98,7 +98,7 @@
                     android:fontFamily="@font/inter_medium"
                     android:gravity="center_vertical"
                     android:lineSpacingExtra="@dimen/_4sdp"
-                    android:textColor="@color/light_black"
+                    android:textColor="@color/gray"
                     android:textSize="@dimen/_13sdp"
                     android:visibility="gone" />
             </LinearLayout>
