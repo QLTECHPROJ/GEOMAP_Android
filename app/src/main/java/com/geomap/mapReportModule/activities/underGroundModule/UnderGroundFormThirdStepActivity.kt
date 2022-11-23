@@ -20,8 +20,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.room.ColumnInfo
-import androidx.room.TypeConverters
 import com.geomap.DataBaseFunctions
 import com.geomap.GeoMapApp.*
 import com.geomap.R
@@ -31,8 +29,6 @@ import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFi
 import com.geomap.mapReportModule.models.AttributeDataModel
 import com.geomap.mapReportModule.models.SuccessModel
 import com.geomap.mapReportModule.models.UnderGroundInsertModel
-import com.geomap.roomDataBase.Converters
-import com.geomap.roomDataBase.OpenCastMappingReport
 import com.geomap.roomDataBase.UnderGroundMappingReport
 import com.geomap.utils.APIClientProfile
 import com.geomap.utils.CONSTANTS
@@ -47,7 +43,6 @@ import java.io.IOException
 import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class UnderGroundFormThirdStepActivity : AppCompatActivity() {
     private lateinit var binding : ActivityUnderGroundFormThirdStepBinding
@@ -188,10 +183,10 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             obj.xCordinate = ugDataModel.xCordinate
             obj.yCordinate = ugDataModel.yCordinate
             obj.zCordinate = ugDataModel.zCordinate
-            obj.roofImage =  signRoofBitMap
-            obj.leftImage =  signLeftBitMap
+            obj.roofImage = signRoofBitMap
+            obj.leftImage = signLeftBitMap
             obj.rightImage = signRightBitMap
-            obj.faceImage =  signFaceBitMap
+            obj.faceImage = signFaceBitMap
             DataBaseFunctions.saveUGReport(obj, ctx)
             binding.signPad.clear()
             showToast("UnderGround Report Saved", act)
@@ -211,7 +206,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             when (i) {
                 0 -> {
                     val photo = File(getAlbumStorageDir("Pictures"),
-                    String.format(datetime + "signRoof.jpg", System.currentTimeMillis()))
+                        String.format(datetime + "signRoof.jpg", System.currentTimeMillis()))
                     saveBitmapToJPG(signature, photo)
                     scanMediaFile(photo)
                     signRoof = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
@@ -222,7 +217,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                 }
                 1 -> {
                     val photo = File(getAlbumStorageDir("Pictures"),
-                    String.format(datetime + "signLeft.jpg", System.currentTimeMillis()))
+                        String.format(datetime + "signLeft.jpg", System.currentTimeMillis()))
                     saveBitmapToJPG(signature, photo)
                     scanMediaFile(photo)
                     signLeft = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
@@ -345,6 +340,29 @@ Tap Setting > permission, and turn "Files and media" on."""
     }
 
     override fun onBackPressed() {
-        finish()
+        when (i) {
+            0 -> {
+                finish()
+            }
+            1 -> {
+                binding.tvName.text = getString(R.string.roof)
+                i--
+
+            }
+            2 -> {
+                binding.tvName.text = getString(R.string.left)
+                i--
+
+            }
+            3 -> {
+//                binding.signPad.set
+                binding.signPad.clear()
+                binding.btnNext.text = getString(R.string.next)
+                binding.btnClear.isEnabled = false
+                binding.btnClear.setBackgroundResource(R.drawable.disable_button)
+                binding.tvName.text = getString(R.string.right)
+                i--
+            }
+        }
     }
 }

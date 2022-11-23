@@ -30,11 +30,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <Button
+            android:id="@+id/btnNextStep"
+            style="@style/screenButton"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_18sdp"
+            android:background="@drawable/disable_button"
+            android:enabled="false"
+            android:text="@string/next_step"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/_56sdp"
-            android:layout_marginBottom="@dimen/_110sdp"
+            android:layout_marginBottom="@dimen/_84sdp"
+            android:focusable="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvHeaderTitle">
@@ -43,7 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/_25sdp"
-                android:layout_marginTop="@dimen/_18sdp"
+                android:layout_marginTop="@dimen/_14sdp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -82,7 +95,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_24sdp"
+                    android:layout_marginTop="@dimen/_18sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -130,7 +143,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_24sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -178,7 +191,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -251,7 +264,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -299,7 +312,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -347,7 +360,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -395,7 +408,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -443,7 +456,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -491,7 +504,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -539,7 +552,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -568,9 +581,9 @@
                             android:cursorVisible="true"
                             android:fontFamily="@font/inter_semi_bold"
                             android:hint="@string/z_coordinate_"
-                            android:nextFocusDown="@id/etComment"
                             android:inputType="text"
                             android:maxLines="1"
+                            android:nextFocusDown="@id/etComment"
                             android:singleLine="true"
                             android:textColor="@color/light_black"
                             android:textColorHint="@color/gray"
@@ -587,8 +600,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
-                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -620,22 +632,14 @@
                         tools:ignore="SpUsage" />
                 </androidx.cardview.widget.CardView>
 
-
+                <LinearLayout
+                    android:id="@+id/llSpace"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_100sdp"
+                    android:orientation="horizontal" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
-
-        <Button
-            android:id="@+id/btnNextStep"
-            style="@style/screenButton"
-            android:layout_marginHorizontal="@dimen/_20sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
-            android:background="@drawable/disable_button"
-            android:enabled="false"
-            android:text="@string/next_step"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
 
         <ProgressBar
             android:id="@+id/progressBar"

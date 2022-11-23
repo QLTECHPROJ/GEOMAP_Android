@@ -46,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="@dimen/_18sdp"
-                android:layout_marginTop="@dimen/_24sdp"
+                android:layout_marginTop="@dimen/_14sdp"
                 android:orientation="vertical"
                 android:visibility="visible">
 
@@ -86,7 +86,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_18sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -133,7 +133,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -180,7 +180,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -228,7 +228,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -276,7 +276,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -324,7 +324,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -369,7 +369,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -442,7 +442,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_34sdp"
+                    android:layout_marginTop="@dimen/_29sdp"
                     android:fontFamily="@font/inter_semi_bold"
                     android:gravity="start"
                     android:text="@string/mapping_parameters_"
@@ -454,7 +454,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -500,7 +500,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -545,7 +545,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -591,7 +591,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -637,7 +637,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -682,7 +682,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -728,7 +728,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -774,7 +774,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -820,7 +820,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -866,7 +866,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -912,7 +912,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -958,7 +958,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -1006,7 +1006,7 @@
                     android:layout_height="@dimen/_60sdp"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -1046,8 +1046,7 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="@dimen/_1sdp"
                                 android:visibility="gone"
-                                tools:ignore="SpUsage"
-                                tools:targetApi="lollipop" />
+                                tools:ignore="SpUsage" />
 
                         </LinearLayout>
 
@@ -1079,7 +1078,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -1127,7 +1126,7 @@
                     android:layout_height="@dimen/_60sdp"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -1167,8 +1166,7 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="@dimen/_1sdp"
                                 android:visibility="gone"
-                                tools:ignore="SpUsage"
-                                tools:targetApi="lollipop" />
+                                tools:ignore="SpUsage" />
 
                         </LinearLayout>
 
@@ -1202,7 +1200,7 @@
                     android:layout_height="@dimen/_60sdp"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -1242,8 +1240,7 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="@dimen/_1sdp"
                                 android:visibility="gone"
-                                tools:ignore="SpUsage"
-                                tools:targetApi="lollipop" />
+                                tools:ignore="SpUsage" />
 
                         </LinearLayout>
 
@@ -1277,7 +1274,7 @@
                     android:layout_height="@dimen/_60sdp"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -1317,8 +1314,7 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="@dimen/_1sdp"
                                 android:visibility="gone"
-                                tools:ignore="SpUsage"
-                                tools:targetApi="lollipop" />
+                                tools:ignore="SpUsage" />
 
                         </LinearLayout>
 
@@ -1352,7 +1348,7 @@
                     android:layout_height="@dimen/_60sdp"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -1392,8 +1388,7 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="@dimen/_1sdp"
                                 android:visibility="gone"
-                                tools:ignore="SpUsage"
-                                tools:targetApi="lollipop" />
+                                tools:ignore="SpUsage" />
 
                         </LinearLayout>
 
@@ -1427,7 +1422,7 @@
                     android:layout_height="@dimen/_60sdp"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
@@ -1467,8 +1462,7 @@
                                 android:layout_height="wrap_content"
                                 android:textSize="@dimen/_1sdp"
                                 android:visibility="gone"
-                                tools:ignore="SpUsage"
-                                tools:targetApi="lollipop" />
+                                tools:ignore="SpUsage" />
 
                         </LinearLayout>
 
@@ -1500,7 +1494,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
                     android:layout_marginBottom="@dimen/_2sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
@@ -1537,7 +1531,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_18sdp"
                     android:fontFamily="@font/inter_semi_bold"
                     android:gravity="start"
                     android:text="@string/geologist_sign"
@@ -1549,7 +1543,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="@dimen/_60sdp"
-                    android:layout_marginTop="@dimen/_18sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
                     android:layout_marginBottom="@dimen/_2sdp"
                     android:visibility="visible"
                     app:cardCornerRadius="@dimen/_10sdp"
@@ -1571,7 +1565,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_18sdp"
                     android:background="@drawable/disable_button"
                     android:enabled="false"
                     android:fontFamily="@font/inter_bold"
@@ -1590,7 +1584,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_18sdp"
                     android:fontFamily="@font/inter_semi_bold"
                     android:gravity="start"
                     android:text="@string/client_s_geologist_sign"
@@ -1603,8 +1597,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="@dimen/_60sdp"
-                    android:layout_marginTop="@dimen/_18sdp"
-                    android:layout_marginBottom="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
                     android:visibility="visible"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
@@ -1625,7 +1618,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_18sdp"
                     android:layout_marginBottom="@dimen/_20sdp"
                     android:background="@drawable/disable_button"
                     android:enabled="false"

@@ -40,7 +40,6 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
-import java.text.SimpleDateFormat
 import java.util.*
 
 class OpenCastFormSecondStepActivity : AppCompatActivity() {
@@ -54,7 +53,6 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
     private var geologistSign : TypedFile? = null
     private var clientsGeologistSign : TypedFile? = null
     private val REQUEST_EXTERNAL_STORAGE = 1
-    val gson = Gson()
     private val PERMISSIONS_STORAGE = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.MANAGE_EXTERNAL_STORAGE)
@@ -82,19 +80,13 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             saveBitmapToJPG(ocDataModel.geologistSignBitMap!!, photogeologistSign)
             scanMediaFile(photogeologistSign)
             geologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photogeologistSign)
-            Log.e("Ib sign", geologistSign.toString())
 
             val photoclientsGeologistSign = File(getAlbumStorageDir("Pictures"),
                 String.format("clientsGeologistSign.jpg", System.currentTimeMillis()))
             saveBitmapToJPG(ocDataModel.clientsGeologistSignBitMap!!, photoclientsGeologistSign)
             scanMediaFile(photoclientsGeologistSign)
             clientsGeologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photoclientsGeologistSign)
-            Log.e("Ib client", clientsGeologistSign.toString())
         }
-
-
-        val gson = Gson()
-        Log.e("OCData", gson.toJson(ocDataModel).toString())
 
         binding.llBack.setOnClickListener {
             onBackPressed()

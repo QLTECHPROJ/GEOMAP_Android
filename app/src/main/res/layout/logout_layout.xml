@@ -104,8 +104,7 @@
             android:layout_height="@dimen/_50sdp"
             android:indeterminateTint="@color/primary_theme"
             android:scaleType="centerInside"
-            android:visibility="gone"
-            tools:targetApi="lollipop" />
+            android:visibility="gone" />
 
     </LinearLayout>
 
