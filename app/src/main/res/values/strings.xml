@@ -43,6 +43,8 @@
     <string name="undergrounds_mapping_report">Underground Mapping Report</string>
     <string name="view_all">View All</string>
     <string name="opencast_mapping_report">OpenCast Mapping Report</string>
+    <string name="opencast_mapping_report_draft">OpenCast Mapping Report Draft</string>
+    <string name="undergrounds_mapping_report_draft">Underground Mapping Report Draft</string>
     <string name="add_report">Add Report</string>
     <string name="support_quotes">Please contact support at</string>
     <string name="support_link">info@geomap.in</string>

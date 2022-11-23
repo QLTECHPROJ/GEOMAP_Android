@@ -26,7 +26,7 @@
             style="@style/screenTitle"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:text="@string/opencast_mapping_report" />
+            android:text="@string/opencast_mapping_report_draft" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvOpenCastList"
