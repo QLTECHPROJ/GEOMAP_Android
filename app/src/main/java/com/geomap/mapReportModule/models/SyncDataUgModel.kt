@@ -1,6 +1,7 @@
 package com.geomap.mapReportModule.models
 
 import retrofit.mime.TypedFile
+import java.io.File
 
 class SyncDataUgModel {
     var userId: String? = ""

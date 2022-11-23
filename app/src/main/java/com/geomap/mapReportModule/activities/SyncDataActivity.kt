@@ -21,6 +21,7 @@ import com.geomap.DataBaseFunctions.Companion.deleteUGReport
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivitySyncDataBinding
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity
 import com.geomap.mapReportModule.models.*
 import com.geomap.mvvm.AllViewModel
 import com.geomap.mvvm.UserModelFactory
@@ -255,31 +256,77 @@ class SyncDataActivity : AppCompatActivity() {
         Log.e("SyncData OC Report",   gson.toJson(ocModelList).toString())
 
         if(ocModelList.isNotEmpty() || ugModelList.isNotEmpty() ) {
-            postData()
+            postData(0)
         }else if(ocModelList.isEmpty() && ugModelList.isEmpty()){
             showToast("Data is not available in Your Draft",act)
         }
     }
 
-    private fun postData() {
+    private fun postData(i:Int) {
         if (isNetworkConnected(ctx)) {
+            showProgressBar(binding.progressBar, binding.progressBarHolder, act)
+            APIClientProfile.apiService!!.postUndergroundInsert(
+                userId, ugModelList[i].name, ugModelList[i].comment,
+                UnderGroundFormFirstStepActivity.attributeDataModelList,
+                ugModelList[i].ugDate,
+                ugModelList[i].mapSerialNo,
+                ugModelList[i].shift, ugModelList[i].mappedBy, ugModelList[i].scale, ugModelList[i].location,
+                ugModelList[i].venieLoad,
+                ugModelList[i].xCordinate, ugModelList[i].yCordinate, ugModelList[i].zCordinate,
+                ugModelList[i].roofImage, ugModelList[i].leftImage,
+                ugModelList[i].rightImage, ugModelList[i].faceImage,
+                object : retrofit.Callback<SuccessModel> {
+                    override fun success(model : SuccessModel,
+                        response : retrofit.client.Response) {
+                        when (model.ResponseCode) {
+                            ctx.getString(R.string.ResponseCodesuccess) -> {
+                                hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                                showToast(model.ResponseMessage, act)
+                              ugModelList.removeAt(i)
+                                if(ugModelList.isNotEmpty()){
+                                    postData(0)
+                                }else{
+                                    deleteDB("0")
+
+                                }
+                            }
+                            ctx.getString(R.string.ResponseCodefail) -> {
+                                showToast(model.ResponseCode, act)
+                            }
+                            ctx.getString(
+                                R.string.ResponseCodeDeleted) -> {
+                                callDelete403(act, model.ResponseCode)
+                            }
+                        }
+                    }
+
+                    override fun failure(e : RetrofitError) {
+                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                        showToast(e.message, act)
+                    }
+                })
+        } else {
+            showToast(getString(R.string.no_server_found), act)
+        }
+    /*   if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             APIClientProfile.apiService!!.postSyncDataInsert(ugModelList,ocModelList,
             object : retrofit.Callback<SuccessModel> {
                 override fun success(model : SuccessModel,
                     response : retrofit.client.Response) {
                     hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                    if (model.ResponseCode.equals(
-                            ctx.getString(R.string.ResponseCodesuccess))) {
-                        showToast(model.ResponseMessage, act)
-                        deleteDB()
-                        finish()
-                    } else if (model.ResponseCode.equals(
-                            ctx.getString(R.string.ResponseCodefail))) {
-                        showToast(model.ResponseMessage, act)
-                    } else if (model.ResponseCode.equals(
-                            ctx.getString(R.string.ResponseCodeDeleted))) {
-                        callDelete403(act, model.ResponseMessage)
+                    when (model.ResponseCode) {
+                        ctx.getString(R.string.ResponseCodesuccess) -> {
+                            showToast(model.ResponseMessage, act)
+                            deleteDB()
+                            finish()
+                        }
+                        ctx.getString(R.string.ResponseCodefail) -> {
+                            showToast(model.ResponseMessage, act)
+                        }
+                        ctx.getString(R.string.ResponseCodeDeleted) -> {
+                            callDelete403(act, model.ResponseMessage)
+                        }
                     }
                 }
 
@@ -290,7 +337,7 @@ class SyncDataActivity : AppCompatActivity() {
             })
         } else {
             showToast(getString(R.string.no_server_found), act)
-        }
+        }*/
 
         /*if (isNetworkConnected(ctx)) {
             RetrofitService.getInstance().postSyncDataInsert(gson.toJson(ugModelList),gson.toJson(ocModelList)).enqueue(object : Callback<SuccessModel> {
@@ -324,9 +371,91 @@ class SyncDataActivity : AppCompatActivity() {
         }*/
     }
 
-    private fun deleteDB() {
-        deleteUGReport(ctx)
-        deleteOCReport(ctx)
+    private fun postOcData(i: Int) {
+        if (isNetworkConnected(ctx)) {
+            showProgressBar(binding.progressBar, binding.progressBarHolder, act)
+            APIClientProfile.apiService!!.postOpenCastInsert(
+                userId,
+                ocModelList[i].minesSiteName,
+                ocModelList[i].mappingSheetNo,
+                ocModelList[i].pitName,
+                ocModelList[i].pitLoaction,
+                ocModelList[i].shiftInchargeName,
+                ocModelList[i].geologistName,
+                ocModelList[i].faceLocation,
+                ocModelList[i].faceLength,
+                ocModelList[i].faceArea,
+                ocModelList[i].faceRockType,
+                ocModelList[i].benchRl,
+                ocModelList[i].benchHeightWidth,
+                ocModelList[i].benchAngle,
+                ocModelList[i].thicknessOfOre,
+                ocModelList[i].thicknessOfOverburdan,
+                ocModelList[i].thicknessOfInterburden,
+                ocModelList[i].observedGradeOfOre,
+                ocModelList[i].actualGradeOfOre,
+                ocModelList[i].sampleColledted,
+                ocModelList[i].weathring,
+                ocModelList[i].rockStregth,
+                ocModelList[i].waterCondition,
+                ocModelList[i].typeOfGeologist,
+                ocModelList[i].typeOfFaults,
+                ocModelList[i].notes,
+                ocModelList[i].shift,
+                ocModelList[i].ocDate,
+                ocModelList[i].dipDirectionAndAngle,
+                ocModelList[i].image,
+                ocModelList[i].geologistSign,
+                ocModelList[i].clientsGeologistSign,
+                object : retrofit.Callback<SuccessModel> {
+                    override fun success(model : SuccessModel,
+                        response : retrofit.client.Response) {
+                        if (model.ResponseCode == ctx.getString(R.string.ResponseCodesuccess)) {
+                            hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                            when (model.ResponseCode) {
+                                ctx.getString(R.string.ResponseCodesuccess) -> {
+                                    showToast(model.ResponseMessage, act)
+                                    ocModelList.removeAt(i)
+                                    if(ocModelList.isNotEmpty()){
+                                        postOcData(0)
+                                    }else{
+                                        deleteDB("1")
+                                    }
+                                }
+                                ctx.getString(
+                                    R.string.ResponseCodefail) -> {
+                                    showToast(model.ResponseMessage, act)
+                                }
+                                ctx.getString(
+                                    R.string.ResponseCodeDeleted) -> {
+                                    callDelete403(act, model.ResponseMessage)
+                                }
+                            }
+                        }
+                    }
+
+                    override fun failure(e : RetrofitError) {
+                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                        showToast(e.message, act)
+                    }
+                })
+        }else{
+            showToast(getString(R.string.no_server_found), act)
+        }
+    }
+
+    private fun deleteDB(flag :String?) {
+        if(flag == "1"){
+            deleteOCReport(ctx)
+            finish()
+        }else {
+            deleteUGReport(ctx)
+            if(ocModelList.isNotEmpty()){
+                postOcData(0)
+            }else{
+                finish()
+            }
+        }
     }
 
     override fun onBackPressed() {
