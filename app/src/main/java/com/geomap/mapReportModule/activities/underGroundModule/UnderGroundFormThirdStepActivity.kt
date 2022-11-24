@@ -126,6 +126,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
     }
 
     private fun postUndergroundInsert() {
+        binding.signPad.clear()
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             APIClientProfile.apiService!!.postUndergroundInsert(
@@ -170,6 +171,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             val obj = UnderGroundMappingReport()
             val gson = Gson()
             obj.iD = 0
+            obj.userId = userId
             obj.name = ugDataModel.name
             obj.comment = ugDataModel.comment
             obj.attributes = gson.toJson(attributeDataModelList)
@@ -188,7 +190,6 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             obj.rightImage = signRightBitMap
             obj.faceImage = signFaceBitMap
             DataBaseFunctions.saveUGReport(obj, ctx)
-            binding.signPad.clear()
             showToast("UnderGround Report Saved", act)
             val i = Intent(ctx, DashboardActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
@@ -210,10 +211,14 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                     saveBitmapToJPG(signature, photo)
                     scanMediaFile(photo)
                     signRoof = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
-                    i++
                     binding.tvName.text = getString(R.string.left)
                     signRoofBitMap = signature
-                    Log.e("geologistSign", signRoof!!.toString() + i)
+                    if(signLeftBitMap != null) {
+                        callEnable(signLeftBitMap!!,"left")
+                    }else {
+                        callDisable()
+                    }
+                    i++
                 }
                 1 -> {
                     val photo = File(getAlbumStorageDir("Pictures"),
@@ -221,10 +226,14 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                     saveBitmapToJPG(signature, photo)
                     scanMediaFile(photo)
                     signLeft = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
-                    i++
                     binding.tvName.text = getString(R.string.right)
                     signLeftBitMap = signature
-                    Log.e("geologistSign", signLeft!!.toString() + i)
+                    if(signRightBitMap != null) {
+                        callEnable(signRightBitMap!!,"right")
+                    }else {
+                        callDisable()
+                    }
+                    i++
                 }
                 2 -> {
                     val photo = File(getAlbumStorageDir("Pictures"),
@@ -233,10 +242,14 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                     scanMediaFile(photo)
                     binding.btnNext.text = getString(R.string.submit)
                     signRight = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
-                    i++
                     binding.tvName.text = getString(R.string.face)
                     signRightBitMap = signature
-                    Log.e("geologistSign", signRight!!.toString() + i)
+                    if(signFaceBitMap != null) {
+                        callEnable(signFaceBitMap!!,"face")
+                    }else {
+                        callDisable()
+                    }
+                    i++
                 }
                 3 -> {
                     val photo = File(getAlbumStorageDir("Pictures"),
@@ -246,12 +259,9 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                     signFace = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
                     signFaceBitMap = signature
                     postUndergroundInsert()
-                    Log.e("geologistSign", signFace!!.toString() + i)
+                    Log.e("face", signFace!!.toString() + i)
                 }
             }
-            binding.signPad.clear()
-            binding.btnClear.isEnabled = false
-            binding.btnClear.setBackgroundResource(R.drawable.disable_button)
             result = true
         } catch (e : IOException) {
             e.printStackTrace()
@@ -259,12 +269,24 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         return result
     }
 
+    private fun callDisable() {
+        binding.signPad.clear()
+        binding.btnClear.isEnabled = false
+        binding.btnClear.setBackgroundResource(R.drawable.disable_button)
+    }
+
+    private fun callEnable(signBitMap: Bitmap,bitmapString: String) {
+        binding.signPad.signatureBitmap = signBitMap
+        Log.e(bitmapString, "$i")
+        binding.btnClear.isEnabled = true
+        binding.btnClear.setBackgroundResource(R.drawable.enable_button)
+    }
+
     private fun scanMediaFile(photo : File) {
         val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
         val contentUri = Uri.fromFile(photo)
         mediaScanIntent.data = contentUri
         ctx.sendBroadcast(mediaScanIntent)
-        binding.signPad.clear()
     }
 
     private fun getAlbumStorageDir(albumName : String?) : File {
@@ -345,21 +367,20 @@ Tap Setting > permission, and turn "Files and media" on."""
                 finish()
             }
             1 -> {
+                callEnable(signRoofBitMap!!,"Roof")
+                binding.btnNext.text = getString(R.string.next)
                 binding.tvName.text = getString(R.string.roof)
                 i--
-
             }
             2 -> {
+                callEnable(signLeftBitMap!!,"left")
+                binding.btnNext.text = getString(R.string.next)
                 binding.tvName.text = getString(R.string.left)
                 i--
-
             }
             3 -> {
-//                binding.signPad.set
-                binding.signPad.clear()
+                callEnable(signRightBitMap!!,"right")
                 binding.btnNext.text = getString(R.string.next)
-                binding.btnClear.isEnabled = false
-                binding.btnClear.setBackgroundResource(R.drawable.disable_button)
                 binding.tvName.text = getString(R.string.right)
                 i--
             }

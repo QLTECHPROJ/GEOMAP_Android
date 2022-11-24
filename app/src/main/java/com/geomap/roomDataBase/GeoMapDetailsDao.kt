@@ -8,39 +8,38 @@ import androidx.room.Query
 
 @Dao
 interface GeoMapDetailsDao {
-
     @Query("SELECT * FROM undergroundmappingreport ORDER BY uid DESC")
     fun geAllData1ForAll(): List<UnderGroundMappingReport?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUGReport(underGroundMappingReport: UnderGroundMappingReport?)
 
-    @Query("SELECT * FROM undergroundmappingreport")
-    fun geAllUnderGroundMappingReport(): List<UnderGroundMappingReport>
+    @Query("SELECT * FROM undergroundmappingreport WHERE userId =:userId")
+    fun geAllUnderGroundMappingReport(userId: String?): List<UnderGroundMappingReport>
 
-    @Query("SELECT * FROM undergroundmappingreport ORDER BY uid ASC")
-    fun geAllUnderGroundMappingReportASC(): LiveData<List<UnderGroundMappingReport>>
+    @Query("SELECT * FROM undergroundmappingreport  WHERE userId =:userId ORDER BY uid ASC")
+    fun geAllUnderGroundMappingReportASC(userId: String?): LiveData<List<UnderGroundMappingReport>>
 
-    @Query("SELECT * FROM undergroundmappingreport ORDER BY uid DESC")
-    fun geAllUnderGroundMappingReport1(): LiveData<List<UnderGroundMappingReport>>
+    @Query("SELECT * FROM undergroundmappingreport  WHERE userId =:userId ORDER BY uid DESC")
+    fun geAllUnderGroundMappingReport1(userId: String?): LiveData<List<UnderGroundMappingReport>>
 
-    @Query("DELETE FROM UnderGroundMappingReport")
-    fun deleteUnderGroundMappingReport()
+    @Query("DELETE FROM UnderGroundMappingReport WHERE userId =:userId")
+    fun deleteUnderGroundMappingReport(userId: String?)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOCReport(openCastMappingReport: OpenCastMappingReport?)
 
-    @Query("SELECT * FROM opencastmappingreport")
-    fun geAllOpenCastMappingReport(): List<OpenCastMappingReport>
+    @Query("SELECT * FROM opencastmappingreport  WHERE userId =:userId")
+    fun geAllOpenCastMappingReport(userId: String?): List<OpenCastMappingReport>
 
-    @Query("SELECT * FROM opencastmappingreport  ORDER BY uid ASC")
-    fun geAllOpenCastMappingReportASC(): LiveData<List<OpenCastMappingReport>>
+    @Query("SELECT * FROM opencastmappingreport   WHERE userId =:userId ORDER BY uid ASC")
+    fun geAllOpenCastMappingReportASC(userId: String?): LiveData<List<OpenCastMappingReport>>
 
-    @Query("SELECT * FROM opencastmappingreport  ORDER BY uid DESC")
-    fun geAllOpenCastMappingReport1(): LiveData<List<OpenCastMappingReport>>
+    @Query("SELECT * FROM opencastmappingreport   WHERE userId =:userId ORDER BY uid DESC")
+    fun geAllOpenCastMappingReport1(userId: String?): LiveData<List<OpenCastMappingReport>>
 
-    @Query("DELETE FROM OpenCastMappingReport")
-    fun deleteOpenCastMappingReport()
+    @Query("DELETE FROM OpenCastMappingReport  WHERE userId =:userId")
+    fun deleteOpenCastMappingReport(userId: String?)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAttributeData(attributeData: AttributeData?)
@@ -109,10 +108,8 @@ interface GeoMapDetailsDao {
     fun insertTypeOfFaults(typeOfFaults: TypeOfFaults?)
 
     @Query("SELECT * FROM typeoffaults")
-    fun geAllTypeOfFaults():List<TypeOfFaults>
+    fun geAllTypeOfFaults(): List<TypeOfFaults>
 
     @Query("DELETE FROM typeoffaults")
-    fun deleteTypeOfFaults()
-
-// ORDER BY uid ASC
+    fun deleteTypeOfFaults() // ORDER BY uid ASC
 }

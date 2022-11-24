@@ -11,11 +11,11 @@ import com.google.gson.Gson
 class DataBaseFunctions {
     companion object {
         val gson = Gson()
-        fun callUGReportObserver(ctx: Context) {
+        fun callUGReportObserver(ctx: Context,userId: String) {
             DB = getDataBase(ctx)
             var list = ArrayList<UnderGroundMappingReport>()
             GeoMapDatabase.databaseWriteExecutor.execute {
-                list = DB.taskDao().geAllUnderGroundMappingReport() as ArrayList<UnderGroundMappingReport>
+                list = DB.taskDao().geAllUnderGroundMappingReport(userId) as ArrayList<UnderGroundMappingReport>
 
                 Log.e("List UnderGroundMappingReport", "true" + gson.toJson(list).toString())
             } as (List<UnderGroundMappingReport>)
@@ -28,18 +28,18 @@ class DataBaseFunctions {
             }
         }
 
-        fun deleteUGReport(ctx: Context) {
+        fun deleteUGReport(ctx: Context,userId: String) {
             DB = getDataBase(ctx)
             GeoMapDatabase.databaseWriteExecutor.execute {
-                DB!!.taskDao().deleteUnderGroundMappingReport()
+                DB!!.taskDao().deleteUnderGroundMappingReport(userId)
             }
         }
 
-        fun callOcReportObserver(ctx: Context) {
+        fun callOcReportObserver(ctx: Context,userId: String) {
             DB = getDataBase(ctx)
             var list = ArrayList<OpenCastMappingReport>()
             GeoMapDatabase.databaseWriteExecutor.execute {
-                list = DB.taskDao().geAllOpenCastMappingReport() as ArrayList<OpenCastMappingReport>
+                list = DB.taskDao().geAllOpenCastMappingReport(userId) as ArrayList<OpenCastMappingReport>
 
                 Log.e("List OpenCastMappingReport", "true" + gson.toJson(list).toString())
             }
@@ -52,10 +52,10 @@ class DataBaseFunctions {
             }
         }
 
-        fun deleteOCReport(ctx: Context) {
+        fun deleteOCReport(ctx: Context,userId: String) {
             DB = getDataBase(ctx)
             GeoMapDatabase.databaseWriteExecutor.execute {
-                DB!!.taskDao().deleteOpenCastMappingReport()
+                DB!!.taskDao().deleteOpenCastMappingReport(userId)
             }
         }
 

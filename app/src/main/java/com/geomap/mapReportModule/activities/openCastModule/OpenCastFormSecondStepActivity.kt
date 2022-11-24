@@ -202,6 +202,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         } else {
             val obj = OpenCastMappingReport()
             obj.iD = 0
+            obj.userId = userId
             obj.ocDate = ocDataModel.ocDate
             obj.mappingSheetNo = ocDataModel.sheetNo
             obj.minesSiteName = ocDataModel.minesSiteName

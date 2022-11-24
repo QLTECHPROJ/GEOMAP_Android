@@ -15,6 +15,9 @@ class OpenCastMappingReport : Serializable {
     @ColumnInfo(name = "Id")
     var iD: Int? = null
 
+    @ColumnInfo(name = "userId")
+    var userId: String? = null
+
     @ColumnInfo(name = "ocDate")
     var ocDate: String? = null
 

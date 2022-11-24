@@ -33,6 +33,7 @@ import com.geomap.utils.APIClientProfile
 import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit.RetrofitError
 import retrofit.mime.TypedFile
 import java.io.File
@@ -78,7 +79,7 @@ class SyncDataActivity : AppCompatActivity() {
     private fun getData() {
 
         DB = getDataBase(ctx)
-        DB.taskDao().geAllUnderGroundMappingReportASC().observe(ctx as LifecycleOwner){lists ->
+        DB.taskDao().geAllUnderGroundMappingReportASC(userId).observe(ctx as LifecycleOwner){lists ->
             ugList  = lists as java.util.ArrayList<UnderGroundMappingReport>
             setugObjArray(ugList)
             Log.e("List UnderGroundMappingReport", "true" + DataBaseFunctions.gson.toJson(ugList).toString())
@@ -158,7 +159,7 @@ class SyncDataActivity : AppCompatActivity() {
 
     private fun callOcMethod() {
 
-        DB.taskDao().geAllOpenCastMappingReportASC().observe(ctx as LifecycleOwner){lists ->
+        DB.taskDao().geAllOpenCastMappingReportASC(userId).observe(ctx as LifecycleOwner){lists ->
             ocList = lists as java.util.ArrayList<OpenCastMappingReport>
             Log.e("List OpenCastMappingReport", "true" + DataBaseFunctions.gson.toJson(ocList).toString())
             setocObjArray(ocList)
@@ -173,6 +174,7 @@ class SyncDataActivity : AppCompatActivity() {
                 sdu.userId = userId
                 sdu.minesSiteName = ocList[i].minesSiteName
                 sdu.mappingSheetNo = ocList[i].mappingSheetNo
+                sdu.pitName = ocList[i].pitName
                 sdu.pitLoaction = ocList[i].pitLocation
                 sdu.shiftInchargeName = ocList[i].shiftInChargeName
                 sdu.geologistName = ocList[i].geologistName
@@ -255,57 +257,67 @@ class SyncDataActivity : AppCompatActivity() {
         Log.e("SyncData UG Report", gson.toJson(ugModelList).toString())
         Log.e("SyncData OC Report",   gson.toJson(ocModelList).toString())
 
-        if(ocModelList.isNotEmpty() || ugModelList.isNotEmpty() ) {
+        if(ugModelList.isNotEmpty() ) {
             postData(0)
-        }else if(ocModelList.isEmpty() && ugModelList.isEmpty()){
+        }else if(ugModelList.isEmpty() && ocModelList.isNotEmpty() ) {
+            postOcData(0)
+        } else if(ocModelList.isEmpty() && ugModelList.isEmpty()){
             showToast("Data is not available in Your Draft",act)
         }
     }
 
     private fun postData(i:Int) {
         if (isNetworkConnected(ctx)) {
-            showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            APIClientProfile.apiService!!.postUndergroundInsert(
-                userId, ugModelList[i].name, ugModelList[i].comment,
-                UnderGroundFormFirstStepActivity.attributeDataModelList,
-                ugModelList[i].ugDate,
-                ugModelList[i].mapSerialNo,
-                ugModelList[i].shift, ugModelList[i].mappedBy, ugModelList[i].scale, ugModelList[i].location,
-                ugModelList[i].venieLoad,
-                ugModelList[i].xCordinate, ugModelList[i].yCordinate, ugModelList[i].zCordinate,
-                ugModelList[i].roofImage, ugModelList[i].leftImage,
-                ugModelList[i].rightImage, ugModelList[i].faceImage,
-                object : retrofit.Callback<SuccessModel> {
-                    override fun success(model : SuccessModel,
-                        response : retrofit.client.Response) {
-                        when (model.ResponseCode) {
-                            ctx.getString(R.string.ResponseCodesuccess) -> {
-                                hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                                showToast(model.ResponseMessage, act)
-                              ugModelList.removeAt(i)
-                                if(ugModelList.isNotEmpty()){
-                                    postData(0)
-                                }else{
-                                    deleteDB("0")
+            if (ugModelList.isNotEmpty()) {
+                var attributeDataList = java.util.ArrayList<AttributeDataModel>()
+                val type1 = object : TypeToken<java.util.ArrayList<AttributeDataModel>>() {}.type
+                attributeDataList = gson.fromJson(ugModelList[i].attribute, type1)
 
+                showProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                APIClientProfile.apiService!!.postUndergroundInsert(ugModelList[i].userId,
+                    ugModelList[i].name, ugModelList[i].comment, attributeDataList,
+                    ugModelList[i].ugDate, ugModelList[i].mapSerialNo, ugModelList[i].shift,
+                    ugModelList[i].mappedBy, ugModelList[i].scale, ugModelList[i].location,
+                    ugModelList[i].venieLoad, ugModelList[i].xCordinate, ugModelList[i].yCordinate,
+                    ugModelList[i].zCordinate, ugModelList[i].roofImage, ugModelList[i].leftImage,
+                    ugModelList[i].rightImage, ugModelList[i].faceImage,
+                    object : retrofit.Callback<SuccessModel> {
+                        override fun success(model: SuccessModel,
+                            response: retrofit.client.Response) {
+                            when (model.ResponseCode) {
+                                ctx.getString(R.string.ResponseCodesuccess) -> {
+                                    hideProgressBar(binding.progressBar, binding.progressBarHolder,
+                                        act)
+                                    showToast(model.ResponseMessage, act)
+                                    ugModelList.removeAt(0)
+                                    if (ugModelList.isNotEmpty()) {
+                                        postData(0)
+                                    } else {
+                                        deleteDB("0")
+                                    }
+                                }
+                                ctx.getString(R.string.ResponseCodefail) -> {
+                                    showToast(model.ResponseCode, act)
+                                }
+                                ctx.getString(R.string.ResponseCodeDeleted) -> {
+                                    callDelete403(act, model.ResponseCode)
                                 }
                             }
-                            ctx.getString(R.string.ResponseCodefail) -> {
-                                showToast(model.ResponseCode, act)
-                            }
-                            ctx.getString(
-                                R.string.ResponseCodeDeleted) -> {
-                                callDelete403(act, model.ResponseCode)
-                            }
                         }
-                    }
 
-                    override fun failure(e : RetrofitError) {
-                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                        showToast(e.message, act)
-                    }
-                })
-        } else {
+                        override fun failure(e: RetrofitError) {
+                            hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                            showToast(e.message, act)
+                        }
+                    })
+            } else {
+                if (ocModelList.isNotEmpty()) {
+                    postOcData(0)
+                } else {
+                    deleteDB("0")
+                }
+            }
+        }else {
             showToast(getString(R.string.no_server_found), act)
         }
     /*   if (isNetworkConnected(ctx)) {
@@ -338,107 +350,60 @@ class SyncDataActivity : AppCompatActivity() {
         } else {
             showToast(getString(R.string.no_server_found), act)
         }*/
-
-        /*if (isNetworkConnected(ctx)) {
-            RetrofitService.getInstance().postSyncDataInsert(gson.toJson(ugModelList),gson.toJson(ocModelList)).enqueue(object : Callback<SuccessModel> {
-                override fun onResponse(call : Call<SuccessModel>,
-                    response : Response<SuccessModel>) {
-                    try {
-                        val model : SuccessModel = response.body()!!
-                        when (model.ResponseCode) {
-                            getString(R.string.ResponseCodesuccess) -> {
-                                showToast(model.ResponseMessage, act)
-                                deleteDB()
-                                finish()
-                            }
-                            getString(R.string.ResponseCodefail) -> {
-                                showToast(model.ResponseMessage, act)
-                            }
-                            getString(R.string.ResponseCodeDeleted) -> {
-                                callDelete403(act, model.ResponseMessage)
-                            }
-                        }
-                    } catch (e : Exception) {
-                        e.printStackTrace()
-                    }
-                }
-
-                override fun onFailure(call : Call<SuccessModel>, t : Throwable) {
-
-                }
-            })
-        } else {
-        }*/
     }
 
     private fun postOcData(i: Int) {
         if (isNetworkConnected(ctx)) {
-            showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            APIClientProfile.apiService!!.postOpenCastInsert(
-                userId,
-                ocModelList[i].minesSiteName,
-                ocModelList[i].mappingSheetNo,
-                ocModelList[i].pitName,
-                ocModelList[i].pitLoaction,
-                ocModelList[i].shiftInchargeName,
-                ocModelList[i].geologistName,
-                ocModelList[i].faceLocation,
-                ocModelList[i].faceLength,
-                ocModelList[i].faceArea,
-                ocModelList[i].faceRockType,
-                ocModelList[i].benchRl,
-                ocModelList[i].benchHeightWidth,
-                ocModelList[i].benchAngle,
-                ocModelList[i].thicknessOfOre,
-                ocModelList[i].thicknessOfOverburdan,
-                ocModelList[i].thicknessOfInterburden,
-                ocModelList[i].observedGradeOfOre,
-                ocModelList[i].actualGradeOfOre,
-                ocModelList[i].sampleColledted,
-                ocModelList[i].weathring,
-                ocModelList[i].rockStregth,
-                ocModelList[i].waterCondition,
-                ocModelList[i].typeOfGeologist,
-                ocModelList[i].typeOfFaults,
-                ocModelList[i].notes,
-                ocModelList[i].shift,
-                ocModelList[i].ocDate,
-                ocModelList[i].dipDirectionAndAngle,
-                ocModelList[i].image,
-                ocModelList[i].geologistSign,
-                ocModelList[i].clientsGeologistSign,
-                object : retrofit.Callback<SuccessModel> {
-                    override fun success(model : SuccessModel,
-                        response : retrofit.client.Response) {
-                        if (model.ResponseCode == ctx.getString(R.string.ResponseCodesuccess)) {
-                            hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                            when (model.ResponseCode) {
-                                ctx.getString(R.string.ResponseCodesuccess) -> {
-                                    showToast(model.ResponseMessage, act)
-                                    ocModelList.removeAt(i)
-                                    if(ocModelList.isNotEmpty()){
-                                        postOcData(0)
-                                    }else{
-                                        deleteDB("1")
+            if(ocModelList.isNotEmpty()) {
+                showProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                APIClientProfile.apiService!!.postOpenCastInsert(ocModelList[i].userId,
+                    ocModelList[i].minesSiteName, ocModelList[i].mappingSheetNo,
+                    ocModelList[i].pitName, ocModelList[i].pitLoaction,
+                    ocModelList[i].shiftInchargeName, ocModelList[i].geologistName,
+                    ocModelList[i].faceLocation, ocModelList[i].faceLength, ocModelList[i].faceArea,
+                    ocModelList[i].faceRockType, ocModelList[i].benchRl,
+                    ocModelList[i].benchHeightWidth, ocModelList[i].benchAngle,
+                    ocModelList[i].thicknessOfOre, ocModelList[i].thicknessOfOverburdan,
+                    ocModelList[i].thicknessOfInterburden, ocModelList[i].observedGradeOfOre,
+                    ocModelList[i].actualGradeOfOre, ocModelList[i].sampleColledted,
+                    ocModelList[i].weathring, ocModelList[i].rockStregth,
+                    ocModelList[i].waterCondition, ocModelList[i].typeOfGeologist,
+                    ocModelList[i].typeOfFaults, ocModelList[i].notes, ocModelList[i].shift,
+                    ocModelList[i].ocDate, ocModelList[i].dipDirectionAndAngle,
+                    ocModelList[i].image, ocModelList[i].geologistSign,
+                    ocModelList[i].clientsGeologistSign, object : retrofit.Callback<SuccessModel> {
+                        override fun success(model: SuccessModel,
+                            response: retrofit.client.Response) {
+                            if (model.ResponseCode == ctx.getString(R.string.ResponseCodesuccess)) {
+                                hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                                when (model.ResponseCode) {
+                                    ctx.getString(R.string.ResponseCodesuccess) -> {
+                                        showToast(model.ResponseMessage, act)
+                                        ocModelList.removeAt(i)
+                                        if (ocModelList.isNotEmpty()) {
+                                            postOcData(0)
+                                        } else {
+                                            deleteDB("1")
+                                        }
                                     }
-                                }
-                                ctx.getString(
-                                    R.string.ResponseCodefail) -> {
-                                    showToast(model.ResponseMessage, act)
-                                }
-                                ctx.getString(
-                                    R.string.ResponseCodeDeleted) -> {
-                                    callDelete403(act, model.ResponseMessage)
+                                    ctx.getString(R.string.ResponseCodefail) -> {
+                                        showToast(model.ResponseMessage, act)
+                                    }
+                                    ctx.getString(R.string.ResponseCodeDeleted) -> {
+                                        callDelete403(act, model.ResponseMessage)
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    override fun failure(e : RetrofitError) {
-                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                        showToast(e.message, act)
-                    }
-                })
+                        override fun failure(e: RetrofitError) {
+                            hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                            showToast(e.message, act)
+                        }
+                    })
+            }else{
+                deleteDB("1")
+            }
         }else{
             showToast(getString(R.string.no_server_found), act)
         }
@@ -446,10 +411,10 @@ class SyncDataActivity : AppCompatActivity() {
 
     private fun deleteDB(flag :String?) {
         if(flag == "1"){
-            deleteOCReport(ctx)
+            deleteOCReport(ctx,userId)
             finish()
         }else {
-            deleteUGReport(ctx)
+            deleteUGReport(ctx,userId)
             if(ocModelList.isNotEmpty()){
                 postOcData(0)
             }else{

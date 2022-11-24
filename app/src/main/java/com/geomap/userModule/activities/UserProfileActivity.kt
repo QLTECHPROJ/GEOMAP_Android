@@ -106,7 +106,7 @@ class UserProfileActivity : AppCompatActivity() {
                     allDisable(binding.btnUpdate)
                 }
 
-                binding.ltDob.isErrorEnabled -> {
+                birthYear < 18 -> {
                     allDisable(binding.btnUpdate)
                 }
 

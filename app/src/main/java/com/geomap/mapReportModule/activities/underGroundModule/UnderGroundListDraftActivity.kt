@@ -55,7 +55,7 @@ class UnderGroundListDraftActivity : AppCompatActivity() {
 
     private fun postData() {
         DB = getDataBase(ctx)
-        DB.taskDao().geAllUnderGroundMappingReport1().observe(ctx as LifecycleOwner){lists ->
+        DB.taskDao().geAllUnderGroundMappingReport1(userId).observe(ctx as LifecycleOwner){lists ->
             list = lists as java.util.ArrayList<UnderGroundMappingReport>
             callAdapter(list)
         }

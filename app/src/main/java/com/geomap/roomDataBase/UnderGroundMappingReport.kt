@@ -12,8 +12,11 @@ class UnderGroundMappingReport : Serializable {
     @PrimaryKey(autoGenerate = true)
     var uid = 0
 
-    @ColumnInfo(name = "Id", defaultValue = "")
+    @ColumnInfo(name = "Id")
     var iD: Int? = null
+
+    @ColumnInfo(name = "userId")
+    var userId :String? = null
 
     @ColumnInfo(name = "name")
     var name :String? = null
