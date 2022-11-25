@@ -252,9 +252,9 @@ class UserProfileActivity : AppCompatActivity() {
                 object : retrofit.Callback<ProfileUpdateModel> {
                     override fun success(model : ProfileUpdateModel,
                         response : retrofit.client.Response) {
+                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                         if (model.responseCode.equals(
                                 ctx.getString(R.string.ResponseCodesuccess))) {
-                            hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                             showToast(model.responseMessage, act)
                             val shared1 =
                                 getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA,

@@ -28,8 +28,10 @@
                 android:layout_weight="0.5"
                 android:fontFamily="@font/inter_semi_bold"
                 android:gravity="start"
+                android:maxLines="2"
                 android:textColor="@color/light_black"
                 android:textSize="@dimen/_15sdp"
+                app:layout_constraintEnd_toStartOf="@+id/tvDate"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="SpUsage" />
