@@ -234,6 +234,7 @@ class SyncDataActivity : AppCompatActivity() {
                 }
             }
         }else{
+            hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
             callPostData()
         }
     }
@@ -262,6 +263,7 @@ class SyncDataActivity : AppCompatActivity() {
         }else if(ugModelList.isEmpty() && ocModelList.isNotEmpty() ) {
             postOcData(0)
         } else if(ocModelList.isEmpty() && ugModelList.isEmpty()){
+            hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
             showToast("Data is not available in Your Draft",act)
         }
     }
