@@ -55,6 +55,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.IOException
+import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -307,7 +308,13 @@ class UserProfileActivity : AppCompatActivity() {
                                 binding.etEmail.setText(email)
                                 binding.etMobileNo.setText(mobileNo)
                                 binding.etDob.setText(dob)
-                                var dateSpilt = dob!!.split("-")
+                                val outputFormat: DateFormat = SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT1)
+                                val inputFormat: DateFormat = SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT)
+                                val inputText = dob
+                                val date: Date = inputFormat.parse(inputText)
+                                val outputText: String = outputFormat.format(date)
+                                Log.e("dob", outputText)
+                                var dateSpilt = outputText.split(" ")
                                 ageYear = dateSpilt[2].toInt()
                                 ageMonth = dateSpilt[1].toInt()
                                 ageDate = dateSpilt[0].toInt()
