@@ -24,8 +24,6 @@
             app:tint="@color/black" />
 
 
-
-
         <TextView
             android:id="@+id/tvHeaderTitle"
             style="@style/screenTitle"
@@ -135,7 +133,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_66sdp"
                 android:layout_marginHorizontal="@dimen/_25sdp"
-                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_14sdp"
                 app:cardCornerRadius="@dimen/_10sdp"
                 app:cardElevation="@dimen/_2sdp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -187,7 +185,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_66sdp"
                 android:layout_marginHorizontal="@dimen/_25sdp"
-                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_14sdp"
                 app:cardCornerRadius="@dimen/_10sdp"
                 app:cardElevation="@dimen/_2sdp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -238,7 +236,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_66sdp"
                 android:layout_marginHorizontal="@dimen/_25sdp"
-                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_14sdp"
                 app:cardCornerRadius="@dimen/_10sdp"
                 app:cardElevation="@dimen/_2sdp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -288,7 +286,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_66sdp"
                 android:layout_marginHorizontal="@dimen/_25sdp"
-                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_14sdp"
                 app:cardCornerRadius="@dimen/_10sdp"
                 app:cardElevation="@dimen/_2sdp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -347,7 +345,6 @@
                 style="@style/screenButton"
                 android:layout_marginHorizontal="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_18sdp"
                 android:background="@drawable/disable_button"
                 android:enabled="false"
                 android:text="@string/update" />
@@ -358,8 +355,8 @@
                 android:layout_height="@dimen/_60sdp"
                 android:layout_gravity="center"
                 android:layout_marginHorizontal="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_18sdp"
-                android:layout_marginBottom="@dimen/_24sdp"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:layout_marginBottom="@dimen/_22sdp"
                 android:background="@drawable/border_enable_button"
                 android:enabled="true"
                 android:fontFamily="@font/inter_bold"
