@@ -6,7 +6,7 @@
     <string name="ResponseCodeDeleted">403</string>
     <string name="no_server_found">You are not currently connected to internet. Please try again.!</string>
     <string name="hello_again">Hello Again!</string>
-    <string name="wellcome_back_you_ve_been_missed">Welcome back you’ve\n been missed!</string>
+    <string name="welcome_back_you_ve_been_missed">Welcome back you’ve\n been missed!</string>
     <string name="name">Name</string>
     <string name="name_">Name:</string>
     <string name="password">Password</string>
@@ -23,11 +23,11 @@
     <string name="cancel_small">Cancel</string>
     <string name="Settings">Settings</string>
     <string name="not_now">Not Now</string>
-    <string name="pls_provide_valid_email">Please provide a valid email address</string>
+    <string name="pls_provide_valid_email">Please provide us with a valid email ID</string>
     <string name="pls_provide_valid_password">Password should contain at least one lowercase, one special symbol and minimum 8 character long</string>
     <string name="invalid_password_less_than_8_chars">Password should be more than 8 characters</string>
     <string name="invalid_password_not_mix_of_char_types">Password must contain lowercase, digits and special characters</string>
-    <string name="check_dob">Please confirm whether you are above 18 years old</string>
+    <string name="check_dob">You must be 18 years or above in order to access the app</string>
     <string name="underground_report_list">Underground Report List</string>
     <string name="underground_report_list_draft">Underground Report List Draft</string>
     <string name="opencast_report_list">OpenCast Report List</string>
@@ -38,7 +38,7 @@
     <string name="about_us">About Us</string>
     <string name="support">Support</string>
     <string name="log_out">Logout</string>
-    <string name="logout_quotes">Are you sure you want to logout?</string>
+    <string name="logout_quotes">Are you sure your wish to logout of the app?</string>
     <string name="contact_us">Contact Us</string>
     <string name="undergrounds_mapping_report">Underground Mapping Report</string>
     <string name="view_all">View All</string>
@@ -196,7 +196,7 @@
     <string name="pls_select_your_water_condition">Search your water condition</string>
     <string name="pls_select_your_type_of_geological_structures">Search your type of geological structures</string>
     <string name="pls_select_your_Type_of_faults">Search your type of faults</string>
-    <string name="delete_ac_quotes">Are you sure you want to delete your account?</string>
+    <string name="delete_ac_quotes">Are you sure you wish to permanently delete your account?</string>
     <string name="enter_name">Enter name</string>
     <string name="enter_email">Enter email</string>
     <string name="enter_mobile_no">Enter mobile no</string>
@@ -207,6 +207,13 @@
     <string name="please_add_propery">Please add property</string>
     <string name="please_add_attribute_data">Please add attribute data</string>
     <string name="comment">Comment</string>
-    <string name="welcome_msg">Welcome to Geo Map App!!</string>
+    <string name="welcome_msg">Welcome to the Geo Map app</string>
     <string name="next">Next</string>
+    <string name="underground_saved">Your Underground report  has been saved</string>
+    <string name="opencast_saved">Your OpenCast report has been saved</string>
+    <string name="sync_data_internet_off">Need an active internet connection to synchronise data</string>
+    <string name="opencast_report">OpenCast Report</string>
+    <string name="underground_report">Underground Report</string>
+    <string name="finish">Finish</string>
+    <string name="attribute_note"><i><b>Note :</b> You can add multiple attributes in the mapping report using the add attribute button</i></string>
 </resources>

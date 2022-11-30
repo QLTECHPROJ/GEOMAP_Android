@@ -190,7 +190,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             obj.rightImage = signRightBitMap
             obj.faceImage = signFaceBitMap
             DataBaseFunctions.saveUGReport(obj, ctx)
-            showToast("UnderGround Report Saved", act)
+            showToast(getString(R.string.underground_saved), act)
             val i = Intent(ctx, DashboardActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
             startActivity(i)
@@ -213,9 +213,9 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                     signRoof = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
                     binding.tvName.text = getString(R.string.left)
                     signRoofBitMap = signature
-                    if(signLeftBitMap != null) {
-                        callEnable(signLeftBitMap!!,"left")
-                    }else {
+                    if (signLeftBitMap != null) {
+                        callEnable(signLeftBitMap!!, "left")
+                    } else {
                         callDisable()
                     }
                     i++
@@ -228,9 +228,9 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                     signLeft = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
                     binding.tvName.text = getString(R.string.right)
                     signLeftBitMap = signature
-                    if(signRightBitMap != null) {
-                        callEnable(signRightBitMap!!,"right")
-                    }else {
+                    if (signRightBitMap != null) {
+                        callEnable(signRightBitMap!!, "right")
+                    } else {
                         callDisable()
                     }
                     i++
@@ -244,9 +244,9 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                     signRight = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
                     binding.tvName.text = getString(R.string.face)
                     signRightBitMap = signature
-                    if(signFaceBitMap != null) {
-                        callEnable(signFaceBitMap!!,"face")
-                    }else {
+                    if (signFaceBitMap != null) {
+                        callEnable(signFaceBitMap!!, "face")
+                    } else {
                         callDisable()
                     }
                     i++
@@ -275,7 +275,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         binding.btnClear.setBackgroundResource(R.drawable.disable_button)
     }
 
-    private fun callEnable(signBitMap: Bitmap,bitmapString: String) {
+    private fun callEnable(signBitMap : Bitmap, bitmapString : String) {
         binding.signPad.signatureBitmap = signBitMap
         Log.e(bitmapString, "$i")
         binding.btnClear.isEnabled = true
@@ -367,19 +367,19 @@ Tap Setting > permission, and turn "Files and media" on."""
                 finish()
             }
             1 -> {
-                callEnable(signRoofBitMap!!,"Roof")
+                callEnable(signRoofBitMap!!, "Roof")
                 binding.btnNext.text = getString(R.string.next)
                 binding.tvName.text = getString(R.string.roof)
                 i--
             }
             2 -> {
-                callEnable(signLeftBitMap!!,"left")
+                callEnable(signLeftBitMap!!, "left")
                 binding.btnNext.text = getString(R.string.next)
                 binding.tvName.text = getString(R.string.left)
                 i--
             }
             3 -> {
-                callEnable(signRightBitMap!!,"right")
+                callEnable(signRightBitMap!!, "right")
                 binding.btnNext.text = getString(R.string.next)
                 binding.tvName.text = getString(R.string.right)
                 i--

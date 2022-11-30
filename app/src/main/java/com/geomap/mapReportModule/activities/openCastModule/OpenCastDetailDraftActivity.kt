@@ -44,48 +44,13 @@ class OpenCastDetailDraftActivity : AppCompatActivity() {
             report = intent.getStringExtra("report")
             val type1 = object : TypeToken<OpenCastMappingReport>() {}.type
             ocReportData = gson.fromJson(report, type1)
-            postData()
+            binding.ocDetail = ocReportData
+            binding.llMainLayout.visibility = View.VISIBLE
         }
 
         binding.llBack.setOnClickListener {
             onBackPressed()
         }
- 
-        binding.btnViewPdf.setOnClickListener {
-            callViewPdfActivity(act, "1")
-        }
-    }
-
-    private fun postData() {
-        binding.ocDetail = ocReportData
-        binding.llMainLayout.visibility = View.VISIBLE
-        //binding.btnViewPdf.visibility = View.VISIBLE
-      /*  binding.tvMappingSheetNo.text = ocReportData.mappingSheetNo
-        binding.tvDate.text = ocReportData.ocDate
-        binding.tvMineSiteName.text = ocReportData.minesSiteName
-        binding.tvPitName.text = ocReportData.pitName
-        binding.tvPitLocation.text = ocReportData.pitLocation
-        binding.tvShiftInchargeName.text = ocReportData.shiftInChargeName
-        binding.tvGeologistName.text = ocReportData.geologistName
-        binding.tvFaceLocation.text = ocReportData.faceLocation
-        binding.tvFaceLength.text = ocReportData.faceLength
-        binding.tvFaceArea.text = ocReportData.faceArea
-        binding.tvFaceRockTypes.text = ocReportData.faceRockTypes
-        binding.tvBenchRL.text = ocReportData.benchRL
-        binding.tvBenchHeightWidth.text = ocReportData.benchHeightWidth
-        binding.tvBenchAngle.text = ocReportData.benchAngle
-        binding.tvDipDirectionAngle.text = ocReportData.dipDirectionAngle
-        binding.tvThicknessOfOre.text = ocReportData.thicknessOfOre
-        binding.tvThinessOfOverburden.text = ocReportData.thicknessOfOverburden
-        binding.tvThicknessOfInterburden.text = ocReportData.thicknessOfInterBurden
-        binding.tvObservedGradeOfOre.text = ocReportData.observedGradeOfOre
-        binding.tvSampleCollected.text = ocReportData.sampleCollected
-        binding.tvActualGradeOfOre.text = ocReportData.actualGradOfOre
-        binding.tvWeathering.text = ocReportData.weathering
-        binding.tvRockStrength.text = ocReportData.rockStrength
-        binding.tvWaterCondition.text = ocReportData.waterCondition
-        binding.tvTypeOfGeologicalStructures.text = ocReportData.typeOfGeologicalStructures
-        binding.tvTypeOfFaults.text = ocReportData.typeOfFaults*/
     }
 
     override fun onBackPressed() {

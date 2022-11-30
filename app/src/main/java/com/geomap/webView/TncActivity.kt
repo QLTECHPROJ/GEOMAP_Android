@@ -68,13 +68,13 @@ class TncActivity : AppCompatActivity() {
             }
         }
     }
-
-    private inner class CustomWebViewClient : WebViewClient() {
+    inner class CustomWebViewClient : WebViewClient() {
         override fun shouldOverrideUrlLoading(view : WebView, url : String) : Boolean {
             view.loadUrl(url)
             return true
         }
     }
+
 
     override fun onBackPressed() {
         finish()

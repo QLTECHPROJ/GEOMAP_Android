@@ -1,6 +1,5 @@
 package com.geomap.mapReportModule.activities.underGroundModule
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
@@ -12,35 +11,27 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.geomap.GeoMapApp.*
 import com.geomap.R
-import com.geomap.databinding.ActivityUnderGroundDetailBinding
 import com.geomap.databinding.ActivityUnderGroundDetailDraftBinding
 import com.geomap.databinding.AttributeLayoutBinding
 import com.geomap.mapReportModule.models.AttributeDataModel
-import com.geomap.mapReportModule.models.UnderGroundDetailsModel
-import com.geomap.roomDataBase.OpenCastMappingReport
 import com.geomap.roomDataBase.UnderGroundMappingReport
 import com.geomap.utils.CONSTANTS
-import com.geomap.utils.RetrofitService
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class UnderGroundDetailDraftActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityUnderGroundDetailDraftBinding
-    private lateinit var ctx: Context
-    private lateinit var act: Activity
-    private var attributesListAdapter: AttributesListAdapter? = null
-    private var userId: String? = null
-    private var report: String? = null
-    var ugReportData = UnderGroundMappingReport()
-    var attributeDataList = ArrayList<AttributeDataModel>()
+    private lateinit var binding : ActivityUnderGroundDetailDraftBinding
+    private lateinit var ctx : Context
+    private lateinit var act : Activity
+    private var attributesListAdapter : AttributesListAdapter? = null
+    private var userId : String? = null
+    private var report : String? = null
+    private var ugReportData = UnderGroundMappingReport()
+    private var attributeDataList = ArrayList<AttributeDataModel>()
     val gson = Gson()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_under_ground_detail_draft)
         ctx = this@UnderGroundDetailDraftActivity
@@ -48,52 +39,31 @@ class UnderGroundDetailDraftActivity : AppCompatActivity() {
         val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
         userId = shared.getString(CONSTANTS.userId, "")
 
+        binding.rvAttributesList.layoutManager = LinearLayoutManager(applicationContext)
+        binding.rvAttributesList.itemAnimator = DefaultItemAnimator()
         if (intent.extras != null) {
             report = intent.getStringExtra("report")
             val type1 = object : TypeToken<UnderGroundMappingReport>() {}.type
             ugReportData = gson.fromJson(report, type1)
-            postData()
+            binding.ugDetail = ugReportData
+            binding.llMainLayout.visibility = View.VISIBLE
+            val type2 = object : TypeToken<java.util.ArrayList<AttributeDataModel>>() {}.type
+            attributeDataList = gson.fromJson(ugReportData.attributes, type2)
+            if (attributeDataList.size == 0) {
+                binding.tvAttributes.visibility = View.GONE
+                binding.rvAttributesList.visibility = View.GONE
+            } else {
+                binding.tvAttributes.visibility = View.VISIBLE
+                binding.rvAttributesList.visibility = View.VISIBLE
+                attributesListAdapter = AttributesListAdapter(attributeDataList)
+                binding.rvAttributesList.adapter = attributesListAdapter
+            }
+
         }
 
         binding.llBack.setOnClickListener {
             onBackPressed()
         }
-        val mLayoutManager: RecyclerView.LayoutManager = LinearLayoutManager(applicationContext)
-        binding.rvAttributesList.layoutManager = mLayoutManager
-        binding.rvAttributesList.itemAnimator = DefaultItemAnimator()
-
-
-        binding.btnViewPdf.setOnClickListener {
-            callViewPdfActivity(act, "1")
-        }
-    }
-
-    private fun postData() {
-        binding.ugDetail = ugReportData
-        binding.llMainLayout.visibility = View.VISIBLE
-      /*
-        binding.tvSerialNo.text = ugReportData.mapSerialNo
-        binding.tvDate.text = ugReportData.ugDate
-        binding.tvShift.text = ugReportData.shift
-        binding.tvMappedBy.text = ugReportData.mappedBy
-        binding.tvScale.text = ugReportData.scale
-        binding.tvLocation.text = ugReportData.locations
-        binding.tvLoadName.text = ugReportData.veinOrLoad
-        binding.tvXCoordinate.text = ugReportData.xCordinate
-        binding.tvYCoordinate.text = ugReportData.yCordinate
-        binding.tvZCoordinate.text = ugReportData.zCordinate*/
-        val type1 = object : TypeToken<java.util.ArrayList<AttributeDataModel>>() {}.type
-        attributeDataList = gson.fromJson(ugReportData.attributes, type1)
-        if (attributeDataList.size == 0) {
-            binding.tvAttributes.visibility = View.GONE
-            binding.rvAttributesList.visibility = View.GONE
-        } else {
-            binding.tvAttributes.visibility = View.VISIBLE
-            binding.rvAttributesList.visibility = View.VISIBLE
-            attributesListAdapter = AttributesListAdapter(attributeDataList)
-            binding.rvAttributesList.adapter = attributesListAdapter
-        }
-
     }
 
     inner class AttributesListAdapter(
@@ -113,7 +83,6 @@ class UnderGroundDetailDraftActivity : AppCompatActivity() {
         inner class MyViewHolder(var binding : AttributeLayoutBinding) :
             RecyclerView.ViewHolder(binding.root)
 
-        @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
             holder.binding.tvName.text = listModel[position].name
             holder.binding.tvNos.text = listModel[position].nose

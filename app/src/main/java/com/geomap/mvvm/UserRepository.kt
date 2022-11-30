@@ -16,5 +16,8 @@ class UserRepository constructor(private val retrofitService : RetrofitService) 
 
     fun getOpenCastDetails(id : String) = retrofitService.getOpenCastDetails(id)
 
+    fun getPdfView(userId : String, id : String, reportType : String) =
+        retrofitService.getPdfView(userId, id, reportType)
+
     fun faqLists() = retrofitService.faqLists
 }

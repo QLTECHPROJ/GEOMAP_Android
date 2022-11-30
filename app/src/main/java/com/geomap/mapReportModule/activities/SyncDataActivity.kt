@@ -10,49 +10,37 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModelProvider
 import com.geomap.DataBaseFunctions
 import com.geomap.DataBaseFunctions.Companion.deleteOCReport
 import com.geomap.DataBaseFunctions.Companion.deleteUGReport
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivitySyncDataBinding
-import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity
 import com.geomap.mapReportModule.models.*
-import com.geomap.mvvm.AllViewModel
-import com.geomap.mvvm.UserModelFactory
-import com.geomap.mvvm.UserRepository
-import com.geomap.roomDataBase.GeoMapDatabase
 import com.geomap.roomDataBase.OpenCastMappingReport
 import com.geomap.roomDataBase.UnderGroundMappingReport
 import com.geomap.utils.APIClientProfile
 import com.geomap.utils.CONSTANTS
-import com.geomap.utils.RetrofitService
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit.RetrofitError
 import retrofit.mime.TypedFile
 import java.io.File
 import java.io.FileOutputStream
-import java.io.OutputStream
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.IOException
+import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class SyncDataActivity : AppCompatActivity() {
     private lateinit var binding : ActivitySyncDataBinding
     private lateinit var ctx : Context
     private lateinit var act : Activity
     private lateinit var ugList : java.util.ArrayList<UnderGroundMappingReport>
-    private lateinit var ocList : java.util.ArrayList<OpenCastMappingReport>
+    private lateinit var ocList : ArrayList<OpenCastMappingReport>
     private var userId = ""
     private var gson = Gson()
 
@@ -71,20 +59,26 @@ class SyncDataActivity : AppCompatActivity() {
         }
 
         binding.btnSyncData.setOnClickListener {
-            showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            getData()
+            if (isNetworkConnected(ctx)) {
+                showProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                getData()
+            } else {
+                showToast(getString(R.string.sync_data_internet_off), act)
+            }
         }
     }
 
     private fun getData() {
-
         DB = getDataBase(ctx)
-        DB.taskDao().geAllUnderGroundMappingReportASC(userId).observe(ctx as LifecycleOwner){lists ->
-            ugList  = lists as java.util.ArrayList<UnderGroundMappingReport>
-            setugObjArray(ugList)
-            Log.e("List UnderGroundMappingReport", "true" + DataBaseFunctions.gson.toJson(ugList).toString())
-        }
+        DB.taskDao().geAllUnderGroundMappingReportASC(userId)
+            .observe(ctx as LifecycleOwner) { lists ->
+                ugList = lists as java.util.ArrayList<UnderGroundMappingReport>
+                setugObjArray(ugList)
+                Log.e("List UnderGroundMappingReport",
+                    "true" + DataBaseFunctions.gson.toJson(ugList).toString())
+            }
     }
+
     private fun getAlbumStorageDir(albumName : String?) : File {
         val file = File(Environment.getExternalStoragePublicDirectory(
             Environment.DIRECTORY_PICTURES), albumName)
@@ -93,11 +87,11 @@ class SyncDataActivity : AppCompatActivity() {
         }
         return file
     }
-    private fun setugObjArray(ugList: ArrayList<UnderGroundMappingReport>) {
 
-        if(ugList.isNotEmpty()) {
+    private fun setugObjArray(ugList : ArrayList<UnderGroundMappingReport>) {
+        if (ugList.isNotEmpty()) {
             for (i in ugList.indices) {
-                var sdu = SyncDataUgModel()
+                val sdu = SyncDataUgModel()
                 sdu.userId = userId
                 sdu.name = ugList[i].name
                 sdu.comment = ugList[i].comment
@@ -148,29 +142,28 @@ class SyncDataActivity : AppCompatActivity() {
                 sdu.faceImage = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
 
                 ugModelList.add(sdu)
-                if(i == ugList.size - 1){
+                if (i == ugList.size - 1) {
                     callOcMethod()
                 }
             }
-        }else{
+        } else {
             callOcMethod()
         }
     }
 
     private fun callOcMethod() {
-
-        DB.taskDao().geAllOpenCastMappingReportASC(userId).observe(ctx as LifecycleOwner){lists ->
-            ocList = lists as java.util.ArrayList<OpenCastMappingReport>
-            Log.e("List OpenCastMappingReport", "true" + DataBaseFunctions.gson.toJson(ocList).toString())
+        DB.taskDao().geAllOpenCastMappingReportASC(userId).observe(ctx as LifecycleOwner) { lists ->
+            ocList = lists as ArrayList<OpenCastMappingReport>
+            Log.e("List OpenCastMappingReport",
+                "true" + DataBaseFunctions.gson.toJson(ocList).toString())
             setocObjArray(ocList)
         }
     }
 
-    private fun setocObjArray(ocList: java.util.ArrayList<OpenCastMappingReport>) {
-        if(ocList.isNotEmpty()) {
-
+    private fun setocObjArray(ocList : ArrayList<OpenCastMappingReport>) {
+        if (ocList.isNotEmpty()) {
             for (i in ocList.indices) {
-                var sdu = SyncDataOcModel()
+                val sdu = SyncDataOcModel()
                 sdu.userId = userId
                 sdu.minesSiteName = ocList[i].minesSiteName
                 sdu.mappingSheetNo = ocList[i].mappingSheetNo
@@ -208,7 +201,7 @@ class SyncDataActivity : AppCompatActivity() {
                 saveBitmapToJPG(ocList[i].image!!, photo)
                 scanMediaFile(photo)
 
-                sdu.image  = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
+                sdu.image = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
 
                 datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(
                     Date())
@@ -229,15 +222,16 @@ class SyncDataActivity : AppCompatActivity() {
                 sdu.clientsGeologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
 
                 ocModelList.add(sdu)
-                if(i == ocList.size - 1){
+                if (i == ocList.size - 1) {
                     callPostData()
                 }
             }
-        }else{
+        } else {
             hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
             callPostData()
         }
     }
+
     @Throws(IOException::class) fun saveBitmapToJPG(bitmap : Bitmap, photo : File?) {
         val newBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(newBitmap)
@@ -254,25 +248,26 @@ class SyncDataActivity : AppCompatActivity() {
         mediaScanIntent.data = contentUri
         ctx.sendBroadcast(mediaScanIntent)
     }
+
     private fun callPostData() {
         Log.e("SyncData UG Report", gson.toJson(ugModelList).toString())
-        Log.e("SyncData OC Report",   gson.toJson(ocModelList).toString())
+        Log.e("SyncData OC Report", gson.toJson(ocModelList).toString())
 
-        if(ugModelList.isNotEmpty() ) {
+        if (ugModelList.isNotEmpty()) {
             postData(0)
-        }else if(ugModelList.isEmpty() && ocModelList.isNotEmpty() ) {
+        } else if (ugModelList.isEmpty() && ocModelList.isNotEmpty()) {
             postOcData(0)
-        } else if(ocModelList.isEmpty() && ugModelList.isEmpty()){
+        } else if (ocModelList.isEmpty() && ugModelList.isEmpty()) {
             hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            showToast("Data is not available in Your Draft",act)
+            showToast("Data is not available in Your Draft", act)
         }
     }
 
-    private fun postData(i:Int) {
+    private fun postData(i : Int) {
         if (isNetworkConnected(ctx)) {
             if (ugModelList.isNotEmpty()) {
-                var attributeDataList = java.util.ArrayList<AttributeDataModel>()
-                val type1 = object : TypeToken<java.util.ArrayList<AttributeDataModel>>() {}.type
+                val attributeDataList : ArrayList<AttributeDataModel>
+                val type1 = object : TypeToken<ArrayList<AttributeDataModel>>() {}.type
                 attributeDataList = gson.fromJson(ugModelList[i].attribute, type1)
 
                 showProgressBar(binding.progressBar, binding.progressBarHolder, act)
@@ -284,8 +279,8 @@ class SyncDataActivity : AppCompatActivity() {
                     ugModelList[i].zCordinate, ugModelList[i].roofImage, ugModelList[i].leftImage,
                     ugModelList[i].rightImage, ugModelList[i].faceImage,
                     object : retrofit.Callback<SuccessModel> {
-                        override fun success(model: SuccessModel,
-                            response: retrofit.client.Response) {
+                        override fun success(model : SuccessModel,
+                            response : retrofit.client.Response) {
                             when (model.ResponseCode) {
                                 ctx.getString(R.string.ResponseCodesuccess) -> {
                                     hideProgressBar(binding.progressBar, binding.progressBarHolder,
@@ -307,7 +302,7 @@ class SyncDataActivity : AppCompatActivity() {
                             }
                         }
 
-                        override fun failure(e: RetrofitError) {
+                        override fun failure(e : RetrofitError) {
                             hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                             showToast(e.message, act)
                         }
@@ -319,44 +314,44 @@ class SyncDataActivity : AppCompatActivity() {
                     deleteDB("0")
                 }
             }
-        }else {
-            showToast(getString(R.string.no_server_found), act)
-        }
-    /*   if (isNetworkConnected(ctx)) {
-            showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            APIClientProfile.apiService!!.postSyncDataInsert(ugModelList,ocModelList,
-            object : retrofit.Callback<SuccessModel> {
-                override fun success(model : SuccessModel,
-                    response : retrofit.client.Response) {
-                    hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                    when (model.ResponseCode) {
-                        ctx.getString(R.string.ResponseCodesuccess) -> {
-                            showToast(model.ResponseMessage, act)
-                            deleteDB()
-                            finish()
-                        }
-                        ctx.getString(R.string.ResponseCodefail) -> {
-                            showToast(model.ResponseMessage, act)
-                        }
-                        ctx.getString(R.string.ResponseCodeDeleted) -> {
-                            callDelete403(act, model.ResponseMessage)
-                        }
-                    }
-                }
-
-                override fun failure(e : RetrofitError) {
-                    hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                    showToast(e.message, act)
-                }
-            })
         } else {
             showToast(getString(R.string.no_server_found), act)
-        }*/
+        }
+        /*   if (isNetworkConnected(ctx)) {
+                showProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                APIClientProfile.apiService!!.postSyncDataInsert(ugModelList,ocModelList,
+                object : retrofit.Callback<SuccessModel> {
+                    override fun success(model : SuccessModel,
+                        response : retrofit.client.Response) {
+                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                        when (model.ResponseCode) {
+                            ctx.getString(R.string.ResponseCodesuccess) -> {
+                                showToast(model.ResponseMessage, act)
+                                deleteDB()
+                                finish()
+                            }
+                            ctx.getString(R.string.ResponseCodefail) -> {
+                                showToast(model.ResponseMessage, act)
+                            }
+                            ctx.getString(R.string.ResponseCodeDeleted) -> {
+                                callDelete403(act, model.ResponseMessage)
+                            }
+                        }
+                    }
+
+                    override fun failure(e : RetrofitError) {
+                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                        showToast(e.message, act)
+                    }
+                })
+            } else {
+                showToast(getString(R.string.no_server_found), act)
+            }*/
     }
 
-    private fun postOcData(i: Int) {
+    private fun postOcData(i : Int) {
         if (isNetworkConnected(ctx)) {
-            if(ocModelList.isNotEmpty()) {
+            if (ocModelList.isNotEmpty()) {
                 showProgressBar(binding.progressBar, binding.progressBarHolder, act)
                 APIClientProfile.apiService!!.postOpenCastInsert(ocModelList[i].userId,
                     ocModelList[i].minesSiteName, ocModelList[i].mappingSheetNo,
@@ -374,8 +369,8 @@ class SyncDataActivity : AppCompatActivity() {
                     ocModelList[i].ocDate, ocModelList[i].dipDirectionAndAngle,
                     ocModelList[i].image, ocModelList[i].geologistSign,
                     ocModelList[i].clientsGeologistSign, object : retrofit.Callback<SuccessModel> {
-                        override fun success(model: SuccessModel,
-                            response: retrofit.client.Response) {
+                        override fun success(model : SuccessModel,
+                            response : retrofit.client.Response) {
                             if (model.ResponseCode == ctx.getString(R.string.ResponseCodesuccess)) {
                                 hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                                 when (model.ResponseCode) {
@@ -398,28 +393,28 @@ class SyncDataActivity : AppCompatActivity() {
                             }
                         }
 
-                        override fun failure(e: RetrofitError) {
+                        override fun failure(e : RetrofitError) {
                             hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                             showToast(e.message, act)
                         }
                     })
-            }else{
+            } else {
                 deleteDB("1")
             }
-        }else{
+        } else {
             showToast(getString(R.string.no_server_found), act)
         }
     }
 
-    private fun deleteDB(flag :String?) {
-        if(flag == "1"){
-            deleteOCReport(ctx,userId)
+    private fun deleteDB(flag : String?) {
+        if (flag == "1") {
+            deleteOCReport(ctx, userId)
             finish()
-        }else {
-            deleteUGReport(ctx,userId)
-            if(ocModelList.isNotEmpty()){
+        } else {
+            deleteUGReport(ctx, userId)
+            if (ocModelList.isNotEmpty()) {
                 postOcData(0)
-            }else{
+            } else {
                 finish()
             }
         }

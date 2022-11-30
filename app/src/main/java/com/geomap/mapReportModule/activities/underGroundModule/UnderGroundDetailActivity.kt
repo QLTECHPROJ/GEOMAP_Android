@@ -54,7 +54,7 @@ class UnderGroundDetailActivity : AppCompatActivity() {
         postData()
 
         binding.btnViewPdf.setOnClickListener {
-            callViewPdfActivity(act, "1")
+            callViewPdfActivity(act, "1", "ug", id)
         }
     }
 

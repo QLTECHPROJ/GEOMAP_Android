@@ -8,8 +8,6 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -34,7 +32,6 @@ import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFi
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormSecondStepActivity;
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormThirdStepActivity;
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundListActivity;
-import com.geomap.mapReportModule.activities.ViewPdfActivity;
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundListDraftActivity;
 import com.geomap.roomDataBase.GeoMapDatabase;
 import com.geomap.userModule.activities.ContactUsActivity;
@@ -45,7 +42,6 @@ import com.geomap.userModule.models.UserCommonDataModel;
 import com.geomap.utils.AppSignatureHashHelper;
 import com.geomap.utils.CONSTANTS;
 import com.geomap.utils.CryptLib;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -57,9 +53,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.TimeZone;
-
-import kotlin.Unit;
-import kotlin.jvm.functions.Function0;
 
 public class GeoMapApp extends Application {
     static Context mContext;
@@ -241,7 +234,7 @@ public class GeoMapApp extends Application {
         deleteCache(context);
     }
 
-    public static void saveLoginData(UserCommonDataModel.ResponseData responseData, Context ctx, String flag, Activity act, String checkLogin) {
+    public static void saveLoginData(UserCommonDataModel.ResponseData responseData, Context ctx, String flag, Activity act) {
         Gson gson = new Gson();
         SharedPreferences shared = ctx.getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = shared.edit();
@@ -254,7 +247,7 @@ public class GeoMapApp extends Application {
         editor.putString(CONSTANTS.mobile, responseData.getMobile());
         editor.putString(CONSTANTS.dob, responseData.getDob());
         editor.putString(CONSTANTS.profileImage, responseData.getProfileImage());
-        editor.putString(CONSTANTS.checkLogin, checkLogin);
+        editor.putString(CONSTANTS.checkLogin, "0");
         editor.apply();
         SharedPreferences shared1 = ctx.getSharedPreferences(CONSTANTS.PREFE_ACCESS_ArrayData, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor1 = shared1.edit();
@@ -407,9 +400,11 @@ public class GeoMapApp extends Application {
         }
     }
 
-    public static void callViewPdfActivity(Activity act, String finish) {
+    public static void callViewPdfActivity(Activity act, String finish, String reportType, String id) {
         Intent i = new Intent(act, ViewPdfActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        i.putExtra("id", id);
+        i.putExtra("reportType", reportType);
         act.startActivity(i);
         if (finish.equalsIgnoreCase("0")) {
             act.finish();

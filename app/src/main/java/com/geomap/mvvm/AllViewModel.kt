@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.geomap.faqModule.models.FaqListModel
 import com.geomap.mapReportModule.models.DashboardViewAllModel
 import com.geomap.mapReportModule.models.OpenCastDetailsModel
+import com.geomap.mapReportModule.models.PdfViewModel
 import com.geomap.mapReportModule.models.UnderGroundDetailsModel
 import com.geomap.userModule.models.UserCommonDataModel
 import retrofit2.Call
@@ -15,6 +16,7 @@ class AllViewModel constructor(private val repository : UserRepository) : ViewMo
     val userDetails = MutableLiveData<UserCommonDataModel>()
     val faqLists = MutableLiveData<FaqListModel>()
     val getURViewAllListing = MutableLiveData<DashboardViewAllModel>()
+    val getPdfView = MutableLiveData<PdfViewModel>()
     val getORViewAllListing = MutableLiveData<DashboardViewAllModel>()
     val getUnderGroundDetails = MutableLiveData<UnderGroundDetailsModel>()
     val getOpenCastDetails = MutableLiveData<OpenCastDetailsModel>()
@@ -99,6 +101,20 @@ class AllViewModel constructor(private val repository : UserRepository) : ViewMo
             }
 
             override fun onFailure(call : Call<OpenCastDetailsModel>, t : Throwable) {
+                errorMessage.postValue(t.message)
+            }
+        })
+    }
+
+    fun getPdfView(userId : String, id : String, reportType : String) {
+        val response = repository.getPdfView(userId, id, reportType)
+        response.enqueue(object : Callback<PdfViewModel> {
+            override fun onResponse(call : Call<PdfViewModel>,
+                response : Response<PdfViewModel>) {
+                getPdfView.postValue(response.body())
+            }
+
+            override fun onFailure(call : Call<PdfViewModel>, t : Throwable) {
                 errorMessage.postValue(t.message)
             }
         })

@@ -88,6 +88,11 @@ interface RetrofitService {
     @FormUrlEncoded
     fun getOpenCastDetails(@Field("id") id : String?) : Call<OpenCastDetailsModel>
 
+    @POST("report_pdf")
+    @FormUrlEncoded
+    fun getPdfView(@Field("userId") userId : String?, @Field("id") id : String?,
+        @Field("reportType") reportType : String?) : Call<PdfViewModel>
+
     @get:GET("attribute_data_number")
     val getAttributesList : Call<AttributesListModel>
 

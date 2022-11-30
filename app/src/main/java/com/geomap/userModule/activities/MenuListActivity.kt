@@ -122,11 +122,7 @@ class MenuListActivity : AppCompatActivity() {
         }
 
         binding.llSyncData.setOnClickListener {
-            if (isNetworkConnected(ctx)) {
-                callSyncDataActivity(act, "1")
-            } else {
-                showToast(ctx.getString(R.string.no_server_found), act)
-            }
+            callSyncDataActivity(act, "1")
         }
 
         binding.llLogOut.setOnClickListener {

@@ -236,7 +236,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             obj.image = binding.signPad.signatureBitmap
             saveOCReport(obj, ctx)
             binding.signPad.clear()
-            showToast("OpenCast Report Saved", act)
+            showToast(getString(R.string.opencast_saved), act)
             val i = Intent(ctx, DashboardActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(i)
