@@ -30,10 +30,27 @@
             android:text="@string/geological_attributes" />
 
         <TextView
-            android:id="@+id/tvAddAttributes"
+            android:id="@+id/tvNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvHeaderTitle"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:fontFamily="@font/inter_regular"
+            android:gravity="start"
+            android:justificationMode="inter_word"
+            android:paddingStart="@dimen/_16sdp"
+            android:paddingEnd="@dimen/_18sdp"
+            android:paddingBottom="@dimen/_6sdp"
+            android:text="@string/attribute_note"
+            android:textColor="@color/light_black"
+            android:textSize="@dimen/_12sdp"
+            tools:ignore="SpUsage" />
+
+        <TextView
+            android:id="@+id/tvAddAttributes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvNote"
             android:fontFamily="@font/inter_semi_bold"
             android:gravity="center|end"
             android:paddingStart="@dimen/_0sdp"

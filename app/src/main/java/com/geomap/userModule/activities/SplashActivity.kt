@@ -37,7 +37,6 @@ class SplashActivity : AppCompatActivity() {
     private lateinit var ctx : Context
     private lateinit var act : Activity
     private var userId : String? = ""
-    private var checkLogin : String? = ""
     private var key : String? = ""
     private lateinit var viewModel : AllViewModel
     private val retrofitService = RetrofitService.getInstance()
@@ -51,11 +50,6 @@ class SplashActivity : AppCompatActivity() {
         DB = Room.databaseBuilder(ctx, GeoMapDatabase::class.java, "GeoMap_database").build()
         val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
         userId = shared.getString(CONSTANTS.userId, "")
-        checkLogin = shared.getString(CONSTANTS.checkLogin, "")
-
-        if (checkLogin.equals("1")) {
-            showToast(getString(R.string.welcome_msg), act)
-        }
 
         key = AppSignatureHashHelper(this).appSignatures[0]
         if (key.equals("")) {
@@ -183,7 +177,7 @@ class SplashActivity : AppCompatActivity() {
                 viewModel.userDetails.observe(this) {
                     when {
                         it?.responseCode == getString(R.string.ResponseCodesuccess) -> {
-                            saveLoginData(it.responseData, ctx, "1", act, "0")
+                            saveLoginData(it.responseData, ctx, "1", act)
                         }
                         it.responseCode == act.getString(R.string.ResponseCodefail) -> {
                             showToast(it.responseMessage, act)

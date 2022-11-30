@@ -270,7 +270,7 @@ class SignInActivity : AppCompatActivity() {
                             val model : UserCommonDataModel? = response.body()!!
                             when (model!!.responseCode) {
                                 getString(R.string.ResponseCodesuccess) -> {
-                                    saveLoginData(model.responseData, ctx, "1", act, "1")
+                                    saveLoginData(model.responseData, ctx, "1", act)
                                 }
                                 getString(R.string.ResponseCodefail) -> {
                                     showToast(model.responseMessage, act)

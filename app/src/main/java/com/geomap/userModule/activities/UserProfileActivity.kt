@@ -307,12 +307,12 @@ class UserProfileActivity : AppCompatActivity() {
                                 binding.etEmail.setText(email)
                                 binding.etMobileNo.setText(mobileNo)
                                 binding.etDob.setText(dob)
-                                val date1 = dob!!.replace(",","")
-                                val dateSpilt = date1.split(" ")
-                                ageYear = dateSpilt[2].toInt()
-                                ageMonth = dateSpilt[1].toInt()
-                                ageDate = dateSpilt[0].toInt()
-                                birthYear = getAge(ageYear, ageMonth, ageDate)
+//                                val date1 = dob!!.replace(",","")
+//                                val dateSpilt = date1.split(" ")
+//                                ageYear = dateSpilt[2].toInt()
+//                                ageMonth = dateSpilt[1].toInt()
+//                                ageDate = dateSpilt[0].toInt()
+//                                birthYear = getAge(ageYear, ageMonth, ageDate)
 
                                 binding.ivCameraIconBg.visibility = View.VISIBLE
                                 binding.ivCameraIcon.visibility = View.VISIBLE

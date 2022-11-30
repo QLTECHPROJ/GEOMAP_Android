@@ -35,6 +35,7 @@ class DashboardActivity : AppCompatActivity() {
     private lateinit var act : Activity
     private var dialog : Dialog? = null
     private var userId : String? = ""
+    private var checkLogin : String? = ""
     private var underGroundListAdapter : UnderGroundListAdapter? = null
     private var openCastListAdapter : OpenCastListAdapter? = null
 
@@ -46,6 +47,14 @@ class DashboardActivity : AppCompatActivity() {
 
         val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
         userId = shared.getString(CONSTANTS.userId, "")
+        checkLogin = shared.getString(CONSTANTS.checkLogin, "")
+
+        if (checkLogin.equals("1")) {
+            showToast(getString(R.string.welcome_msg), act)
+            val editor = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, MODE_PRIVATE).edit()
+            editor.putString(CONSTANTS.checkLogin, "1")
+            editor.apply()
+        }
 
         binding.llMenu.setOnClickListener {
             callMenuListActivity(act, "1")
@@ -133,7 +142,7 @@ class DashboardActivity : AppCompatActivity() {
                                         binding.llOpenCastList.visibility = View.GONE
                                         binding.rvOpenCastList.visibility = View.GONE
                                         binding.tvFound.visibility = View.VISIBLE
-                                    }else {
+                                    } else {
 
                                         binding.tvFound.visibility = View.GONE
                                     }

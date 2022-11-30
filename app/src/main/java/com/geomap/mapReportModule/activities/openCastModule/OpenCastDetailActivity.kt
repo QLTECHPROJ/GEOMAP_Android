@@ -42,7 +42,7 @@ class OpenCastDetailActivity : AppCompatActivity() {
         postData()
 
         binding.btnViewPdf.setOnClickListener {
-            callViewPdfActivity(act, "1")
+            callViewPdfActivity(act, "1", "oc", id)
         }
     }
 
