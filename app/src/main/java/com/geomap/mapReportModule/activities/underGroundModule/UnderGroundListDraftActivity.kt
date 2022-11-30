@@ -13,7 +13,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,21 +21,20 @@ import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundDraftListBinding
 import com.geomap.databinding.MappingReportListLayoutBinding
-import com.geomap.roomDataBase.GeoMapDatabase
 import com.geomap.roomDataBase.UnderGroundMappingReport
 import com.geomap.utils.CONSTANTS
 import com.google.gson.Gson
 
 class UnderGroundListDraftActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityUnderGroundDraftListBinding
-    private lateinit var ctx: Context
-    private lateinit var act: Activity
-    private var userId: String? = null
+    private lateinit var binding : ActivityUnderGroundDraftListBinding
+    private lateinit var ctx : Context
+    private lateinit var act : Activity
+    private var userId : String? = null
     private var gson = Gson()
-    private var underGroundListAdapter: UnderGroundListAdapter? = null
+    private var underGroundListAdapter : UnderGroundListAdapter? = null
     var list = java.util.ArrayList<UnderGroundMappingReport>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_under_ground_draft_list)
         ctx = this@UnderGroundListDraftActivity
@@ -47,7 +45,7 @@ class UnderGroundListDraftActivity : AppCompatActivity() {
         binding.llBack.setOnClickListener {
             onBackPressed()
         }
-        val mLayoutManager: RecyclerView.LayoutManager = LinearLayoutManager(applicationContext)
+        val mLayoutManager : RecyclerView.LayoutManager = LinearLayoutManager(applicationContext)
         binding.rvUnderGroundList.layoutManager = mLayoutManager
         binding.rvUnderGroundList.itemAnimator = DefaultItemAnimator()
         postData()
@@ -55,10 +53,11 @@ class UnderGroundListDraftActivity : AppCompatActivity() {
 
     private fun postData() {
         DB = getDataBase(ctx)
-        DB.taskDao().geAllUnderGroundMappingReport1(userId).observe(ctx as LifecycleOwner){lists ->
-            list = lists as java.util.ArrayList<UnderGroundMappingReport>
-            callAdapter(list)
-        }
+        DB.taskDao().geAllUnderGroundMappingReport1(userId)
+            .observe(ctx as LifecycleOwner) { lists ->
+                list = lists as java.util.ArrayList<UnderGroundMappingReport>
+                callAdapter(list)
+            }
 /*        try {
             GeoMapDatabase.databaseWriteExecutor3.execute {
                 list = DB.taskDao().geAllUnderGroundMappingReport() as java.util.ArrayList<UnderGroundMappingReport>
@@ -69,7 +68,7 @@ class UnderGroundListDraftActivity : AppCompatActivity() {
         }*/
     }
 
-    private fun callAdapter(list: java.util.ArrayList<UnderGroundMappingReport>) {
+    private fun callAdapter(list : java.util.ArrayList<UnderGroundMappingReport>) {
         if (list.isEmpty()) {
             binding.rvUnderGroundList.visibility = View.GONE
             binding.tvFound.visibility = View.VISIBLE
@@ -78,7 +77,7 @@ class UnderGroundListDraftActivity : AppCompatActivity() {
         }
     }
 
-    private fun callData(list: ArrayList<UnderGroundMappingReport>) {
+    private fun callData(list : ArrayList<UnderGroundMappingReport>) {
 
         binding.rvUnderGroundList.visibility = View.VISIBLE
         binding.tvFound.visibility = View.GONE
@@ -89,19 +88,20 @@ class UnderGroundListDraftActivity : AppCompatActivity() {
     }
 
     inner class UnderGroundListAdapter(
-        private val listModel: ArrayList<UnderGroundMappingReport>) : RecyclerView.Adapter<UnderGroundListAdapter.MyViewHolder>() {
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-            val v: MappingReportListLayoutBinding = DataBindingUtil.inflate(
+        private val listModel : ArrayList<UnderGroundMappingReport>) :
+        RecyclerView.Adapter<UnderGroundListAdapter.MyViewHolder>() {
+        override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : MyViewHolder {
+            val v : MappingReportListLayoutBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context), R.layout.mapping_report_list_layout, parent,
                 false)
             return MyViewHolder(v)
         }
 
         inner class MyViewHolder(
-            var binding: MappingReportListLayoutBinding) : RecyclerView.ViewHolder(binding.root)
+            var binding : MappingReportListLayoutBinding) : RecyclerView.ViewHolder(binding.root)
 
         @SuppressLint("SetTextI18n")
-        override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
             holder.binding.tvName.text = listModel[position].name
             holder.binding.tvArea.text = listModel[position].locations
             holder.binding.tvDate.text = listModel[position].ugDate
@@ -118,7 +118,7 @@ class UnderGroundListDraftActivity : AppCompatActivity() {
             }
         }
 
-        override fun getItemCount(): Int {
+        override fun getItemCount() : Int {
             return listModel.size
         }
     }

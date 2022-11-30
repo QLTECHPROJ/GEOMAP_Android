@@ -70,13 +70,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".mapReportModule.activities.ViewPdfActivity"
-            android:configChanges="orientation|screenSize"
-            android:exported="false"
-            android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
             android:name=".mapReportModule.activities.underGroundModule.UnderGroundFormSecondStepActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false"

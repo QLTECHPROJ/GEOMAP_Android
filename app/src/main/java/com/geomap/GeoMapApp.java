@@ -20,7 +20,6 @@ import androidx.room.Room;
 import com.geomap.faqModule.activities.FaqActivity;
 import com.geomap.mapReportModule.activities.DashboardActivity;
 import com.geomap.mapReportModule.activities.SyncDataActivity;
-import com.geomap.mapReportModule.activities.ViewPdfActivity;
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastDetailActivity;
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastDetailDraftActivity;
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity;
@@ -394,17 +393,6 @@ public class GeoMapApp extends Application {
         Intent i = new Intent(act, OpenCastDetailDraftActivity.class);
         i.putExtra("report", reportData);
         i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        act.startActivity(i);
-        if (finish.equalsIgnoreCase("0")) {
-            act.finish();
-        }
-    }
-
-    public static void callViewPdfActivity(Activity act, String finish, String reportType, String id) {
-        Intent i = new Intent(act, ViewPdfActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        i.putExtra("id", id);
-        i.putExtra("reportType", reportType);
         act.startActivity(i);
         if (finish.equalsIgnoreCase("0")) {
             act.finish();

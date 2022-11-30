@@ -36,6 +36,7 @@
             tools:ignore="SpUsage" />
 
         <LinearLayout
+            android:id="@+id/llMainLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/_56sdp"
@@ -149,6 +150,7 @@
                 tools:listitem="@layout/mapping_report_list_layout" />
         </LinearLayout>
 
+
         <TextView
             android:id="@+id/tvFound"
             android:layout_width="match_parent"
@@ -167,6 +169,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="SpUsage" />
+
+        <ImageView
+            android:id="@+id/ivNetworkCheck"
+            android:layout_width="@dimen/_260sdp"
+            android:layout_height="@dimen/_260sdp"
+            android:contentDescription="@string/todo"
+            android:src="@drawable/network_bg"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
             android:id="@+id/progressBar"

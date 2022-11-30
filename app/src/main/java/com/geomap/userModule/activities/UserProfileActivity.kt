@@ -63,10 +63,10 @@ class UserProfileActivity : AppCompatActivity() {
     private lateinit var binding : ActivityUserProfileBinding
     private lateinit var ctx : Context
     private lateinit var act : Activity
-    var name : String? = null
-    var email : String? = null
-    var mobileNo : String? = null
-    var dob : String? = null
+    private var name : String? = null
+    private var email : String? = null
+    private var mobileNo : String? = null
+    private var dob : String? = null
     private var id : String? = null
     private var userId : String? = null
     private var profileImage : String? = null
@@ -200,7 +200,10 @@ class UserProfileActivity : AppCompatActivity() {
                 binding.etEmail.requestFocus()
                 binding.ltEmail.isErrorEnabled = true
                 binding.ltEmail.error = getString(R.string.pls_provide_valid_email)
-            } else {
+            } /*else if (binding.etMobileNo.text.toString().length == 1 || binding.etMobileNo.text.toString().length < 4 || binding.etMobileNo.text.toString().length > 15) {
+                binding.txtNumberError.visibility = View.VISIBLE
+                binding.txtNumberError.text = getString(R.string.valid_mobile_number)
+            }*/ else {
                 binding.ltEmail.isErrorEnabled = false
                 prepareUpdateData()
             }
@@ -308,11 +311,13 @@ class UserProfileActivity : AppCompatActivity() {
                                 binding.etEmail.setText(email)
                                 binding.etMobileNo.setText(mobileNo)
                                 binding.etDob.setText(dob)
-                                val outputFormat: DateFormat = SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT1)
-                                val inputFormat: DateFormat = SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT)
+                                val outputFormat : DateFormat =
+                                    SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT1)
+                                val inputFormat : DateFormat =
+                                    SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT)
                                 val inputText = dob
-                                val date: Date = inputFormat.parse(inputText)
-                                val outputText: String = outputFormat.format(date)
+                                val date : Date = inputFormat.parse(inputText)
+                                val outputText : String = outputFormat.format(date)
                                 Log.e("dob", outputText)
                                 var dateSpilt = outputText.split(" ")
                                 ageYear = dateSpilt[2].toInt()

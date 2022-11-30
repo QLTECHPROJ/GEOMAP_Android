@@ -25,9 +25,6 @@ import com.geomap.mvvm.UserModelFactory
 import com.geomap.mvvm.UserRepository
 import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class UnderGroundListActivity : AppCompatActivity() {
     private lateinit var binding : ActivityUnderGroundListBinding
@@ -66,10 +63,10 @@ class UnderGroundListActivity : AppCompatActivity() {
                 hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                 when {
                     it?.responseCode == getString(R.string.ResponseCodesuccess) -> {
-                        if(it.responseData!!.isEmpty()){
+                        if (it.responseData!!.isEmpty()) {
                             binding.rvUnderGroundList.visibility = View.GONE
                             binding.tvFound.visibility = View.VISIBLE
-                        }else {
+                        } else {
                             binding.rvUnderGroundList.visibility = View.VISIBLE
                             binding.tvFound.visibility = View.GONE
 
