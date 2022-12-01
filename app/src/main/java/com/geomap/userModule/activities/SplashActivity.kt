@@ -36,8 +36,8 @@ class SplashActivity : AppCompatActivity() {
     private lateinit var binding : ActivitySplashBinding
     private lateinit var ctx : Context
     private lateinit var act : Activity
-    private var userId : String? = ""
-    private var key : String? = ""
+    private var userId : String? = null
+    private var key : String? = null
     private lateinit var viewModel : AllViewModel
     private val retrofitService = RetrofitService.getInstance()
 

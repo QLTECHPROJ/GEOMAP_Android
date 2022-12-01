@@ -43,9 +43,8 @@ class SignInActivity : AppCompatActivity() {
     private lateinit var binding : ActivitySignInBinding
     private lateinit var ctx : Context
     private lateinit var act : Activity
-    var name : String? = ""
-    var password : String? = ""
-    private var dialog : Dialog? = null
+    var name : String? = null
+    var password : String? = null
 
     private var userTextWatcher : TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s : CharSequence, start : Int, count : Int, after : Int) {}

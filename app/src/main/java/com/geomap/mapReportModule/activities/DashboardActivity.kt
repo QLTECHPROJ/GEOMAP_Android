@@ -49,12 +49,16 @@ class DashboardActivity : AppCompatActivity() {
         userId = shared.getString(CONSTANTS.userId, "")
         checkLogin = shared.getString(CONSTANTS.checkLogin, "")
 
-        if (checkLogin.equals("1")) {
-            showToast(getString(R.string.welcome_msg), act)
-            val editor = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, MODE_PRIVATE).edit()
-            editor.putString(CONSTANTS.checkLogin, "1")
-            editor.apply()
-        }
+//        if (checkLogin.equals("0")) {
+//            showToast(getString(R.string.welcome_msg), act)
+//            val shared1 = getSharedPreferences(
+//                CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
+//            val editor = shared1.edit()
+//            editor.putString(CONSTANTS.checkLogin, "1")
+//            editor.apply()
+//            Log.e("checkLogin In", checkLogin.toString())
+//        }
+//        Log.e("checkLogin Out", checkLogin.toString())
 
         binding.llMenu.setOnClickListener {
             callMenuListActivity(act, "1")
@@ -136,6 +140,8 @@ class DashboardActivity : AppCompatActivity() {
                             val model : DashboardModel? = response.body()!!
                             when (model!!.responseCode) {
                                 getString(R.string.ResponseCodesuccess) -> {
+                                    binding.ivNetworkCheck.visibility = View.GONE
+                                    binding.llMainLayout.visibility = View.VISIBLE
                                     if (model.responseData?.underGround!!.isEmpty() && model.responseData?.openCast!!.isEmpty()) {
                                         binding.llUnderGroundList.visibility = View.GONE
                                         binding.rvUnderGroundList.visibility = View.GONE
@@ -186,7 +192,8 @@ class DashboardActivity : AppCompatActivity() {
                     }
                 })
         } else {
-            showToast(getString(R.string.no_server_found), act)
+            binding.ivNetworkCheck.visibility = View.VISIBLE
+            binding.llMainLayout.visibility = View.GONE
         }
     }
 

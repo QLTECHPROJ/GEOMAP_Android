@@ -197,11 +197,8 @@
     <string name="pls_select_your_type_of_geological_structures">Search your type of geological structures</string>
     <string name="pls_select_your_Type_of_faults">Search your type of faults</string>
     <string name="delete_ac_quotes">Are you sure you wish to permanently delete your account?</string>
-    <string name="enter_name">Enter name</string>
-    <string name="enter_email">Enter email</string>
-    <string name="enter_mobile_no">Enter mobile no</string>
-    <string name="enter_subject">Enter subject</string>
-    <string name="enter_message">Enter message</string>
+    <string name="subject">Subject</string>
+    <string name="message">Message</string>
     <string name="please_select_attribute">Please select attribute</string>
     <string name="please_select_nos">Please select nos</string>
     <string name="please_add_propery">Please add property</string>

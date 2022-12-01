@@ -20,11 +20,8 @@ import com.geomap.DataBaseFunctions
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityOpenCastDraftListBinding
-import com.geomap.databinding.ActivityOpenCastListBinding
 import com.geomap.databinding.MappingReportListLayoutBinding
-import com.geomap.roomDataBase.GeoMapDatabase
 import com.geomap.roomDataBase.OpenCastMappingReport
-import com.geomap.roomDataBase.UnderGroundMappingReport
 import com.geomap.utils.CONSTANTS
 import com.google.gson.Gson
 
@@ -35,7 +32,7 @@ class OpenCastListDraftActivity : AppCompatActivity() {
     private var userId : String? = null
     private var gson = Gson()
     private var openCastListAdapter : OpenCastListAdapter? = null
-    var list =  java.util.ArrayList<OpenCastMappingReport>()
+    var list = java.util.ArrayList<OpenCastMappingReport>()
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,13 +57,13 @@ class OpenCastListDraftActivity : AppCompatActivity() {
     private fun postData() {
 
         DB = getDataBase(ctx)
-        DB.taskDao().geAllOpenCastMappingReport1(userId).observe(ctx as LifecycleOwner){lists ->
+        DB.taskDao().geAllOpenCastMappingReport1(userId).observe(ctx as LifecycleOwner) { lists ->
             list = lists as java.util.ArrayList<OpenCastMappingReport>
             callAdapter(list)
         }
     }
 
-    private fun callAdapter(list: java.util.ArrayList<OpenCastMappingReport>) {
+    private fun callAdapter(list : java.util.ArrayList<OpenCastMappingReport>) {
         if (list.isEmpty()) {
             binding.rvOpenCastList.visibility = View.GONE
             binding.tvFound.visibility = View.VISIBLE
@@ -111,7 +108,8 @@ class OpenCastListDraftActivity : AppCompatActivity() {
                 "Mapping sheet no : <font color='black'>${listModel[position].mappingSheetNo}</font>"),
                 TextView.BufferType.SPANNABLE)
             holder.binding.llMainLayout.setOnClickListener {
-                callOpenCastDetailDraftActivity(act, "1", gson.toJson(listModel[position]).toString())
+                callOpenCastDetailDraftActivity(act, "1",
+                    gson.toJson(listModel[position]).toString())
             }
         }
 

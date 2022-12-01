@@ -3,6 +3,8 @@ package com.geomap.mapReportModule.activities.underGroundModule
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +25,7 @@ import com.geomap.mvvm.AllViewModel
 import com.geomap.mvvm.UserModelFactory
 import com.geomap.mvvm.UserRepository
 import com.geomap.utils.RetrofitService
+import java.util.*
 
 class UnderGroundDetailActivity : AppCompatActivity() {
     private lateinit var binding : ActivityUnderGroundDetailBinding
@@ -30,6 +33,7 @@ class UnderGroundDetailActivity : AppCompatActivity() {
     private lateinit var act : Activity
     private var attributesListAdapter : AttributesListAdapter? = null
     private var id : String? = null
+    private var userId : String? = null
     private lateinit var viewModel : AllViewModel
     private val retrofitService = RetrofitService.getInstance()
 
@@ -54,7 +58,33 @@ class UnderGroundDetailActivity : AppCompatActivity() {
         postData()
 
         binding.btnViewPdf.setOnClickListener {
-            callViewPdfActivity(act, "1", "ug", id)
+            if (isNetworkConnected(ctx)) {
+                showProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                viewModel = ViewModelProvider(this, UserModelFactory(
+                    UserRepository(retrofitService)))[AllViewModel::class.java]
+                viewModel.getPdfView(userId.toString(), id.toString(), "ug")
+                viewModel.getPdfView.observe(this) {
+                    when {
+                        it?.ResponseCode == getString(R.string.ResponseCodesuccess) -> {
+                            val format =
+                                "https://docs.google.com/viewerng/viewer?embedded=true&url=%s"
+                            val fullPath : String =
+                                java.lang.String.format(Locale.ENGLISH, format,
+                                    it.ResponseData.pdfLink)
+                            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(fullPath))
+                            startActivity(browserIntent)
+                        }
+                        it.ResponseCode == act.getString(R.string.ResponseCodefail) -> {
+                            showToast(it.ResponseMessage, act)
+                        }
+                        it.ResponseCode == act.getString(R.string.ResponseCodeDeleted) -> {
+                            callDelete403(act, it.ResponseMessage)
+                        }
+                    }
+                }
+            } else {
+                showToast(getString(R.string.no_server_found), act)
+            }
         }
     }
 
