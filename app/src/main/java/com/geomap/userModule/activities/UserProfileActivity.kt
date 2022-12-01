@@ -33,6 +33,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
@@ -41,6 +42,9 @@ import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityUserProfileBinding
 import com.geomap.mapReportModule.models.SuccessModel
+import com.geomap.mvvm.AllViewModel
+import com.geomap.mvvm.UserModelFactory
+import com.geomap.mvvm.UserRepository
 import com.geomap.userModule.models.ProfileUpdateModel
 import com.geomap.userModule.models.UserCommonDataModel
 import com.geomap.utils.APIClientProfile.apiService
@@ -82,6 +86,8 @@ class UserProfileActivity : AppCompatActivity() {
     private var mRequestPermissionHandler : RequestPermissionHandler? = null
     private var deleteDialog : Dialog? = null
     private var mLastClickTime : Long = 0
+    private lateinit var viewModel : AllViewModel
+    private val retrofitService = RetrofitService.getInstance()
 
     private var userTextWatcher : TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s : CharSequence, start : Int, count : Int, after : Int) {}
@@ -200,10 +206,7 @@ class UserProfileActivity : AppCompatActivity() {
                 binding.etEmail.requestFocus()
                 binding.ltEmail.isErrorEnabled = true
                 binding.ltEmail.error = getString(R.string.pls_provide_valid_email)
-            } /*else if (binding.etMobileNo.text.toString().length == 1 || binding.etMobileNo.text.toString().length < 4 || binding.etMobileNo.text.toString().length > 15) {
-                binding.txtNumberError.visibility = View.VISIBLE
-                binding.txtNumberError.text = getString(R.string.valid_mobile_number)
-            }*/ else {
+            } else {
                 binding.ltEmail.isErrorEnabled = false
                 prepareUpdateData()
             }
@@ -211,6 +214,32 @@ class UserProfileActivity : AppCompatActivity() {
     }
 
     private fun callDeleteAcApi() {
+        if (isNetworkConnected(ctx)) {
+            showProgressBar(binding.progressBar, binding.progressBarHolder, act)
+            viewModel = ViewModelProvider(this, UserModelFactory(
+                UserRepository(retrofitService)))[AllViewModel::class.java]
+            viewModel.postDeleteUser(
+                userId!!)
+            viewModel.postDeleteUser.observe(this) {
+                hideProgressBar(binding.progressBar,
+                    binding.progressBarHolder, act)
+                when {
+                    it?.ResponseCode == getString(R.string.ResponseCodesuccess) -> {
+                        showToast(it.ResponseMessage, act)
+                        finish()
+                    }
+                    it.ResponseCode == act.getString(R.string.ResponseCodefail) -> {
+                        showToast(it.ResponseMessage, act)
+                    }
+                    it.ResponseCode == act.getString(R.string.ResponseCodeDeleted) -> {
+                        callDelete403(act, it.ResponseMessage)
+                    }
+                }
+            }
+        } else {
+            showToast(getString(R.string.no_server_found), act)
+        }
+
         if (isNetworkConnected(ctx)) {
             RetrofitService.getInstance().postDeleteUser(
                 userId).enqueue(object : Callback<SuccessModel?> {

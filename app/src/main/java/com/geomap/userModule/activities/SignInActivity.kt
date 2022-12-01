@@ -24,20 +24,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivitySignInBinding
-import com.geomap.mapReportModule.models.SuccessModel
-import com.geomap.userModule.models.UserCommonDataModel
+import com.geomap.mvvm.AllViewModel
+import com.geomap.mvvm.UserModelFactory
+import com.geomap.mvvm.UserRepository
 import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
 import com.google.android.gms.tasks.Task
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.messaging.FirebaseMessaging
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class SignInActivity : AppCompatActivity() {
     private lateinit var binding : ActivitySignInBinding
@@ -45,6 +44,8 @@ class SignInActivity : AppCompatActivity() {
     private lateinit var act : Activity
     var name : String? = null
     var password : String? = null
+    private lateinit var viewModel : AllViewModel
+    private val retrofitService = RetrofitService.getInstance()
 
     private var userTextWatcher : TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s : CharSequence, start : Int, count : Int, after : Int) {}
@@ -194,35 +195,27 @@ class SignInActivity : AppCompatActivity() {
     private fun postForgotPassword(etEmail : TextInputEditText, dialog : Dialog) {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            RetrofitService.getInstance()
-                .postForgotPassword(etEmail.text.toString())
-                .enqueue(object : Callback<SuccessModel> {
-                    override fun onResponse(call : Call<SuccessModel>,
-                        response : Response<SuccessModel>) {
-                        try {
-                            hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                            val model : SuccessModel? = response.body()!!
-                            when (model!!.ResponseCode) {
-                                getString(R.string.ResponseCodesuccess) -> {
-                                    dialog.dismiss()
-                                    showToast(model.ResponseMessage, act)
-                                }
-                                getString(R.string.ResponseCodefail) -> {
-                                    showToast(model.ResponseMessage, act)
-                                }
-                                getString(R.string.ResponseCodeDeleted) -> {
-                                    callDelete403(act, model.ResponseMessage)
-                                }
-                            }
-                        } catch (e : Exception) {
-                            e.printStackTrace()
-                        }
+            viewModel = ViewModelProvider(this, UserModelFactory(
+                UserRepository(retrofitService)))[AllViewModel::class.java]
+            viewModel.postForgotPassword(etEmail.text.toString())
+            viewModel.postForgotPassword.observe(this) {
+                hideProgressBar(binding.progressBar,
+                    binding.progressBarHolder, act)
+                when {
+                    it?.ResponseCode == getString(R.string.ResponseCodesuccess) -> {
+                        dialog.dismiss()
+                        showToast(it.ResponseMessage, act)
                     }
-
-                    override fun onFailure(call : Call<SuccessModel>, t : Throwable) {
-                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                    it.ResponseCode == act.getString(R.string.ResponseCodefail) -> {
+                        showToast(it.ResponseMessage, act)
                     }
-                })
+                    it.ResponseCode == act.getString(R.string.ResponseCodeDeleted) -> {
+                        callDelete403(act, it.ResponseMessage)
+                    }
+                }
+            }
+        } else {
+            showToast(getString(R.string.no_server_found), act)
         }
     }
 
@@ -255,39 +248,28 @@ class SignInActivity : AppCompatActivity() {
         if (isNetworkConnected(ctx)) {
             binding.ltPassword.isErrorEnabled = false
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            RetrofitService.getInstance()
-                .postLoginData(binding.etName.text.toString(),
-                    binding.etPassword.text.toString(),
-                    fcmId,
-                    Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID),
-                    CONSTANTS.FLAG_ONE)
-                .enqueue(object : Callback<UserCommonDataModel> {
-                    override fun onResponse(call : Call<UserCommonDataModel>,
-                        response : Response<UserCommonDataModel>) {
-                        try {
-                            hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                            val model : UserCommonDataModel? = response.body()!!
-                            when (model!!.responseCode) {
-                                getString(R.string.ResponseCodesuccess) -> {
-                                    checkLogin = "1"
-                                    saveLoginData(model.responseData, ctx, "1", act)
-                                }
-                                getString(R.string.ResponseCodefail) -> {
-                                    showToast(model.responseMessage, act)
-                                }
-                                getString(R.string.ResponseCodeDeleted) -> {
-                                    callDelete403(act, model.responseMessage)
-                                }
-                            }
-                        } catch (e : Exception) {
-                            e.printStackTrace()
-                        }
+            viewModel = ViewModelProvider(this, UserModelFactory(
+                UserRepository(retrofitService)))[AllViewModel::class.java]
+            viewModel.postLoginData(binding.etName.text.toString(),
+                binding.etPassword.text.toString(),
+                fcmId,
+                Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID),
+                CONSTANTS.FLAG_ONE)
+            viewModel.postLoginData.observe(this) {
+                hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                when {
+                    it?.responseCode == getString(R.string.ResponseCodesuccess) -> {
+                        checkLogin = "1"
+                        saveLoginData(it.responseData, ctx, "1", act)
                     }
-
-                    override fun onFailure(call : Call<UserCommonDataModel>, t : Throwable) {
-                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                    it.responseCode == act.getString(R.string.ResponseCodefail) -> {
+                        showToast(it.responseMessage, act)
                     }
-                })
+                    it.responseCode == act.getString(R.string.ResponseCodeDeleted) -> {
+                        callDelete403(act, it.responseMessage)
+                    }
+                }
+            }
         } else {
             showToast(getString(R.string.no_server_found), act)
         }

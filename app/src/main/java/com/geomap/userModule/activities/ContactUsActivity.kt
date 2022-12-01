@@ -8,9 +8,13 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityContactUsBinding
+import com.geomap.mvvm.AllViewModel
+import com.geomap.mvvm.UserModelFactory
+import com.geomap.mvvm.UserRepository
 import com.geomap.userModule.models.ContactUsModel
 import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
@@ -23,6 +27,8 @@ class ContactUsActivity : AppCompatActivity() {
     lateinit var act : Activity
     lateinit var ctx : Context
     private var userId : String? = null
+    private lateinit var viewModel : AllViewModel
+    private val retrofitService = RetrofitService.getInstance()
     private var userTextWatcher : TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s : CharSequence, start : Int, count : Int, after : Int) {}
         override fun onTextChanged(s : CharSequence, start : Int, before : Int, count : Int) {
@@ -105,31 +111,29 @@ class ContactUsActivity : AppCompatActivity() {
 
     private fun postContactUs() {
         if (isNetworkConnected(ctx)) {
-            RetrofitService.getInstance().postContactUs(
-                userId, binding.etName.text.toString(), binding.etMobileNo.text.toString(),
+            showProgressBar(binding.progressBar, binding.progressBarHolder, act)
+            viewModel = ViewModelProvider(this, UserModelFactory(
+                UserRepository(retrofitService)))[AllViewModel::class.java]
+            viewModel.postContactUs(
+                userId!!, binding.etName.text.toString(), binding.etMobileNo.text.toString(),
                 binding.etEmail.text.toString(), binding.etSubject.text.toString(),
-                binding.etMessage.text.toString()).enqueue(object : Callback<ContactUsModel?> {
-                override fun onResponse(call : Call<ContactUsModel?>,
-                    response : Response<ContactUsModel?>) {
-                    val model = response.body()
-                    if (model!!.responseCode.equals(
-                            getString(R.string.ResponseCodesuccess))) {
-                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                        showToast(model.responseMessage, act)
+                binding.etMessage.text.toString())
+            viewModel.postContactUs.observe(this) {
+                hideProgressBar(binding.progressBar,
+                    binding.progressBarHolder, act)
+                when {
+                    it?.responseCode == getString(R.string.ResponseCodesuccess) -> {
+                        showToast(it.responseMessage, act)
                         finish()
-                    } else if (model.responseCode.equals(
-                            ctx.getString(R.string.ResponseCodefail))) {
-                        showToast(model.responseMessage, act)
-                    } else if (model.responseCode.equals(
-                            ctx.getString(R.string.ResponseCodeDeleted))) {
-                        callDelete403(act, model.responseMessage)
+                    }
+                    it.responseCode == act.getString(R.string.ResponseCodefail) -> {
+                        showToast(it.responseMessage, act)
+                    }
+                    it.responseCode == act.getString(R.string.ResponseCodeDeleted) -> {
+                        callDelete403(act, it.responseMessage)
                     }
                 }
-
-                override fun onFailure(call : Call<ContactUsModel?>, t : Throwable) {
-                    hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                }
-            })
+            }
         } else {
             showToast(getString(R.string.no_server_found), act)
         }

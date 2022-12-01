@@ -103,12 +103,15 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
 
             override fun onSigned() {
                 binding.btnSignPadClear.isEnabled = true
-                binding.btnSignPadClear.setBackgroundResource(R.drawable.enable_button)
+                binding.btnSignPadClear.setTextColor(
+                    ContextCompat.getColor(ctx, R.color.primary_theme))
+                binding.btnSignPadClear.setBackgroundResource(R.drawable.border_enable_button)
                 signCheck = "1"
             }
 
             override fun onClear() {
                 binding.btnSignPadClear.isEnabled = false
+                binding.btnSignPadClear.setTextColor(ContextCompat.getColor(ctx, R.color.white))
                 binding.btnSignPadClear.setBackgroundResource(R.drawable.disable_button)
                 signCheck = ""
             }

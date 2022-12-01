@@ -3,16 +3,18 @@ package com.geomap.mvvm
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.geomap.faqModule.models.FaqListModel
-import com.geomap.mapReportModule.models.DashboardViewAllModel
-import com.geomap.mapReportModule.models.OpenCastDetailsModel
-import com.geomap.mapReportModule.models.PdfViewModel
-import com.geomap.mapReportModule.models.UnderGroundDetailsModel
+import com.geomap.mapReportModule.models.*
+import com.geomap.userModule.models.ContactUsModel
 import com.geomap.userModule.models.UserCommonDataModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class AllViewModel constructor(private val repository : UserRepository) : ViewModel() {
+    val postLoginData = MutableLiveData<UserCommonDataModel>()
+    val postForgotPassword = MutableLiveData<SuccessModel>()
+    val postContactUs = MutableLiveData<ContactUsModel>()
+    val postDeleteUser = MutableLiveData<SuccessModel>()
     val userDetails = MutableLiveData<UserCommonDataModel>()
     val faqLists = MutableLiveData<FaqListModel>()
     val getURViewAllListing = MutableLiveData<DashboardViewAllModel>()
@@ -21,6 +23,52 @@ class AllViewModel constructor(private val repository : UserRepository) : ViewMo
     val getUnderGroundDetails = MutableLiveData<UnderGroundDetailsModel>()
     val getOpenCastDetails = MutableLiveData<OpenCastDetailsModel>()
     val errorMessage = MutableLiveData<String>()
+
+    fun postLoginData(userName : String, password : String,
+        deviceToken : String, deviceId : String, deviceType : String) {
+        val response =
+            repository.postLoginData(userName, password, deviceToken, deviceId, deviceType)
+        response.enqueue(object : Callback<UserCommonDataModel> {
+            override fun onResponse(call : Call<UserCommonDataModel>,
+                response : Response<UserCommonDataModel>) {
+                postLoginData.postValue(response.body())
+            }
+
+            override fun onFailure(call : Call<UserCommonDataModel>, t : Throwable) {
+                errorMessage.postValue(t.message)
+            }
+        })
+    }
+
+    fun postForgotPassword(email : String) {
+        val response =
+            repository.postForgotPassword(email)
+        response.enqueue(object : Callback<SuccessModel> {
+            override fun onResponse(call : Call<SuccessModel>,
+                response : Response<SuccessModel>) {
+                postForgotPassword.postValue(response.body())
+            }
+
+            override fun onFailure(call : Call<SuccessModel>, t : Throwable) {
+                errorMessage.postValue(t.message)
+            }
+        })
+    }
+
+    fun postDeleteUser(email : String) {
+        val response =
+            repository.postDeleteUser(email)
+        response.enqueue(object : Callback<SuccessModel> {
+            override fun onResponse(call : Call<SuccessModel>,
+                response : Response<SuccessModel>) {
+                postDeleteUser.postValue(response.body())
+            }
+
+            override fun onFailure(call : Call<SuccessModel>, t : Throwable) {
+                errorMessage.postValue(t.message)
+            }
+        })
+    }
 
     fun getUserDetails(userId : String) {
         val response = repository.getUserDetails(userId)
@@ -31,6 +79,21 @@ class AllViewModel constructor(private val repository : UserRepository) : ViewMo
             }
 
             override fun onFailure(call : Call<UserCommonDataModel>, t : Throwable) {
+                errorMessage.postValue(t.message)
+            }
+        })
+    }
+
+    fun postContactUs(userId : String, name : String, mobile : String, email : String,
+        subject : String, message : String) {
+        val response = repository.postContactUs(userId, name, mobile, email, subject, message)
+        response.enqueue(object : Callback<ContactUsModel> {
+            override fun onResponse(call : Call<ContactUsModel>,
+                response : Response<ContactUsModel>) {
+                postContactUs.postValue(response.body())
+            }
+
+            override fun onFailure(call : Call<ContactUsModel>, t : Throwable) {
                 errorMessage.postValue(t.message)
             }
         })

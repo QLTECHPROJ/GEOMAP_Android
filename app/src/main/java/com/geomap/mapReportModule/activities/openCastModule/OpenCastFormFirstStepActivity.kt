@@ -305,12 +305,14 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
 
             override fun onSigned() {
                 binding.btnGeologistSignPadClear.isEnabled = true
-                binding.btnGeologistSignPadClear.setBackgroundResource(R.drawable.enable_button)
+                binding.btnGeologistSignPadClear.setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
+                binding.btnGeologistSignPadClear.setBackgroundResource(R.drawable.border_enable_button)
                 geologistSignCheck = "1"
             }
 
             override fun onClear() {
                 binding.btnGeologistSignPadClear.isEnabled = false
+                binding.btnGeologistSignPadClear.setTextColor(ContextCompat.getColor(ctx, R.color.white))
                 binding.btnGeologistSignPadClear.setBackgroundResource(
                     R.drawable.disable_button)
                 geologistSignCheck = ""
@@ -325,14 +327,16 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
 
             override fun onSigned() {
                 binding.btnGeologistClientSignPadClear.isEnabled = true
+                binding.btnGeologistClientSignPadClear.setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
                 binding.btnGeologistClientSignPadClear.setBackgroundResource(
-                    R.drawable.enable_button)
+                    R.drawable.border_enable_button)
                 geologistClientSignCheck = "1"
 
             }
 
             override fun onClear() {
                 binding.btnGeologistClientSignPadClear.isEnabled = false
+                binding.btnGeologistClientSignPadClear.setTextColor(ContextCompat.getColor(ctx, R.color.white))
                 binding.btnGeologistClientSignPadClear.setBackgroundResource(
                     R.drawable.disable_button)
                 geologistClientSignCheck = ""
