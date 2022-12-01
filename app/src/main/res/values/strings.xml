@@ -19,12 +19,10 @@
     <string name="takePhoto">Take Photo</string>
     <string name="chooseFromGallary">Choose From Gallery</string>
     <string name="addPhoto">Add Photo!</string>
-    <string name="removeProfilePicture">Remove Profile Picture</string>
     <string name="cancel_small">Cancel</string>
     <string name="Settings">Settings</string>
     <string name="not_now">Not Now</string>
     <string name="pls_provide_valid_email">Please provide us with a valid email ID</string>
-    <string name="pls_provide_valid_password">Password should contain at least one lowercase, one special symbol and minimum 8 character long</string>
     <string name="invalid_password_less_than_8_chars">Password should be more than 8 characters</string>
     <string name="invalid_password_not_mix_of_char_types">Password must contain lowercase, digits and special characters</string>
     <string name="check_dob">You must be 18 years or above in order to access the app</string>
@@ -48,16 +46,10 @@
     <string name="add_report">Add Report</string>
     <string name="support_quotes">Please contact support at</string>
     <string name="support_link">info@geomap.in</string>
-    <string name="ok">ok</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="close">Close</string>
     <string name="no_result_found">No result found</string>
-    <string name="no_data_found">No data found</string>
-    <string name="t_n_csf">T&amp;Cs</string>
-    <string name="privacy_policy">Privacy Policy</string>
-    <string name="chatSupport">Start Your Chat Now</string>
-    <string name="how_refer_works">How Refer Works</string>
     <string name="add_under_ground_mapping_report">Underground Mapping</string>
     <string name="add_opencast_mapping_report">OpenCast Mapping</string>
     <string name="undergrounds_mapping_report_details">Underground Mapping Report Details</string>
@@ -66,7 +58,6 @@
     <string name="select_attributes">Select Attributes</string>
     <string name="select_nos">Select Nos</string>
     <string name="geological_mapping">Geological Mapping</string>
-    <string name="opencast_mapping">Open Cast Mapping</string>
     <string name="email">Email</string>
     <string name="mobile_no">Mobile no</string>
     <string name="delete_account">Delete Account</string>
@@ -74,7 +65,6 @@
     <string name="mapping_sheet_no">Mapping sheet no</string>
     <string name="map_serial_no">Map serial no.</string>
     <string name="date">Date:</string>
-    <string name="date_">Date</string>
     <string name="shift">Shift:</string>
     <string name="shift_">Shift</string>
     <string name="mapped_by">Mapped by:</string>
@@ -141,7 +131,6 @@
     <string name="type_of_geological_structures_">Type of geological structures</string>
     <string name="type_of_faults">Type of faults:</string>
     <string name="type_of_faults_">Type of faults</string>
-    <string name="project_maining_pdf">Project Maining PDF</string>
     <string name="project_maining_data_file">Project Maining\n Data File</string>
     <string name="submit">Submit</string>
     <string name="next_step">Next Step</string>
@@ -150,8 +139,6 @@
     <string name="face">Face</string>
     <string name="left">Left</string>
     <string name="right">Right</string>
-    <string name="mineralization">Mineralization</string>
-    <string name="mineralization_1">Mineralization 1</string>
     <string name="add_description">Add description....</string>
     <string name="mapping_sheet_no_1523">Mapping Sheet No: 1523</string>
     <string name="mines_site_name">Mines site name</string>
@@ -165,12 +152,7 @@
     <string name="day_shift">Day shift</string>
     <string name="data">DATA</string>
     <string name="vein_load_">Vein/load</string>
-    <string name="clear_signature">Clear Signature</string>
     <string name="clear">Clear</string>
-    <string name="clear_roof">Clear Roof</string>
-    <string name="clear_left">Clear Left</string>
-    <string name="clear_right">Clear Right</string>
-    <string name="clear_face">Clear Face</string>
     <string name="clear_geologist_signature">Clear Geologist Signature</string>
     <string name="clear_geologist_client_signature">Clear Client’s Geologist Signature</string>
     <string name="choose_your_attributes">Choose your attributes</string>
@@ -181,11 +163,6 @@
     <string name="choose_your_water_condition">Choose your water condition</string>
     <string name="choose_your_type_of_geological_structures">Choose your type of geological structures</string>
     <string name="choose_your_Type_of_faults">Choose your type of faults</string>
-    <string name="pls_select_weathering">Please select weathering</string>
-    <string name="pls_select_rock_strength">Please select rock strength</string>
-    <string name="pls_select_water_condition">Please select water condition</string>
-    <string name="pls_select_type_of_geological_structures">Please select type of geological structures</string>
-    <string name="pls_select_type_of_faults">Please select type of faults</string>
     <string name="pls_add_geologist_sign">Please add geologist sign</string>
     <string name="pls_add_geologist_client_sign">Please add geologist client sign</string>
     <string name="pls_select_your_attributes">Search your attributes</string>
@@ -209,9 +186,6 @@
     <string name="underground_saved">Your Underground report  has been saved</string>
     <string name="opencast_saved">Your OpenCast report has been saved</string>
     <string name="sync_data_internet_off">Need an active internet connection to synchronise data</string>
-    <string name="opencast_report">OpenCast Report</string>
-    <string name="underground_report">Underground Report</string>
-    <string name="finish">Finish</string>
     <string name="attribute_note"><i><b>Note :</b> You can add multiple attributes in the mapping report using the add attribute button</i></string>
     <string name="there_are_no_reports_at_the_moment">There are no reports at the moment</string>
     <string name="all_data_has_been_synchronised">All data has been synchronised</string>
