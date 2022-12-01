@@ -23,39 +23,33 @@ class ContactUsActivity : AppCompatActivity() {
     lateinit var act : Activity
     lateinit var ctx : Context
     private var userId : String? = null
-    var name : String? = ""
-    var mobileNo : String? = ""
-    var email : String? = ""
-    var subject : String? = ""
-    var message : String? = ""
-
     private var userTextWatcher : TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s : CharSequence, start : Int, count : Int, after : Int) {}
         override fun onTextChanged(s : CharSequence, start : Int, before : Int, count : Int) {
-            name = binding.etName.text.toString()
-            mobileNo = binding.etMobileNo.text.toString()
-            email = binding.etEmail.text.toString()
-            subject = binding.etSubject.text.toString()
-            message = binding.etMessage.text.toString()
+            val name = binding.etName.text.toString()
+            val mobileNo = binding.etMobileNo.text.toString()
+            val email = binding.etEmail.text.toString()
+            val subject = binding.etSubject.text.toString()
+            val message = binding.etMessage.text.toString()
 
             when {
-                name.equals("") -> {
+                name == "" -> {
                     allDisable(binding.btnSubmit)
                 }
 
-                mobileNo.equals("") -> {
+                mobileNo.length < 4 -> {
                     allDisable(binding.btnSubmit)
                 }
 
-                email.equals("") -> {
+                email == "" -> {
                     allDisable(binding.btnSubmit)
                 }
 
-                subject.equals("") -> {
+                subject == "" -> {
                     allDisable(binding.btnSubmit)
                 }
 
-                message.equals("") -> {
+                message == "" -> {
                     allDisable(binding.btnSubmit)
                 }
 

@@ -57,6 +57,7 @@ public class GeoMapApp extends Application {
     static Context mContext;
     static GeoMapApp GeoMapApp;
     public static String fcmId = "";
+    public static String checkLogin = "";
     public static GeoMapDatabase DB;
 
 
@@ -208,6 +209,7 @@ public class GeoMapApp extends Application {
     }
 
     public static void deleteCall(Context context) {
+        checkLogin = "";
         SharedPreferences preferences = context.getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = preferences.edit();
         edit.remove(CONSTANTS.userId);
@@ -222,7 +224,6 @@ public class GeoMapApp extends Application {
         edit.remove(CONSTANTS.supportTitle);
         edit.remove(CONSTANTS.supportText);
         edit.remove(CONSTANTS.supportEmail);
-        edit.remove(CONSTANTS.checkLogin);
         edit.apply();
 
         SharedPreferences preferencess = context.getSharedPreferences(CONSTANTS.FCMToken, Context.MODE_PRIVATE);
@@ -246,7 +247,6 @@ public class GeoMapApp extends Application {
         editor.putString(CONSTANTS.mobile, responseData.getMobile());
         editor.putString(CONSTANTS.dob, responseData.getDob());
         editor.putString(CONSTANTS.profileImage, responseData.getProfileImage());
-        editor.putString(CONSTANTS.checkLogin, "0");
         editor.apply();
         SharedPreferences shared1 = ctx.getSharedPreferences(CONSTANTS.PREFE_ACCESS_ArrayData, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor1 = shared1.edit();

@@ -269,6 +269,7 @@ class SignInActivity : AppCompatActivity() {
                             val model : UserCommonDataModel? = response.body()!!
                             when (model!!.responseCode) {
                                 getString(R.string.ResponseCodesuccess) -> {
+                                    checkLogin = "1"
                                     saveLoginData(model.responseData, ctx, "1", act)
                                 }
                                 getString(R.string.ResponseCodefail) -> {

@@ -9,6 +9,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Html
+import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.ImageView
@@ -35,7 +36,6 @@ class DashboardActivity : AppCompatActivity() {
     private lateinit var act : Activity
     private var dialog : Dialog? = null
     private var userId : String? = ""
-    private var checkLogin : String? = ""
     private var underGroundListAdapter : UnderGroundListAdapter? = null
     private var openCastListAdapter : OpenCastListAdapter? = null
 
@@ -47,18 +47,11 @@ class DashboardActivity : AppCompatActivity() {
 
         val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
         userId = shared.getString(CONSTANTS.userId, "")
-        checkLogin = shared.getString(CONSTANTS.checkLogin, "")
 
-//        if (checkLogin.equals("0")) {
-//            showToast(getString(R.string.welcome_msg), act)
-//            val shared1 = getSharedPreferences(
-//                CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
-//            val editor = shared1.edit()
-//            editor.putString(CONSTANTS.checkLogin, "1")
-//            editor.apply()
-//            Log.e("checkLogin In", checkLogin.toString())
-//        }
-//        Log.e("checkLogin Out", checkLogin.toString())
+        if (checkLogin.equals("1")) {
+            showToast(getString(R.string.welcome_msg), act)
+            checkLogin = ""
+        }
 
         binding.llMenu.setOnClickListener {
             callMenuListActivity(act, "1")

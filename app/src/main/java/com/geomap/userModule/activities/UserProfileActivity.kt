@@ -103,7 +103,7 @@ class UserProfileActivity : AppCompatActivity() {
                     allDisable(binding.btnUpdate)
                 }
 
-                mobileNoUser.equals("", ignoreCase = true) -> {
+                mobileNoUser.length < 4 -> {
                     allDisable(binding.btnUpdate)
                 }
 

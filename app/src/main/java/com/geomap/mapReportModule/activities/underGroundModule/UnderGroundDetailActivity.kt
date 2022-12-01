@@ -24,6 +24,7 @@ import com.geomap.mapReportModule.models.UnderGroundDetailsModel
 import com.geomap.mvvm.AllViewModel
 import com.geomap.mvvm.UserModelFactory
 import com.geomap.mvvm.UserRepository
+import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
 import java.util.*
 
@@ -42,6 +43,9 @@ class UnderGroundDetailActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_under_ground_detail)
         ctx = this@UnderGroundDetailActivity
         act = this@UnderGroundDetailActivity
+
+        val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
+        userId = shared.getString(CONSTANTS.userId, "")
 
         if (intent.extras != null) {
             id = intent.extras?.getString("id")
@@ -64,6 +68,8 @@ class UnderGroundDetailActivity : AppCompatActivity() {
                     UserRepository(retrofitService)))[AllViewModel::class.java]
                 viewModel.getPdfView(userId.toString(), id.toString(), "ug")
                 viewModel.getPdfView.observe(this) {
+                    hideProgressBar(binding.progressBar,
+                        binding.progressBarHolder, act)
                     when {
                         it?.ResponseCode == getString(R.string.ResponseCodesuccess) -> {
                             val format =

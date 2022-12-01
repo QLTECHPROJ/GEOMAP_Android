@@ -6,7 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -56,11 +55,15 @@ class OpenCastDetailActivity : AppCompatActivity() {
                     UserRepository(retrofitService)))[AllViewModel::class.java]
                 viewModel.getPdfView(userId.toString(), id.toString(), "oc")
                 viewModel.getPdfView.observe(this) {
+                    hideProgressBar(binding.progressBar,
+                        binding.progressBarHolder, act)
                     when {
                         it?.ResponseCode == getString(R.string.ResponseCodesuccess) -> {
-                            val format = "https://docs.google.com/viewerng/viewer?embedded=true&url=%s"
+                            val format =
+                                "https://docs.google.com/viewerng/viewer?embedded=true&url=%s"
                             val fullPath : String =
-                                java.lang.String.format(Locale.ENGLISH, format, it.ResponseData.pdfLink)
+                                java.lang.String.format(Locale.ENGLISH, format,
+                                    it.ResponseData.pdfLink)
                             val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(fullPath))
                             startActivity(browserIntent)
                         }
