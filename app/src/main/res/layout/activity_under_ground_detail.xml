@@ -167,7 +167,7 @@
                             android:id="@+id/rvAttributesList"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_14sdp"
                             android:nestedScrollingEnabled="true"
                             android:overScrollMode="never"
                             tools:itemCount="4"

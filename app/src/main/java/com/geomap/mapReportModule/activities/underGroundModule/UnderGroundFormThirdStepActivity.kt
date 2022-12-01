@@ -111,7 +111,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
 
             override fun onSigned() {
                 binding.btnClear.isEnabled = true
-                binding.btnClear.setBackgroundResource(R.drawable.enable_button)
+                binding.btnClear.setBackgroundResource(R.drawable.border_enable_button)
             }
 
             override fun onClear() {
@@ -279,7 +279,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         binding.signPad.signatureBitmap = signBitMap
         Log.e(bitmapString, "$i")
         binding.btnClear.isEnabled = true
-        binding.btnClear.setBackgroundResource(R.drawable.enable_button)
+        binding.btnClear.setBackgroundResource(R.drawable.border_enable_button)
     }
 
     private fun scanMediaFile(photo : File) {

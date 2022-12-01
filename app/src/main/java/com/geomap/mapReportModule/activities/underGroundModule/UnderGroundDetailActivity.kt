@@ -159,6 +159,10 @@ class UnderGroundDetailActivity : AppCompatActivity() {
             holder.binding.tvName.text = listModel[position].name
             holder.binding.tvNos.text = listModel[position].nose
             holder.binding.tvProperties.text = listModel[position].properties
+
+            if ((listModel.size - position) <= 1){
+                holder.binding.viewLine.visibility = View.GONE
+            }
         }
 
         override fun getItemCount() : Int {

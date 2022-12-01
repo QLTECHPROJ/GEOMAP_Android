@@ -303,39 +303,31 @@
                     android:visibility="gone"
                     tools:ignore="SpUsage" />
 
-                <androidx.cardview.widget.CardView
+                <LinearLayout
                     android:id="@+id/cvAttributesList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_14sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
                     android:layout_marginBottom="@dimen/_2sdp"
-                    android:visibility="gone"
-                    app:cardCornerRadius="@dimen/_14sdp"
-                    app:cardElevation="@dimen/_1sdp">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
-                    <LinearLayout
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvAttributesList"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:layout_marginHorizontal="@dimen/_1sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:nestedScrollingEnabled="false"
+                        android:orientation="horizontal"
+                        android:overScrollMode="never"
+                        android:scrollbars="vertical"
+                        android:visibility="visible"
+                        tools:itemCount="4"
+                        tools:listitem="@layout/cardview_attribute_layout" />
+                </LinearLayout>
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rvAttributesList"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:layout_marginBottom="@dimen/_10sdp"
-                            android:nestedScrollingEnabled="false"
-                            android:orientation="horizontal"
-                            android:overScrollMode="never"
-                            android:scrollbars="vertical"
-                            android:visibility="visible"
-                            tools:itemCount="4"
-                            tools:listitem="@layout/attribute_layout" />
-                    </LinearLayout>
-
-                </androidx.cardview.widget.CardView>
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

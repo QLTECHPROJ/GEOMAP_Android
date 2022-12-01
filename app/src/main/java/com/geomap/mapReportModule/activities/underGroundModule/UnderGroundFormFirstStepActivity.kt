@@ -24,6 +24,7 @@ import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundFormFirstStepBinding
 import com.geomap.databinding.AttributeLayoutBinding
+import com.geomap.databinding.CardviewAttributeLayoutBinding
 import com.geomap.databinding.CommonPopupLayoutBinding
 import com.geomap.mapReportModule.models.AttributeDataModel
 import com.geomap.mapReportModule.models.AttributesListModel
@@ -289,16 +290,16 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
     ) : RecyclerView.Adapter<AttributesListAdapter.MyViewHolder>() {
 
         override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : MyViewHolder {
-            val v : AttributeLayoutBinding =
+            val v : CardviewAttributeLayoutBinding =
                 DataBindingUtil.inflate(
-                    LayoutInflater.from(parent.context), R.layout.attribute_layout,
+                    LayoutInflater.from(parent.context), R.layout.cardview_attribute_layout,
                     parent,
                     false
                 )
             return MyViewHolder(v)
         }
 
-        inner class MyViewHolder(var binding : AttributeLayoutBinding) :
+        inner class MyViewHolder(var binding : CardviewAttributeLayoutBinding) :
             RecyclerView.ViewHolder(binding.root)
 
         @SuppressLint("SetTextI18n")
