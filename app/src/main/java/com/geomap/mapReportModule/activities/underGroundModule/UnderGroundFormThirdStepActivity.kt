@@ -111,11 +111,13 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
 
             override fun onSigned() {
                 binding.btnClear.isEnabled = true
+                binding.btnClear.setTextColor(ContextCompat.getColor(ctx, R.color.white))
                 binding.btnClear.setBackgroundResource(R.drawable.border_enable_button)
             }
 
             override fun onClear() {
                 binding.btnClear.isEnabled = false
+                binding.btnClear.setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
                 binding.btnClear.setBackgroundResource(R.drawable.disable_button)
             }
         })
@@ -272,6 +274,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
     private fun callDisable() {
         binding.signPad.clear()
         binding.btnClear.isEnabled = false
+        binding.btnClear.setTextColor(ContextCompat.getColor(ctx, R.color.white))
         binding.btnClear.setBackgroundResource(R.drawable.disable_button)
     }
 
@@ -279,6 +282,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         binding.signPad.signatureBitmap = signBitMap
         Log.e(bitmapString, "$i")
         binding.btnClear.isEnabled = true
+        binding.btnClear.setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
         binding.btnClear.setBackgroundResource(R.drawable.border_enable_button)
     }
 
