@@ -6,7 +6,7 @@
     <string name="ResponseCodeDeleted">403</string>
     <string name="no_server_found">You are not currently connected to internet. Please try again.!</string>
     <string name="hello_again">Hello Again!</string>
-    <string name="welcome_back_you_ve_been_missed">Welcome back you’ve\n been missed!</string>
+    <string name="welcome_back_you_ve_been_missed">Harnessing the full potential of resource mining</string>
     <string name="name">Name</string>
     <string name="name_">Name:</string>
     <string name="password">Password</string>
@@ -216,4 +216,6 @@
     <string name="underground_report">Underground Report</string>
     <string name="finish">Finish</string>
     <string name="attribute_note"><i><b>Note :</b> You can add multiple attributes in the mapping report using the add attribute button</i></string>
+    <string name="there_are_no_reports_at_the_moment">There are no reports at the moment</string>
+    <string name="all_data_has_been_synchronised">All data has been synchronised</string>
 </resources>

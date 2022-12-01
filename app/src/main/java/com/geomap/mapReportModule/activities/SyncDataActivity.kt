@@ -281,11 +281,9 @@ class SyncDataActivity : AppCompatActivity() {
                     object : retrofit.Callback<SuccessModel> {
                         override fun success(model : SuccessModel,
                             response : retrofit.client.Response) {
+                            hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                             when (model.ResponseCode) {
                                 ctx.getString(R.string.ResponseCodesuccess) -> {
-                                    hideProgressBar(binding.progressBar, binding.progressBarHolder,
-                                        act)
-                                    showToast(model.ResponseMessage, act)
                                     ugModelList.removeAt(0)
                                     if (ugModelList.isNotEmpty()) {
                                         postData(0)
@@ -375,7 +373,6 @@ class SyncDataActivity : AppCompatActivity() {
                                 hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                                 when (model.ResponseCode) {
                                     ctx.getString(R.string.ResponseCodesuccess) -> {
-                                        showToast(model.ResponseMessage, act)
                                         ocModelList.removeAt(i)
                                         if (ocModelList.isNotEmpty()) {
                                             postOcData(0)
@@ -409,12 +406,14 @@ class SyncDataActivity : AppCompatActivity() {
     private fun deleteDB(flag : String?) {
         if (flag == "1") {
             deleteOCReport(ctx, userId)
+            showToast(getString(R.string.all_data_has_been_synchronised), act)
             finish()
         } else {
             deleteUGReport(ctx, userId)
             if (ocModelList.isNotEmpty()) {
                 postOcData(0)
             } else {
+                showToast(getString(R.string.all_data_has_been_synchronised), act)
                 finish()
             }
         }
