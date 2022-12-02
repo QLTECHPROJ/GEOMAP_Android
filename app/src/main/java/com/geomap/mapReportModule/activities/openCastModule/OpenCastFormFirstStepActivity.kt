@@ -311,7 +311,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             }
 
             override fun onClear() {
-                binding.btnGeologistSignPadClear.isEnabled = true
+                binding.btnGeologistSignPadClear.isEnabled = false
                 binding.btnGeologistSignPadClear.setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
                 binding.btnGeologistSignPadClear.setBackgroundResource(R.drawable.border_enable_button)
                 geologistSignCheck = ""
@@ -334,7 +334,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             }
 
             override fun onClear() {
-                binding.btnGeologistClientSignPadClear.isEnabled = true
+                binding.btnGeologistClientSignPadClear.isEnabled = false
                 binding.btnGeologistClientSignPadClear.setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
                 binding.btnGeologistClientSignPadClear.setBackgroundResource(R.drawable.border_enable_button)
                 geologistClientSignCheck = ""
