@@ -73,11 +73,11 @@ class UnderGroundDetailActivity : AppCompatActivity() {
                     when {
                         it?.ResponseCode == getString(R.string.ResponseCodesuccess) -> {
                             val format =
-                                "https://docs.google.com/viewerng/viewer?embedded=true&url=%s"
+                                "https://docs.google.com/viewerng/viewer?url="
                             val fullPath : String =
                                 java.lang.String.format(Locale.ENGLISH, format,
                                     it.ResponseData.pdfLink)
-                            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(fullPath))
+                            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it.ResponseData.pdfLink))
                             startActivity(browserIntent)
                         }
                         it.ResponseCode == act.getString(R.string.ResponseCodefail) -> {
