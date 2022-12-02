@@ -48,7 +48,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
     private lateinit var act : Activity
     private var ocDataModel = OpenCastInsertModel()
     private var userId : String? = null
-    private var signCheck : String? = null
+    private var signCheck : String? = ""
     private var sign : TypedFile? = null
     private var geologistSign : TypedFile? = null
     private var clientsGeologistSign : TypedFile? = null

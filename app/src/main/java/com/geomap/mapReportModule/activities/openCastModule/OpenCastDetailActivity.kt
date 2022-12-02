@@ -49,35 +49,7 @@ class OpenCastDetailActivity : AppCompatActivity() {
         postData()
 
         binding.btnViewPdf.setOnClickListener {
-            if (isNetworkConnected(ctx)) {
-                showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                viewModel = ViewModelProvider(this, UserModelFactory(
-                    UserRepository(retrofitService)))[AllViewModel::class.java]
-                viewModel.getPdfView(userId.toString(), id.toString(), "oc")
-                viewModel.getPdfView.observe(this) {
-                    hideProgressBar(binding.progressBar,
-                        binding.progressBarHolder, act)
-                    when {
-                        it?.ResponseCode == getString(R.string.ResponseCodesuccess) -> {
-                          /*  val format =
-                                "https://docs.google.com/viewerng/viewer?embedded=true&url=%s"
-                            val fullPath : String =
-                                java.lang.String.format(Locale.ENGLISH, format,
-                                    it.ResponseData.pdfLink)*/
-                            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it.ResponseData.pdfLink))
-                            startActivity(browserIntent)
-                        }
-                        it.ResponseCode == act.getString(R.string.ResponseCodefail) -> {
-                            showToast(it.ResponseMessage, act)
-                        }
-                        it.ResponseCode == act.getString(R.string.ResponseCodeDeleted) -> {
-                            callDelete403(act, it.ResponseMessage)
-                        }
-                    }
-                }
-            } else {
-                showToast(getString(R.string.no_server_found), act)
-            }
+            callViewPdfActivity(act, "1", "oc", id)
         }
     }
 
