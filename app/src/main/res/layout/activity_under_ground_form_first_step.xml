@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tvHeaderTitle"
             android:layout_marginTop="@dimen/_10sdp"
-            android:fontFamily="@font/inter_regular"
+            android:fontFamily="@font/inter_italic"
             android:gravity="start"
             android:justificationMode="inter_word"
             android:paddingStart="@dimen/_16sdp"
@@ -43,7 +43,7 @@
             android:paddingBottom="@dimen/_6sdp"
             android:text="@string/attribute_note"
             android:textColor="@color/light_black"
-            android:textSize="@dimen/_12sdp"
+            android:textSize="@dimen/_14sdp"
             tools:ignore="SpUsage" />
 
         <TextView

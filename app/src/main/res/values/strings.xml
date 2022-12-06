@@ -186,7 +186,7 @@
     <string name="underground_saved">Your Underground report  has been saved</string>
     <string name="opencast_saved">Your OpenCast report has been saved</string>
     <string name="sync_data_internet_off">Need an active internet connection to synchronise data</string>
-    <string name="attribute_note"><i><b>Note :</b> You can add multiple attributes in the mapping report using the add attribute button</i></string>
+    <string name="attribute_note"><b>Note :</b> You can add multiple attributes in the mapping report using the add attribute button</string>
     <string name="there_are_no_reports_at_the_moment">There are no reports at the moment</string>
     <string name="all_data_has_been_synchronised">All data has been synchronised</string>
 </resources>
