@@ -66,30 +66,6 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
                 name.equals("", ignoreCase = true) -> {
                     allDisable(binding.btnNextStep)
                 }
-                mappedBy.equals("", ignoreCase = true) -> {
-                    allDisable(binding.btnNextStep)
-                }
-                scale.equals("", ignoreCase = true) -> {
-                    allDisable(binding.btnNextStep)
-                }
-                location.equals("", ignoreCase = true) -> {
-                    allDisable(binding.btnNextStep)
-                }
-                veinLoad.equals("", ignoreCase = true) -> {
-                    allDisable(binding.btnNextStep)
-                }
-                xCoordinate.equals("", ignoreCase = true) -> {
-                    allDisable(binding.btnNextStep)
-                }
-                yCoordinate.equals("", ignoreCase = true) -> {
-                    allDisable(binding.btnNextStep)
-                }
-                zCoordinate.equals("", ignoreCase = true) -> {
-                    allDisable(binding.btnNextStep)
-                }
-                comment.equals("", ignoreCase = true) -> {
-                    allDisable(binding.btnNextStep)
-                }
                 else -> {
                     binding.btnNextStep.isEnabled = true
                     binding.btnNextStep.setBackgroundResource(R.drawable.enable_button)
@@ -119,14 +95,6 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
 
         binding.etMapSerialNo.addTextChangedListener(userTextWatcher)
         binding.etName.addTextChangedListener(userTextWatcher)
-        binding.etMappedBy.addTextChangedListener(userTextWatcher)
-        binding.etScale.addTextChangedListener(userTextWatcher)
-        binding.etLocation.addTextChangedListener(userTextWatcher)
-        binding.etVeinLoad.addTextChangedListener(userTextWatcher)
-        binding.etXCoordinate.addTextChangedListener(userTextWatcher)
-        binding.etYCoordinate.addTextChangedListener(userTextWatcher)
-        binding.etZCoordinate.addTextChangedListener(userTextWatcher)
-        binding.etComment.addTextChangedListener(userTextWatcher)
 
         shift = getString(R.string.night_shift)
         binding.tvUGDate.text = SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT).format(Date())

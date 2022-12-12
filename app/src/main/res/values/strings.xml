@@ -7,6 +7,7 @@
     <string name="no_server_found">You are not currently connected to internet. Please try again.!</string>
     <string name="hello_again">Hello Again!</string>
     <string name="welcome_back_you_ve_been_missed">Harnessing the full potential of resource mining</string>
+    <string name="name_star">Name*</string>
     <string name="name">Name</string>
     <string name="name_">Name:</string>
     <string name="password">Password</string>
@@ -63,6 +64,7 @@
     <string name="delete_account">Delete Account</string>
     <string name="view_pdf">View PDF</string>
     <string name="mapping_sheet_no">Mapping sheet no</string>
+    <string name="mapping_sheet_no_star">Mapping sheet no*</string>
     <string name="map_serial_no">Map serial no.</string>
     <string name="date">Date:</string>
     <string name="shift">Shift:</string>
@@ -167,6 +169,7 @@
     <string name="pls_add_geologist_client_sign">Please add geologist client sign</string>
     <string name="pls_select_your_attributes">Search your attributes</string>
     <string name="pls_select_your_nos">Search your nos</string>
+    <string name="pls_select_your_geologist_name">Search your geologist name</string>
     <string name="pls_select_your_sample_collected">Search your sample collected</string>
     <string name="pls_select_your_weathering">Search your weathering</string>
     <string name="pls_select_your_rock_strength">Search your rock strength</string>

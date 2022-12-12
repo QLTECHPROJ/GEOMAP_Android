@@ -59,8 +59,8 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
     private var signFace : TypedFile? = null
     var ugDataModel = UnderGroundInsertModel()
     var i = 0
-    private val REQUEST_EXTERNAL_STORAGE = 1
-    private val PERMISSIONS_STORAGE = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+    private val requestExternalStorage = 1
+    private val permissionsStorage = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.MANAGE_EXTERNAL_STORAGE)
 
@@ -326,8 +326,8 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                 ) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(
                     act,
-                    PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE
+                    permissionsStorage,
+                    requestExternalStorage
                 )
             }
         }

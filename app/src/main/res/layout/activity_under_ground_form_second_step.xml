@@ -171,7 +171,7 @@
                             android:backgroundTint="@color/black"
                             android:cursorVisible="true"
                             android:fontFamily="@font/inter_semi_bold"
-                            android:hint="@string/name"
+                            android:hint="@string/name_star"
                             android:inputType="text"
                             android:maxLines="1"
                             android:nextFocusDown="@id/etMappedBy"
