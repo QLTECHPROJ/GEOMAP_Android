@@ -307,7 +307,7 @@
                             android:hint="@string/shift_incharge_name_"
                             android:inputType="text"
                             android:maxLines="1"
-                            android:nextFocusDown="@id/etGeologistName"
+                            android:nextFocusDown="@id/etFaceLocation"
                             android:singleLine="true"
                             android:textColor="@color/light_black"
                             android:textColorHint="@color/gray"
@@ -321,48 +321,77 @@
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cvGeologistName"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_68sdp"
+                    android:layout_height="@dimen/_60sdp"
+                    android:layout_gravity="center"
                     android:layout_marginHorizontal="@dimen/_1sdp"
                     android:layout_marginTop="@dimen/_14sdp"
                     app:cardCornerRadius="@dimen/_10sdp"
                     app:cardElevation="@dimen/_2sdp">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/ltGeologistName"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginHorizontal="@dimen/_20sdp"
-                        android:layout_marginTop="@dimen/_2sdp"
-                        android:focusableInTouchMode="true"
-                        android:gravity="center_vertical"
-                        android:textColorHint="@color/gray"
-                        app:boxStrokeColor="@color/primary_theme"
-                        app:errorEnabled="true"
-                        app:errorTextAppearance="@style/ErrorText"
-                        app:hintTextAppearance="@style/HintText"
-                        app:hintTextColor="@color/primary_theme">
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/_14sdp"
+                        android:paddingEnd="@dimen/_0sdp"
+                        android:weightSum="1"
+                        tools:ignore="DisableBaselineAlignment">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etGeologistName"
-                            android:layout_width="match_parent"
-                            android:layout_height="@dimen/_24sdp"
-                            android:background="@null"
-                            android:backgroundTint="@color/black"
-                            android:cursorVisible="true"
-                            android:fontFamily="@font/inter_semi_bold"
-                            android:hint="@string/geologist_name_"
-                            android:inputType="text"
-                            android:maxLines="1"
-                            android:nextFocusDown="@id/etFaceLocation"
-                            android:singleLine="true"
-                            android:textColor="@color/light_black"
-                            android:textColorHint="@color/gray"
-                            android:textSize="@dimen/_16sdp"
-                            app:hintTextAppearance="@style/HintText"
-                            tools:ignore="SpUsage" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="0.83"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/tvGeologistName"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_vertical"
+                                android:fontFamily="@font/inter_semi_bold"
+                                android:gravity="center_vertical"
+                                android:text="@string/geologist_name_"
+                                android:textColor="@color/gray"
+                                android:textSize="@dimen/_16sdp"
+                                tools:ignore="SpUsage" />
+
+                            <TextView
+                                android:id="@+id/tvHintGeologistName"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="@dimen/_1sdp"
+                                android:visibility="gone"
+                                tools:ignore="SpUsage" />
+
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="0dp"
+                            android:layout_height="@dimen/_48sdp"
+                            android:layout_weight="0.17"
+                            android:paddingStart="@dimen/_0sdp"
+                            android:paddingEnd="@dimen/_14sdp">
+
+                            <ImageView
+                                android:id="@+id/ivGeologistName"
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:contentDescription="@string/todo"
+                                android:paddingHorizontal="@dimen/_2sdp"
+                                android:paddingVertical="@dimen/_2sdp"
+                                android:rotation="90"
+                                android:src="@drawable/ic_arrow_icon"
+                                android:visibility="visible" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
@@ -1646,8 +1675,8 @@
             style="@style/screenButton"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginBottom="@dimen/_20sdp"
-            android:background="@drawable/disable_button"
-            android:enabled="false"
+            android:background="@drawable/enable_button"
+            android:enabled="true"
             android:text="@string/submit"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"

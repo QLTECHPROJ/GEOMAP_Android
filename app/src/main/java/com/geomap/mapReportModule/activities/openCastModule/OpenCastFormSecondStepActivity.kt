@@ -16,6 +16,7 @@ import android.os.Environment
 import android.provider.Settings
 import android.util.Log
 import android.view.View
+import android.widget.ImageButton
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -31,7 +32,6 @@ import com.geomap.mapReportModule.models.SuccessModel
 import com.geomap.roomDataBase.OpenCastMappingReport
 import com.geomap.utils.APIClientProfile
 import com.geomap.utils.CONSTANTS
-import com.github.gcacace.signaturepad.views.SignaturePad
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit.RetrofitError
@@ -48,14 +48,12 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
     private lateinit var act : Activity
     private var ocDataModel = OpenCastInsertModel()
     private var userId : String? = null
-    private var signCheck : String? = ""
     private var sign : TypedFile? = null
-    private var geologistSign : TypedFile? = null
-    private var clientsGeologistSign : TypedFile? = null
-    private val REQUEST_EXTERNAL_STORAGE = 1
-    private val PERMISSIONS_STORAGE = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+    private val requestExternalStorage = 1
+    private val permissionsStorage = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.MANAGE_EXTERNAL_STORAGE)
+    private lateinit var currPaint : ImageButton
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,75 +64,43 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
         userId = shared.getString(CONSTANTS.userId, "")
 
-        binding.llMainLayout.visibility = View.VISIBLE
-        binding.btnSubmit.visibility = View.VISIBLE
-
         if (intent.extras != null) {
             val gson = Gson()
             val data = intent.getStringExtra("ocData")
             val type1 = object : TypeToken<OpenCastInsertModel>() {}.type
             ocDataModel = gson.fromJson(data, type1)
-
-            val photogeologistSign = File(getAlbumStorageDir("Pictures"),
-                String.format("geologistSign.jpg", System.currentTimeMillis()))
-            saveBitmapToJPG(ocDataModel.geologistSignBitMap!!, photogeologistSign)
-            scanMediaFile(photogeologistSign)
-            geologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photogeologistSign)
-
-            val photoclientsGeologistSign = File(getAlbumStorageDir("Pictures"),
-                String.format("clientsGeologistSign.jpg", System.currentTimeMillis()))
-            saveBitmapToJPG(ocDataModel.clientsGeologistSignBitMap!!, photoclientsGeologistSign)
-            scanMediaFile(photoclientsGeologistSign)
-            clientsGeologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photoclientsGeologistSign)
         }
 
         binding.llBack.setOnClickListener {
             onBackPressed()
         }
 
+        initViewSandVars()
         binding.btnSignPadClear.setOnClickListener {
-            binding.signPad.clear()
+            binding.drawing.startNew()
         }
 
-        binding.signPad.setOnSignedListener(object : SignaturePad.OnSignedListener {
-            override fun onStartSigning() {
-                verifyStoragePermissions()
-            }
-
-            override fun onSigned() {
-                binding.btnSignPadClear.isEnabled = true
-                binding.btnSignPadClear.setTextColor(
-                    ContextCompat.getColor(ctx, R.color.primary_theme))
-                binding.btnSignPadClear.setBackgroundResource(R.drawable.border_enable_button)
-                signCheck = "1"
-            }
-
-            override fun onClear() {
-                binding.btnSignPadClear.isEnabled = false
-                binding.btnSignPadClear.setTextColor(
-                    ContextCompat.getColor(ctx, R.color.primary_theme))
-                binding.btnSignPadClear.setBackgroundResource(R.drawable.border_enable_button)
-                signCheck = ""
-            }
-        })
-
         binding.btnSubmit.setOnClickListener {
+            verifyStoragePermissions()
             postData()
         }
     }
 
+    private fun initViewSandVars() {
+        verifyStoragePermissions()
+        currPaint = binding.paintColors.getChildAt(0) as ImageButton
+        currPaint.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.paint_pressed))
+    }
+
     private fun postData() {
-        if (signCheck == "") {
-            showToast(getString(R.string.pls_add_geologist_sign), act)
-        } else {
-            postOpenCastInsert()
-        }
+        postOpenCastInsert()
     }
 
     private fun postOpenCastInsert() {
-        val photoImage = File(getAlbumStorageDir("Pictures"),
-            String.format("clientsGeologistSign.jpg", System.currentTimeMillis()))
-        saveBitmapToJPG(binding.signPad.signatureBitmap, photoImage)
+        binding.drawing.isDrawingCacheEnabled = true
+        val photoImage = File(getAlbumStorageDir(),
+            String.format("Image.jpg", System.currentTimeMillis()))
+        saveBitmapToJPG(binding.drawing.drawingCache, photoImage)
         scanMediaFile(photoImage)
         sign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photoImage)
         if (isNetworkConnected(ctx)) {
@@ -237,9 +203,9 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             obj.notes = ocDataModel.notes
             obj.geologistSign = ocDataModel.geologistSignBitMap!!
             obj.clientsGeologistSign = ocDataModel.clientsGeologistSignBitMap!!
-            obj.image = binding.signPad.signatureBitmap
+            obj.image = binding.drawing.drawingCache
             saveOCReport(obj, ctx)
-            binding.signPad.clear()
+            binding.drawing.startNew()
             showToast(getString(R.string.opencast_saved), act)
             val i = Intent(ctx, DashboardActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -252,7 +218,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         permissions : Array<String?>, grantResults : IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
-            REQUEST_EXTERNAL_STORAGE -> {
+            requestExternalStorage -> {
                 if (grantResults.isEmpty()
                     || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Log.e("onRequestPermissionsResult", "Cannot write images to external storage")
@@ -268,9 +234,9 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         ctx.sendBroadcast(mediaScanIntent)
     }
 
-    private fun getAlbumStorageDir(albumName : String?) : File {
+    private fun getAlbumStorageDir() : File {
         val file = File(Environment.getExternalStoragePublicDirectory(
-            Environment.DIRECTORY_PICTURES), albumName)
+            Environment.DIRECTORY_PICTURES), "Pictures")
         if (!file.mkdirs()) {
             Log.e("SignaturePad", "Directory not created")
         }
@@ -287,10 +253,38 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         stream.close()
     }
 
-    fun verifyStoragePermissions() {
+    private fun verifyStoragePermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (!Environment.isExternalStorageManager()) {
-                callFilesPermission()
+                val building = AlertDialog.Builder(ctx)
+                building.setMessage(
+                    """To upload image allow ${
+                        ctx.getString(
+                            R.string.app_name
+                        )
+                    } access to your device's files. 
+Tap Setting > permission, and turn "Files and media" on."""
+                )
+                building.setCancelable(true)
+                building.setPositiveButton(
+                    ctx.getString(R.string.Settings)
+                ) { dialogs : DialogInterface, _ : Int ->
+                    val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                    val uri = Uri.fromParts("package", packageName, null)
+                    intent.data = uri
+                    startActivity(intent)
+                    dialogs.dismiss()
+                }
+                building.setNegativeButton(
+                    ctx.getString(R.string.not_now)
+                ) { dialogs : DialogInterface, _ : Int -> dialogs.dismiss() }
+                val alert11 = building.create()
+                alert11.window!!.setBackgroundDrawableResource(R.drawable.dialog_bg)
+                alert11.show()
+                alert11.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
+                    .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
+                alert11.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
+                    .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
             }
         } else {
             if (ActivityCompat.checkSelfPermission(ctx,
@@ -301,46 +295,25 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                 ) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(
                     act,
-                    PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE
+                    permissionsStorage,
+                    requestExternalStorage
                 )
             }
         }
     }
 
-    private fun callFilesPermission() {
-        val building = AlertDialog.Builder(ctx)
-        building.setMessage(
-            """To upload image allow ${
-                ctx.getString(
-                    R.string.app_name
-                )
-            } access to your device's files. 
-Tap Setting > permission, and turn "Files and media" on."""
-        )
-        building.setCancelable(true)
-        building.setPositiveButton(
-            ctx.getString(R.string.Settings)
-        ) { dialogs : DialogInterface, _ : Int ->
-            val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-            val uri = Uri.fromParts("package", packageName, null)
-            intent.data = uri
-            startActivity(intent)
-            dialogs.dismiss()
-        }
-        building.setNegativeButton(
-            ctx.getString(R.string.not_now)
-        ) { dialogs : DialogInterface, _ : Int -> dialogs.dismiss() }
-        val alert11 = building.create()
-        alert11.window!!.setBackgroundDrawableResource(R.drawable.dialog_bg)
-        alert11.show()
-        alert11.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
-            .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
-        alert11.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
-            .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
-    }
-
     override fun onBackPressed() {
         finish()
+    }
+
+    fun paintClicked(view : View) {
+        binding.drawing.setErase(false)
+        if (view !== currPaint) {
+            val imgView = view as ImageButton
+            binding.drawing.setColor(view.getTag().toString())
+            imgView.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.paint_pressed))
+            currPaint.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.paint))
+            currPaint = view
+        }
     }
 }

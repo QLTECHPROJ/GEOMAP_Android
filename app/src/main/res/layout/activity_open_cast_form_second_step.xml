@@ -30,17 +30,181 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
+            <LinearLayout
+                android:id="@+id/llLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvHeaderTitle"
+                android:orientation="vertical">
+
+                <!-- Top Row -->
+                <LinearLayout
+                    android:id="@+id/paintColors"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:id="@+id/ivImgBlue"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_margin="2dp"
+                        android:background="#FF660000"
+                        android:contentDescription="@string/paint"
+                        android:onClick="paintClicked"
+                        android:src="@drawable/paint"
+                        android:tag="#FF660000" />
+
+                    <ImageButton
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_margin="2dp"
+                        android:background="#FFFF0000"
+                        android:contentDescription="@string/paint"
+                        android:onClick="paintClicked"
+                        android:src="@drawable/paint"
+                        android:tag="#FFFF0000" />
+
+                    <ImageButton
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_margin="2dp"
+                        android:background="#FFFF6600"
+                        android:contentDescription="@string/paint"
+                        android:onClick="paintClicked"
+                        android:src="@drawable/paint"
+                        android:tag="#FFFF6600" />
+
+                    <ImageButton
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_margin="2dp"
+                        android:background="#FFFFCC00"
+                        android:contentDescription="@string/paint"
+                        android:onClick="paintClicked"
+                        android:src="@drawable/paint"
+                        android:tag="#FFFFCC00" />
+
+                    <ImageButton
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_margin="2dp"
+                        android:background="#FF009900"
+                        android:contentDescription="@string/paint"
+                        android:onClick="paintClicked"
+                        android:src="@drawable/paint"
+                        android:tag="#FF009900" />
+
+                    <ImageButton
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_margin="2dp"
+                        android:background="#FF009999"
+                        android:contentDescription="@string/paint"
+                        android:onClick="paintClicked"
+                        android:src="@drawable/paint"
+                        android:tag="#FF009999" />
+
+                </LinearLayout>
+                <!-- Bottom Row -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageButton
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_margin="2dp"
+                        android:background="#FF0000FF"
+                        android:contentDescription="@string/paint"
+                        android:onClick="paintClicked"
+                        android:src="@drawable/paint"
+                        android:tag="#FF0000FF" />
+
+                    <ImageButton
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_margin="2dp"
+                        android:background="#FF990099"
+                        android:contentDescription="@string/paint"
+                        android:onClick="paintClicked"
+                        android:src="@drawable/paint"
+                        android:tag="#FF990099" />
+
+                    <ImageButton
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_margin="2dp"
+                        android:background="#FFFD7A7A"
+                        android:contentDescription="@string/paint"
+                        android:onClick="paintClicked"
+                        android:src="@drawable/paint"
+                        android:tag="#FFFD7A7A" />
+
+                    <ImageButton
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_margin="2dp"
+                        android:background="#FFD411EA"
+                        android:contentDescription="@string/paint"
+                        android:onClick="paintClicked"
+                        android:src="@drawable/paint"
+                        android:tag="#FFD411EA" />
+
+                    <ImageButton
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_margin="2dp"
+                        android:background="#FF787878"
+                        android:contentDescription="@string/paint"
+                        android:onClick="paintClicked"
+                        android:src="@drawable/paint"
+                        android:tag="#FF787878" />
+
+                    <ImageButton
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="@dimen/_30sdp"
+                        android:layout_margin="2dp"
+                        android:background="#FF000000"
+                        android:contentDescription="@string/paint"
+                        android:onClick="paintClicked"
+                        android:src="@drawable/paint"
+                        android:tag="#FF000000" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+        <com.geomap.utils.DrawingView
+            android:id="@+id/drawing"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="@dimen/_150sdp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="@dimen/_100sdp"
+            android:layout_weight="1"
+            android:background="@drawable/grid_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llLayout" />
+
+<!--
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="@dimen/_18sdp"
-            android:layout_marginTop="@dimen/_60sdp"
-            android:layout_marginBottom="@dimen/_110sdp"
+            android:visibility="gone"
             app:cardCornerRadius="@dimen/_24sdp"
             app:cardElevation="@dimen/_2sdp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvHeaderTitle">
+            app:layout_constraintStart_toStartOf="parent">
 
             <com.github.gcacace.signaturepad.views.SignaturePad
                 android:id="@+id/signPad"
@@ -51,6 +215,7 @@
                 app:penColor="@android:color/black" />
 
         </androidx.cardview.widget.CardView>
+-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -71,7 +236,7 @@
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_weight="0.5"
                 android:background="@drawable/border_enable_button"
-                android:enabled="false"
+                android:enabled="true"
                 android:fontFamily="@font/inter_bold"
                 android:paddingHorizontal="@dimen/_20sdp"
                 android:text="@string/clear"
@@ -95,6 +260,7 @@
                 android:fontFamily="@font/inter_bold"
                 android:paddingHorizontal="@dimen/_20sdp"
                 android:text="@string/submit"
+                android:onClick="paintClicked"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sdp"

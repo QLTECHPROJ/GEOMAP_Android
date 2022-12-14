@@ -19,8 +19,8 @@ import androidx.room.Room;
 
 import com.geomap.faqModule.activities.FaqActivity;
 import com.geomap.mapReportModule.activities.DashboardActivity;
-import com.geomap.mapReportModule.activities.SyncDataActivity;
 import com.geomap.mapReportModule.activities.PdfViewActivity;
+import com.geomap.mapReportModule.activities.SyncDataActivity;
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastDetailActivity;
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastDetailDraftActivity;
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity;
@@ -54,11 +54,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.TimeZone;
 
+import retrofit.mime.TypedFile;
+
 public class GeoMapApp extends Application {
     static Context mContext;
     static GeoMapApp GeoMapApp;
     public static String fcmId = "";
     public static String checkLogin = "";
+    public static TypedFile geologistSign = null, clientsGeologistSign = null;
     public static GeoMapDatabase DB;
 
 
@@ -211,6 +214,8 @@ public class GeoMapApp extends Application {
 
     public static void deleteCall(Context context) {
         checkLogin = "";
+        geologistSign = null;
+        clientsGeologistSign = null;
         SharedPreferences preferences = context.getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE);
         SharedPreferences.Editor edit = preferences.edit();
         edit.remove(CONSTANTS.userId);

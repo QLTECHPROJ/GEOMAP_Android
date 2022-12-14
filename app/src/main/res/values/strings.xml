@@ -63,7 +63,6 @@
     <string name="delete_account">Delete Account</string>
     <string name="view_pdf">View PDF</string>
     <string name="mapping_sheet_no">Mapping sheet no</string>
-    <string name="mapping_sheet_no_star">Mapping sheet no*</string>
     <string name="map_serial_no">Map serial no.</string>
     <string name="date">Date:</string>
     <string name="shift">Shift:</string>
@@ -158,12 +157,14 @@
     <string name="clear_geologist_client_signature">Clear Client’s Geologist Signature</string>
     <string name="choose_your_attributes">Choose your attributes</string>
     <string name="choose_your_nos">Choose your nos</string>
+    <string name="choose_your_geologist_name">Choose your geologist name</string>
     <string name="choose_your_sample_collected">Choose your sample collected</string>
     <string name="choose_your_weathering">Choose your weathering</string>
     <string name="choose_your_rock_strength">Choose your rock strength</string>
     <string name="choose_your_water_condition">Choose your water condition</string>
     <string name="choose_your_type_of_geological_structures">Choose your type of geological structures</string>
     <string name="choose_your_Type_of_faults">Choose your type of faults</string>
+    <string name="pls_add_your_drawing">Please add your drawing</string>
     <string name="pls_add_geologist_sign">Please add geologist sign</string>
     <string name="pls_add_geologist_client_sign">Please add geologist client sign</string>
     <string name="pls_select_your_attributes">Search your attributes</string>
@@ -193,4 +194,5 @@
     <string name="attribute_note"><b>Note :</b> You can add multiple attributes in the mapping report using the add attribute button</string>
     <string name="there_are_no_reports_at_the_moment">There are no reports at the moment</string>
     <string name="all_data_has_been_synchronised">All data has been synchronised</string>
+    <string name="paint">Paint</string>
 </resources>
