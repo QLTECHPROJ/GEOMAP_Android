@@ -118,7 +118,7 @@ class OpenCastListActivity : AppCompatActivity() {
                 "Mapping sheet no : <font color='black'>${listModel[position].mappingSheetNo}</font>"),
                 TextView.BufferType.SPANNABLE)
             holder.binding.llMainLayout.setOnClickListener {
-                callOpenCastDetailActivity(act, "1", listModel[position].id)
+                callOpenCastDetailActivity(act, "1", listModel[position].mappingSheetNo)
             }
         }
 

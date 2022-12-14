@@ -141,8 +141,8 @@ class AllViewModel constructor(private val repository : UserRepository) : ViewMo
         })
     }
 
-    fun getUnderGroundDetails(id : String) {
-        val response = repository.getUnderGroundDetails(id)
+    fun getUnderGroundDetails(mapSerialNo : String) {
+        val response = repository.getUnderGroundDetails(mapSerialNo)
         response.enqueue(object : Callback<UnderGroundDetailsModel> {
             override fun onResponse(call : Call<UnderGroundDetailsModel>,
                 response : Response<UnderGroundDetailsModel>) {
@@ -155,8 +155,8 @@ class AllViewModel constructor(private val repository : UserRepository) : ViewMo
         })
     }
 
-    fun getOpenCastDetails(id : String) {
-        val response = repository.getOpenCastDetails(id)
+    fun getOpenCastDetails(mappingSheetNo : String) {
+        val response = repository.getOpenCastDetails(mappingSheetNo)
         response.enqueue(object : Callback<OpenCastDetailsModel> {
             override fun onResponse(call : Call<OpenCastDetailsModel>,
                 response : Response<OpenCastDetailsModel>) {

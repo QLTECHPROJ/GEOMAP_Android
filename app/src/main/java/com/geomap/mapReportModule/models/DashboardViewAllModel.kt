@@ -17,7 +17,6 @@ class DashboardViewAllModel {
     var responseStatus : String? = null
 
     class ResponseData {
-        @SerializedName("id") @Expose var id : String? = null
         @SerializedName("created_at") @Expose var createdAt : String? = null
         @SerializedName("updated_at") @Expose var updatedAt : String? = null
 
@@ -25,7 +24,7 @@ class DashboardViewAllModel {
         @SerializedName("name") @Expose var name : String? = null
         @SerializedName("location") @Expose var location : String? = null
         @SerializedName("ugDate") @Expose var ugDate : String? = null
-        @SerializedName("scale") @Expose var scale : String? = null
+        @SerializedName("mappedBy") @Expose var mappedBy : String? = null
         @SerializedName("mapSerialNo") @Expose var mapSerialNo : String? = null
 
         /*  Open Cast View All Keys */

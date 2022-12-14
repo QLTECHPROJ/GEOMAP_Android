@@ -2,12 +2,14 @@ package com.geomap.mapReportModule.activities.openCastModule
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.geomap.R
 import com.geomap.databinding.ActivityOpenCastDetailDraftBinding
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity
 import com.geomap.roomDataBase.OpenCastMappingReport
 import com.geomap.utils.CONSTANTS
 import com.google.gson.Gson
@@ -41,6 +43,13 @@ class OpenCastDetailDraftActivity : AppCompatActivity() {
 
         binding.llBack.setOnClickListener {
             onBackPressed()
+        }
+        binding.llEdit.setOnClickListener {
+            val i = Intent(act, OpenCastFormFirstStepActivity::class.java)
+            i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            i.putExtra("flag","detailDraft")
+            i.putExtra("data",gson.toJson(ocReportData))
+            act.startActivity(i)
         }
     }
 

@@ -18,15 +18,18 @@ import com.geomap.mvvm.UserModelFactory
 import com.geomap.mvvm.UserRepository
 import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
+import com.google.gson.Gson
 import java.util.*
 
 class OpenCastDetailActivity : AppCompatActivity() {
     private lateinit var binding : ActivityOpenCastDetailBinding
     private lateinit var ctx : Context
     private lateinit var act : Activity
-    private var id : String? = null
+    private var mappingSheetNo : String? = null
     private var userId : String? = null
     private lateinit var viewModel : AllViewModel
+    private lateinit var model : OpenCastDetailsModel
+    val gson = Gson()
     private val retrofitService = RetrofitService.getInstance()
 
     override fun onCreate(savedInstanceState : Bundle?) {
@@ -39,17 +42,23 @@ class OpenCastDetailActivity : AppCompatActivity() {
         userId = shared.getString(CONSTANTS.userId, "")
 
         if (intent.extras != null) {
-            id = intent.extras?.getString("id")
+            mappingSheetNo = intent.extras?.getString("id")
         }
 
         binding.llBack.setOnClickListener {
             onBackPressed()
         }
-
+        binding.llEdit.setOnClickListener {
+            val i = Intent(act, OpenCastFormFirstStepActivity::class.java)
+            i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            i.putExtra("flag","detailDraft")
+            i.putExtra("data",gson.toJson(model))
+            act.startActivity(i)
+        }
         postData()
 
         binding.btnViewPdf.setOnClickListener {
-            callViewPdfActivity(act, "1", "oc", id)
+            callViewPdfActivity(act, "1", "oc", mappingSheetNo)
         }
     }
 
@@ -58,12 +67,13 @@ class OpenCastDetailActivity : AppCompatActivity() {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             viewModel = ViewModelProvider(this, UserModelFactory(
                 UserRepository(retrofitService)))[AllViewModel::class.java]
-            viewModel.getOpenCastDetails(id.toString())
+            viewModel.getOpenCastDetails(mappingSheetNo.toString())
             viewModel.getOpenCastDetails.observe(this) {
                 hideProgressBar(binding.progressBar,
                     binding.progressBarHolder, act)
                 when {
                     it?.ResponseCode == getString(R.string.ResponseCodesuccess) -> {
+                        model = it
                         binding.llMainLayout.visibility = View.VISIBLE
                         binding.btnViewPdf.visibility = View.VISIBLE
                         val ocDetail =

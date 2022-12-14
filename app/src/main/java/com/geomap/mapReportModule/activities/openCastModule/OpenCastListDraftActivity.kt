@@ -104,9 +104,6 @@ class OpenCastListDraftActivity : AppCompatActivity() {
                 Html.fromHtml(
                     "Mines site name : <font color='black'>${listModel[position].minesSiteName}</font>"),
                 TextView.BufferType.SPANNABLE)
-            holder.binding.tvSubTitleTwo.setText(Html.fromHtml(
-                "Mapping sheet no : <font color='black'>${listModel[position].mappingSheetNo}</font>"),
-                TextView.BufferType.SPANNABLE)
             holder.binding.llMainLayout.setOnClickListener {
                 callOpenCastDetailDraftActivity(act, "1",
                     gson.toJson(listModel[position]).toString())

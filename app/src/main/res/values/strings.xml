@@ -7,7 +7,6 @@
     <string name="no_server_found">You are not currently connected to internet. Please try again.!</string>
     <string name="hello_again">Hello Again!</string>
     <string name="welcome_back_you_ve_been_missed">Harnessing the full potential of resource mining</string>
-    <string name="name_star">Name*</string>
     <string name="name">Name</string>
     <string name="name_">Name:</string>
     <string name="password">Password</string>
@@ -177,6 +176,7 @@
     <string name="pls_select_your_type_of_geological_structures">Search your type of geological structures</string>
     <string name="pls_select_your_Type_of_faults">Search your type of faults</string>
     <string name="delete_ac_quotes">Are you sure you wish to permanently delete your account?</string>
+    <string name="delete_attribute">Are you sure you want to Delete Attribute?</string>
     <string name="subject">Subject</string>
     <string name="message">Message</string>
     <string name="please_select_attribute">Please select attribute</string>
@@ -187,6 +187,7 @@
     <string name="welcome_msg">Welcome to the Geo Map app</string>
     <string name="next">Next</string>
     <string name="underground_saved">Your Underground report  has been saved</string>
+    <string name="underground_updated">Your Underground report  has been updated</string>
     <string name="opencast_saved">Your OpenCast report has been saved</string>
     <string name="sync_data_internet_off">Need an active internet connection to synchronise data</string>
     <string name="attribute_note"><b>Note :</b> You can add multiple attributes in the mapping report using the add attribute button</string>

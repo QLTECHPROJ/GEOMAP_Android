@@ -66,19 +66,6 @@
                     android:weightSum="1">
 
                     <TextView
-                        android:layout_width="@dimen/_0sdp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_weight="0.5"
-                        android:fontFamily="@font/inter_semi_bold"
-                        android:gravity="start"
-                        android:text="@string/mapping_sheet_no_1523"
-                        android:textColor="@color/light_black"
-                        android:textSize="@dimen/_12sdp"
-                        android:visibility="invisible"
-                        tools:ignore="SpUsage" />
-
-                    <TextView
                         android:id="@+id/tvUGDate"
                         android:layout_width="@dimen/_0sdp"
                         android:layout_height="wrap_content"
@@ -91,7 +78,7 @@
                         tools:ignore="SpUsage" />
                 </LinearLayout>
 
-                <androidx.cardview.widget.CardView
+              <!--  <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_68sdp"
                     android:layout_marginHorizontal="@dimen/_1sdp"
@@ -137,7 +124,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
 
-                </androidx.cardview.widget.CardView>
+                </androidx.cardview.widget.CardView>-->
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -171,7 +158,7 @@
                             android:backgroundTint="@color/black"
                             android:cursorVisible="true"
                             android:fontFamily="@font/inter_semi_bold"
-                            android:hint="@string/name_star"
+                            android:hint="@string/name"
                             android:inputType="text"
                             android:maxLines="1"
                             android:nextFocusDown="@id/etMappedBy"

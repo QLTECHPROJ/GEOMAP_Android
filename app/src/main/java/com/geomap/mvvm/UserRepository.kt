@@ -22,9 +22,9 @@ class UserRepository constructor(private val retrofitService : RetrofitService) 
 
     fun getORViewAllListing(userId : String) = retrofitService.getORViewAllListing(userId)
 
-    fun getUnderGroundDetails(id : String) = retrofitService.getUnderGroundDetails(id)
+    fun getUnderGroundDetails(mapSerialNo : String) = retrofitService.getUnderGroundDetails(mapSerialNo)
 
-    fun getOpenCastDetails(id : String) = retrofitService.getOpenCastDetails(id)
+    fun getOpenCastDetails(mappingSheetNo : String) = retrofitService.getOpenCastDetails(mappingSheetNo)
 
     fun getPdfView(userId : String, id : String, reportType : String) =
         retrofitService.getPdfView(userId, id, reportType)

@@ -12,7 +12,6 @@ data class UnderGroundDetailResponseData(
     val comment : String,
     val created_at : String,
     val faceImage : String,
-    val id : Int,
     val leftImage : String,
     val location : String,
     val mapSerialNo : String,

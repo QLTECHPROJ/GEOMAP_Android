@@ -82,11 +82,11 @@ interface RetrofitService {
 
     @POST("ur_detail")
     @FormUrlEncoded
-    fun getUnderGroundDetails(@Field("id") id : String?) : Call<UnderGroundDetailsModel>
+    fun getUnderGroundDetails(@Field("mapSerialNo") mapSerialNo : String?) : Call<UnderGroundDetailsModel>
 
     @POST("or_detail")
     @FormUrlEncoded
-    fun getOpenCastDetails(@Field("id") id : String?) : Call<OpenCastDetailsModel>
+    fun getOpenCastDetails(@Field("mappingSheetNo") mappingSheetNo : String?) : Call<OpenCastDetailsModel>
 
     @POST("report_pdf")
     @FormUrlEncoded
