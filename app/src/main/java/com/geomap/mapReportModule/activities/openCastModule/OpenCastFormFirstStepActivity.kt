@@ -30,18 +30,22 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.geomap.DataBaseFunctions
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityOpenCastFormFirstStepBinding
 import com.geomap.databinding.CommonPopupLayoutBinding
 import com.geomap.mapReportModule.models.CommonPopupListModel
+import com.geomap.mapReportModule.models.OpenCastDetailsModel
 import com.geomap.mapReportModule.models.OpenCastInsertModel
+import com.geomap.mapReportModule.models.UnderGroundDetailsModel
 import com.geomap.roomDataBase.*
 import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
 import com.github.gcacace.signaturepad.views.SignaturePad
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit.mime.TypedFile
 import retrofit2.Call
 import retrofit2.Callback
@@ -60,6 +64,8 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
     private val modelList = CommonPopupListModel()
     private var popupAdapter : PopupAdapter? = null
     private var ocDataModel = OpenCastInsertModel()
+    private lateinit var ocDetailsModel : OpenCastDetailsModel
+    val gson = Gson()
     private val requestExternalStorage = 1
     private val permissionsStorage = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -74,7 +80,133 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         binding.llMainLayout.visibility = View.VISIBLE
         binding.btnSubmit.visibility = View.VISIBLE
 
+        if (intent.extras != null) {
+            if (intent.getStringExtra("flag") == "detail") {
+                flagOC = "1"
+                val data = intent.getStringExtra("data")
+                val type1 = object : TypeToken<OpenCastDetailsModel>() {}.type
+                ocDetailsModel = gson.fromJson(data, type1)
+                binding.etMinesSiteName.setText(ocDetailsModel.ResponseData.minesSiteName)
+                binding.tvOCDate.text = ocDetailsModel.ResponseData.ocDate
+                binding.etPitName.setText(ocDetailsModel.ResponseData.pitName)
+                binding.etPitLocation.setText(ocDetailsModel.ResponseData.pitLoaction)
+                binding.etShiftInchargeName.setText(ocDetailsModel.ResponseData.shiftInchargeName)
+                geologistName = ocDetailsModel.ResponseData.geologistName
+                binding.tvGeologistName.text = geologistName
+                binding.etFaceLocation.setText(ocDetailsModel.ResponseData.faceLocation)
+                binding.etFaceLengthM.setText(ocDetailsModel.ResponseData.faceLength)
+                binding.etFaceAreaM2.setText(ocDetailsModel.ResponseData.faceArea)
+                binding.etFaceRockTypes.setText(ocDetailsModel.ResponseData.faceRockType)
+                binding.etBenchRL.setText(ocDetailsModel.ResponseData.benchRl)
+                binding.etBenchHeightWidth.setText(ocDetailsModel.ResponseData.benchHeightWidth)
+                binding.etBenchAngle.setText(ocDetailsModel.ResponseData.benchAngle)
+                binding.etDipDirectionAngle.setText(ocDetailsModel.ResponseData.dipDirectionAndAngle)
+                binding.etThicknessOfOre.setText(ocDetailsModel.ResponseData.thicknessOfOre)
+                binding.etThinessOfOverburden.setText(ocDetailsModel.ResponseData.thicknessOfOverburdan)
+                binding.etThicknessOfInterburden.setText(ocDetailsModel.ResponseData.thicknessOfInterburden)
+                binding.etObservedGradeOfOre.setText(ocDetailsModel.ResponseData.observedGradeOfOre)
+                binding.etActualGradeOfOre.setText(ocDetailsModel.ResponseData.actualGradeOfOre)
+                sampleCollected = ocDetailsModel.ResponseData.sampleColledted
+                binding.tvSampleCollected.text = sampleCollected
+                weathering = ocDetailsModel.ResponseData.weathring
+                binding.tvWeathering.text = weathering
+                rockStrength = ocDetailsModel.ResponseData.rockStregth
+                binding.tvRockStrength.text = rockStrength
+                waterCondition = ocDetailsModel.ResponseData.waterCondition
+                binding.tvWaterCondition.text = waterCondition
+                typeOfGeologicalStructures = ocDetailsModel.ResponseData.typeOfGeologist
+                binding.tvTypeOfGeologicalStructures.text = typeOfGeologicalStructures
+                typeOfFaults = ocDetailsModel.ResponseData.typeOfFaults
+                binding.tvTypeOfFaults.text = typeOfFaults
+                binding.etNotes.setText(ocDetailsModel.ResponseData.notes)
+                shift = ocDetailsModel.ResponseData.shift
+                if(shift == getString(R.string.night_shift)){
+                    binding.rbNightShift.isSelected = true
+                    binding.rbDayShift.isSelected = false
+                }else{
+                    binding.rbNightShift.isSelected = false
+                    binding.rbDayShift.isSelected =true
+                }
+                if(ocDetailsModel.ResponseData.image != "") {
+                    GeoMapDatabase.databaseWriteExecutor.execute {
+                        img =  Glide.with(ctx).asBitmap().load(
+                            ocDetailsModel.ResponseData.image).submit().get()
+                    }
+                }
+                if(ocDetailsModel.ResponseData.geologistSign != "") {
+                    GeoMapDatabase.databaseWriteExecutor.execute {
+                        binding.geologistSignPad.signatureBitmap = Glide.with(ctx).asBitmap().load(
+                            ocDetailsModel.ResponseData.geologistSign).submit().get()
+                    }
+                }
+                if(ocDetailsModel.ResponseData.clientsGeologistSign!= "") {
+                    GeoMapDatabase.databaseWriteExecutor.execute {
+                        binding.geologistClientSignPad.signatureBitmap = Glide.with(
+                            ctx).asBitmap().load(
+                            ocDetailsModel.ResponseData.clientsGeologistSign).submit().get()
+                    }
+                }
 
+            }else if(intent.getStringExtra("flag") == "detailDraft") {
+                flagOC = "2"
+                val data = intent.getStringExtra("data")
+                val type1 = object : TypeToken<OpenCastMappingReport>() {}.type
+                ocmr = gson.fromJson(data, type1)
+                binding.etMinesSiteName.setText(ocmr.minesSiteName)
+                binding.tvOCDate.text = ocmr.ocDate
+                binding.etPitName.setText(ocmr.pitName)
+                binding.etPitLocation.setText(ocmr.pitLocation)
+                binding.etShiftInchargeName.setText(ocmr.shiftInChargeName)
+                geologistName = ocmr.geologistName
+                binding.tvGeologistName.text = geologistName
+                binding.etFaceLocation.setText(ocmr.faceLocation)
+                binding.etFaceLengthM.setText(ocmr.faceLength)
+                binding.etFaceAreaM2.setText(ocmr.faceArea)
+                binding.etFaceRockTypes.setText(ocmr.faceRockTypes)
+                binding.etBenchRL.setText(ocmr.benchRL)
+                binding.etBenchHeightWidth.setText(ocmr.benchHeightWidth)
+                binding.etBenchAngle.setText(ocmr.benchAngle)
+                binding.etDipDirectionAngle.setText(ocmr.dipDirectionAngle)
+                binding.etThicknessOfOre.setText(ocmr.thicknessOfOre)
+                binding.etThinessOfOverburden.setText(ocmr.thicknessOfOverburden)
+                binding.etThicknessOfInterburden.setText(ocmr.thicknessOfInterBurden)
+                binding.etObservedGradeOfOre.setText(ocmr.observedGradeOfOre)
+                binding.etActualGradeOfOre.setText(ocmr.actualGradOfOre)
+                sampleCollected = ocmr.sampleCollected
+                binding.tvSampleCollected.text = sampleCollected
+                weathering = ocmr.weathering
+                binding.tvWeathering.text = weathering
+                rockStrength = ocmr.rockStrength
+                binding.tvRockStrength.text = rockStrength
+                waterCondition = ocmr.waterCondition
+                binding.tvWaterCondition.text = waterCondition
+                typeOfGeologicalStructures = ocmr.typeOfGeologicalStructures
+                binding.tvTypeOfGeologicalStructures.text = typeOfGeologicalStructures
+                typeOfFaults = ocmr.typeOfFaults
+                binding.tvTypeOfFaults.text = typeOfFaults
+                binding.etNotes.setText(ocmr.notes)
+                shift = ocmr.shift
+                if(ocmr.image != null) {
+                    GeoMapDatabase.databaseWriteExecutor.execute {
+                        img =  Glide.with(ctx).asBitmap().load(
+                            ocmr.image).submit().get()
+                    }
+                }
+                if(shift == getString(R.string.night_shift)){
+                    binding.rbNightShift.isSelected = true
+                    binding.rbDayShift.isSelected = false
+                }else{
+                    binding.rbNightShift.isSelected = false
+                    binding.rbDayShift.isSelected =true
+                }
+                if(ocmr.geologistSign != null) {
+                    binding.geologistSignPad.signatureBitmap = ocmr.geologistSign
+                }
+                if(ocmr.clientsGeologistSign!= null) {
+                    binding.geologistClientSignPad.signatureBitmap = ocmr.clientsGeologistSign
+                }
+            }
+        }
         verifyStoragePermissions()
 
         binding.llBack.setOnClickListener {
@@ -185,6 +317,12 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
     }
 
     private fun postOpenCastInsert() {
+        var sheetNo = ""
+        sheetNo = if (flagOC == "1") {
+            ocDetailsModel.ResponseData.mappingSheetNo
+        }else {
+            ""
+        }
         val photoGeologistSign = File(getAlbumStorageDir(),
             String.format("geologistSign.jpg", System.currentTimeMillis()))
         saveBitmapToJPG(binding.geologistSignPad.signatureBitmap, photoGeologistSign)
@@ -198,7 +336,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         clientsGeologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photoClientsGeologistSign)
         val gson = Gson()
         ocDataModel = OpenCastInsertModel(binding.etMinesSiteName.text.toString(),
-            "", binding.tvOCDate.text.toString(),
+            sheetNo, binding.tvOCDate.text.toString(),
             binding.etPitName.text.toString(), binding.etPitLocation.text.toString(),
             binding.etShiftInchargeName.text.toString(),
             geologistName, binding.etFaceLocation.text.toString(),
@@ -375,7 +513,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                     var list : ArrayList<WeatheringData>
                     GeoMapDatabase.databaseWriteExecutor.execute {
                         list = DB?.taskDao()?.geAllWeatheringData() as ArrayList<WeatheringData>
-                        Log.e("List SampleCollected",
+                        Log.e("List WeatheringData",
                             "true" + DataBaseFunctions.gson.toJson(list).toString())
 
                         callWeatheringDataAdapter(list, searchView, rvList, tvFound, keyS, dialog)
@@ -385,7 +523,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                     var list : ArrayList<RockStrength>
                     GeoMapDatabase.databaseWriteExecutor.execute {
                         list = DB?.taskDao()?.geAllRockStrength() as ArrayList<RockStrength>
-                        Log.e("List SampleCollected",
+                        Log.e("List RockStrength",
                             "true" + DataBaseFunctions.gson.toJson(list).toString())
                         callRockStrengthAdapter(list, searchView, rvList, tvFound, keyS, dialog)
                     }
@@ -394,7 +532,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                     var list : ArrayList<WaterCondition>
                     GeoMapDatabase.databaseWriteExecutor.execute {
                         list = DB?.taskDao()?.geAllWaterCondition() as ArrayList<WaterCondition>
-                        Log.e("List SampleCollected",
+                        Log.e("List WaterCondition",
                             "true" + DataBaseFunctions.gson.toJson(list).toString())
                         callWaterConditionAdapter(list, searchView, rvList, tvFound, keyS, dialog)
                     }
@@ -404,7 +542,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                     GeoMapDatabase.databaseWriteExecutor.execute {
                         list = DB?.taskDao()
                             ?.geAllTypeOfGeologicalStructures() as ArrayList<TypeOfGeologicalStructures>
-                        Log.e("List SampleCollected",
+                        Log.e("List TypeOfGeologicalStructures",
                             "true" + DataBaseFunctions.gson.toJson(list).toString())
                         callTypeOfGeologicalStructuresAdapter(list, searchView, rvList, tvFound,
                             keyS, dialog)
@@ -414,11 +552,42 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                     var list : ArrayList<TypeOfFaults>
                     GeoMapDatabase.databaseWriteExecutor.execute {
                         list = DB?.taskDao()?.geAllTypeOfFaults() as ArrayList<TypeOfFaults>
-                        Log.e("List SampleCollected",
+                        Log.e("List TypeOfFaults",
                             "true" + DataBaseFunctions.gson.toJson(list).toString())
                         callTypeOfFaultsAdapter(list, searchView, rvList, tvFound, keyS, dialog)
                     }
                 }
+                "7" -> {
+                    var list : ArrayList<Geologist>
+                    GeoMapDatabase.databaseWriteExecutor.execute {
+                        list = DB?.taskDao()?.geAllGeologist() as ArrayList<Geologist>
+                        Log.e("List Geologist",
+                            "true" + DataBaseFunctions.gson.toJson(list).toString())
+                        callGeologistAdapter(list, searchView, rvList, tvFound, keyS, dialog)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun callGeologistAdapter(list : ArrayList<Geologist>, searchView : SearchView,
+        rvList : RecyclerView, tvFound : TextView, keyS : String, dialog : Dialog) {
+        for (i in list.indices) {
+            val obj = CommonPopupListModel.ResponseData()
+            obj.id = list[i].iD.toString()
+            obj.name = list[i].name
+            obj.createdAt = list[i].createDate
+            obj.updatedAt = list[i].updateDate
+            Log.e("saveSampleCollected", "true")
+
+            modelList.responseData!!.add(obj)
+            if (i == list.size - 1) {
+                searchView.isEnabled = true
+                searchView.isClickable = true
+                rvList.layoutManager = LinearLayoutManager(ctx)
+                popupAdapter = PopupAdapter(dialog, binding, modelList.responseData!!, rvList,
+                    tvFound, keyS, ctx)
+                rvList.adapter = popupAdapter
             }
         }
     }
@@ -838,9 +1007,15 @@ Tap Setting > permission, and turn "Files and media" on."""
         var waterConditionId : String? = ""
         var typeOfGeologicalStructuresId : String? = ""
         var typeOfFaultsId : String? = ""
+        var flagOC = "0"
+        var ocmr = OpenCastMappingReport()
+        var img : Bitmap? = null
     }
 
     override fun onBackPressed() {
+        flagOC = "0"
+        ocmr = OpenCastMappingReport()
+        img  = null
         finish()
     }
 }

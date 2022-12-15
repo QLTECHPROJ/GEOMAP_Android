@@ -84,29 +84,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/mapping_sheet_no"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
-
-                        <TextView
-                            android:id="@+id/tvMappingSheetNo"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{ocDetail.mappingSheetNo}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
                             android:layout_marginTop="@dimen/_20sdp"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"

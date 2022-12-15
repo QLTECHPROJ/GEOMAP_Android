@@ -14,8 +14,8 @@ class DrawingView(context : Context?, attrs : AttributeSet?) :
     private var canvasPaint : Paint
     private var paintColor = -0x9a0000
     private var tempColor : String? = null
-    private lateinit var drawCanvas : Canvas
-    private lateinit var canvasBitmap : Bitmap
+    private  var drawCanvas : Canvas?  = null
+    private var canvasBitmap : Bitmap? = null
 
     init {
         drawPaint.color = paintColor
@@ -28,14 +28,14 @@ class DrawingView(context : Context?, attrs : AttributeSet?) :
     }
 
     override fun onDraw(canvas : Canvas) {  //draw view
-        canvas.drawBitmap(canvasBitmap, 0F, 0F, canvasPaint)
+        canvas.drawBitmap(canvasBitmap!!, 0F, 0F, canvasPaint)
         canvas.drawPath(drawPath, drawPaint)
     }
 
     override fun onSizeChanged(w : Int, h : Int, oldw : Int, oldh : Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-        drawCanvas = Canvas(canvasBitmap)
+        drawCanvas = Canvas(canvasBitmap!!)
     }
 
     override fun onTouchEvent(event : MotionEvent) : Boolean {
@@ -45,7 +45,7 @@ class DrawingView(context : Context?, attrs : AttributeSet?) :
             MotionEvent.ACTION_DOWN -> drawPath.moveTo(touchX, touchY)
             MotionEvent.ACTION_MOVE -> drawPath.lineTo(touchX, touchY)
             MotionEvent.ACTION_UP -> {
-                drawCanvas.drawPath(drawPath, drawPaint)
+                drawCanvas!!.drawPath(drawPath, drawPaint)
                 drawPath.reset()
             }
             else -> return false
@@ -69,7 +69,7 @@ class DrawingView(context : Context?, attrs : AttributeSet?) :
     }
 
     fun startNew() {
-        drawCanvas.drawColor(0, PorterDuff.Mode.CLEAR)
+        drawCanvas!!.drawColor(0, PorterDuff.Mode.CLEAR)
         invalidate()
     }
 }

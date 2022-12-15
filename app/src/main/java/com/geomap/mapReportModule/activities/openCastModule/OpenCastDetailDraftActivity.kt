@@ -3,14 +3,18 @@ package com.geomap.mapReportModule.activities.openCastModule
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.geomap.R
 import com.geomap.databinding.ActivityOpenCastDetailDraftBinding
-import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity
 import com.geomap.roomDataBase.OpenCastMappingReport
 import com.geomap.utils.CONSTANTS
 import com.google.gson.Gson
@@ -41,12 +45,44 @@ class OpenCastDetailDraftActivity : AppCompatActivity() {
             binding.ocDetail = ocReportData
             binding.llMainLayout.visibility = View.VISIBLE
 
-            Glide.with(ctx).load(ocReportData.geologistSign)
-                .thumbnail(0.10f).load(binding.imgGeologistSign).submit().get()
-            Glide.with(ctx).load(ocReportData.clientsGeologistSign)
-                .thumbnail(0.10f).load(binding.imgClientGeologistSign).submit().get()
-            Glide.with(ctx).load(ocReportData.image)
-                .thumbnail(0.10f).load(binding.image).submit().get()
+            if (ocReportData.geologistSign != null) {
+                Glide.with(this).asBitmap().load(
+                    ocReportData.geologistSign).into(object : CustomTarget<Bitmap?>() {
+                    override fun onResourceReady(resource: Bitmap,
+                        transition: Transition<in Bitmap?>?) {
+                        binding.imgGeologistSign.setImageBitmap(resource)
+                    }
+
+                    override fun onLoadCleared(@Nullable placeholder: Drawable?) {}
+
+                })
+            }
+
+            if (ocReportData.clientsGeologistSign != null) {
+                Glide.with(this).asBitmap().load(
+                    ocReportData.clientsGeologistSign).into(object : CustomTarget<Bitmap?>() {
+                    override fun onResourceReady(resource: Bitmap,
+                        transition: Transition<in Bitmap?>?) {
+                        binding.imgClientGeologistSign.setImageBitmap(resource)
+                    }
+
+                    override fun onLoadCleared(@Nullable placeholder: Drawable?) {}
+
+                })
+            }
+
+            if (ocReportData.image != null) {
+                Glide.with(this).asBitmap().load(
+                    ocReportData.image).into(object : CustomTarget<Bitmap?>() {
+                    override fun onResourceReady(resource: Bitmap,
+                        transition: Transition<in Bitmap?>?) {
+                        binding.image.setImageBitmap(resource)
+                    }
+
+                    override fun onLoadCleared(@Nullable placeholder: Drawable?) {}
+
+                })
+            }
         }
 
         binding.llBack.setOnClickListener {

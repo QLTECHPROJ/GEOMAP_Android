@@ -3,20 +3,26 @@ package com.geomap.mapReportModule.activities.underGroundModule
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundDetailDraftBinding
 import com.geomap.databinding.AttributeLayoutBinding
 import com.geomap.mapReportModule.models.AttributeDataModel
+import com.geomap.roomDataBase.GeoMapDatabase
 import com.geomap.roomDataBase.UnderGroundMappingReport
 import com.geomap.utils.CONSTANTS
 import com.google.gson.Gson
@@ -60,16 +66,46 @@ class UnderGroundDetailDraftActivity : AppCompatActivity() {
                 attributesListAdapter = AttributesListAdapter(attributeDataList)
                 binding.rvAttributesList.adapter = attributesListAdapter
             }
-
-            Glide.with(ctx).load(ugReportData.leftImage)
-                .thumbnail(0.10f).load(binding.leftImage).submit().get()
-            Glide.with(ctx).load(ugReportData.rightImage)
-                .thumbnail(0.10f).load(binding.rightImage).submit().get()
-            Glide.with(ctx).load(ugReportData.roofImage)
-                .thumbnail(0.10f).load(binding.roofImage).submit().get()
-            Glide.with(ctx).load(ugReportData.faceImage)
-                .thumbnail(0.10f).load(binding.faceImage).submit().get()
-
+            if (ugReportData.leftImage != null) {
+                Glide.with(this).asBitmap().load(
+                    ugReportData.leftImage).into(object : CustomTarget<Bitmap?>() {
+                    override fun onResourceReady(resource: Bitmap,
+                        transition: Transition<in Bitmap?>?) {
+                        binding.leftImage.setImageBitmap(resource)
+                    }
+                    override fun onLoadCleared(@Nullable placeholder: Drawable?) {}
+                })
+            }
+            if (ugReportData.rightImage != null) {
+                Glide.with(this).asBitmap().load(
+                    ugReportData.rightImage).into(object : CustomTarget<Bitmap?>() {
+                    override fun onResourceReady(resource: Bitmap,
+                        transition: Transition<in Bitmap?>?) {
+                        binding.rightImage.setImageBitmap(resource)
+                    }
+                    override fun onLoadCleared(@Nullable placeholder: Drawable?) {}
+                })
+            }
+            if (ugReportData.roofImage != null) {
+                Glide.with(this).asBitmap().load(
+                    ugReportData.roofImage).into(object : CustomTarget<Bitmap?>() {
+                    override fun onResourceReady(resource: Bitmap,
+                        transition: Transition<in Bitmap?>?) {
+                        binding.roofImage.setImageBitmap(resource)
+                    }
+                    override fun onLoadCleared(@Nullable placeholder: Drawable?) {}
+                })
+            }
+            if (ugReportData.faceImage != null) {
+                Glide.with(this).asBitmap().load(
+                    ugReportData.faceImage).into(object : CustomTarget<Bitmap?>() {
+                    override fun onResourceReady(resource: Bitmap,
+                        transition: Transition<in Bitmap?>?) {
+                        binding.faceImage.setImageBitmap(resource)
+                    }
+                    override fun onLoadCleared(@Nullable placeholder: Drawable?) {}
+                })
+            }
         }
 
         binding.llBack.setOnClickListener {

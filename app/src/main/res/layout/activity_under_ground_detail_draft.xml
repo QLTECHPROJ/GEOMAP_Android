@@ -82,15 +82,6 @@
 
                         <TextView
                             style="@style/title"
-                            android:text="@string/map_serial_no" />
-
-                        <TextView
-                            android:id="@+id/tvSerialNo"
-                            style="@style/subTitle"
-                            android:text="@{ugDetail.mapSerialNo}" />
-
-                        <TextView
-                            style="@style/title"
                             android:text="@string/date" />
 
                         <TextView

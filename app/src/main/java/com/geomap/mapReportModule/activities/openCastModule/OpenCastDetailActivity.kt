@@ -50,8 +50,8 @@ class OpenCastDetailActivity : AppCompatActivity() {
         binding.llEdit.setOnClickListener {
             val i = Intent(act, OpenCastFormFirstStepActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            i.putExtra("flag", "detailDraft")
-            i.putExtra("data", gson.toJson(model))
+            i.putExtra("flag","detail")
+            i.putExtra("data",gson.toJson(model))
             act.startActivity(i)
         }
         postData()

@@ -88,26 +88,33 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
                 try {
                     if (model.ResponseData.roofImage != "") {
                         val url = URL(model.ResponseData.roofImage)
-                        roofImage = BitmapFactory.decodeStream(
-                            url.openConnection().getInputStream())
-                        /* roofImage = Glide.with(ctx).asBitmap().load(
-                             model.ResponseData.roofImage).submit().get()*/
+                       /* roofImage = BitmapFactory.decodeStream(
+                            url.openConnection().getInputStream())*/
+                        GeoMapDatabase.databaseWriteExecutor.execute {
+                            roofImage = Glide.with(ctx).asBitmap().load(
+                                model.ResponseData.roofImage).submit().get()
+                        }
                     }
                 } catch (e : IOException) {
                     e.printStackTrace()
                 }
                 try {
                     if (model.ResponseData.leftImage != "") {
-                        leftImage = Glide.with(ctx).asBitmap().load(
-                            model.ResponseData.leftImage).submit().get()
+
+                        GeoMapDatabase.databaseWriteExecutor.execute {
+                            leftImage = Glide.with(ctx).asBitmap().load(
+                                model.ResponseData.leftImage).submit().get()
+                        }
                     }
                 } catch (e : IOException) {
                     e.printStackTrace()
                 }
                 try {
                     if (model.ResponseData.rightImage != "") {
-                        rightImage = Glide.with(ctx).asBitmap().load(
-                            model.ResponseData.rightImage).submit().get()
+                        GeoMapDatabase.databaseWriteExecutor.execute {
+                            rightImage = Glide.with(ctx).asBitmap().load(
+                                model.ResponseData.rightImage).submit().get()
+                        }
                     }
                 } catch (e : IOException) {
                     e.printStackTrace()
@@ -115,8 +122,10 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
                 }
                 try {
                     if (model.ResponseData.faceImage != "") {
-                        faceImage = Glide.with(ctx).asBitmap().load(
-                            model.ResponseData.faceImage).submit().get()
+                        GeoMapDatabase.databaseWriteExecutor.execute {
+                            faceImage = Glide.with(ctx).asBitmap().load(
+                                model.ResponseData.faceImage).submit().get()
+                        }
                     }
                 } catch (e : IOException) {
                     e.printStackTrace()
@@ -477,6 +486,8 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
         attributeDataModelList = ArrayList<AttributeDataModel>()
         attributesAdapter = null
         nosAdapter = null
+        var ugmr = UnderGroundMappingReport()
+        var flagUG = "0"
         finish()
     }
 

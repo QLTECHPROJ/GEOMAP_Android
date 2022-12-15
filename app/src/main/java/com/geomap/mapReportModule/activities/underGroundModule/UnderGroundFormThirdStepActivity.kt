@@ -91,6 +91,11 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             signLeftBitMap = ugmr.leftImage
             signRightBitMap = ugmr.rightImage
             signFaceBitMap = ugmr.faceImage
+            if (signRoofBitMap != null) {
+                callEnable(signRoofBitMap!!, "roof")
+            } else {
+                callDisable()
+            }
         }
 
         if (intent.extras != null) {
@@ -155,7 +160,9 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                                 startActivity(i)
                                 finishAffinity()
                                 ugDataModel = UnderGroundInsertModel()
-                                attributeDataModelList = ArrayList<AttributeDataModel>()
+                                attributeDataModelList = java.util.ArrayList<AttributeDataModel>()
+                                var ugmr = UnderGroundMappingReport()
+                                var flagUG = "0"
                             }
                             ctx.getString(R.string.ResponseCodefail) -> {
                                 showToast(model.ResponseCode, act)
@@ -204,7 +211,9 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             i.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
             startActivity(i)
             ugDataModel = UnderGroundInsertModel()
-            attributeDataModelList = ArrayList<AttributeDataModel>()
+            attributeDataModelList = java.util.ArrayList<AttributeDataModel>()
+            var ugmr = UnderGroundMappingReport()
+            var flagUG = "0"
             finishAffinity()
         }
     }

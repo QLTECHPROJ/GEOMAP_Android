@@ -83,8 +83,10 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
         binding.btnNextStep.setOnClickListener {
             val gson = Gson()
             var mapSerialNumber = ""
-            if (flagUG == "1" || flagUG == "2") {
-                mapSerialNumber = ugmr.mapSerialNo!!
+            mapSerialNumber = if (flagUG == "1") {
+                ugmr.mapSerialNo!!
+            }else {
+                ""
             }
             ugDataModel =
                 UnderGroundInsertModel(attributeDataModelList, binding.etName.text.toString(),

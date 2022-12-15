@@ -21,12 +21,17 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.drawToBitmap
 import androidx.databinding.DataBindingUtil
+import com.geomap.DataBaseFunctions
 import com.geomap.DataBaseFunctions.Companion.saveOCReport
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityOpenCastFormSecondStepBinding
 import com.geomap.mapReportModule.activities.DashboardActivity
+import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.flagOC
+import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.img
+import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.ocmr
 import com.geomap.mapReportModule.models.OpenCastInsertModel
 import com.geomap.mapReportModule.models.SuccessModel
 import com.geomap.roomDataBase.OpenCastMappingReport
@@ -76,6 +81,17 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         }
 
         initViewSandVars()
+
+        if(flagOC == "1" || flagOC == "2") {
+            if (img != null) {
+                binding.drawing.startNew()
+                 val c = Canvas(img!!)
+                 binding.drawing.layout(binding.drawing.left, binding.drawing.top,
+                     binding.drawing.right, binding.drawing.bottom)
+             //   val b = Bitmap.createBitmap(img!!.width,img!!.height, Bitmap.Config.ARGB_8888)
+                binding.drawing.draw(c)
+            }
+        }
 
         binding.btnSignPadClear.setOnClickListener {
             binding.drawing.startNew()
@@ -147,6 +163,9 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                             when (model.ResponseCode) {
                                 ctx.getString(R.string.ResponseCodesuccess) -> {
                                     showToast(model.ResponseMessage, act)
+                                    flagOC = "0"
+                                    ocmr = OpenCastMappingReport()
+                                    img  = null
                                     val i = Intent(ctx, DashboardActivity::class.java)
                                     i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                                     startActivity(i)
@@ -205,9 +224,17 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             obj.geologistSign = ocDataModel.geologistSignBitMap!!
             obj.clientsGeologistSign = ocDataModel.clientsGeologistSignBitMap!!
             obj.image = binding.drawing.drawingCache
-            saveOCReport(obj, ctx)
+            if (flagOC == "2") {
+                DataBaseFunctions.updateOCeport(obj, ctx)
+                showToast(getString(R.string.underground_updated), act)
+            } else {
+                saveOCReport(obj, ctx)
+                showToast(getString(R.string.opencast_saved), act)
+            }
+            flagOC = "0"
+            ocmr = OpenCastMappingReport()
+            img  = null
             binding.drawing.startNew()
-            showToast(getString(R.string.opencast_saved), act)
             val i = Intent(ctx, DashboardActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(i)
