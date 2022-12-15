@@ -84,7 +84,6 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
 
         if(flagOC == "1" || flagOC == "2") {
             if (img != null) {
-                binding.drawing.startNew()
                  val c = Canvas(img!!)
                  binding.drawing.layout(binding.drawing.left, binding.drawing.top,
                      binding.drawing.right, binding.drawing.bottom)
