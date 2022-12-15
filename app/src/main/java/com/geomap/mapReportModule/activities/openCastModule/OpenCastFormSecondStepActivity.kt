@@ -76,6 +76,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         }
 
         initViewSandVars()
+
         binding.btnSignPadClear.setOnClickListener {
             binding.drawing.startNew()
         }
