@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundDetailBinding
@@ -106,6 +107,15 @@ class UnderGroundDetailActivity : AppCompatActivity() {
                                         it.attribute)
                                 binding.rvAttributesList.adapter = attributesListAdapter
                             }
+
+                            Glide.with(ctx).load(it.roofImage)
+                                .thumbnail(0.10f).into(binding.roofImage)
+                            Glide.with(ctx).load(it.leftImage)
+                                .thumbnail(0.10f).into(binding.leftImage)
+                            Glide.with(ctx).load(it.rightImage)
+                                .thumbnail(0.10f).into(binding.rightImage)
+                            Glide.with(ctx).load(it.faceImage)
+                                .thumbnail(0.10f).into(binding.faceImage)
                         }
                     }
                     it.ResponseCode == act.getString(R.string.ResponseCodefail) -> {

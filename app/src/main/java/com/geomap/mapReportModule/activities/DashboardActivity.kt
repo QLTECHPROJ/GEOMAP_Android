@@ -9,7 +9,6 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Html
-import android.util.Log
 import android.view.*
 import android.widget.Button
 import android.widget.ImageView
@@ -213,7 +212,8 @@ class DashboardActivity : AppCompatActivity() {
             holder.binding.tvArea.text = listModel[position].location
             holder.binding.tvDate.text = listModel[position].ugDate
             holder.binding.tvSubTitleOne.setText(
-                Html.fromHtml("Mapped By : <font color='black'>${listModel[position].mappedBy}</font>"),
+                Html.fromHtml(
+                    "Mapped By : <font color='black'>${listModel[position].mappedBy}</font>"),
                 TextView.BufferType.SPANNABLE)
             holder.binding.tvSubTitleTwo.setText(Html.fromHtml(
                 "Map serial no : <font color='black'>${listModel[position].mapSerialNo}</font>"),

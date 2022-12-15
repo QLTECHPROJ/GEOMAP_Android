@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.bumptech.glide.Glide
 import com.geomap.R
 import com.geomap.databinding.ActivityOpenCastDetailDraftBinding
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity
@@ -39,6 +40,13 @@ class OpenCastDetailDraftActivity : AppCompatActivity() {
             ocReportData = gson.fromJson(report, type1)
             binding.ocDetail = ocReportData
             binding.llMainLayout.visibility = View.VISIBLE
+
+            Glide.with(ctx).load(ocReportData.geologistSign)
+                .thumbnail(0.10f).load(binding.imgGeologistSign).submit().get()
+            Glide.with(ctx).load(ocReportData.clientsGeologistSign)
+                .thumbnail(0.10f).load(binding.imgClientGeologistSign).submit().get()
+            Glide.with(ctx).load(ocReportData.image)
+                .thumbnail(0.10f).load(binding.image).submit().get()
         }
 
         binding.llBack.setOnClickListener {

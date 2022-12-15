@@ -55,7 +55,6 @@ class OpenCastListDraftActivity : AppCompatActivity() {
     }
 
     private fun postData() {
-
         DB = getDataBase(ctx)
         DB.taskDao().geAllOpenCastMappingReport1(userId).observe(ctx as LifecycleOwner) { lists ->
             list = lists as java.util.ArrayList<OpenCastMappingReport>

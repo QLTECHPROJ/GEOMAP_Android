@@ -3,12 +3,12 @@ package com.geomap.mapReportModule.activities.openCastModule
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityOpenCastDetailBinding
@@ -19,7 +19,6 @@ import com.geomap.mvvm.UserRepository
 import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
 import com.google.gson.Gson
-import java.util.*
 
 class OpenCastDetailActivity : AppCompatActivity() {
     private lateinit var binding : ActivityOpenCastDetailBinding
@@ -51,8 +50,8 @@ class OpenCastDetailActivity : AppCompatActivity() {
         binding.llEdit.setOnClickListener {
             val i = Intent(act, OpenCastFormFirstStepActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            i.putExtra("flag","detailDraft")
-            i.putExtra("data",gson.toJson(model))
+            i.putExtra("flag", "detailDraft")
+            i.putExtra("data", gson.toJson(model))
             act.startActivity(i)
         }
         postData()
@@ -80,6 +79,14 @@ class OpenCastDetailActivity : AppCompatActivity() {
                             OpenCastDetailsModel(it.ResponseCode, it.ResponseData,
                                 it.ResponseMessage, it.ResponseStatus)
                         binding.ocDetail = ocDetail
+
+                        Glide.with(ctx).load(ocDetail.ResponseData.geologistSign)
+                            .thumbnail(0.10f).into(binding.imgGeologistSign)
+                        Glide.with(ctx).load(ocDetail.ResponseData.clientsGeologistSign)
+                            .thumbnail(0.10f).into(binding.imgClientGeologistSign)
+                        Glide.with(ctx).load(ocDetail.ResponseData.image)
+                            .thumbnail(0.10f).into(binding.image)
+
                     }
                     it.ResponseCode == act.getString(R.string.ResponseCodefail) -> {
                         showToast(it.ResponseMessage, act)

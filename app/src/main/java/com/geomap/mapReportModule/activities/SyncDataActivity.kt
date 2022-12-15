@@ -350,7 +350,7 @@ class SyncDataActivity : AppCompatActivity() {
             if (ocModelList.isNotEmpty()) {
                 showProgressBar(binding.progressBar, binding.progressBarHolder, act)
                 APIClientProfile.apiService!!.postOpenCastInsert(ocModelList[i].userId,
-                    ocModelList[i].minesSiteName,"",
+                    ocModelList[i].minesSiteName, "",
                     ocModelList[i].pitName, ocModelList[i].pitLoaction,
                     ocModelList[i].shiftInchargeName, ocModelList[i].geologistName,
                     ocModelList[i].faceLocation, ocModelList[i].faceLength, ocModelList[i].faceArea,

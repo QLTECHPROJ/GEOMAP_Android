@@ -195,4 +195,5 @@
     <string name="there_are_no_reports_at_the_moment">There are no reports at the moment</string>
     <string name="all_data_has_been_synchronised">All data has been synchronised</string>
     <string name="paint">Paint</string>
+    <string name="image">Image</string>
 </resources>

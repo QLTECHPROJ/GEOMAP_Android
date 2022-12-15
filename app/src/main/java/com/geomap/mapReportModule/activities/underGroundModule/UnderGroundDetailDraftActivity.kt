@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundDetailDraftBinding
 import com.geomap.databinding.AttributeLayoutBinding
@@ -59,6 +60,15 @@ class UnderGroundDetailDraftActivity : AppCompatActivity() {
                 attributesListAdapter = AttributesListAdapter(attributeDataList)
                 binding.rvAttributesList.adapter = attributesListAdapter
             }
+
+            Glide.with(ctx).load(ugReportData.leftImage)
+                .thumbnail(0.10f).load(binding.leftImage).submit().get()
+            Glide.with(ctx).load(ugReportData.rightImage)
+                .thumbnail(0.10f).load(binding.rightImage).submit().get()
+            Glide.with(ctx).load(ugReportData.roofImage)
+                .thumbnail(0.10f).load(binding.roofImage).submit().get()
+            Glide.with(ctx).load(ugReportData.faceImage)
+                .thumbnail(0.10f).load(binding.faceImage).submit().get()
 
         }
 

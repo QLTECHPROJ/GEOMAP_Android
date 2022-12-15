@@ -112,7 +112,8 @@ class UnderGroundListActivity : AppCompatActivity() {
             holder.binding.tvDate.text = listModel[position].ugDate
 
             holder.binding.tvSubTitleOne.setText(
-                Html.fromHtml("Mapped By : <font color='black'>${listModel[position].mappedBy}</font>"),
+                Html.fromHtml(
+                    "Mapped By : <font color='black'>${listModel[position].mappedBy}</font>"),
                 TextView.BufferType.SPANNABLE)
             holder.binding.tvSubTitleTwo.setText(Html.fromHtml(
                 "Map serial no : <font color='black'>${listModel[position].mapSerialNo}</font>"),

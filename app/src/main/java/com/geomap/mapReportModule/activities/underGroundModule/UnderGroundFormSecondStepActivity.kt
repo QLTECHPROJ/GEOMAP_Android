@@ -25,49 +25,14 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
     private lateinit var binding : ActivityUnderGroundFormSecondStepBinding
     private lateinit var ctx : Context
     private lateinit var act : Activity
-    private var mYear : Int = 0
-    private var mMonth : Int = 0
-    private var mDay : Int = 0
-    private var birthYear = 0
-    private var ageYear : Int = 0
-    private var ageMonth : Int = 0
-    private var ageDate : Int = 0
     var mapSerialNo : String? = ""
     var name : String? = ""
     var shift : String? = ""
     var mappedBy : String? = ""
     var scale : String? = ""
     var location : String? = ""
-    var veinLoad : String? = ""
-    var xCoordinate : String? = ""
-    var yCoordinate : String? = ""
-    var zCoordinate : String? = ""
     var comment : String? = ""
     var ugDataModel = UnderGroundInsertModel()
-    /*private var userTextWatcher : TextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s : CharSequence, start : Int, count : Int, after : Int) {}
-        override fun onTextChanged(s : CharSequence, start : Int, before : Int, count : Int) {
-            mapSerialNo = binding.etMapSerialNo.text.toString()
-            name = binding.etName.text.toString()
-            mappedBy = binding.etMappedBy.text.toString()
-            scale = binding.etScale.text.toString()
-            location = binding.etLocation.text.toString()
-            veinLoad = binding.etVeinLoad.text.toString()
-            xCoordinate = binding.etXCoordinate.text.toString()
-            yCoordinate = binding.etYCoordinate.text.toString()
-            zCoordinate = binding.etZCoordinate.text.toString()
-            comment = binding.etComment.text.toString()
-
-            when {
-                else -> {
-                    binding.btnNextStep.isEnabled = true
-                    binding.btnNextStep.setBackgroundResource(R.drawable.enable_button)
-                }
-            }
-        }
-
-        override fun afterTextChanged(s : Editable) {}
-    }*/
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,7 +48,7 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
             val type1 = object : TypeToken<ArrayList<AttributeDataModel>>() {}.type
             attributeDataModelList = gson.fromJson(data, type1)
         }
-        if(flagUG == "1" || flagUG == "2"){
+        if (flagUG == "1" || flagUG == "2") {
             binding.tvUGDate.text = ugmr.ugDate
             binding.etName.setText(ugmr.name)
             binding.etScale.setText(ugmr.scale)
@@ -95,21 +60,18 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
             binding.etZCoordinate.setText(ugmr.zCordinate)
             binding.etComment.setText(ugmr.comment)
             shift = ugmr.shift
-            if(shift == getString(R.string.night_shift)){
+            if (shift == getString(R.string.night_shift)) {
                 binding.rbNightShift.isSelected = true
                 binding.rbDayShift.isSelected = false
-            }else{
+            } else {
                 binding.rbNightShift.isSelected = false
-                binding.rbDayShift.isSelected =true
+                binding.rbDayShift.isSelected = true
             }
         }
 
         binding.llBack.setOnClickListener {
             onBackPressed()
         }
-
-     /*   binding.etMapSerialNo.addTextChangedListener(userTextWatcher)
-        binding.etName.addTextChangedListener(userTextWatcher)*/
 
         shift = getString(R.string.night_shift)
         binding.tvUGDate.text = SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT).format(Date())
@@ -121,7 +83,7 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
         binding.btnNextStep.setOnClickListener {
             val gson = Gson()
             var mapSerialNumber = ""
-            if(flagUG == "1" || flagUG == "2"){
+            if (flagUG == "1" || flagUG == "2") {
                 mapSerialNumber = ugmr.mapSerialNo!!
             }
             ugDataModel =

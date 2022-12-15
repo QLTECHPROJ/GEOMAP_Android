@@ -107,7 +107,8 @@ class UnderGroundListDraftActivity : AppCompatActivity() {
             holder.binding.tvDate.text = listModel[position].ugDate
 
             holder.binding.tvSubTitleOne.setText(
-                Html.fromHtml("Mapped By : <font color='black'>${listModel[position].mappedBy}</font>"),
+                Html.fromHtml(
+                    "Mapped By : <font color='black'>${listModel[position].mappedBy}</font>"),
                 TextView.BufferType.SPANNABLE)
             holder.binding.llMainLayout.setOnClickListener {
                 callUnderGroundDetailDraftActivity(act, "1",

@@ -83,7 +83,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             ugDataModel = gson.fromJson(data, type1)
             intent.extras!!.clear()
         }
-        if(flagUG == "1" || flagUG == "2"){
+        if (flagUG == "1" || flagUG == "2") {
             signRoofBitMap = ugmr.roofImage
             signLeftBitMap = ugmr.leftImage
             signRightBitMap = ugmr.rightImage
@@ -160,7 +160,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                                 startActivity(i)
                                 finishAffinity()
                                 ugDataModel = UnderGroundInsertModel()
-                                attributeDataModelList = java.util.ArrayList<AttributeDataModel>()
+                                attributeDataModelList = ArrayList<AttributeDataModel>()
                             }
                             ctx.getString(R.string.ResponseCodefail) -> {
                                 showToast(model.ResponseCode, act)
@@ -198,10 +198,10 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             obj.leftImage = signLeftBitMap
             obj.rightImage = signRightBitMap
             obj.faceImage = signFaceBitMap
-            if(flagUG == "2"){
+            if (flagUG == "2") {
                 DataBaseFunctions.updateUGReport(obj, ctx)
                 showToast(getString(R.string.underground_updated), act)
-            }else{
+            } else {
                 DataBaseFunctions.saveUGReport(obj, ctx)
                 showToast(getString(R.string.underground_saved), act)
             }
@@ -209,7 +209,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             i.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
             startActivity(i)
             ugDataModel = UnderGroundInsertModel()
-            attributeDataModelList = java.util.ArrayList<AttributeDataModel>()
+            attributeDataModelList = ArrayList<AttributeDataModel>()
             finishAffinity()
         }
     }

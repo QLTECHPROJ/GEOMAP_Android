@@ -6,6 +6,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
+import com.bumptech.glide.Glide
 import com.geomap.DataBaseFunctions
 import com.geomap.GeoMapApp.*
 import com.geomap.R
@@ -36,6 +38,8 @@ import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.IOException
+import java.net.URL
 import java.util.*
 
 class UnderGroundFormFirstStepActivity : AppCompatActivity() {
@@ -76,20 +80,20 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
                     obj.nose = model.ResponseData.attribute[i].nose
                     attributeDataModelList.add(obj)
                 }
-                var roofImage: Bitmap? = null
-                var leftImage: Bitmap? = null
-                var rightImage: Bitmap? = null
-                var faceImage: Bitmap? = null
+                var roofImage : Bitmap? = null
+                var leftImage : Bitmap? = null
+                var rightImage : Bitmap? = null
+                var faceImage : Bitmap? = null
 
-                /*try {
+                try {
                     if (model.ResponseData.roofImage != "") {
-                        /*val url = URL(model.ResponseData.roofImage)
+                        val url = URL(model.ResponseData.roofImage)
                         roofImage = BitmapFactory.decodeStream(
-                            url.openConnection().getInputStream())*/
-                        roofImage = Glide.with(ctx).asBitmap().load(
-                            model.ResponseData.roofImage).submit().get()
+                            url.openConnection().getInputStream())
+                        /* roofImage = Glide.with(ctx).asBitmap().load(
+                             model.ResponseData.roofImage).submit().get()*/
                     }
-                } catch (e: IOException) {
+                } catch (e : IOException) {
                     e.printStackTrace()
                 }
                 try {
@@ -97,7 +101,7 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
                         leftImage = Glide.with(ctx).asBitmap().load(
                             model.ResponseData.leftImage).submit().get()
                     }
-                } catch (e: IOException) {
+                } catch (e : IOException) {
                     e.printStackTrace()
                 }
                 try {
@@ -105,18 +109,18 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
                         rightImage = Glide.with(ctx).asBitmap().load(
                             model.ResponseData.rightImage).submit().get()
                     }
-                } catch (e: IOException) {
+                } catch (e : IOException) {
                     e.printStackTrace()
                     System.out.println(e)
                 }
                 try {
                     if (model.ResponseData.faceImage != "") {
-                        faceImage =Glide.with(ctx).asBitmap().load(
+                        faceImage = Glide.with(ctx).asBitmap().load(
                             model.ResponseData.faceImage).submit().get()
                     }
-                } catch (e: IOException) {
+                } catch (e : IOException) {
                     e.printStackTrace()
-                }*/
+                }
 
                 ugmr.name = model.ResponseData.name
                 ugmr.comment = model.ResponseData.comment
@@ -407,16 +411,16 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
             holder.binding.tvName.text = listModel[position].name
             holder.binding.tvNos.text = listModel[position].nose
             holder.binding.tvProperties.text = listModel[position].properties
-           /* holder.binding.llEdit.setOnClickListener {
-                property = listModel[position].properties
-                attributesName =  listModel[position].name
-                nosName = listModel[position].nose
-                binding.tvAttributeName.text = attributesName
-                binding.tvNos.text = nosName
-                binding.edtProperty.setText(property)
-            }*/
+            /* holder.binding.llEdit.setOnClickListener {
+                 property = listModel[position].properties
+                 attributesName =  listModel[position].name
+                 nosName = listModel[position].nose
+                 binding.tvAttributeName.text = attributesName
+                 binding.tvNos.text = nosName
+                 binding.edtProperty.setText(property)
+             }*/
             holder.binding.llDelete.setOnClickListener {
-               var deleteDialog = Dialog(ctx)
+                var deleteDialog = Dialog(ctx)
                 deleteDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
                 deleteDialog.setContentView(R.layout.logout_layout)
                 deleteDialog.window!!.setBackgroundDrawable(
