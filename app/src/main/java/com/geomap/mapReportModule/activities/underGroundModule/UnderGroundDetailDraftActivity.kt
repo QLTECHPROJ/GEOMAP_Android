@@ -2,6 +2,7 @@ package com.geomap.mapReportModule.activities.underGroundModule
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -63,6 +64,14 @@ class UnderGroundDetailDraftActivity : AppCompatActivity() {
 
         binding.llBack.setOnClickListener {
             onBackPressed()
+        }
+
+        binding.llEdit.setOnClickListener {
+            val i = Intent(act, UnderGroundFormFirstStepActivity::class.java)
+            i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            i.putExtra("flag","detailDraft")
+            i.putExtra("data",gson.toJson(ugReportData))
+            act.startActivity(i)
         }
     }
 

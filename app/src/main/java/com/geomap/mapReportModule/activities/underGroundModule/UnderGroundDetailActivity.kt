@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,8 +23,10 @@ import com.geomap.mapReportModule.models.UnderGroundDetailsModel
 import com.geomap.mvvm.AllViewModel
 import com.geomap.mvvm.UserModelFactory
 import com.geomap.mvvm.UserRepository
+import com.geomap.roomDataBase.UnderGroundMappingReport
 import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
+import com.google.gson.Gson
 import java.util.*
 
 class UnderGroundDetailActivity : AppCompatActivity() {
@@ -33,9 +34,11 @@ class UnderGroundDetailActivity : AppCompatActivity() {
     private lateinit var ctx : Context
     private lateinit var act : Activity
     private var attributesListAdapter : AttributesListAdapter? = null
-    private var id : String? = null
+    private var mapSerialNo : String? = null
     private var userId : String? = null
     private lateinit var viewModel : AllViewModel
+    private lateinit var model : UnderGroundDetailsModel
+    private var gson = Gson()
     private val retrofitService = RetrofitService.getInstance()
 
     override fun onCreate(savedInstanceState : Bundle?) {
@@ -48,11 +51,19 @@ class UnderGroundDetailActivity : AppCompatActivity() {
         userId = shared.getString(CONSTANTS.userId, "")
 
         if (intent.extras != null) {
-            id = intent.extras?.getString("id")
+            mapSerialNo = intent.extras?.getString("id")
         }
 
         binding.llBack.setOnClickListener {
             onBackPressed()
+        }
+
+        binding.llEdit.setOnClickListener {
+            val i = Intent(act, UnderGroundFormFirstStepActivity::class.java)
+            i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            i.putExtra("flag","detail")
+            i.putExtra("data",gson.toJson(model))
+            act.startActivity(i)
         }
 
         val mLayoutManager : RecyclerView.LayoutManager = LinearLayoutManager(applicationContext)
@@ -62,7 +73,7 @@ class UnderGroundDetailActivity : AppCompatActivity() {
         postData()
 
         binding.btnViewPdf.setOnClickListener {
-            callViewPdfActivity(act, "1", "ug", id)
+            callViewPdfActivity(act, "1", "ug", mapSerialNo)
         }
     }
 
@@ -71,11 +82,12 @@ class UnderGroundDetailActivity : AppCompatActivity() {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             viewModel = ViewModelProvider(this, UserModelFactory(
                 UserRepository(retrofitService)))[AllViewModel::class.java]
-            viewModel.getUnderGroundDetails(id.toString())
+            viewModel.getUnderGroundDetails(mapSerialNo.toString())
             viewModel.getUnderGroundDetails.observe(this) { it ->
                 hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                 when {
                     it?.ResponseCode == getString(R.string.ResponseCodesuccess) -> {
+                        model = it
                         binding.llMainLayout.visibility = View.VISIBLE
                         binding.btnViewPdf.visibility = View.VISIBLE
                         val ugDetail =

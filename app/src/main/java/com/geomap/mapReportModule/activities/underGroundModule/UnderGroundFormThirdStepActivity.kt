@@ -26,6 +26,8 @@ import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundFormThirdStepBinding
 import com.geomap.mapReportModule.activities.DashboardActivity
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity.Companion.attributeDataModelList
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity.Companion.flagUG
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity.Companion.ugmr
 import com.geomap.mapReportModule.models.AttributeDataModel
 import com.geomap.mapReportModule.models.SuccessModel
 import com.geomap.mapReportModule.models.UnderGroundInsertModel
@@ -80,6 +82,12 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             val type1 = object : TypeToken<UnderGroundInsertModel>() {}.type
             ugDataModel = gson.fromJson(data, type1)
             intent.extras!!.clear()
+        }
+        if(flagUG == "1" || flagUG == "2"){
+            signRoofBitMap = ugmr.roofImage
+            signLeftBitMap = ugmr.leftImage
+            signRightBitMap = ugmr.rightImage
+            signFaceBitMap = ugmr.faceImage
         }
 
         if (intent.extras != null) {
@@ -172,17 +180,16 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         } else {
             val obj = UnderGroundMappingReport()
             val gson = Gson()
-            obj.iD = 0
             obj.userId = userId
             obj.name = ugDataModel.name
             obj.comment = ugDataModel.comment
             obj.attributes = gson.toJson(attributeDataModelList)
             obj.ugDate = ugDataModel.ugDate
-            obj.mapSerialNo = ugDataModel.mapSerialNo
+            obj.mapSerialNo = ""
             obj.shift = ugDataModel.shift
             obj.mappedBy = ugDataModel.mappedBy
             obj.scale = ugDataModel.scale
-            obj.locations = ugDataModel.location
+            obj.location = ugDataModel.location
             obj.veinOrLoad = ugDataModel.venieLoad
             obj.xCordinate = ugDataModel.xCordinate
             obj.yCordinate = ugDataModel.yCordinate
@@ -191,8 +198,13 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             obj.leftImage = signLeftBitMap
             obj.rightImage = signRightBitMap
             obj.faceImage = signFaceBitMap
-            DataBaseFunctions.saveUGReport(obj, ctx)
-            showToast(getString(R.string.underground_saved), act)
+            if(flagUG == "2"){
+                DataBaseFunctions.updateUGReport(obj, ctx)
+                showToast(getString(R.string.underground_updated), act)
+            }else{
+                DataBaseFunctions.saveUGReport(obj, ctx)
+                showToast(getString(R.string.underground_saved), act)
+            }
             val i = Intent(ctx, DashboardActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
             startActivity(i)

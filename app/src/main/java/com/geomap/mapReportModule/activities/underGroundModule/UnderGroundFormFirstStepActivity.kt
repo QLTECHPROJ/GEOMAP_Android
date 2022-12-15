@@ -5,6 +5,7 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -23,16 +24,15 @@ import com.geomap.DataBaseFunctions
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundFormFirstStepBinding
-import com.geomap.databinding.AttributeLayoutBinding
 import com.geomap.databinding.CardviewAttributeLayoutBinding
 import com.geomap.databinding.CommonPopupLayoutBinding
 import com.geomap.mapReportModule.models.AttributeDataModel
 import com.geomap.mapReportModule.models.AttributesListModel
-import com.geomap.roomDataBase.AttributeData
-import com.geomap.roomDataBase.GeoMapDatabase
-import com.geomap.roomDataBase.Nos
+import com.geomap.mapReportModule.models.UnderGroundDetailsModel
+import com.geomap.roomDataBase.*
 import com.geomap.utils.RetrofitService
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -52,6 +52,8 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
     lateinit var tvTilte : TextView
     var attributeList = ArrayList<AttributeData>()
     var attributeDataModel = AttributeDataModel()
+    private lateinit var model : UnderGroundDetailsModel
+    val gson = Gson()
     var nosList = ArrayList<Nos>()
 
     override fun onCreate(savedInstanceState : Bundle?) {
@@ -60,6 +62,106 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
             R.layout.activity_under_ground_form_first_step)
         ctx = this@UnderGroundFormFirstStepActivity
         act = this@UnderGroundFormFirstStepActivity
+        if (intent.extras != null) {
+            if (intent.getStringExtra("flag") == "detail") {
+                flagUG = "1"
+                val data = intent.getStringExtra("data")
+                val type1 = object : TypeToken<UnderGroundDetailsModel>() {}.type
+                model = gson.fromJson(data, type1)
+                attributeDataModelList = ArrayList<AttributeDataModel>()
+                for (i in model.ResponseData.attribute.indices) {
+                    val obj = AttributeDataModel()
+                    obj.name = model.ResponseData.attribute[i].name
+                    obj.properties = model.ResponseData.attribute[i].properties
+                    obj.nose = model.ResponseData.attribute[i].nose
+                    attributeDataModelList.add(obj)
+                }
+                var roofImage: Bitmap? = null
+                var leftImage: Bitmap? = null
+                var rightImage: Bitmap? = null
+                var faceImage: Bitmap? = null
+
+                /*try {
+                    if (model.ResponseData.roofImage != "") {
+                        /*val url = URL(model.ResponseData.roofImage)
+                        roofImage = BitmapFactory.decodeStream(
+                            url.openConnection().getInputStream())*/
+                        roofImage = Glide.with(ctx).asBitmap().load(
+                            model.ResponseData.roofImage).submit().get()
+                    }
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+                try {
+                    if (model.ResponseData.leftImage != "") {
+                        leftImage = Glide.with(ctx).asBitmap().load(
+                            model.ResponseData.leftImage).submit().get()
+                    }
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+                try {
+                    if (model.ResponseData.rightImage != "") {
+                        rightImage = Glide.with(ctx).asBitmap().load(
+                            model.ResponseData.rightImage).submit().get()
+                    }
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                    System.out.println(e)
+                }
+                try {
+                    if (model.ResponseData.faceImage != "") {
+                        faceImage =Glide.with(ctx).asBitmap().load(
+                            model.ResponseData.faceImage).submit().get()
+                    }
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }*/
+
+                ugmr.name = model.ResponseData.name
+                ugmr.comment = model.ResponseData.comment
+                ugmr.ugDate = model.ResponseData.ugDate
+                ugmr.mapSerialNo = model.ResponseData.mapSerialNo
+                ugmr.shift = model.ResponseData.shift
+                ugmr.mappedBy = model.ResponseData.mappedBy
+                ugmr.scale = model.ResponseData.scale
+                ugmr.location = model.ResponseData.location
+                ugmr.veinOrLoad = model.ResponseData.venieLoad
+                ugmr.xCordinate = model.ResponseData.xCordinate
+                ugmr.yCordinate = model.ResponseData.yCordinate
+                ugmr.zCordinate = model.ResponseData.zCordinate
+                ugmr.roofImage = roofImage
+                ugmr.leftImage = leftImage
+                ugmr.rightImage = rightImage
+                ugmr.faceImage = faceImage
+                ugmr.attributes = gson.toJson(attributeDataModelList)
+                if (attributeDataModelList.isEmpty()) {
+                    binding.tvAttributes.visibility = View.GONE
+                    binding.cvAttributesList.visibility = View.GONE
+                } else {
+                    binding.tvAttributes.visibility = View.VISIBLE
+                    binding.cvAttributesList.visibility = View.VISIBLE
+                    attributesListAdapter = AttributesListAdapter(attributeDataModelList)
+                    binding.rvAttributesList.adapter = attributesListAdapter
+                }
+            } else if (intent.getStringExtra("flag") == "detailDraft") {
+                flagUG = "2"
+                val data = intent.getStringExtra("data")
+                val type1 = object : TypeToken<UnderGroundMappingReport>() {}.type
+                ugmr = gson.fromJson(data, type1)
+                val type2 = object : TypeToken<ArrayList<AttributeDataModel>>() {}.type
+                attributeDataModelList = gson.fromJson(ugmr.attributes, type2)
+                if (attributeDataModelList.isEmpty()) {
+                    binding.tvAttributes.visibility = View.GONE
+                    binding.cvAttributesList.visibility = View.GONE
+                } else {
+                    binding.tvAttributes.visibility = View.VISIBLE
+                    binding.cvAttributesList.visibility = View.VISIBLE
+                    attributesListAdapter = AttributesListAdapter(attributeDataModelList)
+                    binding.rvAttributesList.adapter = attributesListAdapter
+                }
+            }
+        }
 
         binding.llBack.setOnClickListener {
             onBackPressed()
@@ -188,7 +290,7 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
                     return false
                 }
             })
-            if (attributesId == 0) {
+            if (attributesName == "") {
                 showToast(getString(R.string.please_select_attribute), act)
             } else {
                 if (nosModelList.isEmpty()) {
@@ -217,8 +319,6 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
     }
 
     private fun clearData(flag : String) {
-        attributesId = 0
-        nosId = 0
         attributesName = ""
         nosName = ""
         property = ""
@@ -307,6 +407,53 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
             holder.binding.tvName.text = listModel[position].name
             holder.binding.tvNos.text = listModel[position].nose
             holder.binding.tvProperties.text = listModel[position].properties
+           /* holder.binding.llEdit.setOnClickListener {
+                property = listModel[position].properties
+                attributesName =  listModel[position].name
+                nosName = listModel[position].nose
+                binding.tvAttributeName.text = attributesName
+                binding.tvNos.text = nosName
+                binding.edtProperty.setText(property)
+            }*/
+            holder.binding.llDelete.setOnClickListener {
+               var deleteDialog = Dialog(ctx)
+                deleteDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                deleteDialog.setContentView(R.layout.logout_layout)
+                deleteDialog.window!!.setBackgroundDrawable(
+                    ColorDrawable(Color.TRANSPARENT))
+                deleteDialog.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT)
+                val tvGoBack = deleteDialog.findViewById<TextView>(R.id.tvGoBack)
+                val tvTitle = deleteDialog.findViewById<TextView>(R.id.tvTitle)
+                val tvHeader = deleteDialog.findViewById<TextView>(R.id.tvHeader)
+                val btn = deleteDialog.findViewById<Button>(R.id.Btn)
+                tvTitle.visibility = View.GONE
+                tvHeader.text = getString(R.string.delete_attribute)
+
+                deleteDialog.setOnKeyListener { _ : DialogInterface?, keyCode : Int, _ : KeyEvent? ->
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        deleteDialog.dismiss()
+                        return@setOnKeyListener true
+                    }
+                    false
+                }
+                btn.setOnClickListener {
+                    deleteDialog.dismiss()
+                    attributeDataModelList.removeAt(position)
+                    if (attributeDataModelList.isEmpty()) {
+                        binding.tvAttributes.visibility = View.GONE
+                        binding.cvAttributesList.visibility = View.GONE
+                    } else {
+                        binding.tvAttributes.visibility = View.VISIBLE
+                        binding.cvAttributesList.visibility = View.VISIBLE
+                        attributesListAdapter = AttributesListAdapter(attributeDataModelList)
+                        binding.rvAttributesList.adapter = attributesListAdapter
+                    }
+                }
+                tvGoBack.setOnClickListener { deleteDialog.dismiss() }
+                deleteDialog.show()
+                deleteDialog.setCancelable(false)
+            }
         }
 
         override fun getItemCount() : Int {
@@ -316,8 +463,6 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         sdt = 3
-        attributesId = 0
-        nosId = 0
         attributesName = ""
         nosName = ""
         property = ""
@@ -431,11 +576,10 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
             val mData : AttributesListModel.ResponseData = listFilterData[position]
             holder.bindingAdapter.tvName.text = mData.name
             holder.bindingAdapter.llMainLayout.setOnClickListener {
-                if (attributesId != mData.id) {
-                    nosId = 0
+                if (attributesName != mData.name) {
+                    nosName = ""
                     binding.tvNos.text = ctx.getString(R.string.select_nos)
                 }
-                attributesId = mData.id
                 attributesName = mData.name
                 binding.tvAttributeName.text = mData.name
                 nosModelList = mData.nosList!!
@@ -520,7 +664,6 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
             val mData : AttributesListModel.ResponseData.Nos = listFilterData[position]
             holder.bindingAdapter.tvName.text = mData.name
             holder.bindingAdapter.llMainLayout.setOnClickListener {
-                nosId = mData.id
                 binding.tvNos.text = mData.name
                 nosName = mData.name
                 dialog.dismiss()
@@ -579,10 +722,9 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
 
     companion object {
         var sdt = 3
-        var attributesId : Int? = 0
         var attributesName : String? = ""
+        var reportId : String? = ""
         var nosName : String? = ""
-        var nosId : Int? = 0
         var property : String? = ""
         var attributeSearchFilter : String = ""
         var nosSearchFilter : String = ""
@@ -592,5 +734,7 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
         var attributesAdapter : AttributesAdapter? = null
         var nosAdapter : NosAdapter? = null
         val gson = Gson()
+        var ugmr = UnderGroundMappingReport()
+        var flagUG = "0"
     }
 }

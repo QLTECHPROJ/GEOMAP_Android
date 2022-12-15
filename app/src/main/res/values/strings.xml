@@ -52,8 +52,8 @@
     <string name="no_result_found">No result found</string>
     <string name="add_under_ground_mapping_report">Underground Mapping</string>
     <string name="add_opencast_mapping_report">OpenCast Mapping</string>
-    <string name="undergrounds_mapping_report_details">Underground Mapping Report Details</string>
-    <string name="opencast_mapping_report_details">OpenCast Mapping Report Details</string>
+    <string name="undergrounds_mapping_report_details">Underground Mapping \n Report Details</string>
+    <string name="opencast_mapping_report_details">OpenCast Mapping\n Report Details</string>
     <string name="geological_attributes">Geological Attributes</string>
     <string name="select_attributes">Select Attributes</string>
     <string name="select_nos">Select Nos</string>

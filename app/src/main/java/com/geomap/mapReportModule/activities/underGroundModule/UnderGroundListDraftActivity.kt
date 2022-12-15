@@ -103,14 +103,11 @@ class UnderGroundListDraftActivity : AppCompatActivity() {
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
             holder.binding.tvName.text = listModel[position].name
-            holder.binding.tvArea.text = listModel[position].locations
+            holder.binding.tvArea.text = listModel[position].location
             holder.binding.tvDate.text = listModel[position].ugDate
 
             holder.binding.tvSubTitleOne.setText(
-                Html.fromHtml("Scale : <font color='black'>${listModel[position].scale}</font>"),
-                TextView.BufferType.SPANNABLE)
-            holder.binding.tvSubTitleTwo.setText(Html.fromHtml(
-                "Map serial no : <font color='black'>${listModel[position].mapSerialNo}</font>"),
+                Html.fromHtml("Mapped By : <font color='black'>${listModel[position].mappedBy}</font>"),
                 TextView.BufferType.SPANNABLE)
             holder.binding.llMainLayout.setOnClickListener {
                 callUnderGroundDetailDraftActivity(act, "1",

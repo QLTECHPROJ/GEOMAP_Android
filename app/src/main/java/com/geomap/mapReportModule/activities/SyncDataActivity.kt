@@ -96,11 +96,10 @@ class SyncDataActivity : AppCompatActivity() {
                 sdu.name = ugList[i].name
                 sdu.comment = ugList[i].comment
                 sdu.ugDate = ugList[i].ugDate
-                sdu.mapSerialNo = ugList[i].mapSerialNo
                 sdu.shift = ugList[i].shift
                 sdu.mappedBy = ugList[i].mappedBy
                 sdu.scale = ugList[i].scale
-                sdu.location = ugList[i].locations
+                sdu.location = ugList[i].location
                 sdu.venieLoad = ugList[i].veinOrLoad
                 sdu.xCordinate = ugList[i].xCordinate
                 sdu.yCordinate = ugList[i].yCordinate
@@ -166,7 +165,6 @@ class SyncDataActivity : AppCompatActivity() {
                 val sdu = SyncDataOcModel()
                 sdu.userId = userId
                 sdu.minesSiteName = ocList[i].minesSiteName
-                sdu.mappingSheetNo = ocList[i].mappingSheetNo
                 sdu.pitName = ocList[i].pitName
                 sdu.pitLoaction = ocList[i].pitLocation
                 sdu.shiftInchargeName = ocList[i].shiftInChargeName
@@ -273,7 +271,7 @@ class SyncDataActivity : AppCompatActivity() {
                 showProgressBar(binding.progressBar, binding.progressBarHolder, act)
                 APIClientProfile.apiService!!.postUndergroundInsert(ugModelList[i].userId,
                     ugModelList[i].name, ugModelList[i].comment, attributeDataList,
-                    ugModelList[i].ugDate, ugModelList[i].mapSerialNo, ugModelList[i].shift,
+                    ugModelList[i].ugDate, "", ugModelList[i].shift,
                     ugModelList[i].mappedBy, ugModelList[i].scale, ugModelList[i].location,
                     ugModelList[i].venieLoad, ugModelList[i].xCordinate, ugModelList[i].yCordinate,
                     ugModelList[i].zCordinate, ugModelList[i].roofImage, ugModelList[i].leftImage,
@@ -352,7 +350,7 @@ class SyncDataActivity : AppCompatActivity() {
             if (ocModelList.isNotEmpty()) {
                 showProgressBar(binding.progressBar, binding.progressBarHolder, act)
                 APIClientProfile.apiService!!.postOpenCastInsert(ocModelList[i].userId,
-                    ocModelList[i].minesSiteName, ocModelList[i].mappingSheetNo,
+                    ocModelList[i].minesSiteName,"",
                     ocModelList[i].pitName, ocModelList[i].pitLoaction,
                     ocModelList[i].shiftInchargeName, ocModelList[i].geologistName,
                     ocModelList[i].faceLocation, ocModelList[i].faceLength, ocModelList[i].faceArea,

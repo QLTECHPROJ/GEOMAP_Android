@@ -112,13 +112,13 @@ class UnderGroundListActivity : AppCompatActivity() {
             holder.binding.tvDate.text = listModel[position].ugDate
 
             holder.binding.tvSubTitleOne.setText(
-                Html.fromHtml("Scale : <font color='black'>${listModel[position].scale}</font>"),
+                Html.fromHtml("Mapped By : <font color='black'>${listModel[position].mappedBy}</font>"),
                 TextView.BufferType.SPANNABLE)
             holder.binding.tvSubTitleTwo.setText(Html.fromHtml(
                 "Map serial no : <font color='black'>${listModel[position].mapSerialNo}</font>"),
                 TextView.BufferType.SPANNABLE)
             holder.binding.llMainLayout.setOnClickListener {
-                callUnderGroundDetailActivity(act, "1", listModel[position].id)
+                callUnderGroundDetailActivity(act, "1", listModel[position].mapSerialNo)
             }
         }
 

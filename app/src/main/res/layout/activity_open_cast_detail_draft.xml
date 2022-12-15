@@ -45,8 +45,7 @@
             android:scaleType="fitXY"
             android:src="@drawable/ic_edit_icon_blue"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/black" />
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"

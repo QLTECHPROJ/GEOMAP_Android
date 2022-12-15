@@ -12,9 +12,6 @@ class UnderGroundMappingReport : Serializable {
     @PrimaryKey(autoGenerate = true)
     var uid = 0
 
-    @ColumnInfo(name = "Id")
-    var iD: Int? = null
-
     @ColumnInfo(name = "userId")
     var userId :String? = null
 
@@ -37,7 +34,7 @@ class UnderGroundMappingReport : Serializable {
     var scale :String? = null
 
     @ColumnInfo(name = "location")
-    var locations :String? = null
+    var location :String? = null
 
     @ColumnInfo(name = "veinOrLoad")
     var veinOrLoad :String? = null

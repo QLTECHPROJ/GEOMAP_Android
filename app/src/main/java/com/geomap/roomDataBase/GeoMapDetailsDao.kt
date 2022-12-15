@@ -1,18 +1,21 @@
 package com.geomap.roomDataBase
 
+import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 
 @Dao
 interface GeoMapDetailsDao {
     @Query("SELECT * FROM undergroundmappingreport ORDER BY uid DESC")
     fun geAllData1ForAll(): List<UnderGroundMappingReport?>
 
+    @TypeConverters(Converters::class)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUGReport(underGroundMappingReport: UnderGroundMappingReport?)
+
+    @TypeConverters(Converters::class)
+    @Query("UPDATE undergroundmappingreport set name =:name,mapSerialNo =:mapSerialNo,ugDate =:ugDate,shift =:shift,mappedBy =:mappedBy,scale =:scale,location =:location,veinOrLoad =:veinOrLoad,xCordinate =:xCordinate,yCordinate =:yCordinate,zCordinate =:zCordinate,roofImage =:roofImage,faceImage =:faceImage,leftImage =:leftImage,rightImage =:rightImage,comment =:comment WHERE uid =:uid")
+    fun updateUGReport(name:String?,mapSerialNo:String?, ugDate:String?, shift:String?, mappedBy:String?,scale:String?,location:String?,veinOrLoad:String?,xCordinate:String?,yCordinate:String?,zCordinate:String?,roofImage:Bitmap?,faceImage:Bitmap?,leftImage:Bitmap?,rightImage:Bitmap?,comment:String?,uid:Int?)
 
     @Query("SELECT * FROM undergroundmappingreport WHERE userId =:userId")
     fun geAllUnderGroundMappingReport(userId: String?): List<UnderGroundMappingReport>
@@ -112,4 +115,13 @@ interface GeoMapDetailsDao {
 
     @Query("DELETE FROM typeoffaults")
     fun deleteTypeOfFaults() // ORDER BY uid ASC
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertGeologist(geologist: Geologist?)
+
+    @Query("SELECT * FROM Geologist")
+    fun geAllGeologist(): List<Geologist>
+
+    @Query("DELETE FROM geologist")
+    fun deleteGeologist() // ORDER BY uid ASC
 }
