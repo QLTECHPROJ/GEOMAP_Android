@@ -80,101 +80,94 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
                     obj.nose = model.ResponseData.attribute[i].nose
                     attributeDataModelList.add(obj)
                 }
-                var roofImage : Bitmap? = null
-                var leftImage : Bitmap? = null
-                var rightImage : Bitmap? = null
-                var faceImage : Bitmap? = null
-
-                try {
-                    if (model.ResponseData.roofImage != "") {
-                        val url = URL(model.ResponseData.roofImage)
-                       /* roofImage = BitmapFactory.decodeStream(
-                            url.openConnection().getInputStream())*/
-                        GeoMapDatabase.databaseWriteExecutor.execute {
-                            roofImage = Glide.with(ctx).asBitmap().load(
-                                model.ResponseData.roofImage).submit().get()
-                        }
+                var roofImage: Bitmap? = null
+                var leftImage: Bitmap? = null
+                var rightImage: Bitmap? = null
+                var faceImage: Bitmap? = null
+                //                try {
+                if (model.ResponseData.roofImage != "") {
+                    GeoMapDatabase.databaseWriteExecutor.execute {
+                        roofImage = Glide.with(ctx).asBitmap().load(
+                            model.ResponseData.roofImage).submit().get()
+                        ugmr.roofImage = roofImage
                     }
-                } catch (e : IOException) {
-                    e.printStackTrace()
                 }
-                try {
-                    if (model.ResponseData.leftImage != "") {
-
-                        GeoMapDatabase.databaseWriteExecutor.execute {
-                            leftImage = Glide.with(ctx).asBitmap().load(
-                                model.ResponseData.leftImage).submit().get()
-                        }
+                //                } catch (e : IOException) {
+                //                    e.printStackTrace()
+                //                }
+                //                try {
+                if (model.ResponseData.leftImage != "") {
+                    GeoMapDatabase.databaseWriteExecutor2.execute {
+                        leftImage = Glide.with(ctx).asBitmap().load(
+                            model.ResponseData.leftImage).submit().get()
+                                ugmr.leftImage = leftImage
                     }
-                } catch (e : IOException) {
-                    e.printStackTrace()
-                }
-                try {
+                } //                } catch (e : IOException) {
+                //                    e.printStackTrace()
+                //                }
+//                try {
                     if (model.ResponseData.rightImage != "") {
-                        GeoMapDatabase.databaseWriteExecutor.execute {
+                        GeoMapDatabase.databaseWriteExecutor1.execute {
                             rightImage = Glide.with(ctx).asBitmap().load(
                                 model.ResponseData.rightImage).submit().get()
+                            ugmr.rightImage = rightImage
                         }
                     }
-                } catch (e : IOException) {
-                    e.printStackTrace()
-                    System.out.println(e)
-                }
-                try {
+                    //                } catch (e : IOException) {
+                    //                    e.printStackTrace()
+                    //                    System.out.println(e)
+                    //                }
+                    //                try {
                     if (model.ResponseData.faceImage != "") {
-                        GeoMapDatabase.databaseWriteExecutor.execute {
+                        GeoMapDatabase.databaseWriteExecutor3.execute {
                             faceImage = Glide.with(ctx).asBitmap().load(
                                 model.ResponseData.faceImage).submit().get()
+                            ugmr.faceImage = faceImage
                         }
                     }
-                } catch (e : IOException) {
-                    e.printStackTrace()
-                }
+                    //                } catch (e : IOException) {
+                    //                    e.printStackTrace()
+                    //                }
+                    ugmr.name = model.ResponseData.name
+                    ugmr.comment = model.ResponseData.comment
+                    ugmr.ugDate = model.ResponseData.ugDate
+                    ugmr.mapSerialNo = model.ResponseData.mapSerialNo
+                    ugmr.shift = model.ResponseData.shift
+                    ugmr.mappedBy = model.ResponseData.mappedBy
+                    ugmr.scale = model.ResponseData.scale
+                    ugmr.location = model.ResponseData.location
+                    ugmr.veinOrLoad = model.ResponseData.venieLoad
+                    ugmr.xCordinate = model.ResponseData.xCordinate
+                    ugmr.yCordinate = model.ResponseData.yCordinate
+                    ugmr.zCordinate = model.ResponseData.zCordinate
 
-                ugmr.name = model.ResponseData.name
-                ugmr.comment = model.ResponseData.comment
-                ugmr.ugDate = model.ResponseData.ugDate
-                ugmr.mapSerialNo = model.ResponseData.mapSerialNo
-                ugmr.shift = model.ResponseData.shift
-                ugmr.mappedBy = model.ResponseData.mappedBy
-                ugmr.scale = model.ResponseData.scale
-                ugmr.location = model.ResponseData.location
-                ugmr.veinOrLoad = model.ResponseData.venieLoad
-                ugmr.xCordinate = model.ResponseData.xCordinate
-                ugmr.yCordinate = model.ResponseData.yCordinate
-                ugmr.zCordinate = model.ResponseData.zCordinate
-                ugmr.roofImage = roofImage
-                ugmr.leftImage = leftImage
-                ugmr.rightImage = rightImage
-                ugmr.faceImage = faceImage
-                ugmr.attributes = gson.toJson(attributeDataModelList)
-                if (attributeDataModelList.isEmpty()) {
-                    binding.tvAttributes.visibility = View.GONE
-                    binding.cvAttributesList.visibility = View.GONE
-                } else {
-                    binding.tvAttributes.visibility = View.VISIBLE
-                    binding.cvAttributesList.visibility = View.VISIBLE
-                    attributesListAdapter = AttributesListAdapter(attributeDataModelList)
-                    binding.rvAttributesList.adapter = attributesListAdapter
-                }
-            } else if (intent.getStringExtra("flag") == "detailDraft") {
-                flagUG = "2"
-                val data = intent.getStringExtra("data")
-                val type1 = object : TypeToken<UnderGroundMappingReport>() {}.type
-                ugmr = gson.fromJson(data, type1)
-                val type2 = object : TypeToken<ArrayList<AttributeDataModel>>() {}.type
-                attributeDataModelList = gson.fromJson(ugmr.attributes, type2)
-                if (attributeDataModelList.isEmpty()) {
-                    binding.tvAttributes.visibility = View.GONE
-                    binding.cvAttributesList.visibility = View.GONE
-                } else {
-                    binding.tvAttributes.visibility = View.VISIBLE
-                    binding.cvAttributesList.visibility = View.VISIBLE
-                    attributesListAdapter = AttributesListAdapter(attributeDataModelList)
-                    binding.rvAttributesList.adapter = attributesListAdapter
+                    ugmr.attributes = gson.toJson(attributeDataModelList)
+                    if (attributeDataModelList.isEmpty()) {
+                        binding.tvAttributes.visibility = View.GONE
+                        binding.cvAttributesList.visibility = View.GONE
+                    } else {
+                        binding.tvAttributes.visibility = View.VISIBLE
+                        binding.cvAttributesList.visibility = View.VISIBLE
+                        attributesListAdapter = AttributesListAdapter(attributeDataModelList)
+                        binding.rvAttributesList.adapter = attributesListAdapter
+                    }
+                } else if (intent.getStringExtra("flag") == "detailDraft") {
+                    flagUG = "2"
+                    val data = intent.getStringExtra("data")
+                    val type1 = object : TypeToken<UnderGroundMappingReport>() {}.type
+                    ugmr = gson.fromJson(data, type1)
+                    attributeDataModelList = gson.fromJson(ugmr.attributes, type1)
+                    if (attributeDataModelList.isEmpty()) {
+                        binding.tvAttributes.visibility = View.GONE
+                        binding.cvAttributesList.visibility = View.GONE
+                    } else {
+                        binding.tvAttributes.visibility = View.VISIBLE
+                        binding.cvAttributesList.visibility = View.VISIBLE
+                        attributesListAdapter = AttributesListAdapter(attributeDataModelList)
+                        binding.rvAttributesList.adapter = attributesListAdapter
+                    }
                 }
             }
-        }
 
         binding.llBack.setOnClickListener {
             onBackPressed()
@@ -486,8 +479,8 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
         attributeDataModelList = ArrayList<AttributeDataModel>()
         attributesAdapter = null
         nosAdapter = null
-        var ugmr = UnderGroundMappingReport()
-        var flagUG = "0"
+        ugmr = UnderGroundMappingReport()
+        flagUG = "0"
         finish()
     }
 

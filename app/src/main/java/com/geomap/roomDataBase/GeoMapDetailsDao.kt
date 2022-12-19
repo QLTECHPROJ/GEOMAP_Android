@@ -14,8 +14,12 @@ interface GeoMapDetailsDao {
     fun insertUGReport(underGroundMappingReport: UnderGroundMappingReport?)
 
     @TypeConverters(Converters::class)
-    @Query("UPDATE undergroundmappingreport set name =:name,mapSerialNo =:mapSerialNo,ugDate =:ugDate,shift =:shift,mappedBy =:mappedBy,scale =:scale,location =:location,veinOrLoad =:veinOrLoad,xCordinate =:xCordinate,yCordinate =:yCordinate,zCordinate =:zCordinate,roofImage =:roofImage,faceImage =:faceImage,leftImage =:leftImage,rightImage =:rightImage,comment =:comment WHERE uid =:uid")
-    fun updateUGReport(name:String?,mapSerialNo:String?, ugDate:String?, shift:String?, mappedBy:String?,scale:String?,location:String?,veinOrLoad:String?,xCordinate:String?,yCordinate:String?,zCordinate:String?,roofImage:Bitmap?,faceImage:Bitmap?,leftImage:Bitmap?,rightImage:Bitmap?,comment:String?,uid:Int?)
+    @Query(
+        "UPDATE undergroundmappingreport set name =:name,mapSerialNo =:mapSerialNo,ugDate =:ugDate,shift =:shift,mappedBy =:mappedBy,scale =:scale,location =:location,veinOrLoad =:veinOrLoad,xCordinate =:xCordinate,yCordinate =:yCordinate,zCordinate =:zCordinate,roofImage =:roofImage,faceImage =:faceImage,leftImage =:leftImage,rightImage =:rightImage,comment =:comment WHERE uid =:uid")
+    fun updateUGReport(name: String?, mapSerialNo: String?, ugDate: String?, shift: String?,
+        mappedBy: String?, scale: String?, location: String?, veinOrLoad: String?,
+        xCordinate: String?, yCordinate: String?, zCordinate: String?, roofImage: Bitmap?,
+        faceImage: Bitmap?, leftImage: Bitmap?, rightImage: Bitmap?, comment: String?, uid: Int?)
 
     @Query("SELECT * FROM undergroundmappingreport WHERE userId =:userId")
     fun geAllUnderGroundMappingReport(userId: String?): List<UnderGroundMappingReport>
@@ -29,8 +33,23 @@ interface GeoMapDetailsDao {
     @Query("DELETE FROM UnderGroundMappingReport WHERE userId =:userId")
     fun deleteUnderGroundMappingReport(userId: String?)
 
+    @TypeConverters(Converters::class)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOCReport(openCastMappingReport: OpenCastMappingReport?)
+
+    @TypeConverters(Converters::class)
+    @Query(
+        "UPDATE opencastmappingreport set ocDate =:ocDate,mappingSheetNo =:mappingSheetNo,minesSiteName =:minesSiteName,pitName =:pitName,pitLocation =:pitLocation,shiftInChargeName =:shiftInChargeName,geologistName =:geologistName,shift =:shift,faceLocation =:faceLocation,faceLength =:faceLength,faceArea =:faceArea,faceRockTypes =:faceRockTypes,benchRL =:benchRL,benchHeightWidth =:benchHeightWidth,benchAngle =:benchAngle,dipDirectionAngle =:dipDirectionAngle,thicknessOfOre =:thicknessOfOre,thicknessOfOverburden =:thicknessOfOverburden,thicknessOfInterBurden =:thicknessOfInterBurden,observedGradeOfOre =:observedGradeOfOre,sampleCollected =:sampleCollected,actualGradOfOre =:actualGradOfOre,weathering =:weathering,rockStrength =:rockStrength,waterCondition =:waterCondition,typeOfGeologicalStructures =:typeOfGeologicalStructures,typeOfFaults =:typeOfFaults,notes =:notes,geologistSign =:geologistSign,clientsGeologistSign =:clientsGeologistSign,image =:image WHERE uid =:uid")
+    fun updateOCReport(ocDate: String?, mappingSheetNo: String?, minesSiteName: String?,
+        pitName: String?, pitLocation: String?, shiftInChargeName: String?, geologistName: String?,
+        shift: String?, faceLocation: String?, faceLength: String?, faceArea: String?,
+        faceRockTypes: String?, benchRL: String?, benchHeightWidth: String?, benchAngle: String?,
+        dipDirectionAngle: String?, thicknessOfOre: String?, thicknessOfOverburden: String?,
+        thicknessOfInterBurden: String?, observedGradeOfOre: String?, sampleCollected: String?,
+        actualGradOfOre: String?, weathering: String?, rockStrength: String?,
+        waterCondition: String?, typeOfGeologicalStructures: String?, typeOfFaults: String?,
+        notes: String?, geologistSign: Bitmap?, clientsGeologistSign: Bitmap?, image: Bitmap?,
+        uid: Int?)
 
     @Query("SELECT * FROM opencastmappingreport  WHERE userId =:userId")
     fun geAllOpenCastMappingReport(userId: String?): List<OpenCastMappingReport>

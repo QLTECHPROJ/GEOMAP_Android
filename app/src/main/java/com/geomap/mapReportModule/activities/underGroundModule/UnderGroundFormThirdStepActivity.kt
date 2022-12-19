@@ -9,6 +9,8 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -21,7 +23,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.drawToBitmap
 import androidx.databinding.DataBindingUtil
 import com.geomap.DataBaseFunctions
 import com.geomap.GeoMapApp.*
@@ -80,10 +81,19 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         userId = shared.getString(CONSTANTS.userId, "")
 
         if (intent.extras != null) {
-            val gson = Gson()
-            val data = intent.getStringExtra("ugData")
-            val type1 = object : TypeToken<UnderGroundInsertModel>() {}.type
-            ugDataModel = gson.fromJson(data, type1)
+            if(intent.hasExtra("ugData")) {
+                val gson = Gson()
+                val data = intent.getStringExtra("ugData")
+                val type1 = object : TypeToken<UnderGroundInsertModel>() {}.type
+                ugDataModel = gson.fromJson(data, type1)
+            }
+            if(intent.hasExtra("attributeData")){
+
+                val gson = Gson()
+                val data = intent.getStringExtra("attributeData")
+                val type1 = object : TypeToken<ArrayList<AttributeDataModel>>() {}.type
+                attributeDataModelList = gson.fromJson(data, type1)
+            }
             intent.extras!!.clear()
         }
         if (flagUG == "1" || flagUG == "2") {
@@ -94,15 +104,8 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             if (signRoofBitMap != null) {
                 callEnable(signRoofBitMap!!, "roof")
             } else {
-                callDisable()
+                callDisable("0")
             }
-        }
-
-        if (intent.extras != null) {
-            val gson = Gson()
-            val data = intent.getStringExtra("attributeData")
-            val type1 = object : TypeToken<ArrayList<AttributeDataModel>>() {}.type
-            attributeDataModelList = gson.fromJson(data, type1)
         }
 
         initViewSandVars()
@@ -113,15 +116,16 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         binding.tvName.text = getString(R.string.roof)
 
         binding.btnClear.setOnClickListener {
+            binding.drawing.background = getDrawable(R.drawable.grid_bg)
             binding.drawing.startNew()
         }
 
 
         binding.btnNext.setOnClickListener {
             binding.drawing.isDrawingCacheEnabled = true
-            if (binding.btnClear.isEnabled) {
+//            if (binding.btnClear.isEnabled) {
                 saveImage(binding.drawing.drawingCache)
-            }
+//            }
         }
 
         binding.llBack.setOnClickListener {
@@ -136,6 +140,31 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
     }
 
     private fun postUndergroundInsert() {
+        var datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        var photo = File(getAlbumStorageDir("Pictures"),
+            String.format(datetime + "signLeftBitMap.jpg", System.currentTimeMillis()))
+        saveBitmapToJPG(signLeftBitMap!!, photo)
+        scanMediaFile(photo)
+        signLeft = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
+        datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        photo = File(getAlbumStorageDir("Pictures"),
+            String.format(datetime + "signRightBitMap.jpg", System.currentTimeMillis()))
+        saveBitmapToJPG(signRightBitMap!!, photo)
+        scanMediaFile(photo)
+        signRight = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
+        datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        photo = File(getAlbumStorageDir("Pictures"),
+            String.format(datetime + "signFaceBitMap.jpg", System.currentTimeMillis()))
+        saveBitmapToJPG(signFaceBitMap!!, photo)
+        scanMediaFile(photo)
+        signFace = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
+        datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        photo = File(getAlbumStorageDir("Pictures"),
+            String.format(datetime + "signRoofBitMap.jpg", System.currentTimeMillis()))
+        saveBitmapToJPG(signRoofBitMap!!, photo)
+        scanMediaFile(photo)
+        signRoof = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
+
         binding.drawing.startNew()
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
@@ -160,9 +189,9 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                                 startActivity(i)
                                 finishAffinity()
                                 ugDataModel = UnderGroundInsertModel()
-                                attributeDataModelList = java.util.ArrayList<AttributeDataModel>()
-                                var ugmr = UnderGroundMappingReport()
-                                var flagUG = "0"
+                                attributeDataModelList = ArrayList<AttributeDataModel>()
+                                ugmr = UnderGroundMappingReport()
+                                flagUG = "0"
                             }
                             ctx.getString(R.string.ResponseCodefail) -> {
                                 showToast(model.ResponseCode, act)
@@ -211,22 +240,29 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             i.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
             startActivity(i)
             ugDataModel = UnderGroundInsertModel()
-            attributeDataModelList = java.util.ArrayList<AttributeDataModel>()
-            var ugmr = UnderGroundMappingReport()
-            var flagUG = "0"
+            attributeDataModelList = ArrayList<AttributeDataModel>()
+            ugmr = UnderGroundMappingReport()
+            flagUG = "0"
             finishAffinity()
         }
     }
 
-    private fun callDisable() {
-        binding.drawing.startNew()
+    private fun callDisable(flag: String) {
+        if(flag == "1"){
+            binding.drawing.startNew()
+        }
+        binding.drawing.background = getDrawable(R.drawable.grid_bg)
         binding.btnClear.isEnabled = false
         binding.btnClear.setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
         binding.btnClear.setBackgroundResource(R.drawable.border_enable_button)
     }
 
     private fun callEnable(signBitMap : Bitmap, bitmapString : String) {
-        binding.drawing.drawToBitmap(signBitMap.config)
+        if(binding.drawing.drawingCache != null){
+            binding.drawing.startNew()
+        }
+        val d: Drawable = BitmapDrawable(resources, signBitMap)
+        binding.drawing.background = d
         Log.e(bitmapString, "$i")
         binding.btnClear.isEnabled = true
         binding.btnClear.setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
@@ -250,60 +286,60 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
     }
 
     private fun saveImage(image : Bitmap) {
-        val datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+      //  val datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         when (i) {
             0 -> {
-                val photo = File(getAlbumStorageDir("Pictures"),
+                /*val photo = File(getAlbumStorageDir("Pictures"),
                     String.format(datetime + "signRoof.jpg", System.currentTimeMillis()))
                 saveBitmapToJPG(image, photo)
                 scanMediaFile(photo)
-                signRoof = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
+                signRoof = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)*/
                 binding.tvName.text = getString(R.string.left)
                 signRoofBitMap = image
                 if (signLeftBitMap != null) {
                     callEnable(signLeftBitMap!!, "left")
                 } else {
-                    callDisable()
+                    callDisable("1")
                 }
                 i++
             }
             1 -> {
-                val photo = File(getAlbumStorageDir("Pictures"),
+               /* val photo = File(getAlbumStorageDir("Pictures"),
                     String.format(datetime + "signLeft.jpg", System.currentTimeMillis()))
                 saveBitmapToJPG(image, photo)
                 scanMediaFile(photo)
-                signLeft = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
+                signLeft = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)*/
                 binding.tvName.text = getString(R.string.right)
                 signLeftBitMap = image
                 if (signRightBitMap != null) {
                     callEnable(signRightBitMap!!, "right")
                 } else {
-                    callDisable()
+                    callDisable("1")
                 }
                 i++
             }
             2 -> {
-                val photo = File(getAlbumStorageDir("Pictures"),
+              /*  val photo = File(getAlbumStorageDir("Pictures"),
                     String.format(datetime + "signRight.jpg", System.currentTimeMillis()))
                 saveBitmapToJPG(image, photo)
                 scanMediaFile(photo)
+                signRight = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)*/
                 binding.btnNext.text = getString(R.string.submit)
-                signRight = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
                 binding.tvName.text = getString(R.string.face)
                 signRightBitMap = image
                 if (signFaceBitMap != null) {
                     callEnable(signFaceBitMap!!, "face")
                 } else {
-                    callDisable()
+                    callDisable("1")
                 }
                 i++
             }
             3 -> {
-                val photo = File(getAlbumStorageDir("Pictures"),
+                /*val photo = File(getAlbumStorageDir("Pictures"),
                     String.format(datetime + "signFace.jpg", System.currentTimeMillis()))
                 saveBitmapToJPG(image, photo)
                 scanMediaFile(photo)
-                signFace = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
+                signFace = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)*/
                 signFaceBitMap = image
                 postUndergroundInsert()
                 Log.e("face", signFace!!.toString() + i)

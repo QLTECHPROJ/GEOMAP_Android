@@ -11,11 +11,12 @@ import com.google.gson.Gson
 class DataBaseFunctions {
     companion object {
         val gson = Gson()
-        fun callUGReportObserver(ctx: Context,userId: String) {
+        fun callUGReportObserver(ctx: Context, userId: String) {
             DB = getDataBase(ctx)
             var list = ArrayList<UnderGroundMappingReport>()
             GeoMapDatabase.databaseWriteExecutor.execute {
-                list = DB.taskDao().geAllUnderGroundMappingReport(userId) as ArrayList<UnderGroundMappingReport>
+                list = DB.taskDao().geAllUnderGroundMappingReport(
+                    userId) as ArrayList<UnderGroundMappingReport>
 
                 Log.e("List UnderGroundMappingReport", "true" + gson.toJson(list).toString())
             } as (List<UnderGroundMappingReport>)
@@ -27,25 +28,30 @@ class DataBaseFunctions {
                 DB!!.taskDao().insertUGReport(obj)
             }
         }
+
         fun updateUGReport(obj: UnderGroundMappingReport, ctx: Context) {
             DB = getDataBase(ctx)
             GeoMapDatabase.databaseWriteExecutor.execute {
-                DB!!.taskDao().updateUGReport(obj.name,obj.mapSerialNo,obj.ugDate,obj.shift,obj.mappedBy,obj.scale,obj.location,obj.veinOrLoad,obj.xCordinate,obj.yCordinate,obj.zCordinate,obj.roofImage,obj.faceImage,obj.leftImage,obj.rightImage,obj.comment,obj.uid)
+                DB!!.taskDao().updateUGReport(obj.name, obj.mapSerialNo, obj.ugDate, obj.shift,
+                    obj.mappedBy, obj.scale, obj.location, obj.veinOrLoad, obj.xCordinate,
+                    obj.yCordinate, obj.zCordinate, obj.roofImage, obj.faceImage, obj.leftImage,
+                    obj.rightImage, obj.comment, obj.uid)
             }
         }
 
-        fun deleteUGReport(ctx: Context,userId: String) {
+        fun deleteUGReport(ctx: Context, userId: String) {
             DB = getDataBase(ctx)
             GeoMapDatabase.databaseWriteExecutor.execute {
                 DB!!.taskDao().deleteUnderGroundMappingReport(userId)
             }
         }
 
-        fun callOcReportObserver(ctx: Context,userId: String) {
+        fun callOcReportObserver(ctx: Context, userId: String) {
             DB = getDataBase(ctx)
             var list = ArrayList<OpenCastMappingReport>()
             GeoMapDatabase.databaseWriteExecutor.execute {
-                list = DB.taskDao().geAllOpenCastMappingReport(userId) as ArrayList<OpenCastMappingReport>
+                list = DB.taskDao().geAllOpenCastMappingReport(
+                    userId) as ArrayList<OpenCastMappingReport>
 
                 Log.e("List OpenCastMappingReport", "true" + gson.toJson(list).toString())
             }
@@ -58,13 +64,22 @@ class DataBaseFunctions {
             }
         }
 
-        fun updateOCeport(obj: OpenCastMappingReport, ctx: Context) {
+        fun updateOCReport(obj: OpenCastMappingReport, ctx: Context) {
             DB = getDataBase(ctx)
             GeoMapDatabase.databaseWriteExecutor.execute {
-        //        DB!!.taskDao().updateUGReport(obj.name,obj.mapSerialNo,obj.ugDate,obj.shift,obj.mappedBy,obj.scale,obj.location,obj.veinOrLoad,obj.xCordinate,obj.yCordinate,obj.zCordinate,obj.roofImage,obj.faceImage,obj.leftImage,obj.rightImage,obj.comment,obj.uid)
+                DB!!.taskDao().updateOCReport(obj.ocDate, obj.mappingSheetNo, obj.minesSiteName,
+                    obj.pitName, obj.pitLocation, obj.shiftInChargeName, obj.geologistName,
+                    obj.shift, obj.faceLocation, obj.faceLength, obj.faceArea, obj.faceRockTypes,
+                    obj.benchRL, obj.benchHeightWidth, obj.benchAngle, obj.dipDirectionAngle,
+                    obj.thicknessOfOre, obj.thicknessOfOverburden, obj.thicknessOfInterBurden,
+                    obj.observedGradeOfOre, obj.sampleCollected, obj.actualGradOfOre,
+                    obj.weathering, obj.rockStrength, obj.waterCondition,
+                    obj.typeOfGeologicalStructures, obj.typeOfFaults, obj.notes, obj.geologistSign,
+                    obj.clientsGeologistSign, obj.image, obj.uid)
             }
         }
-        fun deleteOCReport(ctx: Context,userId: String) {
+
+        fun deleteOCReport(ctx: Context, userId: String) {
             DB = getDataBase(ctx)
             GeoMapDatabase.databaseWriteExecutor.execute {
                 DB!!.taskDao().deleteOpenCastMappingReport(userId)
@@ -176,8 +191,7 @@ class DataBaseFunctions {
             }
         }
 
-        fun callGeologistObserver(responseData: UserCommonDataModel.ResponseData,
-            ctx: Context) {
+        fun callGeologistObserver(responseData: UserCommonDataModel.ResponseData, ctx: Context) {
             DB = getDataBase(ctx)
             var list: ArrayList<Geologist>
             GeoMapDatabase.databaseWriteExecutor.execute {
@@ -187,14 +201,12 @@ class DataBaseFunctions {
             }
         }
 
-
         fun saveGeologist(obj: Geologist, ctx: Context) {
             DB = getDataBase(ctx)
             GeoMapDatabase.databaseWriteExecutor.execute {
                 DB!!.taskDao().insertGeologist(obj)
             }
         }
-
 
         fun callAttributeDataObserver(responseData: UserCommonDataModel.ResponseData,
             ctx: Context) {
@@ -251,8 +263,7 @@ class DataBaseFunctions {
                     callRockStrengthObserver(responseData, ctx)
                 }
             }
-        }
-            /*            if (list.isEmpty()) { }    else {
+        }/*            if (list.isEmpty()) { }    else {
                 for (i in responseData.typeOfFaults!!.indices) {
                     val obj = TypeOfFaults()
                     obj.iD = responseData.typeOfFaults!![i].id
@@ -272,7 +283,6 @@ class DataBaseFunctions {
                         callRockStrengthObserver(responseData, ctx)
                     }
                 }*/
-
         fun callRockStrengthSave(list: ArrayList<RockStrength>,
             responseData: UserCommonDataModel.ResponseData, ctx: Context) {
             if (list.size != 0) {

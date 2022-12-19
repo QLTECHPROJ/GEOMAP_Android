@@ -189,6 +189,7 @@
     <string name="next">Next</string>
     <string name="underground_saved">Your Underground report  has been saved</string>
     <string name="underground_updated">Your Underground report  has been updated</string>
+    <string name="opencast_updated">Your OpenCast report  has been updated</string>
     <string name="opencast_saved">Your OpenCast report has been saved</string>
     <string name="sync_data_internet_off">Need an active internet connection to synchronise data</string>
     <string name="attribute_note"><b>Note :</b> You can add multiple attributes in the mapping report using the add attribute button</string>

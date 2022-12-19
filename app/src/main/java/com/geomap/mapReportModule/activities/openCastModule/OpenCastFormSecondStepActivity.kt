@@ -1,6 +1,7 @@
 package com.geomap.mapReportModule.activities.openCastModule
 
 import android.Manifest
+import android.R.attr.bitmap
 import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
@@ -9,6 +10,8 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -21,7 +24,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.drawToBitmap
 import androidx.databinding.DataBindingUtil
 import com.geomap.DataBaseFunctions
 import com.geomap.DataBaseFunctions.Companion.saveOCReport
@@ -45,6 +47,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
+import java.text.SimpleDateFormat
 import java.util.*
 
 class OpenCastFormSecondStepActivity : AppCompatActivity() {
@@ -84,15 +87,13 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
 
         if(flagOC == "1" || flagOC == "2") {
             if (img != null) {
-                 val c = Canvas(img!!)
-                 binding.drawing.layout(binding.drawing.left, binding.drawing.top,
-                     binding.drawing.right, binding.drawing.bottom)
-             //   val b = Bitmap.createBitmap(img!!.width,img!!.height, Bitmap.Config.ARGB_8888)
-                binding.drawing.draw(c)
+                val d: Drawable = BitmapDrawable(resources, img)
+                binding.drawing.background = d
             }
         }
 
         binding.btnSignPadClear.setOnClickListener {
+            binding.drawing.background = getDrawable(R.drawable.grid_bg)
             binding.drawing.startNew()
         }
 
@@ -114,8 +115,22 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
 
     private fun postOpenCastInsert() {
         binding.drawing.isDrawingCacheEnabled = true
+        val datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+
+        val photoGeologistSign = File(getAlbumStorageDir(),
+            String.format(datetime + "geologistSign.jpg", System.currentTimeMillis()))
+        saveBitmapToJPG(ocDataModel.geologistSignBitMap!!, photoGeologistSign)
+        scanMediaFile(photoGeologistSign)
+        geologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photoGeologistSign)
+
+        val photoClientsGeologistSign = File(getAlbumStorageDir(),
+            String.format(datetime + "clientsGeologistSign.jpg", System.currentTimeMillis()))
+        saveBitmapToJPG(ocDataModel.clientsGeologistSignBitMap!!, photoClientsGeologistSign)
+        scanMediaFile(photoClientsGeologistSign)
+        clientsGeologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photoClientsGeologistSign)
+
         val photoImage = File(getAlbumStorageDir(),
-            String.format("Image.jpg", System.currentTimeMillis()))
+            String.format(datetime +"Image.jpg", System.currentTimeMillis()))
         saveBitmapToJPG(binding.drawing.drawingCache, photoImage)
         scanMediaFile(photoImage)
         sign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photoImage)
@@ -190,10 +205,9 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                 })
         } else {
             val obj = OpenCastMappingReport()
-            obj.iD = 0
             obj.userId = userId
             obj.ocDate = ocDataModel.ocDate
-            obj.mappingSheetNo = ocDataModel.sheetNo
+            obj.mappingSheetNo = ""
             obj.minesSiteName = ocDataModel.minesSiteName
             obj.pitName = ocDataModel.pitName
             obj.pitLocation = ocDataModel.pitLocation
@@ -224,8 +238,8 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             obj.clientsGeologistSign = ocDataModel.clientsGeologistSignBitMap!!
             obj.image = binding.drawing.drawingCache
             if (flagOC == "2") {
-                DataBaseFunctions.updateOCeport(obj, ctx)
-                showToast(getString(R.string.underground_updated), act)
+                DataBaseFunctions.updateOCReport(obj, ctx)
+                showToast(getString(R.string.opencast_updated), act)
             } else {
                 saveOCReport(obj, ctx)
                 showToast(getString(R.string.opencast_saved), act)

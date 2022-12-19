@@ -92,7 +92,11 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 binding.etPitLocation.setText(ocDetailsModel.ResponseData.pitLoaction)
                 binding.etShiftInchargeName.setText(ocDetailsModel.ResponseData.shiftInchargeName)
                 geologistName = ocDetailsModel.ResponseData.geologistName
-                binding.tvGeologistName.text = geologistName
+                if(geologistName != null ) {
+                    binding.tvGeologistName.text = geologistName
+                }else{
+                    geologistName = ""
+                }
                 binding.etFaceLocation.setText(ocDetailsModel.ResponseData.faceLocation)
                 binding.etFaceLengthM.setText(ocDetailsModel.ResponseData.faceLength)
                 binding.etFaceAreaM2.setText(ocDetailsModel.ResponseData.faceArea)
@@ -107,17 +111,41 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 binding.etObservedGradeOfOre.setText(ocDetailsModel.ResponseData.observedGradeOfOre)
                 binding.etActualGradeOfOre.setText(ocDetailsModel.ResponseData.actualGradeOfOre)
                 sampleCollected = ocDetailsModel.ResponseData.sampleColledted
-                binding.tvSampleCollected.text = sampleCollected
+                if(sampleCollected != null ){
+                    binding.tvSampleCollected.text = sampleCollected
+                }else{
+                    sampleCollected = ""
+                }
                 weathering = ocDetailsModel.ResponseData.weathring
-                binding.tvWeathering.text = weathering
+                if(weathering != null) {
+                    binding.tvWeathering.text = weathering
+                }else{
+                    weathering = ""
+                }
                 rockStrength = ocDetailsModel.ResponseData.rockStregth
-                binding.tvRockStrength.text = rockStrength
+                if(rockStrength != null) {
+                    binding.tvRockStrength.text = rockStrength
+                }else{
+                    rockStrength = ""
+                }
                 waterCondition = ocDetailsModel.ResponseData.waterCondition
-                binding.tvWaterCondition.text = waterCondition
+                if(waterCondition != null) {
+                    binding.tvWaterCondition.text = waterCondition
+                }else{
+                    waterCondition = ""
+                }
                 typeOfGeologicalStructures = ocDetailsModel.ResponseData.typeOfGeologist
-                binding.tvTypeOfGeologicalStructures.text = typeOfGeologicalStructures
+                if(typeOfGeologicalStructures != null ) {
+                    binding.tvTypeOfGeologicalStructures.text = typeOfGeologicalStructures
+                }else{
+                    typeOfGeologicalStructures = ""
+                }
                 typeOfFaults = ocDetailsModel.ResponseData.typeOfFaults
-                binding.tvTypeOfFaults.text = typeOfFaults
+                if(typeOfFaults != null ) {
+                    binding.tvTypeOfFaults.text = typeOfFaults
+                }else{
+                    typeOfFaults = ""
+                }
                 binding.etNotes.setText(ocDetailsModel.ResponseData.notes)
                 shift = ocDetailsModel.ResponseData.shift
                 if(shift == getString(R.string.night_shift)){
@@ -158,7 +186,11 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 binding.etPitLocation.setText(ocmr.pitLocation)
                 binding.etShiftInchargeName.setText(ocmr.shiftInChargeName)
                 geologistName = ocmr.geologistName
-                binding.tvGeologistName.text = geologistName
+                if(geologistName != null ) {
+                    binding.tvGeologistName.text = geologistName
+                }else{
+                    geologistName = ""
+                }
                 binding.etFaceLocation.setText(ocmr.faceLocation)
                 binding.etFaceLengthM.setText(ocmr.faceLength)
                 binding.etFaceAreaM2.setText(ocmr.faceArea)
@@ -173,17 +205,41 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 binding.etObservedGradeOfOre.setText(ocmr.observedGradeOfOre)
                 binding.etActualGradeOfOre.setText(ocmr.actualGradOfOre)
                 sampleCollected = ocmr.sampleCollected
-                binding.tvSampleCollected.text = sampleCollected
+                if(sampleCollected != null ){
+                    binding.tvSampleCollected.text = sampleCollected
+                }else{
+                    sampleCollected = ""
+                }
                 weathering = ocmr.weathering
-                binding.tvWeathering.text = weathering
+                if(weathering != null) {
+                    binding.tvWeathering.text = weathering
+                }else{
+                    weathering = ""
+                }
                 rockStrength = ocmr.rockStrength
-                binding.tvRockStrength.text = rockStrength
+                if(rockStrength != null) {
+                    binding.tvRockStrength.text = rockStrength
+                }else{
+                    rockStrength = ""
+                }
                 waterCondition = ocmr.waterCondition
-                binding.tvWaterCondition.text = waterCondition
+                if(waterCondition != null) {
+                    binding.tvWaterCondition.text = waterCondition
+                }else{
+                    waterCondition = ""
+                }
                 typeOfGeologicalStructures = ocmr.typeOfGeologicalStructures
-                binding.tvTypeOfGeologicalStructures.text = typeOfGeologicalStructures
+                if(typeOfGeologicalStructures != null ) {
+                    binding.tvTypeOfGeologicalStructures.text = typeOfGeologicalStructures
+                }else{
+                    typeOfGeologicalStructures = ""
+                }
                 typeOfFaults = ocmr.typeOfFaults
-                binding.tvTypeOfFaults.text = typeOfFaults
+                if(typeOfFaults != null ) {
+                    binding.tvTypeOfFaults.text = typeOfFaults
+                }else{
+                    typeOfFaults = ""
+                }
                 binding.etNotes.setText(ocmr.notes)
                 shift = ocmr.shift
                 if(ocmr.image != null) {
@@ -323,17 +379,6 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         }else {
             ""
         }
-        val photoGeologistSign = File(getAlbumStorageDir(),
-            String.format("geologistSign.jpg", System.currentTimeMillis()))
-        saveBitmapToJPG(binding.geologistSignPad.signatureBitmap, photoGeologistSign)
-        scanMediaFile(photoGeologistSign)
-        geologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photoGeologistSign)
-
-        val photoClientsGeologistSign = File(getAlbumStorageDir(),
-            String.format("clientsGeologistSign.jpg", System.currentTimeMillis()))
-        saveBitmapToJPG(binding.geologistClientSignPad.signatureBitmap, photoClientsGeologistSign)
-        scanMediaFile(photoClientsGeologistSign)
-        clientsGeologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photoClientsGeologistSign)
         val gson = Gson()
         ocDataModel = OpenCastInsertModel(binding.etMinesSiteName.text.toString(),
             sheetNo, binding.tvOCDate.text.toString(),
