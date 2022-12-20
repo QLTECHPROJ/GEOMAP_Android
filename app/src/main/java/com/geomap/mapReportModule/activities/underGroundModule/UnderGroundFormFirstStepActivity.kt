@@ -491,7 +491,7 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
 
     private fun prepareAttributesListing() {
         if (isNetworkConnected(ctx)) {
-            showProgressBar(pb, pbh, act)
+            showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             searchView.isEnabled = false
             searchView.isClickable = false
             RetrofitService.getInstance().getAttributesList.enqueue(object :
@@ -499,7 +499,7 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
                 override fun onResponse(call : Call<AttributesListModel>,
                     response : Response<AttributesListModel>) {
                     val model = response.body()
-                    hideProgressBar(pb, pbh, act)
+                    hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                     when {
                         model!!.responseCode!! == getString(R.string.ResponseCodesuccess) -> {
                             searchView.isEnabled = true

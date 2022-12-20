@@ -109,15 +109,19 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         }
 
         initViewSandVars()
-
+        binding.drawing.isDrawingCacheEnabled = true
         val gson = Gson()
         Log.e("UGData", gson.toJson(ugDataModel).toString())
-
+        binding.btnClear.isEnabled = true
+        binding.btnClear.setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
+        binding.btnClear.setBackgroundResource(R.drawable.border_enable_button)
         binding.tvName.text = getString(R.string.roof)
 
         binding.btnClear.setOnClickListener {
-            binding.drawing.background = getDrawable(R.drawable.grid_bg)
-            binding.drawing.startNew()
+            if (binding.drawing.drawingCache != null) {
+                binding.drawing.startNew()
+                binding.drawing.background = getDrawable(R.drawable.grid_bg)
+            }
         }
 
 
@@ -165,7 +169,6 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         scanMediaFile(photo)
         signRoof = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
 
-        binding.drawing.startNew()
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             APIClientProfile.apiService!!.postUndergroundInsert(
@@ -184,6 +187,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                             ctx.getString(R.string.ResponseCodesuccess) -> {
                                 hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                                 showToast(model.ResponseMessage, act)
+                                binding.drawing.startNew()
                                 val i = Intent(ctx, DashboardActivity::class.java)
                                 i.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
                                 startActivity(i)
@@ -236,6 +240,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                 DataBaseFunctions.saveUGReport(obj, ctx)
                 showToast(getString(R.string.underground_saved), act)
             }
+            binding.drawing.startNew()
             val i = Intent(ctx, DashboardActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
             startActivity(i)
@@ -252,21 +257,22 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             binding.drawing.startNew()
         }
         binding.drawing.background = getDrawable(R.drawable.grid_bg)
-        binding.btnClear.isEnabled = false
+     /*   binding.btnClear.isEnabled = true
         binding.btnClear.setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
-        binding.btnClear.setBackgroundResource(R.drawable.border_enable_button)
+        binding.btnClear.setBackgroundResource(R.drawable.border_enable_button)*/
     }
 
     private fun callEnable(signBitMap : Bitmap, bitmapString : String) {
-        if(binding.drawing.drawingCache != null){
+//        if(binding.drawing.drawingCache != null){
             binding.drawing.startNew()
-        }
-        val d: Drawable = BitmapDrawable(resources, signBitMap)
+            binding.drawing.background = getDrawable(R.drawable.grid_bg)
+//        }
+        val d: Drawable = BitmapDrawable(resources!!, signBitMap)
         binding.drawing.background = d
         Log.e(bitmapString, "$i")
-        binding.btnClear.isEnabled = true
+      /*  binding.btnClear.isEnabled = true
         binding.btnClear.setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
-        binding.btnClear.setBackgroundResource(R.drawable.border_enable_button)
+        binding.btnClear.setBackgroundResource(R.drawable.border_enable_button)*/
     }
 
     private fun scanMediaFile(photo : File) {
@@ -342,7 +348,6 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                 signFace = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)*/
                 signFaceBitMap = image
                 postUndergroundInsert()
-                Log.e("face", signFace!!.toString() + i)
             }
         }
     }
