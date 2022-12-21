@@ -390,34 +390,37 @@ Tap Setting > permission, and turn "Files and media" on."""
     }
 
     override fun onBackPressed() {
+        binding.drawing.isDrawingCacheEnabled = true
         when (i) {
             0 -> {
                 finish()
             }
             1 -> {
+                signLeftBitMap =
+                    binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
                 callEnable(signRoofBitMap!!, "roof")
                 binding.btnNext.text = getString(R.string.next)
                 binding.tvName.text = getString(R.string.roof)
                 i--
             }
             2 -> {
+                signRightBitMap =
+                    binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
                 callEnable(signLeftBitMap!!, "left")
                 binding.btnNext.text = getString(R.string.next)
                 binding.tvName.text = getString(R.string.left)
                 i--
             }
             3 -> {
-                //r
-                binding.drawing.isDrawingCacheEnabled = true
                 signFaceBitMap =
                     binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
-                binding.drawing.isDrawingCacheEnabled = false
                 callEnable(signRightBitMap!!, "right")
                 binding.btnNext.text = getString(R.string.next)
                 binding.tvName.text = getString(R.string.right)
                 i--
             }
         }
+        binding.drawing.isDrawingCacheEnabled = false
     }
 
     fun paintClicked(view : View) {
