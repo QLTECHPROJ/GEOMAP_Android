@@ -81,13 +81,13 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         userId = shared.getString(CONSTANTS.userId, "")
 
         if (intent.extras != null) {
-            if(intent.hasExtra("ugData")) {
+            if (intent.hasExtra("ugData")) {
                 val gson = Gson()
                 val data = intent.getStringExtra("ugData")
                 val type1 = object : TypeToken<UnderGroundInsertModel>() {}.type
                 ugDataModel = gson.fromJson(data, type1)
             }
-            if(intent.hasExtra("attributeData")){
+            if (intent.hasExtra("attributeData")) {
 
                 val gson = Gson()
                 val data = intent.getStringExtra("attributeData")
@@ -96,20 +96,25 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             }
             intent.extras!!.clear()
         }
+
         if (flagUG == "1" || flagUG == "2") {
             signRoofBitMap = ugmr.roofImage
             signLeftBitMap = ugmr.leftImage
             signRightBitMap = ugmr.rightImage
             signFaceBitMap = ugmr.faceImage
             if (signRoofBitMap != null) {
-                callEnable(signRoofBitMap!!, "roof")
+                if (binding.drawing.drawingCache != null) {
+                    binding.drawing.startNew()
+                    binding.drawing.background = getDrawable(R.drawable.grid_bg)
+                }
+                val d : Drawable = BitmapDrawable(resources!!, signRoofBitMap)
+                binding.drawing.background = d
             } else {
                 callDisable("0")
             }
         }
 
         initViewSandVars()
-        binding.drawing.isDrawingCacheEnabled = true
         val gson = Gson()
         Log.e("UGData", gson.toJson(ugDataModel).toString())
         binding.btnClear.isEnabled = true
@@ -118,18 +123,14 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         binding.tvName.text = getString(R.string.roof)
 
         binding.btnClear.setOnClickListener {
-            if (binding.drawing.drawingCache != null) {
-                binding.drawing.startNew()
-                binding.drawing.background = getDrawable(R.drawable.grid_bg)
-            }
+            binding.drawing.startNew()
+            binding.drawing.background = getDrawable(R.drawable.grid_bg)
         }
-
 
         binding.btnNext.setOnClickListener {
             binding.drawing.isDrawingCacheEnabled = true
-//            if (binding.btnClear.isEnabled) {
-                saveImage(binding.drawing.drawingCache)
-//            }
+            saveImage(binding.drawing.drawingCache)
+            binding.drawing.isDrawingCacheEnabled = false
         }
 
         binding.llBack.setOnClickListener {
@@ -143,31 +144,78 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         currPaint.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.paint_pressed))
     }
 
+    private fun saveImage(image : Bitmap) {
+        when (i) {
+            0 -> {
+                binding.tvName.text = getString(R.string.left)
+                signRoofBitMap = image.copy(image.config, false)
+                if (signLeftBitMap != null) {
+                    callEnable(signLeftBitMap!!, "left")
+                } else {
+                    callDisable("1")
+                }
+                i++
+            }
+            1 -> {
+                binding.tvName.text = getString(R.string.right)
+                signLeftBitMap = image.copy(image.config, false)
+                if (signRightBitMap != null) {
+                    callEnable(signRightBitMap!!, "right")
+                } else {
+                    callDisable("1")
+                }
+                i++
+
+            }
+            2 -> {
+                binding.btnNext.text = getString(R.string.submit)
+                binding.tvName.text = getString(R.string.face)
+                signRightBitMap = image.copy(image.config, false)
+                if (signFaceBitMap != null) {
+                    callEnable(signFaceBitMap!!, "face")
+                } else {
+                    callDisable("1")
+                }
+                i++
+                binding.drawing.startNew()
+            }
+            3 -> {
+                signFaceBitMap = image.copy(image.config, false)
+                if (signFaceBitMap != null) {
+                    callEnable(signFaceBitMap!!, "face")
+                } else {
+                    callDisable("1")
+                }
+                postUndergroundInsert()
+            }
+        }
+    }
+
     private fun postUndergroundInsert() {
-        var datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        var photo = File(getAlbumStorageDir("Pictures"),
-            String.format(datetime + "signLeftBitMap.jpg", System.currentTimeMillis()))
-        saveBitmapToJPG(signLeftBitMap!!, photo)
-        scanMediaFile(photo)
-        signLeft = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
-        datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        photo = File(getAlbumStorageDir("Pictures"),
-            String.format(datetime + "signRightBitMap.jpg", System.currentTimeMillis()))
-        saveBitmapToJPG(signRightBitMap!!, photo)
-        scanMediaFile(photo)
-        signRight = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
-        datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        photo = File(getAlbumStorageDir("Pictures"),
-            String.format(datetime + "signFaceBitMap.jpg", System.currentTimeMillis()))
-        saveBitmapToJPG(signFaceBitMap!!, photo)
-        scanMediaFile(photo)
-        signFace = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
-        datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        photo = File(getAlbumStorageDir("Pictures"),
-            String.format(datetime + "signRoofBitMap.jpg", System.currentTimeMillis()))
-        saveBitmapToJPG(signRoofBitMap!!, photo)
-        scanMediaFile(photo)
-        signRoof = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
+        val datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val roofImage = File(getAlbumStorageDir(),
+            String.format(datetime + "RoofImage.jpg", System.currentTimeMillis()))
+        saveBitmapToJPG(signRoofBitMap!!, roofImage)
+        scanMediaFile(roofImage)
+        signRoof = TypedFile(CONSTANTS.MULTIPART_FORMAT, roofImage)
+
+        val leftImage = File(getAlbumStorageDir(),
+            String.format(datetime + "LeftImage.jpg", System.currentTimeMillis()))
+        saveBitmapToJPG(signLeftBitMap!!, leftImage)
+        scanMediaFile(leftImage)
+        signLeft = TypedFile(CONSTANTS.MULTIPART_FORMAT, leftImage)
+
+        val rightImage = File(getAlbumStorageDir(),
+            String.format(datetime + "RightImage.jpg", System.currentTimeMillis()))
+        saveBitmapToJPG(signRightBitMap!!, rightImage)
+        scanMediaFile(rightImage)
+        signRight = TypedFile(CONSTANTS.MULTIPART_FORMAT, rightImage)
+
+        val faceImage = File(getAlbumStorageDir(),
+            String.format(datetime + "FaceImage.jpg", System.currentTimeMillis()))
+        saveBitmapToJPG(signFaceBitMap!!, faceImage)
+        scanMediaFile(faceImage)
+        signFace = TypedFile(CONSTANTS.MULTIPART_FORMAT, faceImage)
 
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
@@ -184,7 +232,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                     override fun success(model : SuccessModel,
                         response : retrofit.client.Response) {
                         when (model.ResponseCode) {
-                            ctx.getString(R.string.ResponseCodesuccess) -> {
+                            getString(R.string.ResponseCodesuccess) -> {
                                 hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                                 showToast(model.ResponseMessage, act)
                                 binding.drawing.startNew()
@@ -197,10 +245,10 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                                 ugmr = UnderGroundMappingReport()
                                 flagUG = "0"
                             }
-                            ctx.getString(R.string.ResponseCodefail) -> {
+                            getString(R.string.ResponseCodefail) -> {
                                 showToast(model.ResponseCode, act)
                             }
-                            ctx.getString(
+                            getString(
                                 R.string.ResponseCodeDeleted) -> {
                                 callDelete403(act, model.ResponseCode)
                             }
@@ -240,7 +288,6 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                 DataBaseFunctions.saveUGReport(obj, ctx)
                 showToast(getString(R.string.underground_saved), act)
             }
-            binding.drawing.startNew()
             val i = Intent(ctx, DashboardActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
             startActivity(i)
@@ -252,27 +299,19 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         }
     }
 
-    private fun callDisable(flag: String) {
-        if(flag == "1"){
+    private fun callDisable(flag : String) {
+        if (flag == "1") {
             binding.drawing.startNew()
         }
         binding.drawing.background = getDrawable(R.drawable.grid_bg)
-     /*   binding.btnClear.isEnabled = true
-        binding.btnClear.setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
-        binding.btnClear.setBackgroundResource(R.drawable.border_enable_button)*/
     }
 
     private fun callEnable(signBitMap : Bitmap, bitmapString : String) {
-//        if(binding.drawing.drawingCache != null){
-            binding.drawing.startNew()
-            binding.drawing.background = getDrawable(R.drawable.grid_bg)
-//        }
-        val d: Drawable = BitmapDrawable(resources!!, signBitMap)
+        binding.drawing.startNew()
+        binding.drawing.background = getDrawable(R.drawable.grid_bg)
+        val d : Drawable = BitmapDrawable(resources!!, signBitMap)
         binding.drawing.background = d
         Log.e(bitmapString, "$i")
-      /*  binding.btnClear.isEnabled = true
-        binding.btnClear.setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
-        binding.btnClear.setBackgroundResource(R.drawable.border_enable_button)*/
     }
 
     private fun scanMediaFile(photo : File) {
@@ -282,74 +321,9 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         ctx.sendBroadcast(mediaScanIntent)
     }
 
-    private fun getAlbumStorageDir(albumName : String?) : File {
-        val file = File(Environment.getExternalStoragePublicDirectory(
-            Environment.DIRECTORY_PICTURES), albumName)
-        if (!file.mkdirs()) {
-            Log.e("SignaturePad", "Directory not created")
-        }
-        return file
-    }
-
-    private fun saveImage(image : Bitmap) {
-      //  val datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        when (i) {
-            0 -> {
-                /*val photo = File(getAlbumStorageDir("Pictures"),
-                    String.format(datetime + "signRoof.jpg", System.currentTimeMillis()))
-                saveBitmapToJPG(image, photo)
-                scanMediaFile(photo)
-                signRoof = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)*/
-                binding.tvName.text = getString(R.string.left)
-                signRoofBitMap = image
-                if (signLeftBitMap != null) {
-                    callEnable(signLeftBitMap!!, "left")
-                } else {
-                    callDisable("1")
-                }
-                i++
-            }
-            1 -> {
-               /* val photo = File(getAlbumStorageDir("Pictures"),
-                    String.format(datetime + "signLeft.jpg", System.currentTimeMillis()))
-                saveBitmapToJPG(image, photo)
-                scanMediaFile(photo)
-                signLeft = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)*/
-                binding.tvName.text = getString(R.string.right)
-                signLeftBitMap = image
-                if (signRightBitMap != null) {
-                    callEnable(signRightBitMap!!, "right")
-                } else {
-                    callDisable("1")
-                }
-                i++
-            }
-            2 -> {
-              /*  val photo = File(getAlbumStorageDir("Pictures"),
-                    String.format(datetime + "signRight.jpg", System.currentTimeMillis()))
-                saveBitmapToJPG(image, photo)
-                scanMediaFile(photo)
-                signRight = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)*/
-                binding.btnNext.text = getString(R.string.submit)
-                binding.tvName.text = getString(R.string.face)
-                signRightBitMap = image
-                if (signFaceBitMap != null) {
-                    callEnable(signFaceBitMap!!, "face")
-                } else {
-                    callDisable("1")
-                }
-                i++
-            }
-            3 -> {
-                /*val photo = File(getAlbumStorageDir("Pictures"),
-                    String.format(datetime + "signFace.jpg", System.currentTimeMillis()))
-                saveBitmapToJPG(image, photo)
-                scanMediaFile(photo)
-                signFace = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)*/
-                signFaceBitMap = image
-                postUndergroundInsert()
-            }
-        }
+    private fun getAlbumStorageDir() : File {
+        return File(Environment.getExternalStoragePublicDirectory(
+            Environment.DIRECTORY_PICTURES), "Pictures")
     }
 
     @Throws(IOException::class) fun saveBitmapToJPG(bitmap : Bitmap, photo : File?) {
@@ -360,7 +334,6 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         val stream : OutputStream = FileOutputStream(photo)
         newBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
         stream.close()
-
     }
 
     private fun verifyStoragePermissions() {
@@ -422,7 +395,7 @@ Tap Setting > permission, and turn "Files and media" on."""
                 finish()
             }
             1 -> {
-                callEnable(signRoofBitMap!!, "Roof")
+                callEnable(signRoofBitMap!!, "roof")
                 binding.btnNext.text = getString(R.string.next)
                 binding.tvName.text = getString(R.string.roof)
                 i--
@@ -434,6 +407,11 @@ Tap Setting > permission, and turn "Files and media" on."""
                 i--
             }
             3 -> {
+                //r
+                binding.drawing.isDrawingCacheEnabled = true
+                signFaceBitMap =
+                    binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
+                binding.drawing.isDrawingCacheEnabled = false
                 callEnable(signRightBitMap!!, "right")
                 binding.btnNext.text = getString(R.string.next)
                 binding.tvName.text = getString(R.string.right)
@@ -452,5 +430,4 @@ Tap Setting > permission, and turn "Files and media" on."""
             currPaint = view
         }
     }
-
 }
