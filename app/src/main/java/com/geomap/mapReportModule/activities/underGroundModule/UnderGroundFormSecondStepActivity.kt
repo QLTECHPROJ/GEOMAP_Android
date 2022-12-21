@@ -97,7 +97,7 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
                     binding.etVeinLoad.text.toString(), binding.etXCoordinate.text.toString(),
                     binding.etYCoordinate.text.toString(), binding.etZCoordinate.text.toString(),
                     null, null, null, null)
-            val i = Intent(act, UnderGroundFormFourStepActivity::class.java)
+            val i = Intent(act, UnderGroundFormThirdStepActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             i.putExtra("ugData", gson.toJson(ugDataModel))
             i.putExtra("attributeData", gson.toJson(attributeDataModelList).toString())
