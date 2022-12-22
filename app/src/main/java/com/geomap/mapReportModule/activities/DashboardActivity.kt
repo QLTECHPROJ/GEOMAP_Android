@@ -24,6 +24,7 @@ import com.geomap.databinding.ActivityDashboardBinding
 import com.geomap.databinding.MappingReportListLayoutBinding
 import com.geomap.mapReportModule.models.DashboardModel
 import com.geomap.utils.CONSTANTS
+import com.geomap.utils.Converter
 import com.geomap.utils.RetrofitService
 import retrofit2.Call
 import retrofit2.Callback
@@ -213,15 +214,15 @@ class DashboardActivity : AppCompatActivity() {
 
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
-            holder.binding.tvName.text = listModel[position].name ?:"-"
-            holder.binding.tvArea.text = listModel[position].location?:"-"
-            holder.binding.tvDate.text = listModel[position].ugDate?:"-"
+            holder.binding.tvName.text = Converter.format(listModel[position].name)
+            holder.binding.tvArea.text = Converter.format(listModel[position].location)
+            holder.binding.tvDate.text = Converter.format(listModel[position].ugDate)
             holder.binding.tvSubTitleOne.setText(
                 Html.fromHtml(
-                    "Mapped By : <font color='black'>${listModel[position].mappedBy?:"-"}</font>"),
+                    "Mapped By : <font color='black'>${Converter.format(listModel[position].mappedBy)}</font>"),
                 TextView.BufferType.SPANNABLE)
             holder.binding.tvSubTitleTwo.setText(Html.fromHtml(
-                "Map serial no : <font color='black'>${listModel[position].mapSerialNo}</font>"),
+                "Map serial no : <font color='black'>${Converter.format(listModel[position].mapSerialNo)}</font>"),
                 TextView.BufferType.SPANNABLE)
             holder.binding.llMainLayout.setOnClickListener {
                 callUnderGroundDetailActivity(act, "1", listModel[position].mapSerialNo)
@@ -256,17 +257,17 @@ class DashboardActivity : AppCompatActivity() {
 
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
-            holder.binding.tvName.text = listModel[position].pitName?:"-"
-            holder.binding.tvArea.text = listModel[position].pitLoaction?:"-"
+            holder.binding.tvName.text = Converter.format(listModel[position].pitName)
+            holder.binding.tvArea.text = Converter.format(listModel[position].pitLoaction)
             holder.binding.tvSubTitleOne.setText(
                 Html.fromHtml(
-                    "Mines site name : <font color='black'>${listModel[position].minesSiteName?:"-"}</font>"),
+                    "Mines site name : <font color='black'>${Converter.format(listModel[position].minesSiteName)}</font>"),
                 TextView.BufferType.SPANNABLE)
             holder.binding.tvSubTitleTwo.setText(Html.fromHtml(
-                "Mapping sheet no : <font color='black'>${listModel[position].mappingSheetNo}</font>"),
+                "Mapping sheet no : <font color='black'>${Converter.format(listModel[position].mappingSheetNo)}</font>"),
                 TextView.BufferType.SPANNABLE)
 
-            holder.binding.tvDate.text = listModel[position].ocDate
+            holder.binding.tvDate.text = Converter.format(listModel[position].ocDate)
             holder.binding.llMainLayout.setOnClickListener {
                 callOpenCastDetailActivity(act, "1", listModel[position].mappingSheetNo)
             }

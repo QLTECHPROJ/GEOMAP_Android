@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.geomap.utils.Converter" />
+
         <variable
             name="ocDetail"
             type="com.geomap.mapReportModule.models.OpenCastDetailsModel" />
@@ -98,7 +100,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.mappingSheetNo}"
+                            android:text="@{Converter.format(ocDetail.responseData.mappingSheetNo)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -122,7 +124,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.ocDate}"
+                            android:text="@{Converter.format(ocDetail.responseData.ocDate)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -146,7 +148,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.minesSiteName}"
+                            android:text="@{Converter.format(ocDetail.responseData.minesSiteName)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -170,7 +172,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.pitName}"
+                            android:text="@{Converter.format(ocDetail.responseData.pitName)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -194,7 +196,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.pitLoaction}"
+                            android:text="@{Converter.format(ocDetail.responseData.pitLoaction)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -241,7 +243,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.shiftInchargeName}"
+                            android:text="@{Converter.format(ocDetail.responseData.shiftInchargeName)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -265,7 +267,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.geologistName}"
+                            android:text="@{Converter.format(ocDetail.responseData.geologistName)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -315,7 +317,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.faceLocation}"
+                            android:text="@{Converter.format(ocDetail.responseData.faceLocation)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -339,7 +341,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.faceLength}"
+                            android:text="@{Converter.format(ocDetail.responseData.faceLength)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -363,7 +365,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.faceArea}"
+                            android:text="@{Converter.format(ocDetail.responseData.faceArea)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -387,7 +389,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.faceRockType}"
+                            android:text="@{Converter.format(ocDetail.responseData.faceRockType)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -411,7 +413,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.benchRl}"
+                            android:text="@{Converter.format(ocDetail.responseData.benchRl)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -435,7 +437,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.benchHeightWidth}"
+                            android:text="@{Converter.format(ocDetail.responseData.benchHeightWidth)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -459,7 +461,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.benchAngle}"
+                            android:text="@{Converter.format(ocDetail.responseData.benchAngle)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -483,7 +485,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.dipDirectionAndAngle}"
+                            android:text="@{Converter.format(ocDetail.responseData.dipDirectionAndAngle)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -507,7 +509,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.thicknessOfOre}"
+                            android:text="@{Converter.format(ocDetail.responseData.thicknessOfOre)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -531,7 +533,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.thicknessOfOverburdan}"
+                            android:text="@{Converter.format(ocDetail.responseData.thicknessOfOverburdan)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -555,7 +557,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.thicknessOfInterburden}"
+                            android:text="@{Converter.format(ocDetail.responseData.thicknessOfInterburden)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -579,7 +581,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.observedGradeOfOre}"
+                            android:text="@{Converter.format(ocDetail.responseData.observedGradeOfOre)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -603,7 +605,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.sampleColledted}"
+                            android:text="@{Converter.format(ocDetail.responseData.sampleColledted)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -627,7 +629,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.actualGradeOfOre}"
+                            android:text="@{Converter.format(ocDetail.responseData.actualGradeOfOre)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -651,7 +653,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.weathring}"
+                            android:text="@{Converter.format(ocDetail.responseData.weathring)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -675,7 +677,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.rockStregth}"
+                            android:text="@{Converter.format(ocDetail.responseData.rockStregth)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -699,7 +701,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.waterCondition}"
+                            android:text="@{Converter.format(ocDetail.responseData.waterCondition)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -723,7 +725,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.typeOfGeologist}"
+                            android:text="@{Converter.format(ocDetail.responseData.typeOfGeologist)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
@@ -747,7 +749,7 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/inter_medium"
                             android:gravity="start"
-                            android:text="@{ocDetail.responseData.typeOfFaults}"
+                            android:text="@{Converter.format(ocDetail.responseData.typeOfFaults)}"
                             android:textColor="@color/light_black"
                             android:textSize="@dimen/_16sdp"
                             tools:ignore="SpUsage" />
