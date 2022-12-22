@@ -24,9 +24,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import com.geomap.DataBaseFunctions
-import com.geomap.DataBaseFunctions.Companion.deleteUGReportByUid
 import com.geomap.DataBaseFunctions.Companion.saveUGReport
+import com.geomap.DataBaseFunctions.Companion.updateUGReport
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundFormThirdStepBinding
@@ -100,20 +99,20 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         }
 
 //        if (flagUG == "1" || flagUG == "2") {
-            signRoofBitMap = ugmr.roofImage
-            signLeftBitMap = ugmr.leftImage
-            signRightBitMap = ugmr.rightImage
-            signFaceBitMap = ugmr.faceImage
-            if (signRoofBitMap != null) {
-                if (binding.drawing.drawingCache != null) {
-                    binding.drawing.startNew()
-                    binding.drawing.background = getDrawable(R.drawable.grid_bg)
-                }
-                val d : Drawable = BitmapDrawable(resources!!, signRoofBitMap)
-                binding.drawing.background = d
-            } else {
-                callDisable("0")
+        signRoofBitMap = ugmr.roofImage
+        signLeftBitMap = ugmr.leftImage
+        signRightBitMap = ugmr.rightImage
+        signFaceBitMap = ugmr.faceImage
+        if (signRoofBitMap != null) {
+            if (binding.drawing.drawingCache != null) {
+                binding.drawing.startNew()
+                binding.drawing.background = getDrawable(R.drawable.grid_bg)
             }
+            val d : Drawable = BitmapDrawable(resources!!, signRoofBitMap)
+            binding.drawing.background = d
+        } else {
+            callDisable("0")
+        }
 //        }
 
         initViewSandVars()
@@ -220,7 +219,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         signFace = TypedFile(CONSTANTS.MULTIPART_FORMAT, faceImage)
 
         if (isNetworkConnected(ctx)) {
-            if(flagUG == "0" || flagUG == "1") {
+            if (flagUG == "0" || flagUG == "1") {
                 showProgressBar(binding.progressBar, binding.progressBarHolder, act)
                 APIClientProfile.apiService!!.postUndergroundInsert(userId, ugDataModel.name,
                     ugDataModel.comment, attributeDataModelList, ugDataModel.ugDate,
@@ -229,8 +228,8 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                     ugDataModel.xCordinate, ugDataModel.yCordinate, ugDataModel.zCordinate,
                     signRoof, signLeft, signRight, signFace,
                     object : retrofit.Callback<SuccessModel> {
-                        override fun success(model: SuccessModel,
-                            response: retrofit.client.Response) {
+                        override fun success(model : SuccessModel,
+                            response : retrofit.client.Response) {
                             when (model.ResponseCode) {
                                 getString(R.string.ResponseCodesuccess) -> {
                                     hideProgressBar(binding.progressBar, binding.progressBarHolder,
@@ -255,12 +254,12 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                             }
                         }
 
-                        override fun failure(e: RetrofitError) {
+                        override fun failure(e : RetrofitError) {
                             hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                             showToast(e.message, act)
                         }
                     })
-            }else{
+            } else {
                 callOfflineFunction()
             }
         } else {
@@ -289,8 +288,9 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         obj.leftImage = signLeftBitMap
         obj.rightImage = signRightBitMap
         obj.faceImage = signFaceBitMap
+        obj.uid = ugmr.uid
         if (flagUG == "2") {
-            deleteUGReportByUid(ctx,obj)
+            updateUGReport(obj, ctx)
             showToast(getString(R.string.underground_updated), act)
         } else {
             saveUGReport(obj, ctx)

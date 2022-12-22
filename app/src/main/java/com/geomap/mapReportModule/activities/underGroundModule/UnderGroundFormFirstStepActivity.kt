@@ -155,8 +155,9 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
                     flagUG = "2"
                     val data = intent.getStringExtra("data")
                     val type1 = object : TypeToken<UnderGroundMappingReport>() {}.type
+                    val type2 = object : TypeToken<ArrayList<AttributeDataModel>>() {}.type
                     ugmr = gson.fromJson(data, type1)
-                    attributeDataModelList = gson.fromJson(ugmr.attributes, type1)
+                    attributeDataModelList = gson.fromJson(ugmr.attributes, type2)
                     if (attributeDataModelList.isEmpty()) {
                         binding.tvAttributes.visibility = View.GONE
                         binding.cvAttributesList.visibility = View.GONE

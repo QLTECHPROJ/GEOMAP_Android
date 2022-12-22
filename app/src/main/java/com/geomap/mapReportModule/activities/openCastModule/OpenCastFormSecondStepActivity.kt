@@ -1,7 +1,6 @@
 package com.geomap.mapReportModule.activities.openCastModule
 
 import android.Manifest
-import android.R.attr.bitmap
 import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
@@ -25,9 +24,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import com.geomap.DataBaseFunctions
-import com.geomap.DataBaseFunctions.Companion.deleteOCReportbyUid
 import com.geomap.DataBaseFunctions.Companion.saveOCReport
+import com.geomap.DataBaseFunctions.Companion.updateOCReport
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityOpenCastFormSecondStepBinding
@@ -86,9 +84,9 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
 
         initViewSandVars()
 
-        if(flagOC == "1" || flagOC == "2") {
+        if (flagOC == "1" || flagOC == "2") {
             if (img != null) {
-                val d: Drawable = BitmapDrawable(resources, img)
+                val d : Drawable = BitmapDrawable(resources, img)
                 binding.drawing.background = d
             }
         }
@@ -130,14 +128,15 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         scanMediaFile(photoClientsGeologistSign)
         clientsGeologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photoClientsGeologistSign)
 
-        val bitmap =  binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
+        val bitmap = binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
         val photoImage = File(getAlbumStorageDir(),
-            String.format(datetime +"Image.jpg", System.currentTimeMillis()))
+            String.format(datetime + "Image.jpg", System.currentTimeMillis()))
         saveBitmapToJPG(bitmap, photoImage)
         scanMediaFile(photoImage)
         sign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photoImage)
+        Log.e("flagOC", flagOC)
         if (isNetworkConnected(ctx)) {
-            if(flagOC == "0" || flagOC == "1") {
+            if (flagOC == "0" || flagOC == "1") {
                 showProgressBar(binding.progressBar, binding.progressBarHolder, act)
                 APIClientProfile.apiService!!.postOpenCastInsert(userId, ocDataModel.minesSiteName,
                     ocDataModel.sheetNo, ocDataModel.pitName, ocDataModel.pitLocation,
@@ -152,8 +151,8 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                     ocDataModel.typeOfFaults, ocDataModel.notes, ocDataModel.shift,
                     ocDataModel.ocDate, ocDataModel.dipDirectionAngle, sign, geologistSign,
                     clientsGeologistSign, object : retrofit.Callback<SuccessModel> {
-                        override fun success(model: SuccessModel,
-                            response: retrofit.client.Response) {
+                        override fun success(model : SuccessModel,
+                            response : retrofit.client.Response) {
                             if (model.ResponseCode == ctx.getString(R.string.ResponseCodesuccess)) {
                                 hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                                 when (model.ResponseCode) {
@@ -178,12 +177,12 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                             }
                         }
 
-                        override fun failure(e: RetrofitError) {
+                        override fun failure(e : RetrofitError) {
                             hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                             showToast(e.message, act)
                         }
                     })
-            }else{
+            } else {
                 callOfflineFunction()
             }
         } else {
@@ -192,6 +191,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
     }
 
     private fun callOfflineFunction() {
+        Log.e("obj.uid", "else true")
         val obj = OpenCastMappingReport()
         obj.userId = userId
         obj.ocDate = ocDataModel.ocDate
@@ -224,10 +224,11 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         obj.notes = ocDataModel.notes
         obj.geologistSign = ocDataModel.geologistSignBitMap!!
         obj.clientsGeologistSign = ocDataModel.clientsGeologistSignBitMap!!
-        obj.image =  binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
-        binding.drawing.startNew()
+        obj.image = binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
+        obj.uid = ocmr.uid
+        Log.e("obj.uid", obj.uid.toString())
         if (flagOC == "2") {
-            deleteOCReportbyUid(ctx,obj)
+            updateOCReport(obj, ctx)
             showToast(getString(R.string.opencast_updated), act)
         } else {
             saveOCReport(obj, ctx)
@@ -235,7 +236,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         }
         flagOC = "0"
         ocmr = OpenCastMappingReport()
-        img  = null
+        img = null
         val i = Intent(ctx, DashboardActivity::class.java)
         i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(i)

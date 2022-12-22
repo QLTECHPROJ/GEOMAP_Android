@@ -73,7 +73,7 @@ class DataBaseFunctions {
             }
         }
 
-        fun updateOCReport(obj: OpenCastMappingReport, ctx: Context) {
+        fun  updateOCReport(obj: OpenCastMappingReport, ctx: Context) {
             DB = getDataBase(ctx)
             GeoMapDatabase.databaseWriteExecutor.execute {
                 DB!!.taskDao().updateOCReport(obj.ocDate, obj.mappingSheetNo, obj.minesSiteName,
