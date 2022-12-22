@@ -24,6 +24,7 @@ import com.geomap.mvvm.AllViewModel
 import com.geomap.mvvm.UserModelFactory
 import com.geomap.mvvm.UserRepository
 import com.geomap.utils.CONSTANTS
+import com.geomap.utils.Converter
 import com.geomap.utils.RetrofitService
 
 class UnderGroundListActivity : AppCompatActivity() {
@@ -109,16 +110,20 @@ class UnderGroundListActivity : AppCompatActivity() {
 
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
-            holder.binding.tvName.text = listModel[position].name
-            holder.binding.tvArea.text = listModel[position].location
-            holder.binding.tvDate.text = listModel[position].ugDate
+            holder.binding.tvName.text = Converter.format(listModel[position].name)
+            holder.binding.tvArea.text = Converter.format(listModel[position].location)
+            holder.binding.tvDate.text = Converter.format(listModel[position].ugDate)
 
             holder.binding.tvSubTitleOne.setText(
                 Html.fromHtml(
-                    "Mapped By : <font color='black'>${listModel[position].mappedBy}</font>"),
+                    "Mapped By : <font color='black'>${
+                        Converter.format(listModel[position].mappedBy)
+                    }</font>"),
                 TextView.BufferType.SPANNABLE)
             holder.binding.tvSubTitleTwo.setText(Html.fromHtml(
-                "Map serial no : <font color='black'>${listModel[position].mapSerialNo}</font>"),
+                "Map serial no : <font color='black'>${
+                    Converter.format(listModel[position].mapSerialNo)
+                }</font>"),
                 TextView.BufferType.SPANNABLE)
             holder.binding.llMainLayout.setOnClickListener {
                 callUnderGroundDetailActivity(act, "1", listModel[position].mapSerialNo)

@@ -24,6 +24,7 @@ import com.geomap.mvvm.AllViewModel
 import com.geomap.mvvm.UserModelFactory
 import com.geomap.mvvm.UserRepository
 import com.geomap.utils.CONSTANTS
+import com.geomap.utils.Converter
 import com.geomap.utils.RetrofitService
 
 class OpenCastListActivity : AppCompatActivity() {
@@ -109,15 +110,15 @@ class OpenCastListActivity : AppCompatActivity() {
 
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
-            holder.binding.tvName.text = listModel[position].pitName
-            holder.binding.tvArea.text = listModel[position].pitLoaction
-            holder.binding.tvDate.text = listModel[position].ocDate
+            holder.binding.tvName.text = Converter.format(listModel[position].pitName)
+            holder.binding.tvArea.text = Converter.format(listModel[position].pitLoaction)
+            holder.binding.tvDate.text = Converter.format(listModel[position].ocDate)
             holder.binding.tvSubTitleOne.setText(
                 Html.fromHtml(
-                    "Mines site name : <font color='black'>${listModel[position].minesSiteName}</font>"),
+                    "Mines site name : <font color='black'>${Converter.format(listModel[position].minesSiteName)}</font>"),
                 TextView.BufferType.SPANNABLE)
             holder.binding.tvSubTitleTwo.setText(Html.fromHtml(
-                "Mapping sheet no : <font color='black'>${listModel[position].mappingSheetNo}</font>"),
+                "Mapping sheet no : <font color='black'>${Converter.format(listModel[position].mappingSheetNo)}</font>"),
                 TextView.BufferType.SPANNABLE)
             holder.binding.llMainLayout.setOnClickListener {
                 callOpenCastDetailActivity(act, "1", listModel[position].mappingSheetNo)

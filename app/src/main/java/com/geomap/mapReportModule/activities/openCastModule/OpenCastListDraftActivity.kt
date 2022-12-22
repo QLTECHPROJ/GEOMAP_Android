@@ -23,6 +23,7 @@ import com.geomap.databinding.ActivityOpenCastDraftListBinding
 import com.geomap.databinding.MappingReportListLayoutBinding
 import com.geomap.roomDataBase.OpenCastMappingReport
 import com.geomap.utils.CONSTANTS
+import com.geomap.utils.Converter
 import com.google.gson.Gson
 
 class OpenCastListDraftActivity : AppCompatActivity() {
@@ -96,12 +97,14 @@ class OpenCastListDraftActivity : AppCompatActivity() {
 
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
-            holder.binding.tvName.text = listModel[position].pitName
-            holder.binding.tvArea.text = listModel[position].pitLocation
-            holder.binding.tvDate.text = listModel[position].ocDate
+            holder.binding.tvName.text = Converter.format(listModel[position].pitName)
+            holder.binding.tvArea.text = Converter.format(listModel[position].pitLocation)
+            holder.binding.tvDate.text = Converter.format(listModel[position].ocDate)
             holder.binding.tvSubTitleOne.setText(
                 Html.fromHtml(
-                    "Mines site name : <font color='black'>${listModel[position].minesSiteName}</font>"),
+                    "Mines site name : <font color='black'>${
+                        Converter.format(listModel[position].minesSiteName)
+                    }</font>"),
                 TextView.BufferType.SPANNABLE)
             holder.binding.llMainLayout.setOnClickListener {
                 callOpenCastDetailDraftActivity(act, "1",

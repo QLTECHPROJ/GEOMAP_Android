@@ -23,6 +23,7 @@ import com.geomap.databinding.ActivityUnderGroundDraftListBinding
 import com.geomap.databinding.MappingReportListLayoutBinding
 import com.geomap.roomDataBase.UnderGroundMappingReport
 import com.geomap.utils.CONSTANTS
+import com.geomap.utils.Converter
 import com.google.gson.Gson
 
 class UnderGroundListDraftActivity : AppCompatActivity() {
@@ -102,13 +103,15 @@ class UnderGroundListDraftActivity : AppCompatActivity() {
 
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
-            holder.binding.tvName.text = listModel[position].name
-            holder.binding.tvArea.text = listModel[position].location
-            holder.binding.tvDate.text = listModel[position].ugDate
+            holder.binding.tvName.text = Converter.format(listModel[position].name)
+            holder.binding.tvArea.text = Converter.format(listModel[position].location)
+            holder.binding.tvDate.text = Converter.format(listModel[position].ugDate)
 
             holder.binding.tvSubTitleOne.setText(
                 Html.fromHtml(
-                    "Mapped By : <font color='black'>${listModel[position].mappedBy}</font>"),
+                    "Mapped By : <font color='black'>${
+                        Converter.format(listModel[position].mappedBy)
+                    }</font>"),
                 TextView.BufferType.SPANNABLE)
             holder.binding.llMainLayout.setOnClickListener {
                 callUnderGroundDetailDraftActivity(act, "1",

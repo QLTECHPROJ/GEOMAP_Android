@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="com.geomap.utils.Converter" />
+
         <variable
             name="ugDetail"
             type="com.geomap.mapReportModule.models.UnderGroundDetailsModel" />
@@ -87,7 +89,7 @@
                         <TextView
                             android:id="@+id/tvSerialNo"
                             style="@style/subTitle"
-                            android:text="@{ugDetail.responseData.mapSerialNo}" />
+                            android:text="@{Converter.format(ugDetail.responseData.mapSerialNo)}" />
 
                         <TextView
                             style="@style/title"
@@ -96,7 +98,7 @@
                         <TextView
                             android:id="@+id/tvDate"
                             style="@style/subTitle"
-                            android:text="@{ugDetail.responseData.ugDate}" />
+                            android:text="@{Converter.format(ugDetail.responseData.ugDate)}" />
 
                         <TextView
                             style="@style/title"
@@ -105,7 +107,7 @@
                         <TextView
                             android:id="@+id/tvShift"
                             style="@style/subTitle"
-                            android:text="@{ugDetail.responseData.shift}" />
+                            android:text="@{Converter.format(ugDetail.responseData.shift)}" />
 
                         <TextView
                             style="@style/title"
@@ -114,7 +116,7 @@
                         <TextView
                             android:id="@+id/tvMappedBy"
                             style="@style/subTitle"
-                            android:text="@{ugDetail.responseData.mappedBy}" />
+                            android:text="@{Converter.format(ugDetail.responseData.mappedBy)}" />
 
                         <TextView
                             style="@style/title"
@@ -123,7 +125,7 @@
                         <TextView
                             android:id="@+id/tvScale"
                             style="@style/subTitle"
-                            android:text="@{ugDetail.responseData.scale}" />
+                            android:text="@{Converter.format(ugDetail.responseData.scale)}" />
 
                         <TextView
                             style="@style/title"
@@ -132,7 +134,7 @@
                         <TextView
                             android:id="@+id/tvLocation"
                             style="@style/subTitle"
-                            android:text="@{ugDetail.responseData.location}" />
+                            android:text="@{Converter.format(ugDetail.responseData.location)}" />
 
                         <TextView
                             style="@style/title"
@@ -141,7 +143,7 @@
                         <TextView
                             android:id="@+id/tvLoadName"
                             style="@style/subTitle"
-                            android:text="@{ugDetail.responseData.venieLoad}" />
+                            android:text="@{Converter.format(ugDetail.responseData.venieLoad)}" />
 
                         <TextView
                             style="@style/title"
@@ -150,7 +152,7 @@
                         <TextView
                             android:id="@+id/tvXCoordinate"
                             style="@style/subTitle"
-                            android:text="@{ugDetail.responseData.XCordinate}" />
+                            android:text="@{Converter.format(ugDetail.responseData.XCordinate)}" />
 
                         <TextView
                             style="@style/title"
@@ -159,7 +161,7 @@
                         <TextView
                             android:id="@+id/tvYCoordinate"
                             style="@style/subTitle"
-                            android:text="@{ugDetail.responseData.YCordinate}" />
+                            android:text="@{Converter.format(ugDetail.responseData.YCordinate)}" />
 
                         <TextView
                             style="@style/title"
@@ -168,7 +170,7 @@
                         <TextView
                             android:id="@+id/tvZCoordinate"
                             style="@style/subTitle"
-                            android:text="@{ugDetail.responseData.ZCordinate}" />
+                            android:text="@{Converter.format(ugDetail.responseData.ZCordinate)}" />
 
                         <TextView
                             android:id="@+id/tvAttributes"

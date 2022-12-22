@@ -6,14 +6,11 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.webkit.WebChromeClient
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.geomap.GeoMapApp
+import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityPdfViewBinding
 import com.geomap.mvvm.AllViewModel
@@ -25,11 +22,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class PdfViewActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityPdfViewBinding
     private lateinit var ctx : Context
     private lateinit var act : Activity
     private var userId : String? = null
     private var reportType : String? = ""
+    private lateinit var binding : ActivityPdfViewBinding
     private var downloadUrl : String? = ""
     private var id : String? = ""
     private lateinit var viewModel : AllViewModel
@@ -53,12 +50,29 @@ class PdfViewActivity : AppCompatActivity() {
             onBackPressed()
         }
 
+        binding.webView.webViewClient = WebViewClient()
+        binding.webView.settings.javaScriptEnabled = true
+        binding.webView.settings.loadWithOverviewMode = true
+        binding.webView.settings.useWideViewPort = true
+        binding.webView.settings.builtInZoomControls = false
+        binding.webView.settings.domStorageEnabled = true
+        binding.webView.settings.javaScriptCanOpenWindowsAutomatically = true;
+        binding.webView.settings.cacheMode = WebSettings.LOAD_DEFAULT
+        binding.webView.clearCache(true)
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            binding.webView.reload()
+            binding.swipeRefreshLayout.isRefreshing = false
+        }
         binding.llDownload.setOnClickListener {
-            DownlaodTask(downloadUrl, "GEO_MAP_${
+            downloadTask(downloadUrl, "GEO_MAP_${
                 SimpleDateFormat("ddMMyyyy_HHmmss", Locale.getDefault()).format(Date())
             }")
         }
+    }
 
+    override fun onResume() {
+        super.onResume()
         postData()
     }
 
@@ -66,7 +80,7 @@ class PdfViewActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun DownlaodTask(downloadUrl : String?, title : String) {
+    private fun downloadTask(downloadUrl : String?, title : String) {
         val req = DownloadManager.Request(Uri.parse(downloadUrl))
         req.setTitle(title)
         req.allowScanningByMediaScanner()
@@ -81,54 +95,38 @@ class PdfViewActivity : AppCompatActivity() {
     }
 
     fun postData() {
-        if (GeoMapApp.isNetworkConnected(ctx)) {
-            GeoMapApp.showProgressBar(binding.progressBar, binding.progressBarHolder, act)
+        if (isNetworkConnected(ctx)) {
+            showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             viewModel = ViewModelProvider(this, UserModelFactory(
                 UserRepository(retrofitService)))[AllViewModel::class.java]
             viewModel.getPdfView(userId.toString(), id.toString(), reportType.toString())
             viewModel.getPdfView.observe(this) {
+                hideProgressBar(binding.progressBar, binding.progressBarHolder,
+                    act)
                 when {
                     it?.ResponseCode == getString(R.string.ResponseCodesuccess) -> {
                         downloadUrl = it.ResponseData.pdfLink
-                        binding.webView.webViewClient = WebViewClient()
-                        binding.webView.settings.javaScriptEnabled = true
-                        binding.webView.settings.cacheMode = WebSettings.LOAD_DEFAULT
-                        binding.webView.settings.setSupportZoom(false)
-                        binding.webView.settings.pluginState = WebSettings.PluginState.ON
-                        binding.webView.settings.displayZoomControls = false
-                        binding.webView.webViewClient = CustomWebViewClient()
-                        binding.webView.loadUrl(
-                            "https://docs.google.com/gview?embedded=true&url=${it.ResponseData.pdfLink}")
-
-                        binding.webView.webChromeClient = object : WebChromeClient() {
-                            override fun onProgressChanged(view : WebView, progress : Int) {
-                                binding.progressBar.progress = progress
-                                if (progress == 100) {
-                                    GeoMapApp.hideProgressBar(binding.progressBar,
-                                        binding.progressBarHolder,
-                                        act)
-                                }
-                            }
-                        }
-                        binding.webView.requestFocus()
+                        shouldOverrideUrlLoading(binding.webView, it.ResponseData.pdfLink)
+                        binding.webView.reload()
                     }
-                    it.ResponseCode == act.getString(R.string.ResponseCodefail) -> {
-                        GeoMapApp.showToast(it.ResponseMessage, act)
+                    it.ResponseCode == getString(R.string.ResponseCodefail) -> {
+                        showToast(it.ResponseMessage, act)
                     }
-                    it.ResponseCode == act.getString(R.string.ResponseCodeDeleted) -> {
-                        GeoMapApp.callDelete403(act, it.ResponseMessage)
+                    it.ResponseCode == getString(R.string.ResponseCodeDeleted) -> {
+                        callDelete403(act, it.ResponseMessage)
                     }
                 }
             }
         } else {
-            GeoMapApp.showToast(getString(R.string.no_server_found), act)
+            showToast(getString(R.string.no_server_found), act)
         }
     }
 
-    inner class CustomWebViewClient : WebViewClient() {
-        override fun shouldOverrideUrlLoading(view : WebView, url : String) : Boolean {
-            view.loadUrl(url)
+    private fun shouldOverrideUrlLoading(webView : WebView, url : String) : Boolean {
+        if (url.endsWith(".pdf") || url.endsWith(".doc") || url.endsWith(".docx")) {
+            webView.loadUrl("https://docs.google.com/gview?embedded=true&url=$url")
             return true
         }
+        return false
     }
 }
