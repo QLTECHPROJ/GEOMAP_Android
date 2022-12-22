@@ -32,6 +32,9 @@ interface GeoMapDetailsDao {
     @Query("DELETE FROM UnderGroundMappingReport WHERE userId =:userId")
     fun deleteUnderGroundMappingReport(userId: String?)
 
+    @Query("DELETE FROM UnderGroundMappingReport  WHERE uid =:uid")
+    fun deleteUnderGroundMappingReportByUid(uid: Int?)
+
     @TypeConverters(Converters::class)
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOCReport(openCastMappingReport: OpenCastMappingReport?)
@@ -51,6 +54,9 @@ interface GeoMapDetailsDao {
 
     @Query("DELETE FROM OpenCastMappingReport  WHERE userId =:userId")
     fun deleteOpenCastMappingReport(userId: String?)
+
+    @Query("DELETE FROM OpenCastMappingReport  WHERE uid =:uid")
+    fun deleteOpenCastMappingReportByUid(uid: Int?)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAttributeData(attributeData: AttributeData?)

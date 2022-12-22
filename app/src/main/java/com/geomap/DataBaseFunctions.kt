@@ -46,6 +46,15 @@ class DataBaseFunctions {
             }
         }
 
+
+        fun deleteUGReportByUid(ctx: Context, obj: UnderGroundMappingReport) {
+            DB = getDataBase(ctx)
+            GeoMapDatabase.databaseWriteExecutor.execute {
+                DB!!.taskDao().deleteUnderGroundMappingReportByUid(obj.uid)
+                saveUGReport(obj,ctx)
+            }
+        }
+
         fun callOcReportObserver(ctx: Context, userId: String) {
             DB = getDataBase(ctx)
             var list = ArrayList<OpenCastMappingReport>()
@@ -83,6 +92,14 @@ class DataBaseFunctions {
             DB = getDataBase(ctx)
             GeoMapDatabase.databaseWriteExecutor.execute {
                 DB!!.taskDao().deleteOpenCastMappingReport(userId)
+            }
+        }
+
+        fun deleteOCReportbyUid(ctx: Context, obj: OpenCastMappingReport,) {
+            DB = getDataBase(ctx)
+            GeoMapDatabase.databaseWriteExecutor.execute {
+                DB!!.taskDao().deleteOpenCastMappingReportByUid(obj.uid)
+                saveOCReport(obj, ctx)
             }
         }
 

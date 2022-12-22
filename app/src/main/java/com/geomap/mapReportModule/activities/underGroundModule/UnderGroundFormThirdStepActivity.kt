@@ -25,6 +25,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.geomap.DataBaseFunctions
+import com.geomap.DataBaseFunctions.Companion.deleteUGReportByUid
+import com.geomap.DataBaseFunctions.Companion.saveUGReport
 import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundFormThirdStepBinding
@@ -218,85 +220,90 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         signFace = TypedFile(CONSTANTS.MULTIPART_FORMAT, faceImage)
 
         if (isNetworkConnected(ctx)) {
-            showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            APIClientProfile.apiService!!.postUndergroundInsert(
-                userId, ugDataModel.name, ugDataModel.comment, attributeDataModelList,
-                ugDataModel.ugDate,
-                ugDataModel.mapSerialNo,
-                ugDataModel.shift, ugDataModel.mappedBy, ugDataModel.scale, ugDataModel.location,
-                ugDataModel.venieLoad,
-                ugDataModel.xCordinate, ugDataModel.yCordinate, ugDataModel.zCordinate,
-                signRoof, signLeft,
-                signRight, signFace,
-                object : retrofit.Callback<SuccessModel> {
-                    override fun success(model : SuccessModel,
-                        response : retrofit.client.Response) {
-                        when (model.ResponseCode) {
-                            getString(R.string.ResponseCodesuccess) -> {
-                                hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                                showToast(model.ResponseMessage, act)
-                                binding.drawing.startNew()
-                                val i = Intent(ctx, DashboardActivity::class.java)
-                                i.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-                                startActivity(i)
-                                finishAffinity()
-                                ugDataModel = UnderGroundInsertModel()
-                                attributeDataModelList = ArrayList<AttributeDataModel>()
-                                ugmr = UnderGroundMappingReport()
-                                flagUG = "0"
-                            }
-                            getString(R.string.ResponseCodefail) -> {
-                                showToast(model.ResponseCode, act)
-                            }
-                            getString(
-                                R.string.ResponseCodeDeleted) -> {
-                                callDelete403(act, model.ResponseCode)
+            if(flagUG == "0" || flagUG == "1") {
+                showProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                APIClientProfile.apiService!!.postUndergroundInsert(userId, ugDataModel.name,
+                    ugDataModel.comment, attributeDataModelList, ugDataModel.ugDate,
+                    ugDataModel.mapSerialNo, ugDataModel.shift, ugDataModel.mappedBy,
+                    ugDataModel.scale, ugDataModel.location, ugDataModel.venieLoad,
+                    ugDataModel.xCordinate, ugDataModel.yCordinate, ugDataModel.zCordinate,
+                    signRoof, signLeft, signRight, signFace,
+                    object : retrofit.Callback<SuccessModel> {
+                        override fun success(model: SuccessModel,
+                            response: retrofit.client.Response) {
+                            when (model.ResponseCode) {
+                                getString(R.string.ResponseCodesuccess) -> {
+                                    hideProgressBar(binding.progressBar, binding.progressBarHolder,
+                                        act)
+                                    showToast(model.ResponseMessage, act)
+                                    binding.drawing.startNew()
+                                    val i = Intent(ctx, DashboardActivity::class.java)
+                                    i.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
+                                    startActivity(i)
+                                    finishAffinity()
+                                    ugDataModel = UnderGroundInsertModel()
+                                    attributeDataModelList = ArrayList<AttributeDataModel>()
+                                    ugmr = UnderGroundMappingReport()
+                                    flagUG = "0"
+                                }
+                                getString(R.string.ResponseCodefail) -> {
+                                    showToast(model.ResponseCode, act)
+                                }
+                                getString(R.string.ResponseCodeDeleted) -> {
+                                    callDelete403(act, model.ResponseCode)
+                                }
                             }
                         }
-                    }
 
-                    override fun failure(e : RetrofitError) {
-                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                        showToast(e.message, act)
-                    }
-                })
-        } else {
-            val obj = UnderGroundMappingReport()
-            val gson = Gson()
-            obj.userId = userId
-            obj.name = ugDataModel.name
-            obj.comment = ugDataModel.comment
-            obj.attributes = gson.toJson(attributeDataModelList)
-            obj.ugDate = ugDataModel.ugDate
-            obj.mapSerialNo = ""
-            obj.shift = ugDataModel.shift
-            obj.mappedBy = ugDataModel.mappedBy
-            obj.scale = ugDataModel.scale
-            obj.location = ugDataModel.location
-            obj.veinOrLoad = ugDataModel.venieLoad
-            obj.xCordinate = ugDataModel.xCordinate
-            obj.yCordinate = ugDataModel.yCordinate
-            obj.zCordinate = ugDataModel.zCordinate
-            obj.roofImage = signRoofBitMap
-            obj.leftImage = signLeftBitMap
-            obj.rightImage = signRightBitMap
-            obj.faceImage = signFaceBitMap
-            if (flagUG == "2") {
-                DataBaseFunctions.updateUGReport(obj, ctx)
-                showToast(getString(R.string.underground_updated), act)
-            } else {
-                DataBaseFunctions.saveUGReport(obj, ctx)
-                showToast(getString(R.string.underground_saved), act)
+                        override fun failure(e: RetrofitError) {
+                            hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                            showToast(e.message, act)
+                        }
+                    })
+            }else{
+                callOfflineFunction()
             }
-            val i = Intent(ctx, DashboardActivity::class.java)
-            i.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
-            startActivity(i)
-            ugDataModel = UnderGroundInsertModel()
-            attributeDataModelList = ArrayList<AttributeDataModel>()
-            ugmr = UnderGroundMappingReport()
-            flagUG = "0"
-            finishAffinity()
+        } else {
+            callOfflineFunction()
         }
+    }
+
+    private fun callOfflineFunction() {
+        val obj = UnderGroundMappingReport()
+        val gson = Gson()
+        obj.userId = userId
+        obj.name = ugDataModel.name
+        obj.comment = ugDataModel.comment
+        obj.attributes = gson.toJson(attributeDataModelList)
+        obj.ugDate = ugDataModel.ugDate
+        obj.mapSerialNo = ""
+        obj.shift = ugDataModel.shift
+        obj.mappedBy = ugDataModel.mappedBy
+        obj.scale = ugDataModel.scale
+        obj.location = ugDataModel.location
+        obj.veinOrLoad = ugDataModel.venieLoad
+        obj.xCordinate = ugDataModel.xCordinate
+        obj.yCordinate = ugDataModel.yCordinate
+        obj.zCordinate = ugDataModel.zCordinate
+        obj.roofImage = signRoofBitMap
+        obj.leftImage = signLeftBitMap
+        obj.rightImage = signRightBitMap
+        obj.faceImage = signFaceBitMap
+        if (flagUG == "2") {
+            deleteUGReportByUid(ctx,obj)
+            showToast(getString(R.string.underground_updated), act)
+        } else {
+            saveUGReport(obj, ctx)
+            showToast(getString(R.string.underground_saved), act)
+        }
+        val i = Intent(ctx, DashboardActivity::class.java)
+        i.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
+        startActivity(i)
+        ugDataModel = UnderGroundInsertModel()
+        attributeDataModelList = ArrayList<AttributeDataModel>()
+        ugmr = UnderGroundMappingReport()
+        flagUG = "0"
+        finishAffinity()
     }
 
     private fun callDisable(flag : String) {
