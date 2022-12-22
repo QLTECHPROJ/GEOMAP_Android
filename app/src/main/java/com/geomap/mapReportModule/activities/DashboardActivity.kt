@@ -168,6 +168,11 @@ class DashboardActivity : AppCompatActivity() {
                                     }
                                 }
                                 getString(R.string.ResponseCodefail) -> {
+                                    binding.llUnderGroundList.visibility = View.GONE
+                                    binding.rvUnderGroundList.visibility = View.GONE
+                                    binding.llOpenCastList.visibility = View.GONE
+                                    binding.rvOpenCastList.visibility = View.GONE
+                                    binding.tvFound.visibility = View.VISIBLE
                                     showToast(model.responseMessage, act)
                                 }
                                 getString(R.string.ResponseCodeDeleted) -> {
@@ -208,12 +213,12 @@ class DashboardActivity : AppCompatActivity() {
 
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
-            holder.binding.tvName.text = listModel[position].name
-            holder.binding.tvArea.text = listModel[position].location
-            holder.binding.tvDate.text = listModel[position].ugDate
+            holder.binding.tvName.text = listModel[position].name ?:"-"
+            holder.binding.tvArea.text = listModel[position].location?:"-"
+            holder.binding.tvDate.text = listModel[position].ugDate?:"-"
             holder.binding.tvSubTitleOne.setText(
                 Html.fromHtml(
-                    "Mapped By : <font color='black'>${listModel[position].mappedBy}</font>"),
+                    "Mapped By : <font color='black'>${listModel[position].mappedBy?:"-"}</font>"),
                 TextView.BufferType.SPANNABLE)
             holder.binding.tvSubTitleTwo.setText(Html.fromHtml(
                 "Map serial no : <font color='black'>${listModel[position].mapSerialNo}</font>"),
@@ -251,11 +256,11 @@ class DashboardActivity : AppCompatActivity() {
 
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
-            holder.binding.tvName.text = listModel[position].pitName
-            holder.binding.tvArea.text = listModel[position].pitLoaction
+            holder.binding.tvName.text = listModel[position].pitName?:"-"
+            holder.binding.tvArea.text = listModel[position].pitLoaction?:"-"
             holder.binding.tvSubTitleOne.setText(
                 Html.fromHtml(
-                    "Mines site name : <font color='black'>${listModel[position].minesSiteName}</font>"),
+                    "Mines site name : <font color='black'>${listModel[position].minesSiteName?:"-"}</font>"),
                 TextView.BufferType.SPANNABLE)
             holder.binding.tvSubTitleTwo.setText(Html.fromHtml(
                 "Mapping sheet no : <font color='black'>${listModel[position].mappingSheetNo}</font>"),

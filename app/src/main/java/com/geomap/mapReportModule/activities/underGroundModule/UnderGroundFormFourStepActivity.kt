@@ -27,6 +27,7 @@ import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundFormThirdStepBinding
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity.Companion.attributeDataModelList
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity.Companion.flagUG
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity.Companion.signRoofBitMap
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity.Companion.ugmr
 import com.geomap.mapReportModule.models.AttributeDataModel
 import com.geomap.mapReportModule.models.UnderGroundInsertModel
@@ -40,9 +41,9 @@ class UnderGroundFormFourStepActivity : AppCompatActivity() {
     private lateinit var ctx: Context
     private lateinit var act: Activity
     private var userId: String? = null
-    private var signRoofBitMap: Bitmap? = null
     private lateinit var currPaint: ImageButton
     var ugDataModel = UnderGroundInsertModel()
+    val gson = Gson()
     var i = 0
     private val requestExternalStorage = 1
     private val permissionsStorage = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -58,28 +59,30 @@ class UnderGroundFormFourStepActivity : AppCompatActivity() {
         userId = shared.getString(CONSTANTS.userId, "")
 
         if (intent.extras != null) {
-            if (intent.hasExtra("ugData")) {
-                val gson = Gson()
-                val data = intent.getStringExtra("ugData")
-                val type1 = object : TypeToken<UnderGroundInsertModel>() {}.type
-                ugDataModel = gson.fromJson(data, type1)
-            }
-            if (intent.hasExtra("attributeData")) {
-                val gson = Gson()
-                val data = intent.getStringExtra("attributeData")
-                val type1 = object : TypeToken<ArrayList<AttributeDataModel>>() {}.type
-                attributeDataModelList = gson.fromJson(data, type1)
-            }
+            val gson = Gson()
+            val data = intent.getStringExtra("ugData")
+            val type1 = object : TypeToken<UnderGroundInsertModel>() {}.type
+            ugDataModel = gson.fromJson(data, type1)
+            val data1 = intent.getStringExtra("attributeData")
+            val type2 = object : TypeToken<ArrayList<AttributeDataModel>>() {}.type
+            attributeDataModelList = gson.fromJson(data1, type2)
             intent.extras!!.clear()
         }
-        if (flagUG == "1" || flagUG == "2") {
+
+//        if (flagUG == "1" || flagUG == "2") {
             signRoofBitMap = ugmr.roofImage
             if (signRoofBitMap != null) {
                 callEnable(signRoofBitMap!!, "roof")
             } else {
                 callDisable("0")
             }
-        }
+//        }else {
+//            if (ugmr.roofImage != null) {
+//                callEnable(ugmr.roofImage!!, "roof")
+//            } else {
+//                callDisable("0")
+//            }
+//        }
 
         initViewSandVars()
         binding.drawing.isDrawingCacheEnabled = true
@@ -93,15 +96,16 @@ class UnderGroundFormFourStepActivity : AppCompatActivity() {
 
         binding.btnClear.setOnClickListener {
             if (binding.drawing.drawingCache != null) {
-                binding.drawing.destroyDrawingCache()
+                binding.drawing.isDrawingCacheEnabled = false
                 binding.drawing.startNew()
+                binding.drawing.isDrawingCacheEnabled = true
                 binding.drawing.background = getDrawable(R.drawable.grid_bg)
             }
         }
 
 
-        binding.btnNext.setOnClickListener { //            if (binding.btnClear.isEnabled) {
-            saveImage(binding.drawing.drawingCache) //            }
+        binding.btnNext.setOnClickListener {
+            saveImage(binding.drawing.drawingCache)
         }
 
         binding.llBack.setOnClickListener {
@@ -137,6 +141,8 @@ class UnderGroundFormFourStepActivity : AppCompatActivity() {
         ugmr.roofImage = signRoofBitMap
         val i = Intent(act, UnderGroundFormFiveStepActivity::class.java)
         i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+        i.putExtra("ugData", gson.toJson(ugDataModel))
+        i.putExtra("attributeData", gson.toJson(attributeDataModelList).toString())
         act.startActivity(i)
     }
 
@@ -184,8 +190,9 @@ Tap Setting > permission, and turn "Files and media" on.""")
     }
 
     override fun onBackPressed() {
+        binding.drawing.isDrawingCacheEnabled = true
         if (binding.drawing.drawingCache != null) {
-            signRoofBitMap = binding.drawing.drawingCache
+            signRoofBitMap = binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
             ugmr.roofImage = signRoofBitMap
         }
         finish()

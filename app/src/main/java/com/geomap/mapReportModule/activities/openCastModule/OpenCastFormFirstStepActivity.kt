@@ -186,7 +186,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 binding.etPitLocation.setText(ocmr.pitLocation)
                 binding.etShiftInchargeName.setText(ocmr.shiftInChargeName)
                 geologistName = ocmr.geologistName
-                if(geologistName != null ) {
+                if(geologistName != "" ) {
                     binding.tvGeologistName.text = geologistName
                 }else{
                     geologistName = ""
@@ -205,37 +205,37 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 binding.etObservedGradeOfOre.setText(ocmr.observedGradeOfOre)
                 binding.etActualGradeOfOre.setText(ocmr.actualGradOfOre)
                 sampleCollected = ocmr.sampleCollected
-                if(sampleCollected != null ){
+                if(sampleCollected != ""){
                     binding.tvSampleCollected.text = sampleCollected
                 }else{
                     sampleCollected = ""
                 }
                 weathering = ocmr.weathering
-                if(weathering != null) {
+                if(weathering != "") {
                     binding.tvWeathering.text = weathering
                 }else{
                     weathering = ""
                 }
                 rockStrength = ocmr.rockStrength
-                if(rockStrength != null) {
+                if(rockStrength != "" ) {
                     binding.tvRockStrength.text = rockStrength
                 }else{
                     rockStrength = ""
                 }
                 waterCondition = ocmr.waterCondition
-                if(waterCondition != null) {
+                if(waterCondition != "" ) {
                     binding.tvWaterCondition.text = waterCondition
                 }else{
                     waterCondition = ""
                 }
                 typeOfGeologicalStructures = ocmr.typeOfGeologicalStructures
-                if(typeOfGeologicalStructures != null ) {
+                if(typeOfGeologicalStructures != "" ) {
                     binding.tvTypeOfGeologicalStructures.text = typeOfGeologicalStructures
                 }else{
                     typeOfGeologicalStructures = ""
                 }
                 typeOfFaults = ocmr.typeOfFaults
-                if(typeOfFaults != null ) {
+                if(typeOfFaults != "" ) {
                     binding.tvTypeOfFaults.text = typeOfFaults
                 }else{
                     typeOfFaults = ""

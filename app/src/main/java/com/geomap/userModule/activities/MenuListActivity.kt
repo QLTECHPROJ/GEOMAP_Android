@@ -136,9 +136,9 @@ class MenuListActivity : AppCompatActivity() {
                     ViewGroup.LayoutParams.WRAP_CONTENT)
                 val tvGoBack = logoutDialog!!.findViewById<AppCompatButton>(R.id.tvGoBack)
                 val btn = logoutDialog!!.findViewById<Button>(R.id.Btn)
-                val progressBar = logoutDialog!!.findViewById<ProgressBar>(R.id.progressBar)
-                val progressBarHolder =
-                    logoutDialog!!.findViewById<FrameLayout>(R.id.progressBarHolder)
+//                val progressBar = logoutDialog!!.findViewById<ProgressBar>(R.id.progressBar)
+//                val progressBarHolder =
+//                    logoutDialog!!.findViewById<FrameLayout>(R.id.progressBarHolder)
                 logoutDialog!!.setOnKeyListener { _ : DialogInterface?, keyCode : Int, _ : KeyEvent? ->
                     if (keyCode == KeyEvent.KEYCODE_BACK) {
                         logoutDialog!!.dismiss()
@@ -148,7 +148,7 @@ class MenuListActivity : AppCompatActivity() {
                 }
                 btn.setOnClickListener {
                     logoutDialog!!.dismiss()
-                    showProgressBar(progressBar, progressBarHolder, act)
+                    showProgressBar(binding.progressBar, binding.progressBarHolder, act)
                     callLogoutApi()
                 }
                 tvGoBack.setOnClickListener { logoutDialog!!.dismiss() }

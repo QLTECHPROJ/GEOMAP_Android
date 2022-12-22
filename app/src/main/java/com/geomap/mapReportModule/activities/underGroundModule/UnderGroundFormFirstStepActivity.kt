@@ -730,19 +730,22 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
 
     companion object {
         var sdt = 3
-        var attributesName : String? = ""
-        var reportId : String? = ""
-        var nosName : String? = ""
-        var property : String? = ""
-        var attributeSearchFilter : String = ""
-        var nosSearchFilter : String = ""
+        var attributesName: String? = ""
+        var nosName: String? = ""
+        var property: String? = ""
+        var attributeSearchFilter: String = ""
+        var nosSearchFilter: String = ""
         var nosModelList = ArrayList<AttributesListModel.ResponseData.Nos>()
         var attributeModelList = ArrayList<AttributesListModel.ResponseData>()
         var attributeDataModelList = ArrayList<AttributeDataModel>()
-        var attributesAdapter : AttributesAdapter? = null
-        var nosAdapter : NosAdapter? = null
+        var attributesAdapter: AttributesAdapter? = null
+        var nosAdapter: NosAdapter? = null
         val gson = Gson()
         var ugmr = UnderGroundMappingReport()
         var flagUG = "0"
+        var signRoofBitMap: Bitmap? = null
+        var signLeftBitMap: Bitmap? = null
+        var signRightBitMap: Bitmap? = null
+        var signFaceBitMap: Bitmap? = null
     }
 }

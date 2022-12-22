@@ -97,7 +97,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             intent.extras!!.clear()
         }
 
-        if (flagUG == "1" || flagUG == "2") {
+//        if (flagUG == "1" || flagUG == "2") {
             signRoofBitMap = ugmr.roofImage
             signLeftBitMap = ugmr.leftImage
             signRightBitMap = ugmr.rightImage
@@ -112,7 +112,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             } else {
                 callDisable("0")
             }
-        }
+//        }
 
         initViewSandVars()
         val gson = Gson()
@@ -393,11 +393,15 @@ Tap Setting > permission, and turn "Files and media" on."""
         binding.drawing.isDrawingCacheEnabled = true
         when (i) {
             0 -> {
+                signRoofBitMap =
+                    binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
+                ugmr.roofImage = signRoofBitMap
                 finish()
             }
             1 -> {
                 signLeftBitMap =
                     binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
+                ugmr.leftImage = signLeftBitMap
                 callEnable(signRoofBitMap!!, "roof")
                 binding.btnNext.text = getString(R.string.next)
                 binding.tvName.text = getString(R.string.roof)
@@ -406,6 +410,7 @@ Tap Setting > permission, and turn "Files and media" on."""
             2 -> {
                 signRightBitMap =
                     binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
+                ugmr.rightImage = signRightBitMap
                 callEnable(signLeftBitMap!!, "left")
                 binding.btnNext.text = getString(R.string.next)
                 binding.tvName.text = getString(R.string.left)
@@ -414,6 +419,7 @@ Tap Setting > permission, and turn "Files and media" on."""
             3 -> {
                 signFaceBitMap =
                     binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
+                ugmr.faceImage = signFaceBitMap
                 callEnable(signRightBitMap!!, "right")
                 binding.btnNext.text = getString(R.string.next)
                 binding.tvName.text = getString(R.string.right)

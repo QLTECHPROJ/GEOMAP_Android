@@ -76,6 +76,8 @@ class UnderGroundListActivity : AppCompatActivity() {
                         binding.rvUnderGroundList.adapter = underGroundListAdapter
                     }
                     it.responseCode == act.getString(R.string.ResponseCodefail) -> {
+                        binding.rvUnderGroundList.visibility = View.GONE
+                        binding.tvFound.visibility = View.VISIBLE
                         showToast(it.responseMessage, act)
                     }
                     it.responseCode == act.getString(R.string.ResponseCodeDeleted) -> {

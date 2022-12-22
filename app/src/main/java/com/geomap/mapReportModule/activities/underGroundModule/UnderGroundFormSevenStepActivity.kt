@@ -31,6 +31,10 @@ import com.geomap.databinding.ActivityUnderGroundFormThirdStepBinding
 import com.geomap.mapReportModule.activities.DashboardActivity
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity.Companion.attributeDataModelList
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity.Companion.flagUG
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity.Companion.signFaceBitMap
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity.Companion.signLeftBitMap
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity.Companion.signRightBitMap
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity.Companion.signRoofBitMap
 import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormFirstStepActivity.Companion.ugmr
 import com.geomap.mapReportModule.models.AttributeDataModel
 import com.geomap.mapReportModule.models.SuccessModel
@@ -58,11 +62,8 @@ class UnderGroundFormSevenStepActivity : AppCompatActivity() {
     private var signLeft: TypedFile? = null
     private var signRight: TypedFile? = null
     private var signFace: TypedFile? = null
-    private var signRoofBitMap: Bitmap? = null
-    private var signLeftBitMap: Bitmap? = null
-    private var signRightBitMap: Bitmap? = null
-    private var signFaceBitMap: Bitmap? = null
     private lateinit var currPaint: ImageButton
+    val gson = Gson()
     var ugDataModel = UnderGroundInsertModel()
     var i = 0
     private val requestExternalStorage = 1
@@ -79,28 +80,27 @@ class UnderGroundFormSevenStepActivity : AppCompatActivity() {
         userId = shared.getString(CONSTANTS.userId, "")
 
         if (intent.extras != null) {
-            if (intent.hasExtra("ugData")) {
-                val gson = Gson()
-                val data = intent.getStringExtra("ugData")
-                val type1 = object : TypeToken<UnderGroundInsertModel>() {}.type
-                ugDataModel = gson.fromJson(data, type1)
-            }
-            if (intent.hasExtra("attributeData")) {
-                val gson = Gson()
-                val data = intent.getStringExtra("attributeData")
-                val type1 = object : TypeToken<ArrayList<AttributeDataModel>>() {}.type
-                attributeDataModelList = gson.fromJson(data, type1)
-            }
+            val gson = Gson()
+            val data = intent.getStringExtra("ugData")
+            val type1 = object : TypeToken<UnderGroundInsertModel>() {}.type
+            ugDataModel = gson.fromJson(data, type1)
+            val data1 = intent.getStringExtra("attributeData")
+            val type2 = object : TypeToken<ArrayList<AttributeDataModel>>() {}.type
+            attributeDataModelList = gson.fromJson(data1, type2)
             intent.extras!!.clear()
-        }
-        if (flagUG == "1" || flagUG == "2") {
-            signFaceBitMap = ugmr.faceImage
-            if (signFaceBitMap != null) {
-                callEnable(signFaceBitMap!!, "roof")
+        } //  if (flagUG == "1" || flagUG == "2") {
+        signFaceBitMap = ugmr.faceImage
+        if (signFaceBitMap != null) {
+            callEnable(signFaceBitMap!!, "roof")
+        } else {
+            callDisable("0")
+        }/*    }else{
+            if (ugmr.faceImage != null) {
+                callEnable(ugmr.faceImage!!, "roof")
             } else {
                 callDisable("0")
             }
-        }
+        }*/
 
         initViewSandVars()
         binding.drawing.isDrawingCacheEnabled = true
@@ -114,15 +114,16 @@ class UnderGroundFormSevenStepActivity : AppCompatActivity() {
 
         binding.btnClear.setOnClickListener {
             if (binding.drawing.drawingCache != null) {
-                binding.drawing.destroyDrawingCache()
+                binding.drawing.isDrawingCacheEnabled = false
                 binding.drawing.startNew()
+                binding.drawing.isDrawingCacheEnabled = true
                 binding.drawing.background = getDrawable(R.drawable.grid_bg)
             }
         }
 
 
-        binding.btnNext.setOnClickListener { //            if (binding.btnClear.isEnabled) {
-            saveImage(binding.drawing.drawingCache) //            }
+        binding.btnNext.setOnClickListener {
+            saveImage(binding.drawing.drawingCache)
         }
 
         binding.llBack.setOnClickListener {
@@ -139,25 +140,25 @@ class UnderGroundFormSevenStepActivity : AppCompatActivity() {
     private fun postUndergroundInsert() {
         var datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         var photo = File(getAlbumStorageDir("Pictures"),
-            String.format(datetime + "signLeftBitMap.jpg", System.currentTimeMillis()))
+            String.format(datetime + "LeftBitMap.jpg", System.currentTimeMillis()))
         saveBitmapToJPG(ugmr.leftImage!!, photo)
         scanMediaFile(photo)
         signLeft = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
         datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         photo = File(getAlbumStorageDir("Pictures"),
-            String.format(datetime + "signRightBitMap.jpg", System.currentTimeMillis()))
+            String.format(datetime + "RightBitMap.jpg", System.currentTimeMillis()))
         saveBitmapToJPG(ugmr.rightImage!!, photo)
         scanMediaFile(photo)
         signRight = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
         datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         photo = File(getAlbumStorageDir("Pictures"),
-            String.format(datetime + "signFaceBitMap.jpg", System.currentTimeMillis()))
+            String.format(datetime + "FaceBitMap.jpg", System.currentTimeMillis()))
         saveBitmapToJPG(signFaceBitMap!!, photo)
         scanMediaFile(photo)
         signFace = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
         datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         photo = File(getAlbumStorageDir("Pictures"),
-            String.format(datetime + "signRoofBitMap.jpg", System.currentTimeMillis()))
+            String.format(datetime + "RoofBitMap.jpg", System.currentTimeMillis()))
         saveBitmapToJPG(ugmr.roofImage!!, photo)
         scanMediaFile(photo)
         signRoof = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
@@ -183,6 +184,10 @@ class UnderGroundFormSevenStepActivity : AppCompatActivity() {
                                 ugDataModel = UnderGroundInsertModel()
                                 attributeDataModelList = ArrayList<AttributeDataModel>()
                                 ugmr = UnderGroundMappingReport()
+                                signRoofBitMap = null
+                                signLeftBitMap = null
+                                signRightBitMap = null
+                                signFaceBitMap = null
                                 flagUG = "0"
                             }
                             ctx.getString(R.string.ResponseCodefail) -> {
@@ -201,7 +206,6 @@ class UnderGroundFormSevenStepActivity : AppCompatActivity() {
                 })
         } else {
             val obj = UnderGroundMappingReport()
-            val gson = Gson()
             obj.userId = userId
             obj.name = ugDataModel.name
             obj.comment = ugDataModel.comment
@@ -335,8 +339,9 @@ Tap Setting > permission, and turn "Files and media" on.""")
     }
 
     override fun onBackPressed() {
+        binding.drawing.isDrawingCacheEnabled = true
         if (binding.drawing.drawingCache != null) {
-            signFaceBitMap = binding.drawing.drawingCache
+            signFaceBitMap = binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
             ugmr.faceImage = signFaceBitMap
         }
         finish()

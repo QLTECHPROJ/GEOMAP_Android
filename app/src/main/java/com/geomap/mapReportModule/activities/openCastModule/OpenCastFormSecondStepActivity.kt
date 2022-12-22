@@ -129,9 +129,10 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         scanMediaFile(photoClientsGeologistSign)
         clientsGeologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photoClientsGeologistSign)
 
+        val bitmap =  binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
         val photoImage = File(getAlbumStorageDir(),
             String.format(datetime +"Image.jpg", System.currentTimeMillis()))
-        saveBitmapToJPG(binding.drawing.drawingCache, photoImage)
+        saveBitmapToJPG(bitmap, photoImage)
         scanMediaFile(photoImage)
         sign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photoImage)
         if (isNetworkConnected(ctx)) {
@@ -236,7 +237,8 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             obj.notes = ocDataModel.notes
             obj.geologistSign = ocDataModel.geologistSignBitMap!!
             obj.clientsGeologistSign = ocDataModel.clientsGeologistSignBitMap!!
-            obj.image = binding.drawing.drawingCache
+            obj.image = bitmap
+            binding.drawing.startNew()
             if (flagOC == "2") {
                 DataBaseFunctions.updateOCReport(obj, ctx)
                 showToast(getString(R.string.opencast_updated), act)
@@ -247,7 +249,6 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             flagOC = "0"
             ocmr = OpenCastMappingReport()
             img  = null
-            binding.drawing.startNew()
             val i = Intent(ctx, DashboardActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(i)

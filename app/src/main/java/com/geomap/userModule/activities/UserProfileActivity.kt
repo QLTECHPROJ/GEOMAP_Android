@@ -340,20 +340,21 @@ class UserProfileActivity : AppCompatActivity() {
                                 binding.etEmail.setText(email)
                                 binding.etMobileNo.setText(mobileNo)
                                 binding.etDob.setText(dob)
-                                val outputFormat : DateFormat =
-                                    SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT1)
-                                val inputFormat : DateFormat =
-                                    SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT)
-                                val inputText = dob
-                                val date : Date = inputFormat.parse(inputText)
-                                val outputText : String = outputFormat.format(date)
-                                Log.e("dob", outputText)
-                                var dateSpilt = outputText.split(" ")
-                                ageYear = dateSpilt[2].toInt()
-                                ageMonth = dateSpilt[1].toInt()
-                                ageDate = dateSpilt[0].toInt()
-                                birthYear = getAge(ageYear, ageMonth, ageDate)
-
+                                if( coachStatusModel.responseData!!.dob != "") {
+                                    val outputFormat: DateFormat = SimpleDateFormat(
+                                        CONSTANTS.DATE_MONTH_YEAR_FORMAT1)
+                                    val inputFormat: DateFormat = SimpleDateFormat(
+                                        CONSTANTS.DATE_MONTH_YEAR_FORMAT)
+                                    val inputText = dob
+                                    val date: Date = inputFormat.parse(inputText)
+                                    val outputText: String = outputFormat.format(date)
+                                    Log.e("dob", outputText)
+                                    var dateSpilt = outputText.split(" ")
+                                    ageYear = dateSpilt[2].toInt()
+                                    ageMonth = dateSpilt[1].toInt()
+                                    ageDate = dateSpilt[0].toInt()
+                                    birthYear = getAge(ageYear, ageMonth, ageDate)
+                                }
                                 binding.ivCameraIconBg.visibility = View.VISIBLE
                                 binding.ivCameraIcon.visibility = View.VISIBLE
                                 if (coachStatusModel.responseData!!.profileImage == "") {
