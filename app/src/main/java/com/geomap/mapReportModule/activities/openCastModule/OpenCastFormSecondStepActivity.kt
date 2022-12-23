@@ -92,7 +92,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         }
 
         binding.btnSignPadClear.setOnClickListener {
-            binding.drawing.background = getDrawable(R.drawable.grid_bg)
+            binding.drawing.background = getDrawable(R.drawable.grid_bg_new)
             binding.drawing.startNew()
         }
 

@@ -99,7 +99,7 @@ class UnderGroundFormFourStepActivity : AppCompatActivity() {
                 binding.drawing.isDrawingCacheEnabled = false
                 binding.drawing.startNew()
                 binding.drawing.isDrawingCacheEnabled = true
-                binding.drawing.background = getDrawable(R.drawable.grid_bg)
+                binding.drawing.background = getDrawable(R.drawable.grid_bg_new)
             }
         }
 
@@ -123,14 +123,14 @@ class UnderGroundFormFourStepActivity : AppCompatActivity() {
         if (flag == "1") {
             binding.drawing.startNew()
         }
-        binding.drawing.background = getDrawable(R.drawable.grid_bg)
+        binding.drawing.background = getDrawable(R.drawable.grid_bg_new)
     }
 
     private fun callEnable(signBitMap: Bitmap, bitmapString: String) {
         if (binding.drawing.drawingCache != null) {
             binding.drawing.startNew()
         }
-        binding.drawing.background = getDrawable(R.drawable.grid_bg)
+        binding.drawing.background = getDrawable(R.drawable.grid_bg_new)
         val d: Drawable = BitmapDrawable(resources!!, signBitMap)
         binding.drawing.background = d
         Log.e(bitmapString, "$i")
