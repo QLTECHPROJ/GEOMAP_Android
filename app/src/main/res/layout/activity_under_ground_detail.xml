@@ -192,7 +192,87 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_200sdp"
+                    android:layout_height="@dimen/_185sdp"
+                    android:layout_marginHorizontal="@dimen/_25sdp"
+                    android:layout_marginTop="@dimen/_14sdp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="@dimen/_0sdp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_2sdp"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:text="@string/roof"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="@dimen/_1sdp"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:layout_marginEnd="@dimen/_6sdp"
+                            android:layout_marginBottom="@dimen/_6sdp"
+                            app:cardCornerRadius="@dimen/_10sdp"
+                            app:cardElevation="@dimen/_2sdp">
+
+                            <ImageView
+                                android:id="@+id/roofImage"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:contentDescription="@string/todo"
+                                android:scaleType="fitXY" />
+                        </androidx.cardview.widget.CardView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="@dimen/_0sdp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_4sdp"
+                            android:fontFamily="@font/inter_semi_bold"
+                            android:text="@string/face"
+                            android:textColor="@color/light_black"
+                            android:textSize="@dimen/_16sdp"
+                            tools:ignore="SpUsage" />
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="@dimen/_6sdp"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:layout_marginEnd="@dimen/_1sdp"
+                            android:layout_marginBottom="@dimen/_6sdp"
+                            app:cardCornerRadius="@dimen/_10sdp"
+                            app:cardElevation="@dimen/_2sdp">
+
+                            <ImageView
+                                android:id="@+id/faceImage"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:contentDescription="@string/todo"
+                                android:scaleType="fitXY" />
+                        </androidx.cardview.widget.CardView>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_185sdp"
                     android:layout_marginHorizontal="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_14sdp"
                     android:orientation="horizontal">
@@ -229,7 +309,8 @@
                                 android:id="@+id/leftImage"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:contentDescription="@string/todo" />
+                                android:contentDescription="@string/todo"
+                                android:scaleType="fitXY" />
                         </androidx.cardview.widget.CardView>
 
                     </LinearLayout>
@@ -264,87 +345,9 @@
                                 android:id="@+id/rightImage"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:contentDescription="@string/todo" />
+                                android:contentDescription="@string/todo"
+                                android:scaleType="fitXY" />
 
-                        </androidx.cardview.widget.CardView>
-
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_200sdp"
-                    android:layout_marginHorizontal="@dimen/_25sdp"
-                    android:layout_marginTop="@dimen/_14sdp"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="@dimen/_0sdp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_2sdp"
-                            android:fontFamily="@font/inter_semi_bold"
-                            android:text="@string/face"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="@dimen/_1sdp"
-                            android:layout_marginTop="@dimen/_4sdp"
-                            android:layout_marginEnd="@dimen/_6sdp"
-                            android:layout_marginBottom="@dimen/_6sdp"
-                            app:cardCornerRadius="@dimen/_10sdp"
-                            app:cardElevation="@dimen/_2sdp">
-
-                            <ImageView
-                                android:id="@+id/faceImage"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:contentDescription="@string/todo" />
-                        </androidx.cardview.widget.CardView>
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:layout_width="@dimen/_0sdp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.5"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_4sdp"
-                            android:fontFamily="@font/inter_semi_bold"
-                            android:text="@string/roof"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
-
-                        <androidx.cardview.widget.CardView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="@dimen/_6sdp"
-                            android:layout_marginTop="@dimen/_4sdp"
-                            android:layout_marginEnd="@dimen/_1sdp"
-                            android:layout_marginBottom="@dimen/_6sdp"
-                            app:cardCornerRadius="@dimen/_10sdp"
-                            app:cardElevation="@dimen/_2sdp">
-
-                            <ImageView
-                                android:id="@+id/roofImage"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:contentDescription="@string/todo" />
                         </androidx.cardview.widget.CardView>
 
                     </LinearLayout>

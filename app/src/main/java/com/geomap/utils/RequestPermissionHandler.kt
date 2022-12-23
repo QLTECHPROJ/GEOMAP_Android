@@ -2,7 +2,6 @@ package com.geomap.utils
 
 import android.app.Activity
 import android.content.pm.PackageManager
-import android.os.Build
 import androidx.core.app.ActivityCompat
 
 class RequestPermissionHandler {
@@ -16,15 +15,7 @@ class RequestPermissionHandler {
         mActivity = activity
         mRequestCode = requestCode
         mRequestPermissionListener = listener
-        if (!needRequestRuntimePermissions()) {
-            mRequestPermissionListener!!.onSuccess()
-            return
-        }
         requestUnGrantedPermissions(permissions, requestCode)
-    }
-
-    private fun needRequestRuntimePermissions() : Boolean {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
     }
 
     private fun requestUnGrantedPermissions(permissions : Array<String>, requestCode : Int) {
@@ -49,24 +40,6 @@ class RequestPermissionHandler {
             }
         }
         return unGrantedPermissionList.toTypedArray()
-    }
-
-    fun onRequestPermissionsResult(
-        requestCode : Int, grantResults : IntArray
-    ) {
-        if (requestCode == mRequestCode) {
-            if (grantResults.isNotEmpty()) {
-                for (grantResult in grantResults) {
-                    if (grantResult != PackageManager.PERMISSION_GRANTED) {
-                        mRequestPermissionListener!!.onFailed()
-                        return
-                    }
-                }
-                mRequestPermissionListener!!.onSuccess()
-            } else {
-                mRequestPermissionListener!!.onFailed()
-            }
-        }
     }
 
     interface RequestPermissionListener {

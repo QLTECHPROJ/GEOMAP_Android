@@ -106,7 +106,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         if (signRoofBitMap != null) {
             if (binding.drawing.drawingCache != null) {
                 binding.drawing.startNew()
-                binding.drawing.background = getDrawable(R.drawable.grid_bg)
+                binding.drawing.background = getDrawable(R.drawable.grid_bg_new)
             }
             val d : Drawable = BitmapDrawable(resources!!, signRoofBitMap)
             binding.drawing.background = d
@@ -125,7 +125,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
 
         binding.btnClear.setOnClickListener {
             binding.drawing.startNew()
-            binding.drawing.background = getDrawable(R.drawable.grid_bg)
+            binding.drawing.background = getDrawable(R.drawable.grid_bg_new)
         }
 
         binding.btnNext.setOnClickListener {
@@ -310,12 +310,12 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         if (flag == "1") {
             binding.drawing.startNew()
         }
-        binding.drawing.background = getDrawable(R.drawable.grid_bg)
+        binding.drawing.background = getDrawable(R.drawable.grid_bg_new)
     }
 
     private fun callEnable(signBitMap : Bitmap, bitmapString : String) {
         binding.drawing.startNew()
-        binding.drawing.background = getDrawable(R.drawable.grid_bg)
+        binding.drawing.background = getDrawable(R.drawable.grid_bg_new)
         val d : Drawable = BitmapDrawable(resources!!, signBitMap)
         binding.drawing.background = d
         Log.e(bitmapString, "$i")

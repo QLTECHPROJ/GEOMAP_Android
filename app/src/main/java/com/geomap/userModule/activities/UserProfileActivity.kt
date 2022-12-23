@@ -88,6 +88,7 @@ class UserProfileActivity : AppCompatActivity() {
     private var mLastClickTime : Long = 0
     private lateinit var viewModel : AllViewModel
     private val retrofitService = RetrofitService.getInstance()
+    private val requestSourceCode = 1
 
     private var userTextWatcher : TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s : CharSequence, start : Int, count : Int, after : Int) {}
@@ -163,37 +164,40 @@ class UserProfileActivity : AppCompatActivity() {
         binding.btnDeleteAccount.setOnClickListener {
             if (isNetworkConnected(ctx)) {
                 deleteDialog = Dialog(ctx)
-                deleteDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                deleteDialog!!.setContentView(R.layout.logout_layout)
-                deleteDialog!!.window!!.setBackgroundDrawable(
-                    ColorDrawable(Color.TRANSPARENT))
-                deleteDialog!!.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT)
-                val tvGoBack = deleteDialog!!.findViewById<TextView>(R.id.tvGoBack)
-                val tvTitle = deleteDialog!!.findViewById<TextView>(R.id.tvTitle)
-                val tvHeader = deleteDialog!!.findViewById<TextView>(R.id.tvHeader)
-                val btn = deleteDialog!!.findViewById<Button>(R.id.Btn)
-                val progressBar = deleteDialog!!.findViewById<ProgressBar>(R.id.progressBar)
+                deleteDialog !!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                deleteDialog !!.setContentView(R.layout.logout_layout)
+                deleteDialog !!.window !!.setBackgroundDrawable(
+                    ColorDrawable(Color.TRANSPARENT)
+                )
+                deleteDialog !!.window !!.setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                val tvGoBack = deleteDialog !!.findViewById<TextView>(R.id.tvGoBack)
+                val tvTitle = deleteDialog !!.findViewById<TextView>(R.id.tvTitle)
+                val tvHeader = deleteDialog !!.findViewById<TextView>(R.id.tvHeader)
+                val btn = deleteDialog !!.findViewById<Button>(R.id.Btn)
+                val progressBar = deleteDialog !!.findViewById<ProgressBar>(R.id.progressBar)
                 val progressBarHolder =
-                    deleteDialog!!.findViewById<FrameLayout>(R.id.progressBarHolder)
+                        deleteDialog !!.findViewById<FrameLayout>(R.id.progressBarHolder)
                 tvTitle.text = getString(R.string.delete_account)
                 tvHeader.text = getString(R.string.delete_ac_quotes)
 
-                deleteDialog!!.setOnKeyListener { _ : DialogInterface?, keyCode : Int, _ : KeyEvent? ->
+                deleteDialog !!.setOnKeyListener { _ : DialogInterface?, keyCode : Int, _ : KeyEvent? ->
                     if (keyCode == KeyEvent.KEYCODE_BACK) {
-                        deleteDialog!!.dismiss()
+                        deleteDialog !!.dismiss()
                         return@setOnKeyListener true
                     }
                     false
                 }
                 btn.setOnClickListener {
-                    deleteDialog!!.dismiss()
+                    deleteDialog !!.dismiss()
                     showProgressBar(progressBar, progressBarHolder, act)
                     callDeleteAcApi()
                 }
-                tvGoBack.setOnClickListener { deleteDialog!!.dismiss() }
-                deleteDialog!!.show()
-                deleteDialog!!.setCancelable(false)
+                tvGoBack.setOnClickListener { deleteDialog !!.dismiss() }
+                deleteDialog !!.show()
+                deleteDialog !!.setCancelable(false)
             } else {
                 showToast(getString(R.string.no_server_found), act)
             }
@@ -201,7 +205,7 @@ class UserProfileActivity : AppCompatActivity() {
 
 
         binding.btnUpdate.setOnClickListener {
-            if (!binding.etEmail.text.toString().isEmailValid()) {
+            if (! binding.etEmail.text.toString().isEmailValid()) {
                 binding.etEmail.isFocusable = true
                 binding.etEmail.requestFocus()
                 binding.ltEmail.isErrorEnabled = true
@@ -216,13 +220,19 @@ class UserProfileActivity : AppCompatActivity() {
     private fun callDeleteAcApi() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            viewModel = ViewModelProvider(this, UserModelFactory(
-                UserRepository(retrofitService)))[AllViewModel::class.java]
+            viewModel = ViewModelProvider(
+                this, UserModelFactory(
+                    UserRepository(retrofitService)
+                )
+            )[AllViewModel::class.java]
             viewModel.postDeleteUser(
-                userId!!)
+                userId !!
+            )
             viewModel.postDeleteUser.observe(this) {
-                hideProgressBar(binding.progressBar,
-                    binding.progressBarHolder, act)
+                hideProgressBar(
+                    binding.progressBar,
+                    binding.progressBarHolder, act
+                )
                 when {
                     it?.ResponseCode == getString(R.string.ResponseCodesuccess) -> {
                         showToast(it.ResponseMessage, act)
@@ -242,16 +252,19 @@ class UserProfileActivity : AppCompatActivity() {
 
         if (isNetworkConnected(ctx)) {
             RetrofitService.getInstance().postDeleteUser(
-                userId).enqueue(object : Callback<SuccessModel?> {
-                override fun onResponse(call : Call<SuccessModel?>,
-                    response : Response<SuccessModel?>) {
+                userId
+            ).enqueue(object : Callback<SuccessModel?> {
+                override fun onResponse(
+                        call : Call<SuccessModel?>,
+                        response : Response<SuccessModel?>
+                ) {
                     val model = response.body()
                     hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                     if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                         return
                     }
                     mLastClickTime = SystemClock.elapsedRealtime()
-                    if (model!!.ResponseCode == getString(R.string.ResponseCodesuccess)) {
+                    if (model !!.ResponseCode == getString(R.string.ResponseCodesuccess)) {
                         callDelete403(act, model.ResponseMessage)
                     } else if (model.ResponseCode == ctx.getString(R.string.ResponseCodefail)) {
                         showToast(model.ResponseMessage, act)
@@ -270,8 +283,8 @@ class UserProfileActivity : AppCompatActivity() {
     }
 
     private fun String.isEmailValid() : Boolean {
-        return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this)
-            .matches()
+        return ! TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this)
+                .matches()
     }
 
     private fun prepareUpdateData() {
@@ -279,19 +292,25 @@ class UserProfileActivity : AppCompatActivity() {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             val map = HashMap<String, String?>()
             map[CONSTANTS.id] = id
-            apiService!!.getProfileUpdate(userId, binding.etName.text.toString(),
+            apiService !!.getProfileUpdate(userId, binding.etName.text.toString(),
                 binding.etEmail.text.toString(),
                 binding.etDob.text.toString(), binding.etMobileNo.text.toString(), typedFile,
                 object : retrofit.Callback<ProfileUpdateModel> {
-                    override fun success(model : ProfileUpdateModel,
-                        response : retrofit.client.Response) {
+                    override fun success(
+                            model : ProfileUpdateModel,
+                            response : retrofit.client.Response
+                    ) {
                         hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                         if (model.responseCode.equals(
-                                ctx.getString(R.string.ResponseCodesuccess))) {
+                                ctx.getString(R.string.ResponseCodesuccess)
+                            )
+                        ) {
                             showToast(model.responseMessage, act)
                             val shared1 =
-                                getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA,
-                                    Context.MODE_PRIVATE)
+                                    getSharedPreferences(
+                                        CONSTANTS.PREFE_ACCESS_USERDATA,
+                                        Context.MODE_PRIVATE
+                                    )
                             val editor1 = shared1.edit()
                             editor1.putString(
                                 CONSTANTS.profileImage, model.responseData?.profileImage
@@ -300,10 +319,14 @@ class UserProfileActivity : AppCompatActivity() {
                             prepareData()
                             finish()
                         } else if (model.responseCode.equals(
-                                ctx.getString(R.string.ResponseCodefail))) {
+                                ctx.getString(R.string.ResponseCodefail)
+                            )
+                        ) {
                             showToast(model.responseMessage, act)
                         } else if (model.responseCode.equals(
-                                ctx.getString(R.string.ResponseCodeDeleted))) {
+                                ctx.getString(R.string.ResponseCodeDeleted)
+                            )
+                        ) {
                             callDelete403(act, model.responseMessage)
                         }
                     }
@@ -322,61 +345,67 @@ class UserProfileActivity : AppCompatActivity() {
         showProgressBar(binding.progressBar, binding.progressBarHolder, act)
         if (isNetworkConnected(ctx)) {
             RetrofitService.getInstance().getUserDetails(userId)
-                .enqueue(object : Callback<UserCommonDataModel> {
-                    override fun onResponse(call : Call<UserCommonDataModel>,
-                        response : Response<UserCommonDataModel>) {
-                        hideProgressBar(binding.progressBar, binding.progressBarHolder,
-                            act)
-                        val coachStatusModel : UserCommonDataModel? = response.body()
-                        when (coachStatusModel!!.responseCode) {
-                            getString(R.string.ResponseCodesuccess) -> {
+                    .enqueue(object : Callback<UserCommonDataModel> {
+                        override fun onResponse(
+                                call : Call<UserCommonDataModel>,
+                                response : Response<UserCommonDataModel>
+                        ) {
+                            hideProgressBar(
+                                binding.progressBar, binding.progressBarHolder,
+                                act
+                            )
+                            val coachStatusModel : UserCommonDataModel? = response.body()
+                            when (coachStatusModel !!.responseCode) {
+                                getString(R.string.ResponseCodesuccess) -> {
 //                                binding.rlMainLayout.visibility = View.VISIBLE
-                                name = coachStatusModel.responseData!!.name
-                                email = coachStatusModel.responseData!!.email
-                                mobileNo = coachStatusModel.responseData!!.mobile
-                                dob = coachStatusModel.responseData!!.dob
-                                profileImage = coachStatusModel.responseData!!.profileImage
-                                binding.etName.setText(name)
-                                binding.etEmail.setText(email)
-                                binding.etMobileNo.setText(mobileNo)
-                                binding.etDob.setText(dob)
-                                if( coachStatusModel.responseData!!.dob != "") {
-                                    val outputFormat: DateFormat = SimpleDateFormat(
-                                        CONSTANTS.DATE_MONTH_YEAR_FORMAT1)
-                                    val inputFormat: DateFormat = SimpleDateFormat(
-                                        CONSTANTS.DATE_MONTH_YEAR_FORMAT)
-                                    val inputText = dob
-                                    val date: Date = inputFormat.parse(inputText)
-                                    val outputText: String = outputFormat.format(date)
-                                    Log.e("dob", outputText)
-                                    var dateSpilt = outputText.split(" ")
-                                    ageYear = dateSpilt[2].toInt()
-                                    ageMonth = dateSpilt[1].toInt()
-                                    ageDate = dateSpilt[0].toInt()
-                                    birthYear = getAge(ageYear, ageMonth, ageDate)
-                                }
-                                binding.ivCameraIconBg.visibility = View.VISIBLE
-                                binding.ivCameraIcon.visibility = View.VISIBLE
-                                if (coachStatusModel.responseData!!.profileImage == "") {
-                                    binding.civProfile.visibility = View.GONE
-                                    binding.rlCameraBg.visibility = View.GONE
-                                    val name = if (coachStatusModel.responseData!!.name == "") {
-                                        "Guest"
-                                    } else {
-                                        coachStatusModel.responseData!!.name
+                                    name = coachStatusModel.responseData !!.name
+                                    email = coachStatusModel.responseData !!.email
+                                    mobileNo = coachStatusModel.responseData !!.mobile
+                                    dob = coachStatusModel.responseData !!.dob
+                                    profileImage = coachStatusModel.responseData !!.profileImage
+                                    binding.etName.setText(name)
+                                    binding.etEmail.setText(email)
+                                    binding.etMobileNo.setText(mobileNo)
+                                    binding.etDob.setText(dob)
+                                    if (coachStatusModel.responseData !!.dob != "") {
+                                        val outputFormat : DateFormat = SimpleDateFormat(
+                                            CONSTANTS.DATE_MONTH_YEAR_FORMAT1
+                                        )
+                                        val inputFormat : DateFormat = SimpleDateFormat(
+                                            CONSTANTS.DATE_MONTH_YEAR_FORMAT
+                                        )
+                                        val inputText = dob
+                                        val date : Date? = inputFormat.parse(inputText !!)
+                                        val outputText : String = outputFormat.format(date !!)
+                                        Log.e("dob", outputText)
+                                        val dateSpilt = outputText.split(" ")
+                                        ageYear = dateSpilt[2].toInt()
+                                        ageMonth = dateSpilt[1].toInt()
+                                        ageDate = dateSpilt[0].toInt()
+                                        birthYear = getAge(ageYear, ageMonth, ageDate)
                                     }
-                                    binding.rlLetter.visibility = View.VISIBLE
-                                    binding.tvLetter.text = name!!.substring(0, 1)
-                                } else {
-                                    binding.civProfile.visibility = View.VISIBLE
-                                    binding.rlCameraBg.visibility = View.VISIBLE
-                                    binding.rlLetter.visibility = View.GONE
-                                    Glide.with(applicationContext)
-                                        .load(coachStatusModel.responseData!!.profileImage)
-                                        .thumbnail(0.10f)
-                                        .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
-                                        .into(binding.civProfile)
-                                }
+                                    binding.ivCameraIconBg.visibility = View.VISIBLE
+                                    binding.ivCameraIcon.visibility = View.VISIBLE
+                                    if (coachStatusModel.responseData !!.profileImage == "") {
+                                        binding.civProfile.visibility = View.GONE
+                                        binding.rlCameraBg.visibility = View.GONE
+                                        val name = if (coachStatusModel.responseData !!.name == "") {
+                                            "Guest"
+                                        } else {
+                                            coachStatusModel.responseData !!.name
+                                        }
+                                        binding.rlLetter.visibility = View.VISIBLE
+                                        binding.tvLetter.text = name !!.substring(0, 1)
+                                    } else {
+                                        binding.civProfile.visibility = View.VISIBLE
+                                        binding.rlCameraBg.visibility = View.VISIBLE
+                                        binding.rlLetter.visibility = View.GONE
+                                        Glide.with(applicationContext)
+                                                .load(coachStatusModel.responseData !!.profileImage)
+                                                .thumbnail(0.10f)
+                                                .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
+                                                .into(binding.civProfile)
+                                    }
 
 //                                binding.etMobileNo.isEnabled = false
 //                                binding.etMobileNo.isClickable = false
@@ -388,20 +417,20 @@ class UserProfileActivity : AppCompatActivity() {
 //                                binding.etEmail.setTextColor(
 //                                    ContextCompat.getColor(applicationContext, R.color.light_gray))
 
-                            }
-                            getString(R.string.ResponseCodefail) -> {
-                                showToast(coachStatusModel.responseMessage, act)
-                            }
-                            getString(R.string.ResponseCodeDeleted) -> {
-                                callDelete403(act, coachStatusModel.responseMessage)
+                                }
+                                getString(R.string.ResponseCodefail) -> {
+                                    showToast(coachStatusModel.responseMessage, act)
+                                }
+                                getString(R.string.ResponseCodeDeleted) -> {
+                                    callDelete403(act, coachStatusModel.responseMessage)
+                                }
                             }
                         }
-                    }
 
-                    override fun onFailure(call : Call<UserCommonDataModel>, t : Throwable) {
-                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                    }
-                })
+                        override fun onFailure(call : Call<UserCommonDataModel>, t : Throwable) {
+                            hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                        }
+                    })
         } else {
             setProfilePic("")
             binding.civProfile.visibility = View.GONE
@@ -428,7 +457,7 @@ class UserProfileActivity : AppCompatActivity() {
                 Log.e("Gallery Image URL", selectedImageUri.toString())
                 val map = HashMap<String, String?>()
                 map[CONSTANTS.userId] = "userId"
-                val file = File(Objects.requireNonNull(getPath(selectedImageUri!!, ctx)))
+                val file = File(Objects.requireNonNull(getPath(selectedImageUri !!, ctx)))
                 typedFile = TypedFile(CONSTANTS.MULTIPART_FORMAT, file)
                 enableButton()
             }
@@ -445,10 +474,12 @@ class UserProfileActivity : AppCompatActivity() {
     private fun setProfilePic(profilePic : String?) {
         if (profilePic.equals("")) {
             Glide.with(applicationContext).load(R.drawable.default_profile).thumbnail(0.10f)
-                .apply(RequestOptions.bitmapTransform(RoundedCorners(126))).into(binding.civProfile)
+                    .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
+                    .into(binding.civProfile)
         } else {
             Glide.with(applicationContext).load(profilePic).thumbnail(0.10f)
-                .apply(RequestOptions.bitmapTransform(RoundedCorners(126))).into(binding.civProfile)
+                    .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
+                    .into(binding.civProfile)
         }
     }
 
@@ -460,14 +491,16 @@ class UserProfileActivity : AppCompatActivity() {
                     ctx, Manifest.permission.READ_EXTERNAL_STORAGE
                 ) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
                     ctx, Manifest.permission.CAMERA
-                ) == PackageManager.PERMISSION_GRANTED) {
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
                 callProfilePathSet()
             } else {
-                mRequestPermissionHandler!!.requestPermission(
+                mRequestPermissionHandler !!.requestPermission(
                     act, arrayOf(
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA
-                    ), 123, object : RequestPermissionHandler.RequestPermissionListener {
+                    ), 123, object :
+                        RequestPermissionHandler.RequestPermissionListener {
                         override fun onSuccess() {
                             callProfilePathSet()
                         }
@@ -475,42 +508,119 @@ class UserProfileActivity : AppCompatActivity() {
                         override fun onFailed() {}
                     })
             }
-        } else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q) {
+        } else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
             if (ContextCompat.checkSelfPermission(
                     ctx, Manifest.permission.READ_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
+                ) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
                     ctx, Manifest.permission.CAMERA
-                ) == PackageManager.PERMISSION_GRANTED) {
-                callProfilePathSet()
-            } else {
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 if (ContextCompat.checkSelfPermission(
-                        ctx, Manifest.permission.READ_EXTERNAL_STORAGE
-                    ) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
                         ctx, Manifest.permission.CAMERA
-                    ) != PackageManager.PERMISSION_GRANTED) {
-                    mRequestPermissionHandler!!.requestPermission(
-                        act, arrayOf(
-                            Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE
-                        ), 123, object : RequestPermissionHandler.RequestPermissionListener {
-                            override fun onSuccess() {
-                                callProfilePathSet()
-                            }
-
-                            override fun onFailed() {}
-                        })
-                } else if (ContextCompat.checkSelfPermission(
-                        ctx, Manifest.permission.CAMERA
-                    ) == PackageManager.PERMISSION_DENIED) {
+                    ) == PackageManager.PERMISSION_DENIED
+                ) {
                     callCamaraPermission()
                 } else if (ContextCompat.checkSelfPermission(
-                        ctx, Manifest.permission.READ_EXTERNAL_STORAGE
-                    ) == PackageManager.PERMISSION_DENIED) {
-                    callReadPermission()
+                        ctx, Manifest.permission.READ_MEDIA_IMAGES
+                    ) == PackageManager.PERMISSION_DENIED
+                ) {
+                    callReadPermission("1", "Files and media")
                 }
+            } else {
+                callProfilePathSet()
+            }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    ctx, Manifest.permission.READ_MEDIA_IMAGES
+                ) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                    ctx, Manifest.permission.CAMERA
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                if (ContextCompat.checkSelfPermission(
+                        ctx, Manifest.permission.CAMERA
+                    ) == PackageManager.PERMISSION_DENIED
+                ) {
+                    callCamaraPermission()
+                } else if (ContextCompat.checkSelfPermission(
+                        ctx, Manifest.permission.READ_MEDIA_IMAGES
+                    ) == PackageManager.PERMISSION_DENIED
+                ) {
+                    callReadPermission("0", "Photos and videos")
+                }
+            } else {
+                callProfilePathSet()
             }
         } else {
             callProfilePathSet()
         }
+    }
+
+    private fun callCamaraPermission() {
+        val building = AlertDialog.Builder(ctx)
+        building.setMessage(
+            """To camera allow ${
+                ctx.getString(
+                    R.string.app_name
+                )
+            } access to your camera. Tap Setting > permission, and turn Camera on."""
+        )
+        building.setCancelable(true)
+        building.setPositiveButton(
+            getString(R.string.Settings)
+        ) { dialogs : DialogInterface, _ : Int ->
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val uri = Uri.fromParts("package", packageName, null)
+            intent.data = uri
+            startActivity(intent)
+            dialogs.dismiss()
+        }
+        building.setNegativeButton(
+            ctx.getString(R.string.not_now)
+        ) { dialogs : DialogInterface, _ : Int -> dialogs.dismiss() }
+        val alert11 = building.create()
+        alert11.window !!.setBackgroundDrawableResource(R.drawable.dialog_bg)
+        alert11.show()
+        alert11.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
+                .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
+        alert11.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
+                .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
+    }
+
+    private fun callReadPermission(version : String, text : String) {
+        val buildable = AlertDialog.Builder(ctx)
+        buildable.setPositiveButton(R.string.Settings) { dialogs : DialogInterface, _ : Int ->
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val uri = Uri.fromParts("package", packageName, null)
+            intent.data = uri
+            startActivity(intent)
+            dialogs.dismiss()
+        }
+
+        if (version == "0") {
+            buildable.setMessage(
+                "To upload image allow ${
+                    getString(R.string.app_name)
+                } access to your device's files. Tap Setting > permission, and turn $text on."
+            )
+        } else if (version == "1") {
+            buildable.setMessage(
+                "To upload image allow ${
+                    getString(R.string.app_name)
+                } access to your device's files. Tap Setting > permission, and turn $text on."
+            )
+        }
+
+        buildable.setNegativeButton(
+            ctx.getString(R.string.not_now)
+        ) { dialogue : DialogInterface, _ : Int -> dialogue.dismiss() }
+        buildable.setCancelable(true)
+        val alert11 = buildable.create()
+        alert11.window !!.setBackgroundDrawableResource(R.drawable.dialog_bg)
+        alert11.show()
+        alert11.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
+                .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
+        alert11.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
+                .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
     }
 
     private fun callProfilePathSet() {
@@ -539,23 +649,23 @@ class UserProfileActivity : AppCompatActivity() {
                     }
                     if (photoFile != null) {
                         val photoURI =
-                            FileProvider.getUriForFile(
-                                ctx, BuildConfig.APPLICATION_ID + ".provider", photoFile
-                            )
+                                FileProvider.getUriForFile(
+                                    ctx, BuildConfig.APPLICATION_ID + ".provider", photoFile
+                                )
                         pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                         startActivityForResult(pictureIntent, CONTENT_REQUEST)
                     }
                 }
             } else if (options[item] == getString(R.string.chooseFromGallary)) {
                 val intent =
-                    Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                        Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                 startActivityForResult(intent, 2)
             } else if (options[item] == ctx.getString(R.string.cancel_small)) {
                 dialog.dismiss()
             }
         }
         val alert11 = builder.create()
-        alert11.window!!.setBackgroundDrawableResource(R.drawable.dialog_bg)
+        alert11.window !!.setBackgroundDrawableResource(R.drawable.dialog_bg)
         alert11.show()
     }
 
@@ -571,69 +681,6 @@ class UserProfileActivity : AppCompatActivity() {
         return image
     }
 
-    private fun callCamaraPermission() {
-        val building = AlertDialog.Builder(ctx)
-        building.setMessage(
-            """To camera allow ${
-                ctx.getString(
-                    R.string.app_name
-                )
-            } access to your camera. Tap Setting > permission, and turn Camera on."""
-        )
-        building.setCancelable(true)
-        building.setPositiveButton(
-            ctx.getString(R.string.Settings)
-        ) { dialogs : DialogInterface, _ : Int ->
-            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            val uri = Uri.fromParts("package", ctx.packageName, null)
-            intent.data = uri
-            startActivity(intent)
-            dialogs.dismiss()
-        }
-        building.setNegativeButton(
-            ctx.getString(R.string.not_now)
-        ) { dialogs : DialogInterface, _ : Int -> dialogs.dismiss() }
-        val alert11 = building.create()
-        alert11.window!!.setBackgroundDrawableResource(R.drawable.dialog_bg)
-        alert11.show()
-        alert11.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
-            .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
-        alert11.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
-            .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
-    }
-
-    private fun callReadPermission() {
-        val buildable = AlertDialog.Builder(ctx)
-        buildable.setMessage(
-            """To upload image allow ${
-                ctx.getString(
-                    R.string.app_name
-                )
-            } access to your device's files. 
-Tap Setting > permission, and turn "Files and media" on."""
-        )
-        buildable.setCancelable(true)
-        buildable.setPositiveButton(
-            ctx.getString(R.string.Settings)
-        ) { dialogs : DialogInterface, _ : Int ->
-            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            val uri = Uri.fromParts("package", ctx.packageName, null)
-            intent.data = uri
-            startActivity(intent)
-            dialogs.dismiss()
-        }
-        buildable.setNegativeButton(
-            ctx.getString(R.string.not_now)
-        ) { dialogue : DialogInterface, _ : Int -> dialogue.dismiss() }
-        val alert11 = buildable.create()
-        alert11.window!!.setBackgroundDrawableResource(R.drawable.dialog_bg)
-        alert11.show()
-        alert11.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
-            .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
-        alert11.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
-            .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
-    }
-
     @SuppressLint("SimpleDateFormat")
     @RequiresApi(api = Build.VERSION_CODES.N)
     fun setDate() {
@@ -641,7 +688,8 @@ Tap Setting > permission, and turn "Files and media" on."""
         mYear = c[Calendar.YEAR]
         mMonth = c[Calendar.MONTH]
         mDay = c[Calendar.DAY_OF_MONTH]
-        val datePickerDialog = DatePickerDialog(this, R.style.DialogTheme,
+        val datePickerDialog = DatePickerDialog(
+            this, R.style.DialogTheme,
             { view : DatePicker, year : Int, monthOfYear : Int, dayOfMonth : Int ->
                 view.minDate = System.currentTimeMillis() - 1000
                 val cal = Calendar.getInstance()
@@ -665,7 +713,8 @@ Tap Setting > permission, and turn "Files and media" on."""
                     binding.ltDob.isErrorEnabled = false
                     enableButton()
                 }
-            }, mYear, mMonth, mDay)
+            }, mYear, mMonth, mDay
+        )
         datePickerDialog.datePicker.maxDate = Calendar.getInstance().timeInMillis
         datePickerDialog.show()
     }
@@ -676,7 +725,7 @@ Tap Setting > permission, and turn "Files and media" on."""
         dob[year, month] = day
         var age = today[Calendar.YEAR] - dob[Calendar.YEAR]
         if (today[Calendar.DAY_OF_YEAR] < dob[Calendar.DAY_OF_YEAR]) {
-            age--
+            age --
         }
         return age
     }
