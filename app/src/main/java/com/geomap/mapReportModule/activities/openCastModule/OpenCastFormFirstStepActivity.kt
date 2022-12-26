@@ -70,6 +70,8 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
     private val permissionsStorage = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.MANAGE_EXTERNAL_STORAGE)
+    var geoSign = false
+    var clientsGeoSign = false
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -314,10 +316,12 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
 
 
         binding.btnGeologistSignPadClear.setOnClickListener {
+            geoSign = false
             binding.geologistSignPad.clear()
         }
 
         binding.btnGeologistClientSignPadClear.setOnClickListener {
+            clientsGeoSign = false
             binding.geologistClientSignPad.clear()
         }
 
@@ -327,6 +331,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             }
 
             override fun onSigned() {
+                geoSign = true
                 binding.btnGeologistSignPadClear.isEnabled = true
                 binding.btnGeologistSignPadClear.setTextColor(
                     ContextCompat.getColor(ctx, R.color.primary_theme))
@@ -335,6 +340,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             }
 
             override fun onClear() {
+                geoSign = false
                 binding.btnGeologistSignPadClear.isEnabled = false
                 binding.btnGeologistSignPadClear.setTextColor(
                     ContextCompat.getColor(ctx, R.color.primary_theme))
@@ -350,6 +356,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             }
 
             override fun onSigned() {
+                clientsGeoSign = true
                 binding.btnGeologistClientSignPadClear.isEnabled = true
                 binding.btnGeologistClientSignPadClear.setTextColor(
                     ContextCompat.getColor(ctx, R.color.primary_theme))
@@ -359,6 +366,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             }
 
             override fun onClear() {
+                clientsGeoSign = false
                 binding.btnGeologistClientSignPadClear.isEnabled = false
                 binding.btnGeologistClientSignPadClear.setTextColor(
                     ContextCompat.getColor(ctx, R.color.primary_theme))
@@ -380,6 +388,16 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             ""
         }
         val gson = Gson()
+        val geologistSignPad : Bitmap? = if(geoSign){
+            binding.geologistSignPad.signatureBitmap
+        }else{
+            null
+        }
+        val geologistClientSignPad: Bitmap? =  if(clientsGeoSign){
+              binding.geologistClientSignPad.signatureBitmap
+        }else{
+              null
+        }
         ocDataModel = OpenCastInsertModel(binding.etMinesSiteName.text.toString(),
             sheetNo, binding.tvOCDate.text.toString(),
             binding.etPitName.text.toString(), binding.etPitLocation.text.toString(),
@@ -398,8 +416,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             rockStrength, waterCondition,
             typeOfGeologicalStructures,
             typeOfFaults, shift, binding.etNotes.text.toString(),
-            binding.geologistSignPad.signatureBitmap,
-            binding.geologistClientSignPad.signatureBitmap)
+            geologistSignPad,geologistClientSignPad)
         val i = Intent(ctx, OpenCastFormSecondStepActivity::class.java)
         i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         i.putExtra("ocData", gson.toJson(ocDataModel))

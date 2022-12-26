@@ -116,17 +116,21 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         binding.drawing.isDrawingCacheEnabled = true
         val datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
 
-        val photoGeologistSign = File(getAlbumStorageDir(),
-            String.format(datetime + "geologistSign.jpg", System.currentTimeMillis()))
-        saveBitmapToJPG(ocDataModel.geologistSignBitMap!!, photoGeologistSign)
-        scanMediaFile(photoGeologistSign)
-        geologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photoGeologistSign)
+        if(ocDataModel.geologistSignBitMap != null) {
+            val photoGeologistSign = File(getAlbumStorageDir(),
+                String.format(datetime + "geologistSign.jpg", System.currentTimeMillis()))
+            saveBitmapToJPG(ocDataModel.geologistSignBitMap!!, photoGeologistSign)
+            scanMediaFile(photoGeologistSign)
+            geologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photoGeologistSign)
+        }
 
-        val photoClientsGeologistSign = File(getAlbumStorageDir(),
-            String.format(datetime + "clientsGeologistSign.jpg", System.currentTimeMillis()))
-        saveBitmapToJPG(ocDataModel.clientsGeologistSignBitMap!!, photoClientsGeologistSign)
-        scanMediaFile(photoClientsGeologistSign)
-        clientsGeologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photoClientsGeologistSign)
+        if(ocDataModel.clientsGeologistSignBitMap != null) {
+            val photoClientsGeologistSign = File(getAlbumStorageDir(),
+                String.format(datetime + "clientsGeologistSign.jpg", System.currentTimeMillis()))
+            saveBitmapToJPG(ocDataModel.clientsGeologistSignBitMap!!, photoClientsGeologistSign)
+            scanMediaFile(photoClientsGeologistSign)
+            clientsGeologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photoClientsGeologistSign)
+        }
 
         val bitmap = binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
         val photoImage = File(getAlbumStorageDir(),
