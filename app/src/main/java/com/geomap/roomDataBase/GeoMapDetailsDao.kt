@@ -14,8 +14,8 @@ interface GeoMapDetailsDao {
     fun insertUGReport(underGroundMappingReport: UnderGroundMappingReport?)
 
     @TypeConverters(Converters::class)
-    @Query("UPDATE undergroundmappingreport set name =:name,mapSerialNo =:mapSerialNo,ugDate =:ugDate,shift =:shift,mappedBy =:mappedBy,scale =:scale,location =:location,veinOrLoad =:veinOrLoad,xCordinate =:xCordinate,yCordinate =:yCordinate,zCordinate =:zCordinate,roofImage =:roofImage,faceImage =:faceImage,leftImage =:leftImage,rightImage =:rightImage,comment =:comment WHERE uid =:uid")
-    fun updateUGReport(name: String?, mapSerialNo: String?, ugDate: String?, shift: String?,
+    @Query("UPDATE undergroundmappingreport set name =:name,mapSerialNo =:mapSerialNo,ugDate =:ugDate,attributes =:attributes,shift =:shift,mappedBy =:mappedBy,scale =:scale,location =:location,veinOrLoad =:veinOrLoad,xCordinate =:xCordinate,yCordinate =:yCordinate,zCordinate =:zCordinate,roofImage =:roofImage,faceImage =:faceImage,leftImage =:leftImage,rightImage =:rightImage,comment =:comment WHERE uid =:uid")
+    fun updateUGReport(name: String?, mapSerialNo: String?, ugDate: String?, attributes: String?, shift: String?,
         mappedBy: String?, scale: String?, location: String?, veinOrLoad: String?,
         xCordinate: String?, yCordinate: String?, zCordinate: String?, roofImage: Bitmap?,
         faceImage: Bitmap?, leftImage: Bitmap?, rightImage: Bitmap?, comment: String?, uid: Int?)
