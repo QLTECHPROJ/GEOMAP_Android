@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -22,7 +21,6 @@ import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundDetailDraftBinding
 import com.geomap.databinding.AttributeLayoutBinding
 import com.geomap.mapReportModule.models.AttributeDataModel
-import com.geomap.roomDataBase.GeoMapDatabase
 import com.geomap.roomDataBase.UnderGroundMappingReport
 import com.geomap.utils.CONSTANTS
 import com.google.gson.Gson
@@ -68,42 +66,58 @@ class UnderGroundDetailDraftActivity : AppCompatActivity() {
             }
             if (ugReportData.leftImage != null) {
                 Glide.with(this).asBitmap().load(
-                    ugReportData.leftImage).into(object : CustomTarget<Bitmap?>() {
-                    override fun onResourceReady(resource: Bitmap,
-                        transition: Transition<in Bitmap?>?) {
+                    ugReportData.leftImage
+                ).into(object : CustomTarget<Bitmap?>() {
+                    override fun onResourceReady(
+                            resource : Bitmap,
+                            transition : Transition<in Bitmap?>?
+                    ) {
                         binding.leftImage.setImageBitmap(resource)
                     }
-                    override fun onLoadCleared(@Nullable placeholder: Drawable?) {}
+
+                    override fun onLoadCleared(placeholder : Drawable?) {}
                 })
             }
             if (ugReportData.rightImage != null) {
                 Glide.with(this).asBitmap().load(
-                    ugReportData.rightImage).into(object : CustomTarget<Bitmap?>() {
-                    override fun onResourceReady(resource: Bitmap,
-                        transition: Transition<in Bitmap?>?) {
+                    ugReportData.rightImage
+                ).into(object : CustomTarget<Bitmap?>() {
+                    override fun onResourceReady(
+                            resource : Bitmap,
+                            transition : Transition<in Bitmap?>?
+                    ) {
                         binding.rightImage.setImageBitmap(resource)
                     }
-                    override fun onLoadCleared(@Nullable placeholder: Drawable?) {}
+
+                    override fun onLoadCleared(placeholder : Drawable?) {}
                 })
             }
             if (ugReportData.roofImage != null) {
                 Glide.with(this).asBitmap().load(
-                    ugReportData.roofImage).into(object : CustomTarget<Bitmap?>() {
-                    override fun onResourceReady(resource: Bitmap,
-                        transition: Transition<in Bitmap?>?) {
+                    ugReportData.roofImage
+                ).into(object : CustomTarget<Bitmap?>() {
+                    override fun onResourceReady(
+                            resource : Bitmap,
+                            transition : Transition<in Bitmap?>?
+                    ) {
                         binding.roofImage.setImageBitmap(resource)
                     }
-                    override fun onLoadCleared(@Nullable placeholder: Drawable?) {}
+
+                    override fun onLoadCleared(placeholder : Drawable?) {}
                 })
             }
             if (ugReportData.faceImage != null) {
                 Glide.with(this).asBitmap().load(
-                    ugReportData.faceImage).into(object : CustomTarget<Bitmap?>() {
-                    override fun onResourceReady(resource: Bitmap,
-                        transition: Transition<in Bitmap?>?) {
+                    ugReportData.faceImage
+                ).into(object : CustomTarget<Bitmap?>() {
+                    override fun onResourceReady(
+                            resource : Bitmap,
+                            transition : Transition<in Bitmap?>?
+                    ) {
                         binding.faceImage.setImageBitmap(resource)
                     }
-                    override fun onLoadCleared(@Nullable placeholder: Drawable?) {}
+
+                    override fun onLoadCleared(placeholder : Drawable?) {}
                 })
             }
         }
@@ -115,23 +129,23 @@ class UnderGroundDetailDraftActivity : AppCompatActivity() {
         binding.llEdit.setOnClickListener {
             val i = Intent(act, UnderGroundFormFirstStepActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            i.putExtra("flag","detailDraft")
-            i.putExtra("data",gson.toJson(ugReportData))
+            i.putExtra("flag", "detailDraft")
+            i.putExtra("data", gson.toJson(ugReportData))
             act.startActivity(i)
         }
     }
 
     inner class AttributesListAdapter(
-        private val listModel : List<AttributeDataModel>
+            private val listModel : List<AttributeDataModel>
     ) : RecyclerView.Adapter<AttributesListAdapter.MyViewHolder>() {
 
         override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : MyViewHolder {
             val v : AttributeLayoutBinding =
-                DataBindingUtil.inflate(
-                    LayoutInflater.from(parent.context), R.layout.attribute_layout,
-                    parent,
-                    false
-                )
+                    DataBindingUtil.inflate(
+                        LayoutInflater.from(parent.context), R.layout.attribute_layout,
+                        parent,
+                        false
+                    )
             return MyViewHolder(v)
         }
 
@@ -143,7 +157,7 @@ class UnderGroundDetailDraftActivity : AppCompatActivity() {
             holder.binding.tvNos.text = listModel[position].nose
             holder.binding.tvProperties.text = listModel[position].properties
 
-            if ((listModel.size - position) <= 1){
+            if ((listModel.size - position) <= 1) {
                 holder.binding.viewLine.visibility = View.GONE
             }
         }

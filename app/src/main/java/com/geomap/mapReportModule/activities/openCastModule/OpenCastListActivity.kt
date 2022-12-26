@@ -60,7 +60,7 @@ class OpenCastListActivity : AppCompatActivity() {
             viewModel = ViewModelProvider(this, UserModelFactory(
                 UserRepository(retrofitService)))[AllViewModel::class.java]
             viewModel.getORViewAllListing(userId.toString())
-            viewModel.getORViewAllListing.observe(this) { it ->
+            viewModel.getORViewAllListing.observe(this) {
                 hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                 when {
                     it?.responseCode == getString(R.string.ResponseCodesuccess) -> {

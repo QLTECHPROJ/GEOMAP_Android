@@ -146,6 +146,7 @@
     <string name="bench_height_amp_width_m_">Bench height &amp; width (m)</string>
     <string name="sample_collected">Sample collected</string>
     <string name="notes">Notes</string>
+    <string name="notes_">Notes:</string>
     <string name="geologist_sign">Geologist Sign</string>
     <string name="client_s_geologist_sign">Client’s Geologist Sign</string>
     <string name="night_shift">Night shift</string>

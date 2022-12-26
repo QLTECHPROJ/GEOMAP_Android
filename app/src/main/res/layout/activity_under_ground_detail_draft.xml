@@ -163,6 +163,15 @@
                             android:text="@{Converter.format(ugDetail.ZCordinate)}" />
 
                         <TextView
+                            style="@style/title"
+                            android:text="@string/comment" />
+
+                        <TextView
+                            android:id="@+id/tvComment"
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ugDetail.comment)}" />
+
+                        <TextView
                             android:id="@+id/tvAttributes"
                             style="@style/title"
                             android:text="@string/attributes" />
@@ -185,7 +194,8 @@
                     android:layout_height="@dimen/_185sdp"
                     android:layout_marginHorizontal="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_14sdp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    tools:ignore="DisableBaselineAlignment">
 
                     <LinearLayout
                         android:layout_width="@dimen/_0sdp"
@@ -266,7 +276,8 @@
                     android:layout_marginHorizontal="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_14sdp"
                     android:layout_marginBottom="@dimen/_31sdp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    tools:ignore="DisableBaselineAlignment">
 
                     <LinearLayout
                         android:layout_width="@dimen/_0sdp"

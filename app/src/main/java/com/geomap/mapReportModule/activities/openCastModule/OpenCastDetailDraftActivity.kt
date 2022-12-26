@@ -7,7 +7,6 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.Nullable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
@@ -26,7 +25,7 @@ class OpenCastDetailDraftActivity : AppCompatActivity() {
     private lateinit var act : Activity
     private var userId : String? = null
     private var report : String? = null
-    var ocReportData = OpenCastMappingReport()
+    private var ocReportData = OpenCastMappingReport()
     val gson = Gson()
 
     override fun onCreate(savedInstanceState : Bundle?) {
@@ -47,39 +46,48 @@ class OpenCastDetailDraftActivity : AppCompatActivity() {
 
             if (ocReportData.geologistSign != null) {
                 Glide.with(this).asBitmap().load(
-                    ocReportData.geologistSign).into(object : CustomTarget<Bitmap?>() {
-                    override fun onResourceReady(resource: Bitmap,
-                        transition: Transition<in Bitmap?>?) {
+                    ocReportData.geologistSign
+                ).into(object : CustomTarget<Bitmap?>() {
+                    override fun onResourceReady(
+                            resource : Bitmap,
+                            transition : Transition<in Bitmap?>?
+                    ) {
                         binding.imgGeologistSign.setImageBitmap(resource)
                     }
 
-                    override fun onLoadCleared(@Nullable placeholder: Drawable?) {}
+                    override fun onLoadCleared(placeholder : Drawable?) {}
 
                 })
             }
 
             if (ocReportData.clientsGeologistSign != null) {
                 Glide.with(this).asBitmap().load(
-                    ocReportData.clientsGeologistSign).into(object : CustomTarget<Bitmap?>() {
-                    override fun onResourceReady(resource: Bitmap,
-                        transition: Transition<in Bitmap?>?) {
+                    ocReportData.clientsGeologistSign
+                ).into(object : CustomTarget<Bitmap?>() {
+                    override fun onResourceReady(
+                            resource : Bitmap,
+                            transition : Transition<in Bitmap?>?
+                    ) {
                         binding.imgClientGeologistSign.setImageBitmap(resource)
                     }
 
-                    override fun onLoadCleared(@Nullable placeholder: Drawable?) {}
+                    override fun onLoadCleared(placeholder : Drawable?) {}
 
                 })
             }
 
             if (ocReportData.image != null) {
                 Glide.with(this).asBitmap().load(
-                    ocReportData.image).into(object : CustomTarget<Bitmap?>() {
-                    override fun onResourceReady(resource: Bitmap,
-                        transition: Transition<in Bitmap?>?) {
+                    ocReportData.image
+                ).into(object : CustomTarget<Bitmap?>() {
+                    override fun onResourceReady(
+                            resource : Bitmap,
+                            transition : Transition<in Bitmap?>?
+                    ) {
                         binding.image.setImageBitmap(resource)
                     }
 
-                    override fun onLoadCleared(@Nullable placeholder: Drawable?) {}
+                    override fun onLoadCleared(placeholder : Drawable?) {}
 
                 })
             }
@@ -91,8 +99,8 @@ class OpenCastDetailDraftActivity : AppCompatActivity() {
         binding.llEdit.setOnClickListener {
             val i = Intent(act, OpenCastFormFirstStepActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            i.putExtra("flag","detailDraft")
-            i.putExtra("data",gson.toJson(ocReportData))
+            i.putExtra("flag", "detailDraft")
+            i.putExtra("data", gson.toJson(ocReportData))
             act.startActivity(i)
         }
     }

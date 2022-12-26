@@ -24,7 +24,6 @@ import com.geomap.mapReportModule.models.UnderGroundDetailsModel
 import com.geomap.mvvm.AllViewModel
 import com.geomap.mvvm.UserModelFactory
 import com.geomap.mvvm.UserRepository
-import com.geomap.roomDataBase.UnderGroundMappingReport
 import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
 import com.google.gson.Gson
@@ -62,8 +61,8 @@ class UnderGroundDetailActivity : AppCompatActivity() {
         binding.llEdit.setOnClickListener {
             val i = Intent(act, UnderGroundFormFirstStepActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            i.putExtra("flag","detail")
-            i.putExtra("data",gson.toJson(model))
+            i.putExtra("flag", "detail")
+            i.putExtra("data", gson.toJson(model))
             act.startActivity(i)
         }
 
@@ -81,8 +80,11 @@ class UnderGroundDetailActivity : AppCompatActivity() {
     fun postData() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            viewModel = ViewModelProvider(this, UserModelFactory(
-                UserRepository(retrofitService)))[AllViewModel::class.java]
+            viewModel = ViewModelProvider(
+                this, UserModelFactory(
+                    UserRepository(retrofitService)
+                )
+            )[AllViewModel::class.java]
             viewModel.getUnderGroundDetails(mapSerialNo.toString())
             viewModel.getUnderGroundDetails.observe(this) { it ->
                 hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
@@ -92,8 +94,10 @@ class UnderGroundDetailActivity : AppCompatActivity() {
                         binding.llMainLayout.visibility = View.VISIBLE
                         binding.btnViewPdf.visibility = View.VISIBLE
                         val ugDetail =
-                            UnderGroundDetailsModel(it.ResponseCode, it.ResponseData,
-                                it.ResponseMessage, it.ResponseStatus)
+                                UnderGroundDetailsModel(
+                                    it.ResponseCode, it.ResponseData,
+                                    it.ResponseMessage, it.ResponseStatus
+                                )
                         binding.ugDetail = ugDetail
                         it.ResponseData.let {
                             if (it.attribute.isEmpty()) {
@@ -103,19 +107,20 @@ class UnderGroundDetailActivity : AppCompatActivity() {
                                 binding.tvAttributes.visibility = View.VISIBLE
                                 binding.rvAttributesList.visibility = View.VISIBLE
                                 attributesListAdapter =
-                                    AttributesListAdapter(
-                                        it.attribute)
+                                        AttributesListAdapter(
+                                            it.attribute
+                                        )
                                 binding.rvAttributesList.adapter = attributesListAdapter
                             }
 
                             Glide.with(ctx).load(it.roofImage)
-                                .thumbnail(0.10f).into(binding.roofImage)
+                                    .thumbnail(0.10f).into(binding.roofImage)
                             Glide.with(ctx).load(it.leftImage)
-                                .thumbnail(0.10f).into(binding.leftImage)
+                                    .thumbnail(0.10f).into(binding.leftImage)
                             Glide.with(ctx).load(it.rightImage)
-                                .thumbnail(0.10f).into(binding.rightImage)
+                                    .thumbnail(0.10f).into(binding.rightImage)
                             Glide.with(ctx).load(it.faceImage)
-                                .thumbnail(0.10f).into(binding.faceImage)
+                                    .thumbnail(0.10f).into(binding.faceImage)
                         }
                     }
                     it.ResponseCode == act.getString(R.string.ResponseCodefail) -> {
@@ -132,16 +137,16 @@ class UnderGroundDetailActivity : AppCompatActivity() {
     }
 
     inner class AttributesListAdapter(
-        private val listModel : List<Attribute>
+            private val listModel : List<Attribute>
     ) : RecyclerView.Adapter<AttributesListAdapter.MyViewHolder>() {
 
         override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : MyViewHolder {
             val v : AttributeLayoutBinding =
-                DataBindingUtil.inflate(
-                    LayoutInflater.from(parent.context), R.layout.attribute_layout,
-                    parent,
-                    false
-                )
+                    DataBindingUtil.inflate(
+                        LayoutInflater.from(parent.context), R.layout.attribute_layout,
+                        parent,
+                        false
+                    )
             return MyViewHolder(v)
         }
 
@@ -154,7 +159,7 @@ class UnderGroundDetailActivity : AppCompatActivity() {
             holder.binding.tvNos.text = listModel[position].nose
             holder.binding.tvProperties.text = listModel[position].properties
 
-            if ((listModel.size - position) <= 1){
+            if ((listModel.size - position) <= 1) {
                 holder.binding.viewLine.visibility = View.GONE
             }
         }
