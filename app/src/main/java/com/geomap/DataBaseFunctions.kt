@@ -32,7 +32,7 @@ class DataBaseFunctions {
         fun updateUGReport(obj: UnderGroundMappingReport, ctx: Context) {
             DB = getDataBase(ctx)
             GeoMapDatabase.databaseWriteExecutor.execute {
-                DB!!.taskDao().updateUGReport(obj.name, obj.mapSerialNo, obj.ugDate, obj.shift,
+                DB!!.taskDao().updateUGReport(obj.name, obj.mapSerialNo, obj.ugDate, obj.attributes, obj.shift,
                     obj.mappedBy, obj.scale, obj.location, obj.veinOrLoad, obj.xCordinate,
                     obj.yCordinate, obj.zCordinate, obj.roofImage, obj.faceImage, obj.leftImage,
                     obj.rightImage, obj.comment, obj.uid)
