@@ -73,22 +73,24 @@ class OpenCastListDraftActivity : AppCompatActivity() {
 
             openCastListAdapter = OpenCastListAdapter(list)
             binding.rvOpenCastList.adapter = openCastListAdapter
-            Log.e("List OpenCastMappingReport",
-                "true" + DataBaseFunctions.gson.toJson(list).toString())
+            Log.e(
+                "List OpenCastMappingReport",
+                "true" + DataBaseFunctions.gson.toJson(list).toString()
+            )
         }
     }
 
     inner class OpenCastListAdapter(
-        private val listModel : ArrayList<OpenCastMappingReport>
+            private val listModel : ArrayList<OpenCastMappingReport>
     ) : RecyclerView.Adapter<OpenCastListAdapter.MyViewHolder>() {
 
         override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : MyViewHolder {
             val v : MappingReportListLayoutBinding =
-                DataBindingUtil.inflate(
-                    LayoutInflater.from(parent.context), R.layout.mapping_report_list_layout,
-                    parent,
-                    false
-                )
+                    DataBindingUtil.inflate(
+                        LayoutInflater.from(parent.context), R.layout.mapping_report_list_layout,
+                        parent,
+                        false
+                    )
             return MyViewHolder(v)
         }
 
@@ -104,11 +106,15 @@ class OpenCastListDraftActivity : AppCompatActivity() {
                 Html.fromHtml(
                     "Mines site name : <font color='black'>${
                         Converter.format(listModel[position].minesSiteName)
-                    }</font>"),
-                TextView.BufferType.SPANNABLE)
+                    }</font>"
+                ),
+                TextView.BufferType.SPANNABLE
+            )
             holder.binding.llMainLayout.setOnClickListener {
-                callOpenCastDetailDraftActivity(act, "1",
-                    gson.toJson(listModel[position]).toString())
+                callOpenCastDetailDraftActivity(
+                    act, "1",
+                    gson.toJson(listModel[position]).toString()
+                )
             }
         }
 

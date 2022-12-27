@@ -57,8 +57,11 @@ class UnderGroundListActivity : AppCompatActivity() {
     fun postData() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            viewModel = ViewModelProvider(this, UserModelFactory(
-                UserRepository(retrofitService)))[AllViewModel::class.java]
+            viewModel = ViewModelProvider(
+                this, UserModelFactory(
+                    UserRepository(retrofitService)
+                )
+            )[AllViewModel::class.java]
             viewModel.getURViewAllListing(userId.toString())
             viewModel.getURViewAllListing.observe(this) {
                 hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
@@ -73,7 +76,8 @@ class UnderGroundListActivity : AppCompatActivity() {
 
                         }
                         underGroundListAdapter = UnderGroundListAdapter(
-                            it.responseData!!)
+                            it.responseData!!
+                        )
                         binding.rvUnderGroundList.adapter = underGroundListAdapter
                     }
                     it.responseCode == act.getString(R.string.ResponseCodefail) -> {
@@ -92,16 +96,16 @@ class UnderGroundListActivity : AppCompatActivity() {
     }
 
     inner class UnderGroundListAdapter(
-        private val listModel : List<DashboardViewAllModel.ResponseData>
+            private val listModel : List<DashboardViewAllModel.ResponseData>
     ) : RecyclerView.Adapter<UnderGroundListAdapter.MyViewHolder>() {
 
         override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : MyViewHolder {
             val v : MappingReportListLayoutBinding =
-                DataBindingUtil.inflate(
-                    LayoutInflater.from(parent.context), R.layout.mapping_report_list_layout,
-                    parent,
-                    false
-                )
+                    DataBindingUtil.inflate(
+                        LayoutInflater.from(parent.context), R.layout.mapping_report_list_layout,
+                        parent,
+                        false
+                    )
             return MyViewHolder(v)
         }
 
@@ -118,13 +122,18 @@ class UnderGroundListActivity : AppCompatActivity() {
                 Html.fromHtml(
                     "Mapped By : <font color='black'>${
                         Converter.format(listModel[position].mappedBy)
-                    }</font>"),
-                TextView.BufferType.SPANNABLE)
-            holder.binding.tvSubTitleTwo.setText(Html.fromHtml(
-                "Map serial no : <font color='black'>${
-                    Converter.format(listModel[position].mapSerialNo)
-                }</font>"),
-                TextView.BufferType.SPANNABLE)
+                    }</font>"
+                ),
+                TextView.BufferType.SPANNABLE
+            )
+            holder.binding.tvSubTitleTwo.setText(
+                Html.fromHtml(
+                    "Map serial no : <font color='black'>${
+                        Converter.format(listModel[position].mapSerialNo)
+                    }</font>"
+                ),
+                TextView.BufferType.SPANNABLE
+            )
             holder.binding.llMainLayout.setOnClickListener {
                 callUnderGroundDetailActivity(act, "1", listModel[position].mapSerialNo)
             }

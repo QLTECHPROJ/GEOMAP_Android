@@ -56,10 +56,13 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
     private var ocDataModel = OpenCastInsertModel()
     private var userId : String? = null
     private var sign : TypedFile? = null
+    private var isImageFilled = false
     private val requestExternalStorage = 1
-    private val permissionsStorage = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+    private val permissionsStorage = arrayOf(
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.MANAGE_EXTERNAL_STORAGE)
+        Manifest.permission.MANAGE_EXTERNAL_STORAGE
+    )
     private lateinit var currPaint : ImageButton
 
     override fun onCreate(savedInstanceState : Bundle?) {
@@ -113,31 +116,21 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
     }
 
     private fun postOpenCastInsert() {
+        isImageFilled = binding.drawing.isFilled
         binding.drawing.isDrawingCacheEnabled = true
-        val datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
 
-        if(ocDataModel.geologistSignBitMap != null) {
-            val photoGeologistSign = File(getAlbumStorageDir(),
-                String.format(datetime + "geologistSign.jpg", System.currentTimeMillis()))
-            saveBitmapToJPG(ocDataModel.geologistSignBitMap!!, photoGeologistSign)
-            scanMediaFile(photoGeologistSign)
-            geologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photoGeologistSign)
+        if (ocDataModel.geologistSignBitMap != null) {
+            geologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, saveBitmapToJPG("geologistSign", ocDataModel.geologistSignBitMap!!))
         }
 
-        if(ocDataModel.clientsGeologistSignBitMap != null) {
-            val photoClientsGeologistSign = File(getAlbumStorageDir(),
-                String.format(datetime + "clientsGeologistSign.jpg", System.currentTimeMillis()))
-            saveBitmapToJPG(ocDataModel.clientsGeologistSignBitMap!!, photoClientsGeologistSign)
-            scanMediaFile(photoClientsGeologistSign)
-            clientsGeologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photoClientsGeologistSign)
+        if (ocDataModel.clientsGeologistSignBitMap != null) {
+            clientsGeologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, saveBitmapToJPG("clientsGeologistSign", ocDataModel.clientsGeologistSignBitMap!!))
         }
 
-        val bitmap = binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
-        val photoImage = File(getAlbumStorageDir(),
-            String.format(datetime + "Image.jpg", System.currentTimeMillis()))
-        saveBitmapToJPG(bitmap, photoImage)
-        scanMediaFile(photoImage)
-        sign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photoImage)
+        if (isImageFilled) {
+            sign = TypedFile(CONSTANTS.MULTIPART_FORMAT, saveBitmapToJPG("Image", binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)))
+        }
+
         Log.e("flagOC", flagOC)
         if (isNetworkConnected(ctx)) {
             if (flagOC == "0" || flagOC == "1") {
@@ -155,8 +148,10 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                     ocDataModel.typeOfFaults, ocDataModel.notes, ocDataModel.shift,
                     ocDataModel.ocDate, ocDataModel.dipDirectionAngle, sign, geologistSign,
                     clientsGeologistSign, object : retrofit.Callback<SuccessModel> {
-                        override fun success(model : SuccessModel,
-                            response : retrofit.client.Response) {
+                        override fun success(
+                                model : SuccessModel,
+                                response : retrofit.client.Response
+                        ) {
                             if (model.ResponseCode == ctx.getString(R.string.ResponseCodesuccess)) {
                                 hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                                 when (model.ResponseCode) {
@@ -251,43 +246,48 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         finishAffinity()
     }
 
-    override fun onRequestPermissionsResult(requestCode : Int,
-        permissions : Array<String?>, grantResults : IntArray) {
+    override fun onRequestPermissionsResult(
+            requestCode : Int,
+            permissions : Array<String?>, grantResults : IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             requestExternalStorage -> {
                 if (grantResults.isEmpty()
-                    || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    || grantResults[0] != PackageManager.PERMISSION_GRANTED
+                ) {
                     Log.e("onRequestPermissionsResult", "Cannot write images to external storage")
                 }
             }
         }
     }
 
-    private fun scanMediaFile(photo : File) {
-        val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-        val contentUri = Uri.fromFile(photo)
-        mediaScanIntent.data = contentUri
-        ctx.sendBroadcast(mediaScanIntent)
-    }
+    @Throws(IOException::class) fun saveBitmapToJPG(name : String, bitmap : Bitmap) : File {
+        val datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val file = File(
+            Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES
+            ), "Pictures"
+        )
+        val imageFile = File(
+            file,
+            String.format("$name$datetime.jpg", System.currentTimeMillis())
+        )
 
-    private fun getAlbumStorageDir() : File {
-        val file = File(Environment.getExternalStoragePublicDirectory(
-            Environment.DIRECTORY_PICTURES), "Pictures")
-        if (!file.mkdirs()) {
-            Log.e("SignaturePad", "Directory not created")
-        }
-        return file
-    }
-
-    @Throws(IOException::class) fun saveBitmapToJPG(bitmap : Bitmap, photo : File?) {
         val newBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(newBitmap)
         canvas.drawColor(Color.WHITE)
         canvas.drawBitmap(bitmap, 0f, 0f, null)
-        val stream : OutputStream = FileOutputStream(photo)
+        val stream : OutputStream = FileOutputStream(imageFile)
         newBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
         stream.close()
+
+        val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+        val contentUri = Uri.fromFile(imageFile)
+        mediaScanIntent.data = contentUri
+        sendBroadcast(mediaScanIntent)
+
+        return imageFile
     }
 
     private fun verifyStoragePermissions() {
@@ -319,17 +319,20 @@ Tap Setting > permission, and turn "Files and media" on."""
                 alert11.window!!.setBackgroundDrawableResource(R.drawable.dialog_bg)
                 alert11.show()
                 alert11.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
-                    .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
+                        .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
                 alert11.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
-                    .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
+                        .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
             }
         } else {
-            if (ActivityCompat.checkSelfPermission(ctx,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+            if (ActivityCompat.checkSelfPermission(
+                    ctx,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                     ctx, Manifest.permission.READ_EXTERNAL_STORAGE
                 ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                     ctx, Manifest.permission.MANAGE_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED) {
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 ActivityCompat.requestPermissions(
                     act,
                     permissionsStorage,

@@ -15,12 +15,8 @@ import com.geomap.databinding.ActivityContactUsBinding
 import com.geomap.mvvm.AllViewModel
 import com.geomap.mvvm.UserModelFactory
 import com.geomap.mvvm.UserRepository
-import com.geomap.userModule.models.ContactUsModel
 import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class ContactUsActivity : AppCompatActivity() {
     lateinit var binding : ActivityContactUsBinding
@@ -106,21 +102,27 @@ class ContactUsActivity : AppCompatActivity() {
 
     private fun String.isEmailValid() : Boolean {
         return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this)
-            .matches()
+                .matches()
     }
 
     private fun postContactUs() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            viewModel = ViewModelProvider(this, UserModelFactory(
-                UserRepository(retrofitService)))[AllViewModel::class.java]
+            viewModel = ViewModelProvider(
+                this, UserModelFactory(
+                    UserRepository(retrofitService)
+                )
+            )[AllViewModel::class.java]
             viewModel.postContactUs(
                 userId!!, binding.etName.text.toString(), binding.etMobileNo.text.toString(),
                 binding.etEmail.text.toString(), binding.etSubject.text.toString(),
-                binding.etMessage.text.toString())
+                binding.etMessage.text.toString()
+            )
             viewModel.postContactUs.observe(this) {
-                hideProgressBar(binding.progressBar,
-                    binding.progressBarHolder, act)
+                hideProgressBar(
+                    binding.progressBar,
+                    binding.progressBarHolder, act
+                )
                 when {
                     it?.responseCode == getString(R.string.ResponseCodesuccess) -> {
                         showToast(it.responseMessage, act)

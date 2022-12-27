@@ -69,11 +69,11 @@ class SignInActivity : AppCompatActivity() {
             if (password!!.isNotEmpty()) {
                 binding.ivLock.setImageResource(R.drawable.ic_password_filled_icon)
                 binding.ltPassword.endIconDrawable =
-                    ContextCompat.getDrawable(ctx, R.drawable.visibility_state_color)
+                        ContextCompat.getDrawable(ctx, R.drawable.visibility_state_color)
             } else {
                 binding.ivLock.setImageResource(R.drawable.ic_password_unfilled_icon)
                 binding.ltPassword.endIconDrawable =
-                    ContextCompat.getDrawable(ctx, R.drawable.visibility_state)
+                        ContextCompat.getDrawable(ctx, R.drawable.visibility_state)
             }
         }
 
@@ -96,9 +96,12 @@ class SignInActivity : AppCompatActivity() {
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
                 dialog.setContentView(R.layout.forgot_layout)
                 dialog.window?.setBackgroundDrawable(
-                    ColorDrawable(Color.TRANSPARENT))
-                dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT)
+                    ColorDrawable(Color.TRANSPARENT)
+                )
+                dialog.window?.setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
                 val tvTitle = dialog.findViewById<TextView>(R.id.tvTitle)
                 val etEmail = dialog.findViewById<TextInputEditText>(R.id.etEmail)
                 val ltEmail = dialog.findViewById<TextInputLayout>(R.id.ltEmail)
@@ -106,7 +109,7 @@ class SignInActivity : AppCompatActivity() {
                 val btn = dialog.findViewById<Button>(R.id.Btn)
                 val progressBar = dialog.findViewById<ProgressBar>(R.id.progressBar)
                 val progressBarHolder =
-                    dialog.findViewById<FrameLayout>(R.id.progressBarHolder)
+                        dialog.findViewById<FrameLayout>(R.id.progressBarHolder)
                 tvTitle.text = getString(R.string.forgot_password)
                 dialog.setOnKeyListener { _ : DialogInterface?, keyCode : Int, _ : KeyEvent? ->
                     if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -117,12 +120,16 @@ class SignInActivity : AppCompatActivity() {
                 }
 
                 val userTextWatcher : TextWatcher = object : TextWatcher {
-                    override fun beforeTextChanged(s : CharSequence, start : Int, count : Int,
-                        after : Int) {
+                    override fun beforeTextChanged(
+                            s : CharSequence, start : Int, count : Int,
+                            after : Int
+                    ) {
                     }
 
-                    override fun onTextChanged(s : CharSequence, start : Int, before : Int,
-                        count : Int) {
+                    override fun onTextChanged(
+                            s : CharSequence, start : Int, before : Int,
+                            count : Int
+                    ) {
                         val email = etEmail.text.toString()
                         if (email == "") {
                             allDisable(btn)
@@ -170,7 +177,7 @@ class SignInActivity : AppCompatActivity() {
 
     private fun String.isEmailValid() : Boolean {
         return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this)
-            .matches()
+                .matches()
     }
 
     private fun isValidPassword(password : String) : Boolean {
@@ -195,12 +202,17 @@ class SignInActivity : AppCompatActivity() {
     private fun postForgotPassword(etEmail : TextInputEditText, dialog : Dialog) {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            viewModel = ViewModelProvider(this, UserModelFactory(
-                UserRepository(retrofitService)))[AllViewModel::class.java]
+            viewModel = ViewModelProvider(
+                this, UserModelFactory(
+                    UserRepository(retrofitService)
+                )
+            )[AllViewModel::class.java]
             viewModel.postForgotPassword(etEmail.text.toString())
             viewModel.postForgotPassword.observe(this) {
-                hideProgressBar(binding.progressBar,
-                    binding.progressBarHolder, act)
+                hideProgressBar(
+                    binding.progressBar,
+                    binding.progressBarHolder, act
+                )
                 when {
                     it?.ResponseCode == getString(R.string.ResponseCodesuccess) -> {
                         dialog.dismiss()
@@ -234,7 +246,7 @@ class SignInActivity : AppCompatActivity() {
                 Log.e("newToken", token!!)
                 fcmId = token
                 val editor = getContext()
-                    .getSharedPreferences(CONSTANTS.FCMToken, MODE_PRIVATE).edit()
+                        .getSharedPreferences(CONSTANTS.FCMToken, MODE_PRIVATE).edit()
                 editor.putString(CONSTANTS.Token, token) //Friend
                 editor.apply()
                 postLoginData()
@@ -248,13 +260,18 @@ class SignInActivity : AppCompatActivity() {
         if (isNetworkConnected(ctx)) {
             binding.ltPassword.isErrorEnabled = false
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            viewModel = ViewModelProvider(this, UserModelFactory(
-                UserRepository(retrofitService)))[AllViewModel::class.java]
-            viewModel.postLoginData(binding.etName.text.toString(),
+            viewModel = ViewModelProvider(
+                this, UserModelFactory(
+                    UserRepository(retrofitService)
+                )
+            )[AllViewModel::class.java]
+            viewModel.postLoginData(
+                binding.etName.text.toString(),
                 binding.etPassword.text.toString(),
                 fcmId,
                 Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID),
-                CONSTANTS.FLAG_ONE)
+                CONSTANTS.FLAG_ONE
+            )
             viewModel.postLoginData.observe(this) {
                 hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                 when {

@@ -6,7 +6,9 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.webkit.*
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -65,9 +67,11 @@ class PdfViewActivity : AppCompatActivity() {
             binding.swipeRefreshLayout.isRefreshing = false
         }
         binding.llDownload.setOnClickListener {
-            downloadTask(downloadUrl, "GEO_MAP_${
-                SimpleDateFormat("ddMMyyyy_HHmmss", Locale.getDefault()).format(Date())
-            }")
+            downloadTask(
+                downloadUrl, "GEO_MAP_${
+                    SimpleDateFormat("ddMMyyyy_HHmmss", Locale.getDefault()).format(Date())
+                }"
+            )
         }
     }
 
@@ -90,19 +94,25 @@ class PdfViewActivity : AppCompatActivity() {
         req.setMimeType("application/pdf")
         req.allowScanningByMediaScanner()
         req.setAllowedNetworkTypes(
-            DownloadManager.Request.NETWORK_MOBILE or DownloadManager.Request.NETWORK_WIFI)
+            DownloadManager.Request.NETWORK_MOBILE or DownloadManager.Request.NETWORK_WIFI
+        )
         manager.enqueue(req)
     }
 
     fun postData() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            viewModel = ViewModelProvider(this, UserModelFactory(
-                UserRepository(retrofitService)))[AllViewModel::class.java]
+            viewModel = ViewModelProvider(
+                this, UserModelFactory(
+                    UserRepository(retrofitService)
+                )
+            )[AllViewModel::class.java]
             viewModel.getPdfView(userId.toString(), id.toString(), reportType.toString())
             viewModel.getPdfView.observe(this) {
-                hideProgressBar(binding.progressBar, binding.progressBarHolder,
-                    act)
+                hideProgressBar(
+                    binding.progressBar, binding.progressBarHolder,
+                    act
+                )
                 when {
                     it?.ResponseCode == getString(R.string.ResponseCodesuccess) -> {
                         downloadUrl = it.ResponseData.pdfLink

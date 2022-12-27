@@ -65,60 +65,72 @@ class UnderGroundDetailDraftActivity : AppCompatActivity() {
                 binding.rvAttributesList.adapter = attributesListAdapter
             }
             if (ugReportData.leftImage != null) {
-                Glide.with(this).asBitmap().load(
-                    ugReportData.leftImage
-                ).into(object : CustomTarget<Bitmap?>() {
-                    override fun onResourceReady(
-                            resource : Bitmap,
-                            transition : Transition<in Bitmap?>?
-                    ) {
-                        binding.leftImage.setImageBitmap(resource)
-                    }
+                try {
+                    Glide.with(ctx).asBitmap().load(
+                        ugReportData.leftImage
+                    ).into(object : CustomTarget<Bitmap?>() {
+                        override fun onResourceReady(
+                                resource : Bitmap,
+                                transition : Transition<in Bitmap?>?
+                        ) {
+                            binding.leftImage.setImageBitmap(resource)
+                        }
 
-                    override fun onLoadCleared(placeholder : Drawable?) {}
-                })
+                        override fun onLoadCleared(placeholder : Drawable?) {}
+                    })
+                } catch (_ : Exception) {
+                }
             }
             if (ugReportData.rightImage != null) {
-                Glide.with(this).asBitmap().load(
-                    ugReportData.rightImage
-                ).into(object : CustomTarget<Bitmap?>() {
-                    override fun onResourceReady(
-                            resource : Bitmap,
-                            transition : Transition<in Bitmap?>?
-                    ) {
-                        binding.rightImage.setImageBitmap(resource)
-                    }
+                try {
+                    Glide.with(ctx).asBitmap().load(
+                        ugReportData.rightImage
+                    ).into(object : CustomTarget<Bitmap?>() {
+                        override fun onResourceReady(
+                                resource : Bitmap,
+                                transition : Transition<in Bitmap?>?
+                        ) {
+                            binding.rightImage.setImageBitmap(resource)
+                        }
 
-                    override fun onLoadCleared(placeholder : Drawable?) {}
-                })
+                        override fun onLoadCleared(placeholder : Drawable?) {}
+                    })
+                } catch (_ : Exception) {
+                }
             }
             if (ugReportData.roofImage != null) {
-                Glide.with(this).asBitmap().load(
-                    ugReportData.roofImage
-                ).into(object : CustomTarget<Bitmap?>() {
-                    override fun onResourceReady(
-                            resource : Bitmap,
-                            transition : Transition<in Bitmap?>?
-                    ) {
-                        binding.roofImage.setImageBitmap(resource)
-                    }
+                try {
+                    Glide.with(ctx).asBitmap().load(
+                        ugReportData.roofImage
+                    ).into(object : CustomTarget<Bitmap?>() {
+                        override fun onResourceReady(
+                                resource : Bitmap,
+                                transition : Transition<in Bitmap?>?
+                        ) {
+                            binding.roofImage.setImageBitmap(resource)
+                        }
 
-                    override fun onLoadCleared(placeholder : Drawable?) {}
-                })
+                        override fun onLoadCleared(placeholder : Drawable?) {}
+                    })
+                } catch (_ : Exception) {
+                }
             }
             if (ugReportData.faceImage != null) {
-                Glide.with(this).asBitmap().load(
-                    ugReportData.faceImage
-                ).into(object : CustomTarget<Bitmap?>() {
-                    override fun onResourceReady(
-                            resource : Bitmap,
-                            transition : Transition<in Bitmap?>?
-                    ) {
-                        binding.faceImage.setImageBitmap(resource)
-                    }
+                try {
+                    Glide.with(ctx).asBitmap().load(
+                        ugReportData.faceImage
+                    ).into(object : CustomTarget<Bitmap?>() {
+                        override fun onResourceReady(
+                                resource : Bitmap,
+                                transition : Transition<in Bitmap?>?
+                        ) {
+                            binding.faceImage.setImageBitmap(resource)
+                        }
 
-                    override fun onLoadCleared(placeholder : Drawable?) {}
-                })
+                        override fun onLoadCleared(placeholder : Drawable?) {}
+                    })
+                } catch (_ : Exception) {
+                }
             }
         }
 

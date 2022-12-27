@@ -55,10 +55,10 @@ class UnderGroundListDraftActivity : AppCompatActivity() {
     private fun postData() {
         DB = getDataBase(ctx)
         DB.taskDao().geAllUnderGroundMappingReport1(userId)
-            .observe(ctx as LifecycleOwner) { lists ->
-                list = lists as java.util.ArrayList<UnderGroundMappingReport>
-                callAdapter(list)
-            }
+                .observe(ctx as LifecycleOwner) { lists ->
+                    list = lists as java.util.ArrayList<UnderGroundMappingReport>
+                    callAdapter(list)
+                }
 /*        try {
             GeoMapDatabase.databaseWriteExecutor3.execute {
                 list = DB.taskDao().geAllUnderGroundMappingReport() as java.util.ArrayList<UnderGroundMappingReport>
@@ -84,22 +84,27 @@ class UnderGroundListDraftActivity : AppCompatActivity() {
         binding.tvFound.visibility = View.GONE
         underGroundListAdapter = UnderGroundListAdapter(list)
         binding.rvUnderGroundList.adapter = underGroundListAdapter
-        Log.e("List UnderGroundMappingReport",
-            "true" + DataBaseFunctions.gson.toJson(list).toString())
+        Log.e(
+            "List UnderGroundMappingReport",
+            "true" + DataBaseFunctions.gson.toJson(list).toString()
+        )
     }
 
     inner class UnderGroundListAdapter(
-        private val listModel : ArrayList<UnderGroundMappingReport>) :
+            private val listModel : ArrayList<UnderGroundMappingReport>
+    ) :
         RecyclerView.Adapter<UnderGroundListAdapter.MyViewHolder>() {
         override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : MyViewHolder {
             val v : MappingReportListLayoutBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context), R.layout.mapping_report_list_layout, parent,
-                false)
+                false
+            )
             return MyViewHolder(v)
         }
 
         inner class MyViewHolder(
-            var binding : MappingReportListLayoutBinding) : RecyclerView.ViewHolder(binding.root)
+                var binding : MappingReportListLayoutBinding
+        ) : RecyclerView.ViewHolder(binding.root)
 
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
@@ -111,11 +116,15 @@ class UnderGroundListDraftActivity : AppCompatActivity() {
                 Html.fromHtml(
                     "Mapped By : <font color='black'>${
                         Converter.format(listModel[position].mappedBy)
-                    }</font>"),
-                TextView.BufferType.SPANNABLE)
+                    }</font>"
+                ),
+                TextView.BufferType.SPANNABLE
+            )
             holder.binding.llMainLayout.setOnClickListener {
-                callUnderGroundDetailDraftActivity(act, "1",
-                    gson.toJson(listModel[position]).toString())
+                callUnderGroundDetailDraftActivity(
+                    act, "1",
+                    gson.toJson(listModel[position]).toString()
+                )
             }
         }
 

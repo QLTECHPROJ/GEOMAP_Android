@@ -39,13 +39,13 @@ class SyncDataActivity : AppCompatActivity() {
     private lateinit var binding : ActivitySyncDataBinding
     private lateinit var ctx : Context
     private lateinit var act : Activity
-    private lateinit var ugList : java.util.ArrayList<UnderGroundMappingReport>
+    private lateinit var ugList : ArrayList<UnderGroundMappingReport>
     private lateinit var ocList : ArrayList<OpenCastMappingReport>
     private var userId = ""
     private var gson = Gson()
 
-    var ugModelList = java.util.ArrayList<SyncDataUgModel>()
-    var ocModelList = java.util.ArrayList<SyncDataOcModel>()
+    var ugModelList = ArrayList<SyncDataUgModel>()
+    var ocModelList = ArrayList<SyncDataOcModel>()
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sync_data)
@@ -71,17 +71,22 @@ class SyncDataActivity : AppCompatActivity() {
     private fun getData() {
         DB = getDataBase(ctx)
         DB.taskDao().geAllUnderGroundMappingReportASC(userId)
-            .observe(ctx as LifecycleOwner) { lists ->
-                ugList = lists as java.util.ArrayList<UnderGroundMappingReport>
-                setugObjArray(ugList)
-                Log.e("List UnderGroundMappingReport",
-                    "true" + DataBaseFunctions.gson.toJson(ugList).toString())
-            }
+                .observe(ctx as LifecycleOwner) { lists ->
+                    ugList = lists as ArrayList<UnderGroundMappingReport>
+                    setugObjArray(ugList)
+                    Log.e(
+                        "List UnderGroundMappingReport",
+                        "true" + DataBaseFunctions.gson.toJson(ugList).toString()
+                    )
+                }
     }
 
     private fun getAlbumStorageDir(albumName : String?) : File {
-        val file = File(Environment.getExternalStoragePublicDirectory(
-            Environment.DIRECTORY_PICTURES), albumName)
+        val file = File(
+            Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES
+            ), albumName
+        )
         if (!file.mkdirs()) {
             Log.e("SignaturePad", "Directory not created")
         }
@@ -106,36 +111,48 @@ class SyncDataActivity : AppCompatActivity() {
                 sdu.zCordinate = ugList[i].zCordinate
                 sdu.attribute = ugList[i].attributes
                 var datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(
-                    Date())
+                    Date()
+                )
 
-                var photo = File(getAlbumStorageDir("Pictures"),
-                    String.format(datetime + "roofImage.jpg", System.currentTimeMillis()))
+                var photo = File(
+                    getAlbumStorageDir("Pictures"),
+                    String.format(datetime + "roofImage.jpg", System.currentTimeMillis())
+                )
                 saveBitmapToJPG(ugList[i].roofImage!!, photo)
                 scanMediaFile(photo)
 
                 sdu.roofImage = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
 
                 datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(
-                    Date())
-                photo = File(getAlbumStorageDir("Pictures"),
-                    String.format(datetime + "leftImage.jpg", System.currentTimeMillis()))
+                    Date()
+                )
+                photo = File(
+                    getAlbumStorageDir("Pictures"),
+                    String.format(datetime + "leftImage.jpg", System.currentTimeMillis())
+                )
                 saveBitmapToJPG(ugList[i].leftImage!!, photo)
                 scanMediaFile(photo)
 
                 sdu.leftImage = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
 
                 datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(
-                    Date())
-                photo = File(getAlbumStorageDir("Pictures"),
-                    String.format(datetime + "rightImage.jpg", System.currentTimeMillis()))
+                    Date()
+                )
+                photo = File(
+                    getAlbumStorageDir("Pictures"),
+                    String.format(datetime + "rightImage.jpg", System.currentTimeMillis())
+                )
                 saveBitmapToJPG(ugList[i].rightImage!!, photo)
                 scanMediaFile(photo)
 
                 sdu.rightImage = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
                 datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(
-                    Date())
-                photo = File(getAlbumStorageDir("Pictures"),
-                    String.format(datetime + "faceImage.jpg", System.currentTimeMillis()))
+                    Date()
+                )
+                photo = File(
+                    getAlbumStorageDir("Pictures"),
+                    String.format(datetime + "faceImage.jpg", System.currentTimeMillis())
+                )
                 saveBitmapToJPG(ugList[i].faceImage!!, photo)
                 scanMediaFile(photo)
                 sdu.faceImage = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
@@ -153,8 +170,10 @@ class SyncDataActivity : AppCompatActivity() {
     private fun callOcMethod() {
         DB.taskDao().geAllOpenCastMappingReportASC(userId).observe(ctx as LifecycleOwner) { lists ->
             ocList = lists as ArrayList<OpenCastMappingReport>
-            Log.e("List OpenCastMappingReport",
-                "true" + DataBaseFunctions.gson.toJson(ocList).toString())
+            Log.e(
+                "List OpenCastMappingReport",
+                "true" + DataBaseFunctions.gson.toJson(ocList).toString()
+            )
             setocObjArray(ocList)
         }
     }
@@ -193,27 +212,36 @@ class SyncDataActivity : AppCompatActivity() {
                 sdu.dipDirectionAndAngle = ocList[i].dipDirectionAngle
 
                 var datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(
-                    Date())
-                var photo = File(getAlbumStorageDir("Pictures"),
-                    String.format(datetime + "image.jpg", System.currentTimeMillis()))
+                    Date()
+                )
+                var photo = File(
+                    getAlbumStorageDir("Pictures"),
+                    String.format(datetime + "image.jpg", System.currentTimeMillis())
+                )
                 saveBitmapToJPG(ocList[i].image!!, photo)
                 scanMediaFile(photo)
 
                 sdu.image = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
 
                 datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(
-                    Date())
-                photo = File(getAlbumStorageDir("Pictures"),
-                    String.format(datetime + "geologistSign.jpg", System.currentTimeMillis()))
+                    Date()
+                )
+                photo = File(
+                    getAlbumStorageDir("Pictures"),
+                    String.format(datetime + "geologistSign.jpg", System.currentTimeMillis())
+                )
                 saveBitmapToJPG(ocList[i].geologistSign!!, photo)
                 scanMediaFile(photo)
 
                 sdu.geologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
 
                 datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(
-                    Date())
-                photo = File(getAlbumStorageDir("Pictures"),
-                    String.format(datetime + "ClientSign.jpg", System.currentTimeMillis()))
+                    Date()
+                )
+                photo = File(
+                    getAlbumStorageDir("Pictures"),
+                    String.format(datetime + "ClientSign.jpg", System.currentTimeMillis())
+                )
                 saveBitmapToJPG(ocList[i].clientsGeologistSign!!, photo)
                 scanMediaFile(photo)
 
@@ -277,8 +305,10 @@ class SyncDataActivity : AppCompatActivity() {
                     ugModelList[i].zCordinate, ugModelList[i].roofImage, ugModelList[i].leftImage,
                     ugModelList[i].rightImage, ugModelList[i].faceImage,
                     object : retrofit.Callback<SuccessModel> {
-                        override fun success(model : SuccessModel,
-                            response : retrofit.client.Response) {
+                        override fun success(
+                                model : SuccessModel,
+                                response : retrofit.client.Response
+                        ) {
                             hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                             when (model.ResponseCode) {
                                 ctx.getString(R.string.ResponseCodesuccess) -> {
@@ -365,8 +395,10 @@ class SyncDataActivity : AppCompatActivity() {
                     ocModelList[i].ocDate, ocModelList[i].dipDirectionAndAngle,
                     ocModelList[i].image, ocModelList[i].geologistSign,
                     ocModelList[i].clientsGeologistSign, object : retrofit.Callback<SuccessModel> {
-                        override fun success(model : SuccessModel,
-                            response : retrofit.client.Response) {
+                        override fun success(
+                                model : SuccessModel,
+                                response : retrofit.client.Response
+                        ) {
                             if (model.ResponseCode == ctx.getString(R.string.ResponseCodesuccess)) {
                                 hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                                 when (model.ResponseCode) {

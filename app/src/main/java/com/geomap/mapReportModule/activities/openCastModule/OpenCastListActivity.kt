@@ -57,8 +57,11 @@ class OpenCastListActivity : AppCompatActivity() {
     fun postData() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            viewModel = ViewModelProvider(this, UserModelFactory(
-                UserRepository(retrofitService)))[AllViewModel::class.java]
+            viewModel = ViewModelProvider(
+                this, UserModelFactory(
+                    UserRepository(retrofitService)
+                )
+            )[AllViewModel::class.java]
             viewModel.getORViewAllListing(userId.toString())
             viewModel.getORViewAllListing.observe(this) {
                 hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
@@ -73,7 +76,7 @@ class OpenCastListActivity : AppCompatActivity() {
 
                         }
                         openCastListAdapter =
-                            OpenCastListAdapter(it.responseData!!)
+                                OpenCastListAdapter(it.responseData!!)
                         binding.rvOpenCastList.adapter = openCastListAdapter
                     }
                     it.responseCode == act.getString(R.string.ResponseCodefail) -> {
@@ -92,16 +95,16 @@ class OpenCastListActivity : AppCompatActivity() {
     }
 
     inner class OpenCastListAdapter(
-        private val listModel : List<DashboardViewAllModel.ResponseData>
+            private val listModel : List<DashboardViewAllModel.ResponseData>
     ) : RecyclerView.Adapter<OpenCastListAdapter.MyViewHolder>() {
 
         override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : MyViewHolder {
             val v : MappingReportListLayoutBinding =
-                DataBindingUtil.inflate(
-                    LayoutInflater.from(parent.context), R.layout.mapping_report_list_layout,
-                    parent,
-                    false
-                )
+                    DataBindingUtil.inflate(
+                        LayoutInflater.from(parent.context), R.layout.mapping_report_list_layout,
+                        parent,
+                        false
+                    )
             return MyViewHolder(v)
         }
 
@@ -115,11 +118,16 @@ class OpenCastListActivity : AppCompatActivity() {
             holder.binding.tvDate.text = Converter.format(listModel[position].ocDate)
             holder.binding.tvSubTitleOne.setText(
                 Html.fromHtml(
-                    "Mines site name : <font color='black'>${Converter.format(listModel[position].minesSiteName)}</font>"),
-                TextView.BufferType.SPANNABLE)
-            holder.binding.tvSubTitleTwo.setText(Html.fromHtml(
-                "Mapping sheet no : <font color='black'>${Converter.format(listModel[position].mappingSheetNo)}</font>"),
-                TextView.BufferType.SPANNABLE)
+                    "Mines site name : <font color='black'>${Converter.format(listModel[position].minesSiteName)}</font>"
+                ),
+                TextView.BufferType.SPANNABLE
+            )
+            holder.binding.tvSubTitleTwo.setText(
+                Html.fromHtml(
+                    "Mapping sheet no : <font color='black'>${Converter.format(listModel[position].mappingSheetNo)}</font>"
+                ),
+                TextView.BufferType.SPANNABLE
+            )
             holder.binding.llMainLayout.setOnClickListener {
                 callOpenCastDetailActivity(act, "1", listModel[position].mappingSheetNo)
             }

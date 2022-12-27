@@ -74,7 +74,7 @@ class SplashActivity : AppCompatActivity() {
                 Log.e("newToken", token!!)
                 fcmId = token
                 val editor = getContext()
-                    .getSharedPreferences(CONSTANTS.FCMToken, MODE_PRIVATE).edit()
+                        .getSharedPreferences(CONSTANTS.FCMToken, MODE_PRIVATE).edit()
                 editor.putString(CONSTANTS.Token, token) //Friend
                 editor.apply()
                 checkAppVersion()
@@ -86,60 +86,92 @@ class SplashActivity : AppCompatActivity() {
 
     private fun checkAppVersion() {
         fcmId = getSharedPreferences(CONSTANTS.FCMToken, Context.MODE_PRIVATE).getString(
-            CONSTANTS.Token, "").toString()
+            CONSTANTS.Token, ""
+        ).toString()
         Log.e("Token", fcmId)
-        val deviceId = Settings.Secure.getString(getContext().contentResolver,
-            Settings.Secure.ANDROID_ID)
+        val deviceId = Settings.Secure.getString(
+            getContext().contentResolver,
+            Settings.Secure.ANDROID_ID
+        )
         val appURI = "https://play.google.com/store/apps/details?id=com.geomap"
         if (isNetworkConnected(ctx)) {
             RetrofitService.getInstance().getAppVersions(/*"1", */
                 BuildConfig.VERSION_CODE.toString(), CONSTANTS.FLAG_ONE, fcmId,
-                deviceId).enqueue(object : Callback<VersionModel> {
-                override fun onResponse(call : Call<VersionModel>,
-                    response : Response<VersionModel>) {
+                deviceId
+            ).enqueue(object : Callback<VersionModel> {
+                override fun onResponse(
+                        call : Call<VersionModel>,
+                        response : Response<VersionModel>
+                ) {
                     try {
                         val versionModel : VersionModel = response.body()!!
                         when (versionModel.ResponseCode) {
                             getString(R.string.ResponseCodesuccess) -> {
                                 val shared1 = getSharedPreferences(
-                                    CONSTANTS.PREFE_ACCESS_SplashData, Context.MODE_PRIVATE)
+                                    CONSTANTS.PREFE_ACCESS_SplashData, Context.MODE_PRIVATE
+                                )
                                 val editor1 = shared1.edit()
-                                editor1.putString(CONSTANTS.supportTitle,
-                                    versionModel.ResponseData!!.supportTitle)
-                                editor1.putString(CONSTANTS.supportText,
-                                    versionModel.ResponseData.supportText)
-                                editor1.putString(CONSTANTS.supportEmail,
-                                    versionModel.ResponseData.supportEmail)
-                                editor1.putString(CONSTANTS.isForce,
-                                    versionModel.ResponseData.IsForce)
+                                editor1.putString(
+                                    CONSTANTS.supportTitle,
+                                    versionModel.ResponseData!!.supportTitle
+                                )
+                                editor1.putString(
+                                    CONSTANTS.supportText,
+                                    versionModel.ResponseData.supportText
+                                )
+                                editor1.putString(
+                                    CONSTANTS.supportEmail,
+                                    versionModel.ResponseData.supportEmail
+                                )
+                                editor1.putString(
+                                    CONSTANTS.isForce,
+                                    versionModel.ResponseData.IsForce
+                                )
                                 editor1.apply()
                                 when (versionModel.ResponseData.IsForce) {
                                     "0" -> {
                                         AlertDialog.Builder(ctx).setTitle(
-                                            "Update Geo Map App").setCancelable(
-                                            false).setMessage(
-                                            "Geo Map App recommends that you update to the latest version")
-                                            .setPositiveButton(
-                                                "UPDATE") { dialog : DialogInterface, _ : Int ->
-                                                startActivity(Intent(Intent.ACTION_VIEW,
-                                                    Uri.parse(appURI)))
-                                                dialog.cancel()
-                                            }.setNegativeButton(
-                                                "NOT NOW") { dialog : DialogInterface, _ : Int -> //                                        askBattyPermission()
-                                                callSplashData()
-                                                dialog.dismiss()
-                                            }.create().show()
+                                            "Update Geo Map App"
+                                        ).setCancelable(
+                                            false
+                                        ).setMessage(
+                                            "Geo Map App recommends that you update to the latest version"
+                                        )
+                                                .setPositiveButton(
+                                                    "UPDATE"
+                                                ) { dialog : DialogInterface, _ : Int ->
+                                                    startActivity(
+                                                        Intent(
+                                                            Intent.ACTION_VIEW,
+                                                            Uri.parse(appURI)
+                                                        )
+                                                    )
+                                                    dialog.cancel()
+                                                }.setNegativeButton(
+                                                    "NOT NOW"
+                                                ) { dialog : DialogInterface, _ : Int -> //                                        askBattyPermission()
+                                                    callSplashData()
+                                                    dialog.dismiss()
+                                                }.create().show()
                                     }
                                     "1" -> {
                                         AlertDialog.Builder(ctx).setTitle(
-                                            "Update Required").setCancelable(false).setMessage(
-                                            "To keep using Geo Map App, download the latest version")
-                                            .setCancelable(
-                                                false).setPositiveButton(
-                                                "UPDATE") { _ : DialogInterface?, _ : Int ->
-                                                startActivity(Intent(Intent.ACTION_VIEW,
-                                                    Uri.parse(appURI)))
-                                            }.create().show()
+                                            "Update Required"
+                                        ).setCancelable(false).setMessage(
+                                            "To keep using Geo Map App, download the latest version"
+                                        )
+                                                .setCancelable(
+                                                    false
+                                                ).setPositiveButton(
+                                                    "UPDATE"
+                                                ) { _ : DialogInterface?, _ : Int ->
+                                                    startActivity(
+                                                        Intent(
+                                                            Intent.ACTION_VIEW,
+                                                            Uri.parse(appURI)
+                                                        )
+                                                    )
+                                                }.create().show()
                                     }
                                     "" -> {
                                         callSplashData()
@@ -171,8 +203,11 @@ class SplashActivity : AppCompatActivity() {
         if (userId != "") {
             callDashboardActivity(act, "0")
             if (isNetworkConnected(ctx)) {
-                viewModel = ViewModelProvider(this, UserModelFactory(
-                    UserRepository(retrofitService)))[AllViewModel::class.java]
+                viewModel = ViewModelProvider(
+                    this, UserModelFactory(
+                        UserRepository(retrofitService)
+                    )
+                )[AllViewModel::class.java]
                 viewModel.getUserDetails(userId.toString())
                 viewModel.userDetails.observe(this) {
                     when {

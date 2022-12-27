@@ -62,11 +62,14 @@ class DashboardActivity : AppCompatActivity() {
             dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog!!.setContentView(R.layout.add_report_layout)
             dialog!!.window!!.setBackgroundDrawable(
-                ColorDrawable(Color.TRANSPARENT))
-            dialog!!.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT)
+                ColorDrawable(Color.TRANSPARENT)
+            )
+            dialog!!.window!!.setLayout(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
             val btnAddUnderGroundsReport =
-                dialog!!.findViewById<Button>(R.id.btnAddUnderGroundsReport)
+                    dialog!!.findViewById<Button>(R.id.btnAddUnderGroundsReport)
             val btnAddOpenCastReport = dialog!!.findViewById<Button>(R.id.btnAddOpenCastReport)
             val llBack = dialog!!.findViewById<ImageView>(R.id.llBack)
 
@@ -124,71 +127,74 @@ class DashboardActivity : AppCompatActivity() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             RetrofitService.getInstance()
-                .getDashboardlisting(userId)
-                .enqueue(object : Callback<DashboardModel> {
-                    override fun onResponse(call : Call<DashboardModel>,
-                        response : Response<DashboardModel>) {
-                        try {
-                            hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                            val model : DashboardModel? = response.body()!!
-                            when (model!!.responseCode) {
-                                getString(R.string.ResponseCodesuccess) -> {
-                                    binding.ivNetworkCheck.visibility = View.GONE
-                                    binding.llMainLayout.visibility = View.VISIBLE
-                                    if (model.responseData?.underGround!!.isEmpty() && model.responseData?.openCast!!.isEmpty()) {
+                    .getDashboardlisting(userId)
+                    .enqueue(object : Callback<DashboardModel> {
+                        override fun onResponse(
+                                call : Call<DashboardModel>,
+                                response : Response<DashboardModel>
+                        ) {
+                            try {
+                                hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                                val model : DashboardModel? = response.body()!!
+                                when (model!!.responseCode) {
+                                    getString(R.string.ResponseCodesuccess) -> {
+                                        binding.ivNetworkCheck.visibility = View.GONE
+                                        binding.llMainLayout.visibility = View.VISIBLE
+                                        if (model.responseData?.underGround!!.isEmpty() && model.responseData?.openCast!!.isEmpty()) {
+                                            binding.llUnderGroundList.visibility = View.GONE
+                                            binding.rvUnderGroundList.visibility = View.GONE
+                                            binding.llOpenCastList.visibility = View.GONE
+                                            binding.rvOpenCastList.visibility = View.GONE
+                                            binding.tvFound.visibility = View.VISIBLE
+                                        } else {
+
+                                            binding.tvFound.visibility = View.GONE
+                                        }
+
+                                        if (model.responseData?.underGround!!.isEmpty()) {
+                                            binding.llUnderGroundList.visibility = View.GONE
+                                            binding.rvUnderGroundList.visibility = View.GONE
+                                        } else {
+                                            binding.llUnderGroundList.visibility = View.VISIBLE
+                                            binding.rvUnderGroundList.visibility = View.VISIBLE
+                                            underGroundListAdapter = UnderGroundListAdapter(
+                                                model.responseData?.underGround!!
+                                            )
+                                            binding.rvUnderGroundList.adapter = underGroundListAdapter
+                                        }
+
+                                        if (model.responseData?.openCast!!.isEmpty()) {
+                                            binding.llOpenCastList.visibility = View.GONE
+                                            binding.rvOpenCastList.visibility = View.GONE
+                                        } else {
+                                            binding.llOpenCastList.visibility = View.VISIBLE
+                                            binding.rvOpenCastList.visibility = View.VISIBLE
+                                            openCastListAdapter =
+                                                    OpenCastListAdapter(model.responseData?.openCast!!)
+                                            binding.rvOpenCastList.adapter = openCastListAdapter
+                                        }
+                                    }
+                                    getString(R.string.ResponseCodefail) -> {
                                         binding.llUnderGroundList.visibility = View.GONE
                                         binding.rvUnderGroundList.visibility = View.GONE
                                         binding.llOpenCastList.visibility = View.GONE
                                         binding.rvOpenCastList.visibility = View.GONE
                                         binding.tvFound.visibility = View.VISIBLE
-                                    } else {
-
-                                        binding.tvFound.visibility = View.GONE
+                                        showToast(model.responseMessage, act)
                                     }
-
-                                    if (model.responseData?.underGround!!.isEmpty()) {
-                                        binding.llUnderGroundList.visibility = View.GONE
-                                        binding.rvUnderGroundList.visibility = View.GONE
-                                    } else {
-                                        binding.llUnderGroundList.visibility = View.VISIBLE
-                                        binding.rvUnderGroundList.visibility = View.VISIBLE
-                                        underGroundListAdapter = UnderGroundListAdapter(
-                                            model.responseData?.underGround!!)
-                                        binding.rvUnderGroundList.adapter = underGroundListAdapter
-                                    }
-
-                                    if (model.responseData?.openCast!!.isEmpty()) {
-                                        binding.llOpenCastList.visibility = View.GONE
-                                        binding.rvOpenCastList.visibility = View.GONE
-                                    } else {
-                                        binding.llOpenCastList.visibility = View.VISIBLE
-                                        binding.rvOpenCastList.visibility = View.VISIBLE
-                                        openCastListAdapter =
-                                            OpenCastListAdapter(model.responseData?.openCast!!)
-                                        binding.rvOpenCastList.adapter = openCastListAdapter
+                                    getString(R.string.ResponseCodeDeleted) -> {
+                                        callDelete403(act, model.responseMessage)
                                     }
                                 }
-                                getString(R.string.ResponseCodefail) -> {
-                                    binding.llUnderGroundList.visibility = View.GONE
-                                    binding.rvUnderGroundList.visibility = View.GONE
-                                    binding.llOpenCastList.visibility = View.GONE
-                                    binding.rvOpenCastList.visibility = View.GONE
-                                    binding.tvFound.visibility = View.VISIBLE
-                                    showToast(model.responseMessage, act)
-                                }
-                                getString(R.string.ResponseCodeDeleted) -> {
-                                    callDelete403(act, model.responseMessage)
-                                }
+                            } catch (e : Exception) {
+                                e.printStackTrace()
                             }
-                        } catch (e : Exception) {
-                            e.printStackTrace()
                         }
-                    }
 
-                    override fun onFailure(call : Call<DashboardModel>, t : Throwable) {
-                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                    }
-                })
+                        override fun onFailure(call : Call<DashboardModel>, t : Throwable) {
+                            hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                        }
+                    })
         } else {
             binding.ivNetworkCheck.visibility = View.VISIBLE
             binding.llMainLayout.visibility = View.GONE
@@ -196,16 +202,16 @@ class DashboardActivity : AppCompatActivity() {
     }
 
     inner class UnderGroundListAdapter(
-        private val listModel : List<DashboardModel.ResponseData.UnderGround>
+            private val listModel : List<DashboardModel.ResponseData.UnderGround>
     ) : RecyclerView.Adapter<UnderGroundListAdapter.MyViewHolder>() {
 
         override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : MyViewHolder {
             val v : MappingReportListLayoutBinding =
-                DataBindingUtil.inflate(
-                    LayoutInflater.from(parent.context), R.layout.mapping_report_list_layout,
-                    parent,
-                    false
-                )
+                    DataBindingUtil.inflate(
+                        LayoutInflater.from(parent.context), R.layout.mapping_report_list_layout,
+                        parent,
+                        false
+                    )
             return MyViewHolder(v)
         }
 
@@ -219,11 +225,16 @@ class DashboardActivity : AppCompatActivity() {
             holder.binding.tvDate.text = Converter.format(listModel[position].ugDate)
             holder.binding.tvSubTitleOne.setText(
                 Html.fromHtml(
-                    "Mapped By : <font color='black'>${Converter.format(listModel[position].mappedBy)}</font>"),
-                TextView.BufferType.SPANNABLE)
-            holder.binding.tvSubTitleTwo.setText(Html.fromHtml(
-                "Map serial no : <font color='black'>${Converter.format(listModel[position].mapSerialNo)}</font>"),
-                TextView.BufferType.SPANNABLE)
+                    "Mapped By : <font color='black'>${Converter.format(listModel[position].mappedBy)}</font>"
+                ),
+                TextView.BufferType.SPANNABLE
+            )
+            holder.binding.tvSubTitleTwo.setText(
+                Html.fromHtml(
+                    "Map serial no : <font color='black'>${Converter.format(listModel[position].mapSerialNo)}</font>"
+                ),
+                TextView.BufferType.SPANNABLE
+            )
             holder.binding.llMainLayout.setOnClickListener {
                 callUnderGroundDetailActivity(act, "1", listModel[position].mapSerialNo)
             }
@@ -239,16 +250,16 @@ class DashboardActivity : AppCompatActivity() {
     }
 
     inner class OpenCastListAdapter(
-        private val listModel : List<DashboardModel.ResponseData.OpenCast>
+            private val listModel : List<DashboardModel.ResponseData.OpenCast>
     ) : RecyclerView.Adapter<OpenCastListAdapter.MyViewHolder>() {
 
         override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : MyViewHolder {
             val v : MappingReportListLayoutBinding =
-                DataBindingUtil.inflate(
-                    LayoutInflater.from(parent.context), R.layout.mapping_report_list_layout,
-                    parent,
-                    false
-                )
+                    DataBindingUtil.inflate(
+                        LayoutInflater.from(parent.context), R.layout.mapping_report_list_layout,
+                        parent,
+                        false
+                    )
             return MyViewHolder(v)
         }
 
@@ -261,11 +272,16 @@ class DashboardActivity : AppCompatActivity() {
             holder.binding.tvArea.text = Converter.format(listModel[position].pitLoaction)
             holder.binding.tvSubTitleOne.setText(
                 Html.fromHtml(
-                    "Mines site name : <font color='black'>${Converter.format(listModel[position].minesSiteName)}</font>"),
-                TextView.BufferType.SPANNABLE)
-            holder.binding.tvSubTitleTwo.setText(Html.fromHtml(
-                "Mapping sheet no : <font color='black'>${Converter.format(listModel[position].mappingSheetNo)}</font>"),
-                TextView.BufferType.SPANNABLE)
+                    "Mines site name : <font color='black'>${Converter.format(listModel[position].minesSiteName)}</font>"
+                ),
+                TextView.BufferType.SPANNABLE
+            )
+            holder.binding.tvSubTitleTwo.setText(
+                Html.fromHtml(
+                    "Mapping sheet no : <font color='black'>${Converter.format(listModel[position].mappingSheetNo)}</font>"
+                ),
+                TextView.BufferType.SPANNABLE
+            )
 
             holder.binding.tvDate.text = Converter.format(listModel[position].ocDate)
             holder.binding.llMainLayout.setOnClickListener {

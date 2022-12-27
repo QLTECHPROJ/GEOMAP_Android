@@ -45,51 +45,62 @@ class OpenCastDetailDraftActivity : AppCompatActivity() {
             binding.llMainLayout.visibility = View.VISIBLE
 
             if (ocReportData.geologistSign != null) {
-                Glide.with(this).asBitmap().load(
-                    ocReportData.geologistSign
-                ).into(object : CustomTarget<Bitmap?>() {
-                    override fun onResourceReady(
-                            resource : Bitmap,
-                            transition : Transition<in Bitmap?>?
-                    ) {
-                        binding.imgGeologistSign.setImageBitmap(resource)
-                    }
+                try {
+                    Glide.with(ctx).asBitmap().load(
+                        ocReportData.geologistSign
+                    ).into(object : CustomTarget<Bitmap?>() {
+                        override fun onResourceReady(
+                                resource : Bitmap,
+                                transition : Transition<in Bitmap?>?
+                        ) {
+                            binding.imgGeologistSign.setImageBitmap(resource)
+                        }
 
-                    override fun onLoadCleared(placeholder : Drawable?) {}
+                        override fun onLoadCleared(placeholder : Drawable?) {}
 
-                })
+                    })
+                } catch (_ : Exception) {
+                }
             }
 
             if (ocReportData.clientsGeologistSign != null) {
-                Glide.with(this).asBitmap().load(
-                    ocReportData.clientsGeologistSign
-                ).into(object : CustomTarget<Bitmap?>() {
-                    override fun onResourceReady(
-                            resource : Bitmap,
-                            transition : Transition<in Bitmap?>?
-                    ) {
-                        binding.imgClientGeologistSign.setImageBitmap(resource)
-                    }
+                try {
+                    Glide.with(ctx).asBitmap().load(
+                        ocReportData.clientsGeologistSign
+                    ).into(object : CustomTarget<Bitmap?>() {
+                        override fun onResourceReady(
+                                resource : Bitmap,
+                                transition : Transition<in Bitmap?>?
+                        ) {
+                            binding.imgClientGeologistSign.setImageBitmap(resource)
+                        }
 
-                    override fun onLoadCleared(placeholder : Drawable?) {}
+                        override fun onLoadCleared(placeholder : Drawable?) {}
 
-                })
+                    })
+                } catch (_ : Exception) {
+
+                }
             }
 
             if (ocReportData.image != null) {
-                Glide.with(this).asBitmap().load(
-                    ocReportData.image
-                ).into(object : CustomTarget<Bitmap?>() {
-                    override fun onResourceReady(
-                            resource : Bitmap,
-                            transition : Transition<in Bitmap?>?
-                    ) {
-                        binding.image.setImageBitmap(resource)
-                    }
+                try {
+                    Glide.with(ctx).asBitmap().load(
+                        ocReportData.image
+                    ).into(object : CustomTarget<Bitmap?>() {
+                        override fun onResourceReady(
+                                resource : Bitmap,
+                                transition : Transition<in Bitmap?>?
+                        ) {
+                            binding.image.setImageBitmap(resource)
+                        }
 
-                    override fun onLoadCleared(placeholder : Drawable?) {}
+                        override fun onLoadCleared(placeholder : Drawable?) {}
 
-                })
+                    })
+                } catch (_ : Exception) {
+
+                }
             }
         }
 

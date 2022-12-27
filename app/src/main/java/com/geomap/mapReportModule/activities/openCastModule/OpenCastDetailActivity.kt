@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -50,8 +51,8 @@ class OpenCastDetailActivity : AppCompatActivity() {
         binding.llEdit.setOnClickListener {
             val i = Intent(act, OpenCastFormFirstStepActivity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            i.putExtra("flag","detail")
-            i.putExtra("data",gson.toJson(model))
+            i.putExtra("flag", "detail")
+            i.putExtra("data", gson.toJson(model))
             act.startActivity(i)
         }
         postData()
@@ -64,28 +65,32 @@ class OpenCastDetailActivity : AppCompatActivity() {
     fun postData() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            viewModel = ViewModelProvider(this, UserModelFactory(
-                UserRepository(retrofitService)))[AllViewModel::class.java]
+            viewModel = ViewModelProvider(
+                this, UserModelFactory(
+                    UserRepository(retrofitService)
+                )
+            )[AllViewModel::class.java]
             viewModel.getOpenCastDetails(mappingSheetNo.toString())
             viewModel.getOpenCastDetails.observe(this) {
-                hideProgressBar(binding.progressBar,
-                    binding.progressBarHolder, act)
+                hideProgressBar(
+                    binding.progressBar,
+                    binding.progressBarHolder, act
+                )
                 when {
                     it?.ResponseCode == getString(R.string.ResponseCodesuccess) -> {
                         model = it
                         binding.llMainLayout.visibility = View.VISIBLE
                         binding.btnViewPdf.visibility = View.VISIBLE
                         val ocDetail =
-                            OpenCastDetailsModel(it.ResponseCode, it.ResponseData,
-                                it.ResponseMessage, it.ResponseStatus)
+                                OpenCastDetailsModel(
+                                    it.ResponseCode, it.ResponseData,
+                                    it.ResponseMessage, it.ResponseStatus
+                                )
                         binding.ocDetail = ocDetail
 
-                        Glide.with(ctx).load(ocDetail.ResponseData.geologistSign)
-                            .thumbnail(0.10f).into(binding.imgGeologistSign)
-                        Glide.with(ctx).load(ocDetail.ResponseData.clientsGeologistSign)
-                            .thumbnail(0.10f).into(binding.imgClientGeologistSign)
-                        Glide.with(ctx).load(ocDetail.ResponseData.image)
-                            .thumbnail(0.10f).into(binding.image)
+                        imageGlide(ctx, ocDetail.ResponseData.geologistSign, binding.imgGeologistSign)
+                        imageGlide(ctx, ocDetail.ResponseData.clientsGeologistSign, binding.imgClientGeologistSign)
+                        imageGlide(ctx, ocDetail.ResponseData.image, binding.image)
 
                     }
                     it.ResponseCode == act.getString(R.string.ResponseCodefail) -> {
@@ -104,4 +109,13 @@ class OpenCastDetailActivity : AppCompatActivity() {
     override fun onBackPressed() {
         finish()
     }
+
+    private fun imageGlide(ctx : Context, url : String, imageView : ImageView) {
+        try {
+            Glide.with(ctx).load(url)
+                    .thumbnail(0.10f).into(imageView)
+        } catch (_ : Exception) {
+        }
+    }
+
 }

@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -111,22 +112,18 @@ class UnderGroundDetailActivity : AppCompatActivity() {
                                             it.attribute
                                         )
                                 binding.rvAttributesList.adapter = attributesListAdapter
-                            }
 
-                            Glide.with(ctx).load(it.roofImage)
-                                    .thumbnail(0.10f).into(binding.roofImage)
-                            Glide.with(ctx).load(it.leftImage)
-                                    .thumbnail(0.10f).into(binding.leftImage)
-                            Glide.with(ctx).load(it.rightImage)
-                                    .thumbnail(0.10f).into(binding.rightImage)
-                            Glide.with(ctx).load(it.faceImage)
-                                    .thumbnail(0.10f).into(binding.faceImage)
+                                imageGlide(ctx, it.roofImage, binding.roofImage)
+                                imageGlide(ctx, it.leftImage, binding.leftImage)
+                                imageGlide(ctx, it.rightImage, binding.rightImage)
+                                imageGlide(ctx, it.faceImage, binding.faceImage)
+                            }
                         }
                     }
-                    it.ResponseCode == act.getString(R.string.ResponseCodefail) -> {
+                    it.ResponseCode == getString(R.string.ResponseCodefail) -> {
                         showToast(it.ResponseMessage, act)
                     }
-                    it.ResponseCode == act.getString(R.string.ResponseCodeDeleted) -> {
+                    it.ResponseCode == getString(R.string.ResponseCodeDeleted) -> {
                         callDelete403(act, it.ResponseMessage)
                     }
                 }
@@ -171,5 +168,13 @@ class UnderGroundDetailActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         finish()
+    }
+
+    private fun imageGlide(ctx : Context, url : String, imageView : ImageView) {
+        try {
+            Glide.with(ctx).load(url)
+                    .thumbnail(0.10f).into(imageView)
+        } catch (_ : Exception) {
+        }
     }
 }

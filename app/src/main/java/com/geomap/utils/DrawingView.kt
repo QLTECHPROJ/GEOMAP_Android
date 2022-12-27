@@ -12,10 +12,11 @@ class DrawingView(context : Context?, attrs : AttributeSet?) :
     private var drawPath : Path = Path()
     private var drawPaint : Paint = Paint()
     private var canvasPaint : Paint
-    private var paintColor = -0x9a0000
+    private var paintColor = - 0x9a0000
     private var tempColor : String? = null
-    private  var drawCanvas : Canvas?  = null
+    private var drawCanvas : Canvas? = null
     private var canvasBitmap : Bitmap? = null
+    var isFilled = false
 
     init {
         drawPaint.color = paintColor
@@ -25,28 +26,36 @@ class DrawingView(context : Context?, attrs : AttributeSet?) :
         drawPaint.strokeJoin = Paint.Join.ROUND
         drawPaint.strokeCap = Paint.Cap.ROUND
         canvasPaint = Paint(Paint.DITHER_FLAG)
+        isFilled = false
     }
 
     override fun onDraw(canvas : Canvas) {  //draw view
-        canvas.drawBitmap(canvasBitmap!!, 0F, 0F, canvasPaint)
+        canvas.drawBitmap(canvasBitmap !!, 0F, 0F, canvasPaint)
         canvas.drawPath(drawPath, drawPaint)
     }
 
     override fun onSizeChanged(w : Int, h : Int, oldw : Int, oldh : Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-        drawCanvas = Canvas(canvasBitmap!!)
+        drawCanvas = Canvas(canvasBitmap !!)
     }
 
     override fun onTouchEvent(event : MotionEvent) : Boolean {
         val touchX = event.x
         val touchY = event.y
         when (event.action) {
-            MotionEvent.ACTION_DOWN -> drawPath.moveTo(touchX, touchY)
-            MotionEvent.ACTION_MOVE -> drawPath.lineTo(touchX, touchY)
+            MotionEvent.ACTION_DOWN -> {
+                drawPath.moveTo(touchX, touchY)
+                isFilled = true
+            }
+            MotionEvent.ACTION_MOVE -> {
+                drawPath.lineTo(touchX, touchY)
+                isFilled = true
+            }
             MotionEvent.ACTION_UP -> {
-                drawCanvas!!.drawPath(drawPath, drawPaint)
+                drawCanvas !!.drawPath(drawPath, drawPaint)
                 drawPath.reset()
+                isFilled = true
             }
             else -> return false
         }
@@ -69,7 +78,8 @@ class DrawingView(context : Context?, attrs : AttributeSet?) :
     }
 
     fun startNew() {
-        drawCanvas!!.drawColor(0, PorterDuff.Mode.CLEAR)
+        drawCanvas !!.drawColor(0, PorterDuff.Mode.CLEAR)
         invalidate()
+        isFilled = false
     }
 }

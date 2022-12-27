@@ -12,8 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Button
-import android.widget.FrameLayout
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
@@ -98,8 +96,12 @@ class MenuListActivity : AppCompatActivity() {
 
         binding.llAboutUs.setOnClickListener {
             if (isNetworkConnected(ctx)) {
-                startActivity(Intent(ctx, TncActivity::class.java).putExtra(CONSTANTS.Web,
-                    getString(R.string.about_us)))
+                startActivity(
+                    Intent(ctx, TncActivity::class.java).putExtra(
+                        CONSTANTS.Web,
+                        getString(R.string.about_us)
+                    )
+                )
             } else {
                 showToast(ctx.getString(R.string.no_server_found), act)
             }
@@ -131,9 +133,12 @@ class MenuListActivity : AppCompatActivity() {
                 logoutDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
                 logoutDialog!!.setContentView(R.layout.logout_layout)
                 logoutDialog!!.window!!.setBackgroundDrawable(
-                    ColorDrawable(Color.TRANSPARENT))
-                logoutDialog!!.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT)
+                    ColorDrawable(Color.TRANSPARENT)
+                )
+                logoutDialog!!.window!!.setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
                 val tvGoBack = logoutDialog!!.findViewById<AppCompatButton>(R.id.tvGoBack)
                 val btn = logoutDialog!!.findViewById<Button>(R.id.Btn)
 //                val progressBar = logoutDialog!!.findViewById<ProgressBar>(R.id.progressBar)
@@ -166,9 +171,12 @@ class MenuListActivity : AppCompatActivity() {
                 supportDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
                 supportDialog!!.setContentView(R.layout.support_layout)
                 supportDialog!!.window!!.setBackgroundDrawable(
-                    ColorDrawable(Color.TRANSPARENT))
-                supportDialog!!.window!!.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT)
+                    ColorDrawable(Color.TRANSPARENT)
+                )
+                supportDialog!!.window!!.setLayout(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
                 val tvEmail = supportDialog!!.findViewById<TextView>(R.id.tvEmail)
                 val tvTitle = supportDialog!!.findViewById<TextView>(R.id.tvTitle)
                 val tvHeader = supportDialog!!.findViewById<TextView>(R.id.tvHeader)
@@ -239,50 +247,57 @@ class MenuListActivity : AppCompatActivity() {
         if (isNetworkConnected(ctx)) {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             RetrofitService.getInstance().getUserDetails(userId)
-                .enqueue(object : Callback<UserCommonDataModel> {
-                    override fun onResponse(call : Call<UserCommonDataModel>,
-                        response : Response<UserCommonDataModel>) {
-                        hideProgressBar(binding.progressBar, binding.progressBarHolder,
-                            act)
-                        val coachStatusModel : UserCommonDataModel? = response.body()
-                        when (coachStatusModel!!.responseCode) {
-                            getString(R.string.ResponseCodesuccess) -> {
-                                if (coachStatusModel.responseData!!.profileImage == "") {
-                                    binding.civProfile.visibility = View.GONE
-                                    binding.rlCameraBg.visibility = View.GONE
-                                    val name = if (coachStatusModel.responseData!!.name == "") {
-                                        "Guest"
+                    .enqueue(object : Callback<UserCommonDataModel> {
+                        override fun onResponse(
+                                call : Call<UserCommonDataModel>,
+                                response : Response<UserCommonDataModel>
+                        ) {
+                            hideProgressBar(
+                                binding.progressBar, binding.progressBarHolder,
+                                act
+                            )
+                            val coachStatusModel : UserCommonDataModel? = response.body()
+                            when (coachStatusModel!!.responseCode) {
+                                getString(R.string.ResponseCodesuccess) -> {
+                                    if (coachStatusModel.responseData!!.profileImage == "") {
+                                        binding.civProfile.visibility = View.GONE
+                                        binding.rlCameraBg.visibility = View.GONE
+                                        val name = if (coachStatusModel.responseData!!.name == "") {
+                                            "Guest"
+                                        } else {
+                                            coachStatusModel.responseData!!.name
+                                        }
+                                        binding.tvUserName.text = name
+                                        binding.rlLetter.visibility = View.VISIBLE
+                                        binding.tvLetter.text = name!!.substring(0, 1)
                                     } else {
-                                        coachStatusModel.responseData!!.name
+                                        binding.civProfile.visibility = View.VISIBLE
+                                        binding.rlCameraBg.visibility = View.VISIBLE
+                                        binding.rlLetter.visibility = View.GONE
+                                        try {
+                                            Glide.with(ctx)
+                                                    .load(coachStatusModel.responseData!!.profileImage)
+                                                    .thumbnail(0.10f)
+                                                    .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
+                                                    .into(binding.civProfile)
+                                        } catch (_ : Exception) {
+                                        }
+                                        binding.tvUserName.text = coachStatusModel.responseData!!.name
                                     }
-                                    binding.tvUserName.text = name
-                                    binding.rlLetter.visibility = View.VISIBLE
-                                    binding.tvLetter.text = name!!.substring(0, 1)
-                                } else {
-                                    binding.civProfile.visibility = View.VISIBLE
-                                    binding.rlCameraBg.visibility = View.VISIBLE
-                                    binding.rlLetter.visibility = View.GONE
-                                    Glide.with(applicationContext)
-                                        .load(coachStatusModel.responseData!!.profileImage)
-                                        .thumbnail(0.10f)
-                                        .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
-                                        .into(binding.civProfile)
-                                    binding.tvUserName.text = coachStatusModel.responseData!!.name
+                                }
+                                getString(R.string.ResponseCodefail) -> {
+                                    showToast(coachStatusModel.responseMessage, act)
+                                }
+                                getString(R.string.ResponseCodeDeleted) -> {
+                                    callDelete403(act, coachStatusModel.responseMessage)
                                 }
                             }
-                            getString(R.string.ResponseCodefail) -> {
-                                showToast(coachStatusModel.responseMessage, act)
-                            }
-                            getString(R.string.ResponseCodeDeleted) -> {
-                                callDelete403(act, coachStatusModel.responseMessage)
-                            }
                         }
-                    }
 
-                    override fun onFailure(call : Call<UserCommonDataModel>, t : Throwable) {
-                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                    }
-                })
+                        override fun onFailure(call : Call<UserCommonDataModel>, t : Throwable) {
+                            hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                        }
+                    })
         } else {
             binding.civProfile.visibility = View.GONE
             binding.rlCameraBg.visibility = View.GONE
@@ -293,35 +308,39 @@ class MenuListActivity : AppCompatActivity() {
         }
     }
 
-    fun callLogoutApi() {
+    private fun callLogoutApi() {
         val shared = getSharedPreferences(CONSTANTS.FCMToken, MODE_PRIVATE)
         val fcmId = shared.getString(CONSTANTS.Token, "")
-        val deviceId = Settings.Secure.getString(getContext().contentResolver,
-            Settings.Secure.ANDROID_ID)
+        val deviceId = Settings.Secure.getString(
+            getContext().contentResolver,
+            Settings.Secure.ANDROID_ID
+        )
         if (isNetworkConnected(ctx)) {
             RetrofitService.getInstance().postLogout(userId, CONSTANTS.FLAG_ONE, fcmId, deviceId)
-                .enqueue(object : Callback<ConfirmSuccessModel?> {
-                    override fun onResponse(call : Call<ConfirmSuccessModel?>,
-                        response : Response<ConfirmSuccessModel?>) {
-                        val successModel = response.body()
-                        if (successModel != null) {
-                            when (successModel.ResponseCode) {
-                                (getString(R.string.ResponseCodesuccess)) -> {
-                                    callDelete403(act, successModel.ResponseMessage)
-                                }
-                                getString(R.string.ResponseCodefail) -> {
-                                    showToast(successModel.ResponseMessage, act)
-                                }
-                                getString(R.string.ResponseCodeDeleted) -> {
-                                    callDelete403(act, successModel.ResponseMessage)
+                    .enqueue(object : Callback<ConfirmSuccessModel?> {
+                        override fun onResponse(
+                                call : Call<ConfirmSuccessModel?>,
+                                response : Response<ConfirmSuccessModel?>
+                        ) {
+                            val successModel = response.body()
+                            if (successModel != null) {
+                                when (successModel.ResponseCode) {
+                                    (getString(R.string.ResponseCodesuccess)) -> {
+                                        callDelete403(act, successModel.ResponseMessage)
+                                    }
+                                    getString(R.string.ResponseCodefail) -> {
+                                        showToast(successModel.ResponseMessage, act)
+                                    }
+                                    getString(R.string.ResponseCodeDeleted) -> {
+                                        callDelete403(act, successModel.ResponseMessage)
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    override fun onFailure(call : Call<ConfirmSuccessModel?>, t : Throwable) {
-                    }
-                })
+                        override fun onFailure(call : Call<ConfirmSuccessModel?>, t : Throwable) {
+                        }
+                    })
         } else {
             showToast(getString(R.string.no_server_found), act)
         }

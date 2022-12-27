@@ -164,40 +164,40 @@ class UserProfileActivity : AppCompatActivity() {
         binding.btnDeleteAccount.setOnClickListener {
             if (isNetworkConnected(ctx)) {
                 deleteDialog = Dialog(ctx)
-                deleteDialog !!.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                deleteDialog !!.setContentView(R.layout.logout_layout)
-                deleteDialog !!.window !!.setBackgroundDrawable(
+                deleteDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                deleteDialog!!.setContentView(R.layout.logout_layout)
+                deleteDialog!!.window!!.setBackgroundDrawable(
                     ColorDrawable(Color.TRANSPARENT)
                 )
-                deleteDialog !!.window !!.setLayout(
+                deleteDialog!!.window!!.setLayout(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
                 )
-                val tvGoBack = deleteDialog !!.findViewById<TextView>(R.id.tvGoBack)
-                val tvTitle = deleteDialog !!.findViewById<TextView>(R.id.tvTitle)
-                val tvHeader = deleteDialog !!.findViewById<TextView>(R.id.tvHeader)
-                val btn = deleteDialog !!.findViewById<Button>(R.id.Btn)
-                val progressBar = deleteDialog !!.findViewById<ProgressBar>(R.id.progressBar)
+                val tvGoBack = deleteDialog!!.findViewById<TextView>(R.id.tvGoBack)
+                val tvTitle = deleteDialog!!.findViewById<TextView>(R.id.tvTitle)
+                val tvHeader = deleteDialog!!.findViewById<TextView>(R.id.tvHeader)
+                val btn = deleteDialog!!.findViewById<Button>(R.id.Btn)
+                val progressBar = deleteDialog!!.findViewById<ProgressBar>(R.id.progressBar)
                 val progressBarHolder =
-                        deleteDialog !!.findViewById<FrameLayout>(R.id.progressBarHolder)
+                        deleteDialog!!.findViewById<FrameLayout>(R.id.progressBarHolder)
                 tvTitle.text = getString(R.string.delete_account)
                 tvHeader.text = getString(R.string.delete_ac_quotes)
 
-                deleteDialog !!.setOnKeyListener { _ : DialogInterface?, keyCode : Int, _ : KeyEvent? ->
+                deleteDialog!!.setOnKeyListener { _ : DialogInterface?, keyCode : Int, _ : KeyEvent? ->
                     if (keyCode == KeyEvent.KEYCODE_BACK) {
-                        deleteDialog !!.dismiss()
+                        deleteDialog!!.dismiss()
                         return@setOnKeyListener true
                     }
                     false
                 }
                 btn.setOnClickListener {
-                    deleteDialog !!.dismiss()
+                    deleteDialog!!.dismiss()
                     showProgressBar(progressBar, progressBarHolder, act)
                     callDeleteAcApi()
                 }
-                tvGoBack.setOnClickListener { deleteDialog !!.dismiss() }
-                deleteDialog !!.show()
-                deleteDialog !!.setCancelable(false)
+                tvGoBack.setOnClickListener { deleteDialog!!.dismiss() }
+                deleteDialog!!.show()
+                deleteDialog!!.setCancelable(false)
             } else {
                 showToast(getString(R.string.no_server_found), act)
             }
@@ -205,7 +205,7 @@ class UserProfileActivity : AppCompatActivity() {
 
 
         binding.btnUpdate.setOnClickListener {
-            if (! binding.etEmail.text.toString().isEmailValid()) {
+            if (!binding.etEmail.text.toString().isEmailValid()) {
                 binding.etEmail.isFocusable = true
                 binding.etEmail.requestFocus()
                 binding.ltEmail.isErrorEnabled = true
@@ -226,7 +226,7 @@ class UserProfileActivity : AppCompatActivity() {
                 )
             )[AllViewModel::class.java]
             viewModel.postDeleteUser(
-                userId !!
+                userId!!
             )
             viewModel.postDeleteUser.observe(this) {
                 hideProgressBar(
@@ -264,7 +264,7 @@ class UserProfileActivity : AppCompatActivity() {
                         return
                     }
                     mLastClickTime = SystemClock.elapsedRealtime()
-                    if (model !!.ResponseCode == getString(R.string.ResponseCodesuccess)) {
+                    if (model!!.ResponseCode == getString(R.string.ResponseCodesuccess)) {
                         callDelete403(act, model.ResponseMessage)
                     } else if (model.ResponseCode == ctx.getString(R.string.ResponseCodefail)) {
                         showToast(model.ResponseMessage, act)
@@ -283,7 +283,7 @@ class UserProfileActivity : AppCompatActivity() {
     }
 
     private fun String.isEmailValid() : Boolean {
-        return ! TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this)
+        return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this)
                 .matches()
     }
 
@@ -292,7 +292,7 @@ class UserProfileActivity : AppCompatActivity() {
             showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             val map = HashMap<String, String?>()
             map[CONSTANTS.id] = id
-            apiService !!.getProfileUpdate(userId, binding.etName.text.toString(),
+            apiService!!.getProfileUpdate(userId, binding.etName.text.toString(),
                 binding.etEmail.text.toString(),
                 binding.etDob.text.toString(), binding.etMobileNo.text.toString(), typedFile,
                 object : retrofit.Callback<ProfileUpdateModel> {
@@ -355,19 +355,19 @@ class UserProfileActivity : AppCompatActivity() {
                                 act
                             )
                             val coachStatusModel : UserCommonDataModel? = response.body()
-                            when (coachStatusModel !!.responseCode) {
+                            when (coachStatusModel!!.responseCode) {
                                 getString(R.string.ResponseCodesuccess) -> {
 //                                binding.rlMainLayout.visibility = View.VISIBLE
-                                    name = coachStatusModel.responseData !!.name
-                                    email = coachStatusModel.responseData !!.email
-                                    mobileNo = coachStatusModel.responseData !!.mobile
-                                    dob = coachStatusModel.responseData !!.dob
-                                    profileImage = coachStatusModel.responseData !!.profileImage
+                                    name = coachStatusModel.responseData!!.name
+                                    email = coachStatusModel.responseData!!.email
+                                    mobileNo = coachStatusModel.responseData!!.mobile
+                                    dob = coachStatusModel.responseData!!.dob
+                                    profileImage = coachStatusModel.responseData!!.profileImage
                                     binding.etName.setText(name)
                                     binding.etEmail.setText(email)
                                     binding.etMobileNo.setText(mobileNo)
                                     binding.etDob.setText(dob)
-                                    if (coachStatusModel.responseData !!.dob != "") {
+                                    if (coachStatusModel.responseData!!.dob != "") {
                                         val outputFormat : DateFormat = SimpleDateFormat(
                                             CONSTANTS.DATE_MONTH_YEAR_FORMAT1
                                         )
@@ -375,8 +375,8 @@ class UserProfileActivity : AppCompatActivity() {
                                             CONSTANTS.DATE_MONTH_YEAR_FORMAT
                                         )
                                         val inputText = dob
-                                        val date : Date? = inputFormat.parse(inputText !!)
-                                        val outputText : String = outputFormat.format(date !!)
+                                        val date : Date? = inputFormat.parse(inputText!!)
+                                        val outputText : String = outputFormat.format(date!!)
                                         Log.e("dob", outputText)
                                         val dateSpilt = outputText.split(" ")
                                         ageYear = dateSpilt[2].toInt()
@@ -386,25 +386,28 @@ class UserProfileActivity : AppCompatActivity() {
                                     }
                                     binding.ivCameraIconBg.visibility = View.VISIBLE
                                     binding.ivCameraIcon.visibility = View.VISIBLE
-                                    if (coachStatusModel.responseData !!.profileImage == "") {
+                                    if (coachStatusModel.responseData!!.profileImage == "") {
                                         binding.civProfile.visibility = View.GONE
                                         binding.rlCameraBg.visibility = View.GONE
-                                        val name = if (coachStatusModel.responseData !!.name == "") {
+                                        val name = if (coachStatusModel.responseData!!.name == "") {
                                             "Guest"
                                         } else {
-                                            coachStatusModel.responseData !!.name
+                                            coachStatusModel.responseData!!.name
                                         }
                                         binding.rlLetter.visibility = View.VISIBLE
-                                        binding.tvLetter.text = name !!.substring(0, 1)
+                                        binding.tvLetter.text = name!!.substring(0, 1)
                                     } else {
                                         binding.civProfile.visibility = View.VISIBLE
                                         binding.rlCameraBg.visibility = View.VISIBLE
                                         binding.rlLetter.visibility = View.GONE
-                                        Glide.with(applicationContext)
-                                                .load(coachStatusModel.responseData !!.profileImage)
-                                                .thumbnail(0.10f)
-                                                .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
-                                                .into(binding.civProfile)
+                                        try {
+                                            Glide.with(ctx)
+                                                    .load(coachStatusModel.responseData!!.profileImage)
+                                                    .thumbnail(0.10f)
+                                                    .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
+                                                    .into(binding.civProfile)
+                                        } catch (_ : Exception) {
+                                        }
                                     }
 
 //                                binding.etMobileNo.isEnabled = false
@@ -457,7 +460,7 @@ class UserProfileActivity : AppCompatActivity() {
                 Log.e("Gallery Image URL", selectedImageUri.toString())
                 val map = HashMap<String, String?>()
                 map[CONSTANTS.userId] = "userId"
-                val file = File(Objects.requireNonNull(getPath(selectedImageUri !!, ctx)))
+                val file = File(Objects.requireNonNull(getPath(selectedImageUri!!, ctx)))
                 typedFile = TypedFile(CONSTANTS.MULTIPART_FORMAT, file)
                 enableButton()
             }
@@ -473,13 +476,19 @@ class UserProfileActivity : AppCompatActivity() {
 
     private fun setProfilePic(profilePic : String?) {
         if (profilePic.equals("")) {
-            Glide.with(applicationContext).load(R.drawable.default_profile).thumbnail(0.10f)
-                    .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
-                    .into(binding.civProfile)
+            try {
+                Glide.with(applicationContext).load(R.drawable.default_profile).thumbnail(0.10f)
+                        .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
+                        .into(binding.civProfile)
+            } catch (_ : Exception) {
+            }
         } else {
-            Glide.with(applicationContext).load(profilePic).thumbnail(0.10f)
-                    .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
-                    .into(binding.civProfile)
+            try {
+                Glide.with(applicationContext).load(profilePic).thumbnail(0.10f)
+                        .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
+                        .into(binding.civProfile)
+            } catch (_ : Exception) {
+            }
         }
     }
 
@@ -495,7 +504,7 @@ class UserProfileActivity : AppCompatActivity() {
             ) {
                 callProfilePathSet()
             } else {
-                mRequestPermissionHandler !!.requestPermission(
+                mRequestPermissionHandler!!.requestPermission(
                     act, arrayOf(
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA
@@ -578,7 +587,7 @@ class UserProfileActivity : AppCompatActivity() {
             ctx.getString(R.string.not_now)
         ) { dialogs : DialogInterface, _ : Int -> dialogs.dismiss() }
         val alert11 = building.create()
-        alert11.window !!.setBackgroundDrawableResource(R.drawable.dialog_bg)
+        alert11.window!!.setBackgroundDrawableResource(R.drawable.dialog_bg)
         alert11.show()
         alert11.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
                 .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
@@ -615,7 +624,7 @@ class UserProfileActivity : AppCompatActivity() {
         ) { dialogue : DialogInterface, _ : Int -> dialogue.dismiss() }
         buildable.setCancelable(true)
         val alert11 = buildable.create()
-        alert11.window !!.setBackgroundDrawableResource(R.drawable.dialog_bg)
+        alert11.window!!.setBackgroundDrawableResource(R.drawable.dialog_bg)
         alert11.show()
         alert11.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
                 .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
@@ -665,7 +674,7 @@ class UserProfileActivity : AppCompatActivity() {
             }
         }
         val alert11 = builder.create()
-        alert11.window !!.setBackgroundDrawableResource(R.drawable.dialog_bg)
+        alert11.window!!.setBackgroundDrawableResource(R.drawable.dialog_bg)
         alert11.show()
     }
 
@@ -725,7 +734,7 @@ class UserProfileActivity : AppCompatActivity() {
         dob[year, month] = day
         var age = today[Calendar.YEAR] - dob[Calendar.YEAR]
         if (today[Calendar.DAY_OF_YEAR] < dob[Calendar.DAY_OF_YEAR]) {
-            age --
+            age--
         }
         return age
     }

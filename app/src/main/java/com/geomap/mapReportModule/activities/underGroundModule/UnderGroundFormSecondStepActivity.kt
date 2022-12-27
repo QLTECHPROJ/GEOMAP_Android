@@ -34,12 +34,12 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
     var scale : String? = ""
     var location : String? = ""
     var comment : String? = ""
-    var ugDataModel = UnderGroundInsertModel()
+    private var ugDataModel = UnderGroundInsertModel()
     private var userTextWatcher : TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s : CharSequence, start : Int, count : Int, after : Int) {}
         override fun onTextChanged(s : CharSequence, start : Int, before : Int, count : Int) {
-            ugmr.ugDate =  binding.tvUGDate.text.toString()
-            ugmr.name =  binding.etName.text.toString()
+            ugmr.ugDate = binding.tvUGDate.text.toString()
+            ugmr.name = binding.etName.text.toString()
             ugmr.comment = binding.etComment.text.toString()
             ugmr.shift = shift
             ugmr.mappedBy = binding.etMappedBy.text.toString()
@@ -53,10 +53,13 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
 
         override fun afterTextChanged(s : Editable) {}
     }
+
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,
-            R.layout.activity_under_ground_form_second_step)
+        binding = DataBindingUtil.setContentView(
+            this,
+            R.layout.activity_under_ground_form_second_step
+        )
         ctx = this@UnderGroundFormSecondStepActivity
         act = this@UnderGroundFormSecondStepActivity
         binding.btnNextStep.isEnabled = true
@@ -102,25 +105,26 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
         shift = getString(R.string.night_shift)
         binding.tvUGDate.text = SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT).format(Date())
 
-        binding.rbRadioGroup.setOnCheckedChangeListener { radioGroup: RadioGroup, id: Int ->
+        binding.rbRadioGroup.setOnCheckedChangeListener { radioGroup : RadioGroup, id : Int ->
             shift = radioGroup.findViewById<AppCompatRadioButton>(id).text.toString()
         }
 
         binding.btnNextStep.setOnClickListener {
             val gson = Gson()
-            var mapSerialNumber = ""
-            mapSerialNumber = if (flagUG == "1") {
+            val mapSerialNumber : String = if (flagUG == "1") {
                 ugmr.mapSerialNo!!
             } else {
                 ""
             }
-            ugDataModel = UnderGroundInsertModel(attributeDataModelList,
+            ugDataModel = UnderGroundInsertModel(
+                attributeDataModelList,
                 binding.etName.text.toString(), binding.etComment.text.toString(),
                 binding.tvUGDate.text.toString(), mapSerialNumber, shift,
                 binding.etMappedBy.text.toString(), binding.etScale.text.toString(),
                 binding.etLocation.text.toString(), binding.etVeinLoad.text.toString(),
                 binding.etXCoordinate.text.toString(), binding.etYCoordinate.text.toString(),
-                binding.etZCoordinate.text.toString(), null, null, null, null)
+                binding.etZCoordinate.text.toString(), null, null, null, null
+            )
 
             ugmr.ugDate = binding.tvUGDate.text.toString()
             ugmr.name = binding.etName.text.toString()

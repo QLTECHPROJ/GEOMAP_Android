@@ -9,7 +9,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -39,14 +38,12 @@ import com.geomap.databinding.CommonPopupLayoutBinding
 import com.geomap.mapReportModule.models.CommonPopupListModel
 import com.geomap.mapReportModule.models.OpenCastDetailsModel
 import com.geomap.mapReportModule.models.OpenCastInsertModel
-import com.geomap.mapReportModule.models.UnderGroundDetailsModel
 import com.geomap.roomDataBase.*
 import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
 import com.github.gcacace.signaturepad.views.SignaturePad
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import retrofit.mime.TypedFile
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -67,9 +64,11 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
     private lateinit var ocDetailsModel : OpenCastDetailsModel
     val gson = Gson()
     private val requestExternalStorage = 1
-    private val permissionsStorage = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE,
+    private val permissionsStorage = arrayOf(
+        Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.MANAGE_EXTERNAL_STORAGE)
+        Manifest.permission.MANAGE_EXTERNAL_STORAGE
+    )
     var geoSign = false
     var clientsGeoSign = false
 
@@ -94,9 +93,9 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 binding.etPitLocation.setText(ocDetailsModel.ResponseData.pitLoaction)
                 binding.etShiftInchargeName.setText(ocDetailsModel.ResponseData.shiftInchargeName)
                 geologistName = ocDetailsModel.ResponseData.geologistName
-                if(geologistName != null ) {
+                if (geologistName != null) {
                     binding.tvGeologistName.text = geologistName
-                }else{
+                } else {
                     geologistName = ""
                 }
                 binding.etFaceLocation.setText(ocDetailsModel.ResponseData.faceLocation)
@@ -113,71 +112,85 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 binding.etObservedGradeOfOre.setText(ocDetailsModel.ResponseData.observedGradeOfOre)
                 binding.etActualGradeOfOre.setText(ocDetailsModel.ResponseData.actualGradeOfOre)
                 sampleCollected = ocDetailsModel.ResponseData.sampleColledted
-                if(sampleCollected != null ){
+                if (sampleCollected != null) {
                     binding.tvSampleCollected.text = sampleCollected
-                }else{
+                } else {
                     sampleCollected = ""
                 }
                 weathering = ocDetailsModel.ResponseData.weathring
-                if(weathering != null) {
+                if (weathering != null) {
                     binding.tvWeathering.text = weathering
-                }else{
+                } else {
                     weathering = ""
                 }
                 rockStrength = ocDetailsModel.ResponseData.rockStregth
-                if(rockStrength != null) {
+                if (rockStrength != null) {
                     binding.tvRockStrength.text = rockStrength
-                }else{
+                } else {
                     rockStrength = ""
                 }
                 waterCondition = ocDetailsModel.ResponseData.waterCondition
-                if(waterCondition != null) {
+                if (waterCondition != null) {
                     binding.tvWaterCondition.text = waterCondition
-                }else{
+                } else {
                     waterCondition = ""
                 }
                 typeOfGeologicalStructures = ocDetailsModel.ResponseData.typeOfGeologist
-                if(typeOfGeologicalStructures != null ) {
+                if (typeOfGeologicalStructures != null) {
                     binding.tvTypeOfGeologicalStructures.text = typeOfGeologicalStructures
-                }else{
+                } else {
                     typeOfGeologicalStructures = ""
                 }
                 typeOfFaults = ocDetailsModel.ResponseData.typeOfFaults
-                if(typeOfFaults != null ) {
+                if (typeOfFaults != null) {
                     binding.tvTypeOfFaults.text = typeOfFaults
-                }else{
+                } else {
                     typeOfFaults = ""
                 }
                 binding.etNotes.setText(ocDetailsModel.ResponseData.notes)
                 shift = ocDetailsModel.ResponseData.shift
-                if(shift == getString(R.string.night_shift)){
+                if (shift == getString(R.string.night_shift)) {
                     binding.rbNightShift.isSelected = true
                     binding.rbDayShift.isSelected = false
-                }else{
+                } else {
                     binding.rbNightShift.isSelected = false
-                    binding.rbDayShift.isSelected =true
+                    binding.rbDayShift.isSelected = true
                 }
-                if(ocDetailsModel.ResponseData.image != "") {
+                if (ocDetailsModel.ResponseData.image != "") {
                     GeoMapDatabase.databaseWriteExecutor.execute {
-                        img =  Glide.with(ctx).asBitmap().load(
-                            ocDetailsModel.ResponseData.image).submit().get()
+                        try {
+                            img = Glide.with(ctx).asBitmap().load(
+                                ocDetailsModel.ResponseData.image
+                            ).submit().get()
+                        } catch (_ : Exception) {
+                        }
                     }
                 }
-                if(ocDetailsModel.ResponseData.geologistSign != "") {
+                if (ocDetailsModel.ResponseData.geologistSign != "") {
                     GeoMapDatabase.databaseWriteExecutor.execute {
-                        binding.geologistSignPad.signatureBitmap = Glide.with(ctx).asBitmap().load(
-                            ocDetailsModel.ResponseData.geologistSign).submit().get()
+                        try {
+                            binding.geologistSignPad.signatureBitmap = Glide.with(ctx).asBitmap()
+                                    .load(
+                                        ocDetailsModel.ResponseData.geologistSign
+                                    ).submit().get()
+                        } catch (_ : Exception) {
+                        }
                     }
                 }
-                if(ocDetailsModel.ResponseData.clientsGeologistSign!= "") {
+                if (ocDetailsModel.ResponseData.clientsGeologistSign != "") {
                     GeoMapDatabase.databaseWriteExecutor.execute {
-                        binding.geologistClientSignPad.signatureBitmap = Glide.with(
-                            ctx).asBitmap().load(
-                            ocDetailsModel.ResponseData.clientsGeologistSign).submit().get()
+                        try {
+                            binding.geologistClientSignPad.signatureBitmap = Glide.with(
+                                ctx
+                            ).asBitmap().load(
+                                ocDetailsModel.ResponseData.clientsGeologistSign
+                            ).submit().get()
+                        } catch (_ : Exception) {
+                        }
                     }
                 }
 
-            }else if(intent.getStringExtra("flag") == "detailDraft") {
+            } else if (intent.getStringExtra("flag") == "detailDraft") {
                 flagOC = "2"
                 val data = intent.getStringExtra("data")
                 val type1 = object : TypeToken<OpenCastMappingReport>() {}.type
@@ -188,9 +201,9 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 binding.etPitLocation.setText(ocmr.pitLocation)
                 binding.etShiftInchargeName.setText(ocmr.shiftInChargeName)
                 geologistName = ocmr.geologistName
-                if(geologistName != "" ) {
+                if (geologistName != "") {
                     binding.tvGeologistName.text = geologistName
-                }else{
+                } else {
                     geologistName = ""
                 }
                 binding.etFaceLocation.setText(ocmr.faceLocation)
@@ -207,60 +220,64 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 binding.etObservedGradeOfOre.setText(ocmr.observedGradeOfOre)
                 binding.etActualGradeOfOre.setText(ocmr.actualGradOfOre)
                 sampleCollected = ocmr.sampleCollected
-                if(sampleCollected != ""){
+                if (sampleCollected != "") {
                     binding.tvSampleCollected.text = sampleCollected
-                }else{
+                } else {
                     sampleCollected = ""
                 }
                 weathering = ocmr.weathering
-                if(weathering != "") {
+                if (weathering != "") {
                     binding.tvWeathering.text = weathering
-                }else{
+                } else {
                     weathering = ""
                 }
                 rockStrength = ocmr.rockStrength
-                if(rockStrength != "" ) {
+                if (rockStrength != "") {
                     binding.tvRockStrength.text = rockStrength
-                }else{
+                } else {
                     rockStrength = ""
                 }
                 waterCondition = ocmr.waterCondition
-                if(waterCondition != "" ) {
+                if (waterCondition != "") {
                     binding.tvWaterCondition.text = waterCondition
-                }else{
+                } else {
                     waterCondition = ""
                 }
                 typeOfGeologicalStructures = ocmr.typeOfGeologicalStructures
-                if(typeOfGeologicalStructures != "" ) {
+                if (typeOfGeologicalStructures != "") {
                     binding.tvTypeOfGeologicalStructures.text = typeOfGeologicalStructures
-                }else{
+                } else {
                     typeOfGeologicalStructures = ""
                 }
                 typeOfFaults = ocmr.typeOfFaults
-                if(typeOfFaults != "" ) {
+                if (typeOfFaults != "") {
                     binding.tvTypeOfFaults.text = typeOfFaults
-                }else{
+                } else {
                     typeOfFaults = ""
                 }
                 binding.etNotes.setText(ocmr.notes)
                 shift = ocmr.shift
-                if(ocmr.image != null) {
+                if (ocmr.image != null) {
                     GeoMapDatabase.databaseWriteExecutor.execute {
-                        img =  Glide.with(ctx).asBitmap().load(
-                            ocmr.image).submit().get()
+                        try {
+                            img = Glide.with(ctx).asBitmap().load(
+                                ocmr.image
+                            ).submit().get()
+                        } catch (_ : Exception) {
+                        }
                     }
                 }
-                if(shift == getString(R.string.night_shift)){
+                if (shift == getString(R.string.night_shift)) {
                     binding.rbNightShift.isSelected = true
                     binding.rbDayShift.isSelected = false
-                }else{
+                } else {
                     binding.rbNightShift.isSelected = false
-                    binding.rbDayShift.isSelected =true
+                    binding.rbDayShift.isSelected = true
                 }
-                if(ocmr.geologistSign != null) {
+                if (ocmr.geologistSign != null) {
                     binding.geologistSignPad.signatureBitmap = ocmr.geologistSign
                 }
-                if(ocmr.clientsGeologistSign!= null) {
+                if (ocmr.clientsGeologistSign != null) {
                     binding.geologistClientSignPad.signatureBitmap = ocmr.clientsGeologistSign
                 }
             }
@@ -280,38 +297,52 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         }
 
         binding.cvGeologistName.setOnClickListener {
-            callPopupList(getString(R.string.choose_your_geologist_name),
-                getString(R.string.pls_select_your_geologist_name), "7")
+            callPopupList(
+                getString(R.string.choose_your_geologist_name),
+                getString(R.string.pls_select_your_geologist_name), "7"
+            )
         }
 
         binding.cvSampleCollected.setOnClickListener {
-            callPopupList(getString(R.string.choose_your_sample_collected),
-                getString(R.string.pls_select_your_sample_collected), "1")
+            callPopupList(
+                getString(R.string.choose_your_sample_collected),
+                getString(R.string.pls_select_your_sample_collected), "1"
+            )
         }
 
         binding.cvWeathering.setOnClickListener {
-            callPopupList(getString(R.string.choose_your_weathering),
-                getString(R.string.pls_select_your_weathering), "2")
+            callPopupList(
+                getString(R.string.choose_your_weathering),
+                getString(R.string.pls_select_your_weathering), "2"
+            )
         }
 
         binding.cvRockStrength.setOnClickListener {
-            callPopupList(getString(R.string.choose_your_rock_strength),
-                getString(R.string.pls_select_your_rock_strength), "3")
+            callPopupList(
+                getString(R.string.choose_your_rock_strength),
+                getString(R.string.pls_select_your_rock_strength), "3"
+            )
         }
 
         binding.cvWaterCondition.setOnClickListener {
-            callPopupList(getString(R.string.choose_your_water_condition),
-                getString(R.string.pls_select_your_water_condition), "4")
+            callPopupList(
+                getString(R.string.choose_your_water_condition),
+                getString(R.string.pls_select_your_water_condition), "4"
+            )
         }
 
         binding.cvTypeOfGeologicalStructures.setOnClickListener {
-            callPopupList(getString(R.string.choose_your_type_of_geological_structures),
-                getString(R.string.pls_select_your_type_of_geological_structures), "5")
+            callPopupList(
+                getString(R.string.choose_your_type_of_geological_structures),
+                getString(R.string.pls_select_your_type_of_geological_structures), "5"
+            )
         }
 
         binding.cvTypeOfFaults.setOnClickListener {
-            callPopupList(getString(R.string.choose_your_Type_of_faults),
-                getString(R.string.pls_select_your_Type_of_faults), "6")
+            callPopupList(
+                getString(R.string.choose_your_Type_of_faults),
+                getString(R.string.pls_select_your_Type_of_faults), "6"
+            )
         }
 
 
@@ -334,18 +365,22 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 geoSign = true
                 binding.btnGeologistSignPadClear.isEnabled = true
                 binding.btnGeologistSignPadClear.setTextColor(
-                    ContextCompat.getColor(ctx, R.color.primary_theme))
+                    ContextCompat.getColor(ctx, R.color.primary_theme)
+                )
                 binding.btnGeologistSignPadClear.setBackgroundResource(
-                    R.drawable.border_enable_button)
+                    R.drawable.border_enable_button
+                )
             }
 
             override fun onClear() {
                 geoSign = false
                 binding.btnGeologistSignPadClear.isEnabled = false
                 binding.btnGeologistSignPadClear.setTextColor(
-                    ContextCompat.getColor(ctx, R.color.primary_theme))
+                    ContextCompat.getColor(ctx, R.color.primary_theme)
+                )
                 binding.btnGeologistSignPadClear.setBackgroundResource(
-                    R.drawable.border_enable_button)
+                    R.drawable.border_enable_button
+                )
             }
         })
 
@@ -359,9 +394,11 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 clientsGeoSign = true
                 binding.btnGeologistClientSignPadClear.isEnabled = true
                 binding.btnGeologistClientSignPadClear.setTextColor(
-                    ContextCompat.getColor(ctx, R.color.primary_theme))
+                    ContextCompat.getColor(ctx, R.color.primary_theme)
+                )
                 binding.btnGeologistClientSignPadClear.setBackgroundResource(
-                    R.drawable.border_enable_button)
+                    R.drawable.border_enable_button
+                )
 
             }
 
@@ -369,9 +406,11 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 clientsGeoSign = false
                 binding.btnGeologistClientSignPadClear.isEnabled = false
                 binding.btnGeologistClientSignPadClear.setTextColor(
-                    ContextCompat.getColor(ctx, R.color.primary_theme))
+                    ContextCompat.getColor(ctx, R.color.primary_theme)
+                )
                 binding.btnGeologistClientSignPadClear.setBackgroundResource(
-                    R.drawable.border_enable_button)
+                    R.drawable.border_enable_button
+                )
             }
         })
 
@@ -384,21 +423,22 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         var sheetNo = ""
         sheetNo = if (flagOC == "1") {
             ocDetailsModel.ResponseData.mappingSheetNo
-        }else {
+        } else {
             ""
         }
         val gson = Gson()
-        val geologistSignPad : Bitmap? = if(geoSign){
+        val geologistSignPad : Bitmap? = if (geoSign) {
             binding.geologistSignPad.signatureBitmap
-        }else{
+        } else {
             null
         }
-        val geologistClientSignPad: Bitmap? =  if(clientsGeoSign){
-              binding.geologistClientSignPad.signatureBitmap
-        }else{
-              null
+        val geologistClientSignPad : Bitmap? = if (clientsGeoSign) {
+            binding.geologistClientSignPad.signatureBitmap
+        } else {
+            null
         }
-        ocDataModel = OpenCastInsertModel(binding.etMinesSiteName.text.toString(),
+        ocDataModel = OpenCastInsertModel(
+            binding.etMinesSiteName.text.toString(),
             sheetNo, binding.tvOCDate.text.toString(),
             binding.etPitName.text.toString(), binding.etPitLocation.text.toString(),
             binding.etShiftInchargeName.text.toString(),
@@ -416,7 +456,8 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             rockStrength, waterCondition,
             typeOfGeologicalStructures,
             typeOfFaults, shift, binding.etNotes.text.toString(),
-            geologistSignPad,geologistClientSignPad)
+            geologistSignPad, geologistClientSignPad
+        )
         val i = Intent(ctx, OpenCastFormSecondStepActivity::class.java)
         i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         i.putExtra("ocData", gson.toJson(ocDataModel))
@@ -445,7 +486,8 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         }
         searchView.onActionViewExpanded()
         val searchEditText : EditText = searchView.findViewById(
-            androidx.appcompat.R.id.search_src_text)
+            androidx.appcompat.R.id.search_src_text
+        )
         searchEditText.setTextColor(ContextCompat.getColor(ctx, R.color.light_black))
         searchEditText.setHintTextColor(ContextCompat.getColor(ctx, R.color.light_black))
         searchView.clearFocus()
@@ -494,10 +536,12 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         dialog.setCancelable(true)
     }
 
-    private fun prepareAttributesListing(dialog : Dialog, rvList : RecyclerView,
-        tvFound : TextView,
-        progressBar : ProgressBar, progressBarHolder : FrameLayout, searchView : SearchView,
-        keyS : String) {
+    private fun prepareAttributesListing(
+            dialog : Dialog, rvList : RecyclerView,
+            tvFound : TextView,
+            progressBar : ProgressBar, progressBarHolder : FrameLayout, searchView : SearchView,
+            keyS : String
+    ) {
         if (isNetworkConnected(ctx)) {
             showProgressBar(progressBar, progressBarHolder, act)
             searchView.isEnabled = false
@@ -529,8 +573,10 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
 
             service?.enqueue(object :
                 Callback<CommonPopupListModel> {
-                override fun onResponse(call : Call<CommonPopupListModel>,
-                    response : Response<CommonPopupListModel>) {
+                override fun onResponse(
+                        call : Call<CommonPopupListModel>,
+                        response : Response<CommonPopupListModel>
+                ) {
                     val model = response.body()
                     hideProgressBar(progressBar, progressBarHolder, act)
                     when {
@@ -539,8 +585,10 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                             searchView.isClickable = true
                             rvList.layoutManager = LinearLayoutManager(ctx)
                             popupAdapter =
-                                PopupAdapter(dialog, binding,
-                                    model.responseData!!, rvList, tvFound, keyS, ctx)
+                                    PopupAdapter(
+                                        dialog, binding,
+                                        model.responseData!!, rvList, tvFound, keyS, ctx
+                                    )
                             rvList.adapter = popupAdapter
                         }
                         model.responseCode!! == getString(R.string.ResponseCodefail) -> {
@@ -566,8 +614,10 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                     var list : ArrayList<SampleCollected>
                     GeoMapDatabase.databaseWriteExecutor.execute {
                         list = DB?.taskDao()?.geAllSampleCollected() as ArrayList<SampleCollected>
-                        Log.e("List SampleCollected",
-                            "true" + DataBaseFunctions.gson.toJson(list).toString())
+                        Log.e(
+                            "List SampleCollected",
+                            "true" + DataBaseFunctions.gson.toJson(list).toString()
+                        )
                         callSampleCollectedAdapter(list, searchView, rvList, tvFound, keyS, dialog)
                     }
                 }
@@ -575,8 +625,10 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                     var list : ArrayList<WeatheringData>
                     GeoMapDatabase.databaseWriteExecutor.execute {
                         list = DB?.taskDao()?.geAllWeatheringData() as ArrayList<WeatheringData>
-                        Log.e("List WeatheringData",
-                            "true" + DataBaseFunctions.gson.toJson(list).toString())
+                        Log.e(
+                            "List WeatheringData",
+                            "true" + DataBaseFunctions.gson.toJson(list).toString()
+                        )
 
                         callWeatheringDataAdapter(list, searchView, rvList, tvFound, keyS, dialog)
                     }
@@ -585,8 +637,10 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                     var list : ArrayList<RockStrength>
                     GeoMapDatabase.databaseWriteExecutor.execute {
                         list = DB?.taskDao()?.geAllRockStrength() as ArrayList<RockStrength>
-                        Log.e("List RockStrength",
-                            "true" + DataBaseFunctions.gson.toJson(list).toString())
+                        Log.e(
+                            "List RockStrength",
+                            "true" + DataBaseFunctions.gson.toJson(list).toString()
+                        )
                         callRockStrengthAdapter(list, searchView, rvList, tvFound, keyS, dialog)
                     }
                 }
@@ -594,8 +648,10 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                     var list : ArrayList<WaterCondition>
                     GeoMapDatabase.databaseWriteExecutor.execute {
                         list = DB?.taskDao()?.geAllWaterCondition() as ArrayList<WaterCondition>
-                        Log.e("List WaterCondition",
-                            "true" + DataBaseFunctions.gson.toJson(list).toString())
+                        Log.e(
+                            "List WaterCondition",
+                            "true" + DataBaseFunctions.gson.toJson(list).toString()
+                        )
                         callWaterConditionAdapter(list, searchView, rvList, tvFound, keyS, dialog)
                     }
                 }
@@ -603,19 +659,25 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                     var list : ArrayList<TypeOfGeologicalStructures>
                     GeoMapDatabase.databaseWriteExecutor.execute {
                         list = DB?.taskDao()
-                            ?.geAllTypeOfGeologicalStructures() as ArrayList<TypeOfGeologicalStructures>
-                        Log.e("List TypeOfGeologicalStructures",
-                            "true" + DataBaseFunctions.gson.toJson(list).toString())
-                        callTypeOfGeologicalStructuresAdapter(list, searchView, rvList, tvFound,
-                            keyS, dialog)
+                                ?.geAllTypeOfGeologicalStructures() as ArrayList<TypeOfGeologicalStructures>
+                        Log.e(
+                            "List TypeOfGeologicalStructures",
+                            "true" + DataBaseFunctions.gson.toJson(list).toString()
+                        )
+                        callTypeOfGeologicalStructuresAdapter(
+                            list, searchView, rvList, tvFound,
+                            keyS, dialog
+                        )
                     }
                 }
                 "6" -> {
                     var list : ArrayList<TypeOfFaults>
                     GeoMapDatabase.databaseWriteExecutor.execute {
                         list = DB?.taskDao()?.geAllTypeOfFaults() as ArrayList<TypeOfFaults>
-                        Log.e("List TypeOfFaults",
-                            "true" + DataBaseFunctions.gson.toJson(list).toString())
+                        Log.e(
+                            "List TypeOfFaults",
+                            "true" + DataBaseFunctions.gson.toJson(list).toString()
+                        )
                         callTypeOfFaultsAdapter(list, searchView, rvList, tvFound, keyS, dialog)
                     }
                 }
@@ -623,8 +685,10 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                     var list : ArrayList<Geologist>
                     GeoMapDatabase.databaseWriteExecutor.execute {
                         list = DB?.taskDao()?.geAllGeologist() as ArrayList<Geologist>
-                        Log.e("List Geologist",
-                            "true" + DataBaseFunctions.gson.toJson(list).toString())
+                        Log.e(
+                            "List Geologist",
+                            "true" + DataBaseFunctions.gson.toJson(list).toString()
+                        )
                         callGeologistAdapter(list, searchView, rvList, tvFound, keyS, dialog)
                     }
                 }
@@ -632,8 +696,10 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         }
     }
 
-    private fun callGeologistAdapter(list : ArrayList<Geologist>, searchView : SearchView,
-        rvList : RecyclerView, tvFound : TextView, keyS : String, dialog : Dialog) {
+    private fun callGeologistAdapter(
+            list : ArrayList<Geologist>, searchView : SearchView,
+            rvList : RecyclerView, tvFound : TextView, keyS : String, dialog : Dialog
+    ) {
         for (i in list.indices) {
             val obj = CommonPopupListModel.ResponseData()
             obj.id = list[i].iD.toString()
@@ -647,15 +713,19 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 searchView.isEnabled = true
                 searchView.isClickable = true
                 rvList.layoutManager = LinearLayoutManager(ctx)
-                popupAdapter = PopupAdapter(dialog, binding, modelList.responseData!!, rvList,
-                    tvFound, keyS, ctx)
+                popupAdapter = PopupAdapter(
+                    dialog, binding, modelList.responseData!!, rvList,
+                    tvFound, keyS, ctx
+                )
                 rvList.adapter = popupAdapter
             }
         }
     }
 
-    private fun callTypeOfFaultsAdapter(list : ArrayList<TypeOfFaults>, searchView : SearchView,
-        rvList : RecyclerView, tvFound : TextView, keyS : String, dialog : Dialog) {
+    private fun callTypeOfFaultsAdapter(
+            list : ArrayList<TypeOfFaults>, searchView : SearchView,
+            rvList : RecyclerView, tvFound : TextView, keyS : String, dialog : Dialog
+    ) {
         for (i in list.indices) {
             val obj = CommonPopupListModel.ResponseData()
             obj.id = list[i].iD.toString()
@@ -669,22 +739,28 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 searchView.isEnabled = true
                 searchView.isClickable = true
                 rvList.layoutManager = LinearLayoutManager(ctx)
-                popupAdapter = PopupAdapter(dialog, binding, modelList.responseData!!, rvList,
-                    tvFound, keyS, ctx)
+                popupAdapter = PopupAdapter(
+                    dialog, binding, modelList.responseData!!, rvList,
+                    tvFound, keyS, ctx
+                )
                 rvList.adapter = popupAdapter
             }
         }
     }
 
-    private fun callTypeOfGeologicalStructuresAdapter(list : ArrayList<TypeOfGeologicalStructures>,
-        searchView : SearchView, rvList : RecyclerView, tvFound : TextView,
-        keyS : String, dialog : Dialog) {
+    private fun callTypeOfGeologicalStructuresAdapter(
+            list : ArrayList<TypeOfGeologicalStructures>,
+            searchView : SearchView, rvList : RecyclerView, tvFound : TextView,
+            keyS : String, dialog : Dialog
+    ) {
         searchView.isEnabled = true
         searchView.isClickable = true
         rvList.layoutManager = LinearLayoutManager(ctx)
         popupAdapter =
-            PopupAdapter(dialog, binding,
-                modelList.responseData!!, rvList, tvFound, keyS, ctx)
+                PopupAdapter(
+                    dialog, binding,
+                    modelList.responseData!!, rvList, tvFound, keyS, ctx
+                )
         rvList.adapter = popupAdapter
         for (i in list.indices) {
             val obj = CommonPopupListModel.ResponseData()
@@ -699,15 +775,19 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 searchView.isEnabled = true
                 searchView.isClickable = true
                 rvList.layoutManager = LinearLayoutManager(ctx)
-                popupAdapter = PopupAdapter(dialog, binding, modelList.responseData!!, rvList,
-                    tvFound, keyS, ctx)
+                popupAdapter = PopupAdapter(
+                    dialog, binding, modelList.responseData!!, rvList,
+                    tvFound, keyS, ctx
+                )
                 rvList.adapter = popupAdapter
             }
         }
     }
 
-    private fun callWaterConditionAdapter(list : ArrayList<WaterCondition>, searchView : SearchView,
-        rvList : RecyclerView, tvFound : TextView, keyS : String, dialog : Dialog) {
+    private fun callWaterConditionAdapter(
+            list : ArrayList<WaterCondition>, searchView : SearchView,
+            rvList : RecyclerView, tvFound : TextView, keyS : String, dialog : Dialog
+    ) {
         for (i in list.indices) {
             val obj = CommonPopupListModel.ResponseData()
             obj.id = list[i].iD.toString()
@@ -721,15 +801,19 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 searchView.isEnabled = true
                 searchView.isClickable = true
                 rvList.layoutManager = LinearLayoutManager(ctx)
-                popupAdapter = PopupAdapter(dialog, binding, modelList.responseData!!, rvList,
-                    tvFound, keyS, ctx)
+                popupAdapter = PopupAdapter(
+                    dialog, binding, modelList.responseData!!, rvList,
+                    tvFound, keyS, ctx
+                )
                 rvList.adapter = popupAdapter
             }
         }
     }
 
-    private fun callRockStrengthAdapter(list : ArrayList<RockStrength>, searchView : SearchView,
-        rvList : RecyclerView, tvFound : TextView, keyS : String, dialog : Dialog) {
+    private fun callRockStrengthAdapter(
+            list : ArrayList<RockStrength>, searchView : SearchView,
+            rvList : RecyclerView, tvFound : TextView, keyS : String, dialog : Dialog
+    ) {
         for (i in list.indices) {
             val obj = CommonPopupListModel.ResponseData()
             obj.id = list[i].iD.toString()
@@ -743,15 +827,19 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 searchView.isEnabled = true
                 searchView.isClickable = true
                 rvList.layoutManager = LinearLayoutManager(ctx)
-                popupAdapter = PopupAdapter(dialog, binding, modelList.responseData!!, rvList,
-                    tvFound, keyS, ctx)
+                popupAdapter = PopupAdapter(
+                    dialog, binding, modelList.responseData!!, rvList,
+                    tvFound, keyS, ctx
+                )
                 rvList.adapter = popupAdapter
             }
         }
     }
 
-    private fun callWeatheringDataAdapter(list : ArrayList<WeatheringData>, searchView : SearchView,
-        rvList : RecyclerView, tvFound : TextView, keyS : String, dialog : Dialog) {
+    private fun callWeatheringDataAdapter(
+            list : ArrayList<WeatheringData>, searchView : SearchView,
+            rvList : RecyclerView, tvFound : TextView, keyS : String, dialog : Dialog
+    ) {
 
         for (i in list.indices) {
             val obj = CommonPopupListModel.ResponseData()
@@ -766,16 +854,20 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 searchView.isEnabled = true
                 searchView.isClickable = true
                 rvList.layoutManager = LinearLayoutManager(ctx)
-                popupAdapter = PopupAdapter(dialog, binding, modelList.responseData!!, rvList,
-                    tvFound, keyS, ctx)
+                popupAdapter = PopupAdapter(
+                    dialog, binding, modelList.responseData!!, rvList,
+                    tvFound, keyS, ctx
+                )
                 rvList.adapter = popupAdapter
             }
         }
     }
 
-    private fun callSampleCollectedAdapter(list : ArrayList<SampleCollected>,
-        searchView : SearchView,
-        rvList : RecyclerView, tvFound : TextView, keys : String?, dialog : Dialog) {
+    private fun callSampleCollectedAdapter(
+            list : ArrayList<SampleCollected>,
+            searchView : SearchView,
+            rvList : RecyclerView, tvFound : TextView, keys : String?, dialog : Dialog
+    ) {
         for (i in list.indices) {
             val obj = CommonPopupListModel.ResponseData()
             obj.id = list[i].iD.toString()
@@ -788,24 +880,29 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 searchView.isEnabled = true
                 searchView.isClickable = true
                 rvList.layoutManager = LinearLayoutManager(ctx)
-                popupAdapter = PopupAdapter(dialog, binding, modelList.responseData!!, rvList,
-                    tvFound, keys!!, ctx)
+                popupAdapter = PopupAdapter(
+                    dialog, binding, modelList.responseData!!, rvList,
+                    tvFound, keys!!, ctx
+                )
                 rvList.adapter = popupAdapter
             }
         }
     }
 
-    class PopupAdapter(private var dialog : Dialog,
-        private var binding : ActivityOpenCastFormFirstStepBinding,
-        private val modelList : ArrayList<CommonPopupListModel.ResponseData>,
-        private var rvCountryList : RecyclerView,
-        private var tvFound : TextView, private var keyS : String, private var ctx : Context) :
+    class PopupAdapter(
+            private var dialog : Dialog,
+            private var binding : ActivityOpenCastFormFirstStepBinding,
+            private val modelList : ArrayList<CommonPopupListModel.ResponseData>,
+            private var rvCountryList : RecyclerView,
+            private var tvFound : TextView, private var keyS : String, private var ctx : Context
+    ) :
         RecyclerView.Adapter<PopupAdapter.MyViewHolder>(),
         Filterable {
         private var listFilterData : List<CommonPopupListModel.ResponseData> = modelList
         override fun onCreateViewHolder(parent : ViewGroup, viewType : Int) : MyViewHolder {
             val v : CommonPopupLayoutBinding = DataBindingUtil.inflate(
-                LayoutInflater.from(parent.context), R.layout.common_popup_layout, parent, false)
+                LayoutInflater.from(parent.context), R.layout.common_popup_layout, parent, false
+            )
             return MyViewHolder(v)
         }
 
@@ -823,7 +920,8 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                         sampleCollectedId = mData.id
                         binding.tvSampleCollected.text = mData.name
                         binding.tvSampleCollected.setTextColor(
-                            ContextCompat.getColor(ctx, R.color.light_black))
+                            ContextCompat.getColor(ctx, R.color.light_black)
+                        )
                         sampleCollected = mData.name
                         binding.tvHintSampleCollected.text = mData.id.toString()
                     }
@@ -835,7 +933,8 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                         weatheringId = mData.id
                         binding.tvWeathering.text = mData.name
                         binding.tvWeathering.setTextColor(
-                            ContextCompat.getColor(ctx, R.color.light_black))
+                            ContextCompat.getColor(ctx, R.color.light_black)
+                        )
                         weathering = mData.name
                         binding.tvHintWeathering.text = mData.id.toString()
                     }
@@ -847,7 +946,8 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                         rockStrengthId = mData.id
                         binding.tvRockStrength.text = mData.name
                         binding.tvRockStrength.setTextColor(
-                            ContextCompat.getColor(ctx, R.color.light_black))
+                            ContextCompat.getColor(ctx, R.color.light_black)
+                        )
                         rockStrength = mData.name
                         binding.tvHintRockStrength.text = mData.id.toString()
                     }
@@ -859,7 +959,8 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                         waterConditionId = mData.id
                         binding.tvWaterCondition.text = mData.name
                         binding.tvWaterCondition.setTextColor(
-                            ContextCompat.getColor(ctx, R.color.light_black))
+                            ContextCompat.getColor(ctx, R.color.light_black)
+                        )
                         waterCondition = mData.name
                         binding.tvHintWaterCondition.text = mData.id.toString()
                     }
@@ -871,7 +972,8 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                         typeOfGeologicalStructuresId = mData.id
                         binding.tvTypeOfGeologicalStructures.text = mData.name
                         binding.tvTypeOfGeologicalStructures.setTextColor(
-                            ContextCompat.getColor(ctx, R.color.light_black))
+                            ContextCompat.getColor(ctx, R.color.light_black)
+                        )
                         typeOfGeologicalStructures = mData.name
                         binding.tvHintTypeOfGeologicalStructures.text = mData.id.toString()
                     }
@@ -883,7 +985,8 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                         typeOfFaultsId = mData.id
                         binding.tvTypeOfFaults.text = mData.name
                         binding.tvTypeOfFaults.setTextColor(
-                            ContextCompat.getColor(ctx, R.color.light_black))
+                            ContextCompat.getColor(ctx, R.color.light_black)
+                        )
                         typeOfFaults = mData.name
                         binding.tvHintTypeOfFaults.text = mData.id.toString()
                     }
@@ -895,7 +998,8 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                         geologistNameId = mData.id
                         binding.tvGeologistName.text = mData.name
                         binding.tvGeologistName.setTextColor(
-                            ContextCompat.getColor(ctx, R.color.light_black))
+                            ContextCompat.getColor(ctx, R.color.light_black)
+                        )
                         geologistName = mData.name
                         binding.tvHintGeologistName.text = mData.id.toString()
                     }
@@ -926,10 +1030,12 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                         modelList
                     } else {
                         val filteredList : MutableList<CommonPopupListModel.ResponseData> =
-                            ArrayList<CommonPopupListModel.ResponseData>()
+                                ArrayList<CommonPopupListModel.ResponseData>()
                         for (row in modelList) {
                             if (row.name!!.lowercase(Locale.getDefault()).contains(
-                                    charString.lowercase(Locale.getDefault()))) {
+                                    charString.lowercase(Locale.getDefault())
+                                )
+                            ) {
                                 filteredList.add(row)
                             }
                         }
@@ -940,8 +1046,10 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 }
 
                 @SuppressLint("SetTextI18n")
-                override fun publishResults(charSequence : CharSequence,
-                    filterResults : FilterResults) {
+                override fun publishResults(
+                        charSequence : CharSequence,
+                        filterResults : FilterResults
+                ) {
                     if (listFilterData.isEmpty()) {
                         tvFound.visibility = View.VISIBLE
                         tvFound.text = "Sorry we are not available in this state yet"
@@ -950,7 +1058,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                         tvFound.visibility = View.GONE
                         rvCountryList.visibility = View.VISIBLE
                         listFilterData =
-                            filterResults.values as List<CommonPopupListModel.ResponseData>
+                                filterResults.values as List<CommonPopupListModel.ResponseData>
                         notifyDataSetChanged()
                     }
                 }
@@ -958,61 +1066,71 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         }
 
         inner class MyViewHolder(
-            var bindingAdapter : CommonPopupLayoutBinding) : RecyclerView.ViewHolder(
-            bindingAdapter.root)
+                var bindingAdapter : CommonPopupLayoutBinding
+        ) : RecyclerView.ViewHolder(
+            bindingAdapter.root
+        )
     }
 
-    override fun onRequestPermissionsResult(requestCode : Int,
-        permissions : Array<String?>, grantResults : IntArray) {
+    override fun onRequestPermissionsResult(
+            requestCode : Int,
+            permissions : Array<String?>, grantResults : IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             requestExternalStorage -> {
                 if (grantResults.isEmpty()
-                    || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+                    || grantResults[0] != PackageManager.PERMISSION_GRANTED
+                ) {
                     Log.e("onRequestPermissionsResult", "Cannot write images to external storage")
                 }
             }
         }
     }
 
-    private fun scanMediaFile(photo : File) {
-        val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-        val contentUri = Uri.fromFile(photo)
-        mediaScanIntent.data = contentUri
-        ctx.sendBroadcast(mediaScanIntent)
-    }
-
-    private fun getAlbumStorageDir() : File {
-        val file = File(Environment.getExternalStoragePublicDirectory(
-            Environment.DIRECTORY_PICTURES), "Pictures")
-        if (!file.mkdirs()) {
-            Log.e("SignaturePad", "Directory not created")
-        }
-        return file
-    }
-
-    @Throws(IOException::class) fun saveBitmapToJPG(bitmap : Bitmap, photo : File?) {
-        val newBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(newBitmap)
-        canvas.drawColor(Color.WHITE)
-        canvas.drawBitmap(bitmap, 0f, 0f, null)
-        val stream : OutputStream = FileOutputStream(photo)
-        newBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
-        stream.close()
-    }
-
     fun verifyStoragePermissions() {
         if (SDK_INT >= Build.VERSION_CODES.R) {
             if (!Environment.isExternalStorageManager()) {
-                callFilesPermission()
+                val building = AlertDialog.Builder(ctx)
+                building.setMessage(
+                    """To upload image allow ${
+                        ctx.getString(
+                            R.string.app_name
+                        )
+                    } access to your device's files. 
+Tap Setting > permission, and turn "Files and media" on."""
+                )
+                building.setCancelable(true)
+                building.setPositiveButton(
+                    ctx.getString(R.string.Settings)
+                ) { dialogs : DialogInterface, _ : Int ->
+                    val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+                    val uri = Uri.fromParts("package", packageName, null)
+                    intent.data = uri
+                    startActivity(intent)
+                    dialogs.dismiss()
+                }
+                building.setNegativeButton(
+                    ctx.getString(R.string.not_now)
+                ) { dialogs : DialogInterface, _ : Int -> dialogs.dismiss() }
+                val alert11 = building.create()
+                alert11.window!!.setBackgroundDrawableResource(R.drawable.dialog_bg)
+                alert11.show()
+                alert11.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
+                        .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
+                alert11.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
+                        .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
             }
         } else {
-            if (ActivityCompat.checkSelfPermission(ctx,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+            if (ActivityCompat.checkSelfPermission(
+                    ctx,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                     ctx, Manifest.permission.READ_EXTERNAL_STORAGE
                 ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                     ctx, Manifest.permission.MANAGE_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED) {
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 ActivityCompat.requestPermissions(
                     act,
                     permissionsStorage,
@@ -1020,38 +1138,6 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 )
             }
         }
-    }
-
-    private fun callFilesPermission() {
-        val building = AlertDialog.Builder(ctx)
-        building.setMessage(
-            """To upload image allow ${
-                ctx.getString(
-                    R.string.app_name
-                )
-            } access to your device's files. 
-Tap Setting > permission, and turn "Files and media" on."""
-        )
-        building.setCancelable(true)
-        building.setPositiveButton(
-            ctx.getString(R.string.Settings)
-        ) { dialogs : DialogInterface, _ : Int ->
-            val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-            val uri = Uri.fromParts("package", packageName, null)
-            intent.data = uri
-            startActivity(intent)
-            dialogs.dismiss()
-        }
-        building.setNegativeButton(
-            ctx.getString(R.string.not_now)
-        ) { dialogs : DialogInterface, _ : Int -> dialogs.dismiss() }
-        val alert11 = building.create()
-        alert11.window!!.setBackgroundDrawableResource(R.drawable.dialog_bg)
-        alert11.show()
-        alert11.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
-            .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
-        alert11.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
-            .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
     }
 
     companion object {
@@ -1077,7 +1163,7 @@ Tap Setting > permission, and turn "Files and media" on."""
     override fun onBackPressed() {
         flagOC = "0"
         ocmr = OpenCastMappingReport()
-        img  = null
+        img = null
         finish()
     }
 }
