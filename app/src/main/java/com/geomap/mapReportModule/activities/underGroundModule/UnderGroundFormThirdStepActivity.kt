@@ -116,6 +116,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             }
             val d : Drawable = BitmapDrawable(resources!!, signRoofBitMap)
             binding.drawing.background = d
+            binding.drawing.isFilled = true
         } else {
             callDisable("0")
         }
@@ -155,6 +156,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                 isSignRoofFilled = binding.drawing.isFilled
                 if (signLeftBitMap != null) {
                     callEnable(signLeftBitMap!!, "left")
+                    binding.drawing.isFilled = true
                 } else {
                     callDisable("1")
                 }
@@ -166,6 +168,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                 isSignLeftFilled = binding.drawing.isFilled
                 if (signRightBitMap != null) {
                     callEnable(signRightBitMap!!, "right")
+                    binding.drawing.isFilled = true
                 } else {
                     callDisable("1")
                 }
@@ -179,6 +182,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                 isSignRightFilled = binding.drawing.isFilled
                 if (signFaceBitMap != null) {
                     callEnable(signFaceBitMap!!, "face")
+                    binding.drawing.isFilled = true
                 } else {
                     callDisable("1")
                 }
@@ -190,6 +194,8 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                 isSignFaceFilled = binding.drawing.isFilled
                 if (signFaceBitMap != null) {
                     callEnable(signFaceBitMap!!, "face")
+                    binding.drawing.isFilled = true
+                    isSignFaceFilled = true
                 } else {
                     callDisable("1")
                 }

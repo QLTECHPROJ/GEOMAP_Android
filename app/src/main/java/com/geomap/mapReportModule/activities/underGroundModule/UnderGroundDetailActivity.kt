@@ -171,10 +171,7 @@ class UnderGroundDetailActivity : AppCompatActivity() {
     }
 
     private fun imageGlide(ctx : Context, url : String, imageView : ImageView) {
-        try {
-            Glide.with(ctx).load(url)
-                    .thumbnail(0.10f).into(imageView)
-        } catch (_ : Exception) {
-        }
+        Glide.with(ctx).load(url).placeholder(R.drawable.grid_bg_new).error(R.drawable.grid_bg_new)
+                .thumbnail(0.10f).into(imageView)
     }
 }

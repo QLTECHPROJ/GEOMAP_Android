@@ -91,6 +91,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             if (img != null) {
                 val d : Drawable = BitmapDrawable(resources, img)
                 binding.drawing.background = d
+                binding.drawing.isFilled = true
             }
         }
 
@@ -221,10 +222,10 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         obj.typeOfGeologicalStructures = ocDataModel.typeOfGeologicalStructures
         obj.typeOfFaults = ocDataModel.typeOfFaults
         obj.notes = ocDataModel.notes
-        if(ocDataModel.geologistSignBitMap != null) {
+        if (ocDataModel.geologistSignBitMap != null) {
             obj.geologistSign = ocDataModel.geologistSignBitMap
         }
-        if(ocDataModel.clientsGeologistSignBitMap != null) {
+        if (ocDataModel.clientsGeologistSignBitMap != null) {
             obj.clientsGeologistSign = ocDataModel.clientsGeologistSignBitMap
         }
         obj.image = binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)

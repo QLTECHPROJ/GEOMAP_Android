@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -88,10 +87,13 @@ class OpenCastDetailActivity : AppCompatActivity() {
                                 )
                         binding.ocDetail = ocDetail
 
-                        imageGlide(ctx, ocDetail.ResponseData.geologistSign, binding.imgGeologistSign)
-                        imageGlide(ctx, ocDetail.ResponseData.clientsGeologistSign, binding.imgClientGeologistSign)
-                        imageGlide(ctx, ocDetail.ResponseData.image, binding.image)
-
+                        Glide.with(ctx).load(ocDetail.ResponseData.geologistSign)
+                                .thumbnail(0.10f).into(binding.imgGeologistSign)
+                        Glide.with(ctx).load(ocDetail.ResponseData.clientsGeologistSign)
+                                .thumbnail(0.10f).into(binding.imgClientGeologistSign)
+                        Glide.with(ctx).load(ocDetail.ResponseData.image)
+                                .placeholder(R.drawable.grid_bg_new).error(R.drawable.grid_bg_new)
+                                .thumbnail(0.10f).into(binding.image)
                     }
                     it.ResponseCode == act.getString(R.string.ResponseCodefail) -> {
                         showToast(it.ResponseMessage, act)
@@ -109,13 +111,4 @@ class OpenCastDetailActivity : AppCompatActivity() {
     override fun onBackPressed() {
         finish()
     }
-
-    private fun imageGlide(ctx : Context, url : String, imageView : ImageView) {
-        try {
-            Glide.with(ctx).load(url)
-                    .thumbnail(0.10f).into(imageView)
-        } catch (_ : Exception) {
-        }
-    }
-
 }
