@@ -226,8 +226,12 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         obj.typeOfGeologicalStructures = ocDataModel.typeOfGeologicalStructures
         obj.typeOfFaults = ocDataModel.typeOfFaults
         obj.notes = ocDataModel.notes
-        obj.geologistSign = ocDataModel.geologistSignBitMap!!
-        obj.clientsGeologistSign = ocDataModel.clientsGeologistSignBitMap!!
+        if(ocDataModel.geologistSignBitMap != null) {
+            obj.geologistSign = ocDataModel.geologistSignBitMap
+        }
+        if(ocDataModel.clientsGeologistSignBitMap != null) {
+            obj.clientsGeologistSign = ocDataModel.clientsGeologistSignBitMap
+        }
         obj.image = binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
         obj.uid = ocmr.uid
         Log.e("obj.uid", obj.uid.toString())
