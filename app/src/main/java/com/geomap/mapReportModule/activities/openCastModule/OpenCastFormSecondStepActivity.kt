@@ -42,10 +42,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit.RetrofitError
 import retrofit.mime.TypedFile
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.OutputStream
+import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -57,6 +54,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
     private var userId : String? = null
     private var sign : TypedFile? = null
     private var isImageFilled = false
+    private var isImageEdited = false
     private val requestExternalStorage = 1
     private val permissionsStorage = arrayOf(
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -118,21 +116,38 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
 
     private fun postOpenCastInsert() {
         isImageFilled = binding.drawing.isFilled
+        isImageEdited = binding.drawing.isEdited
         binding.drawing.isDrawingCacheEnabled = true
 
-        if (ocDataModel.geologistSignBitMap != null) {
-            geologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, saveBitmapToJPG("geologistSign", ocDataModel.geologistSignBitMap!!))
+        geologistSign = if (ocDataModel.geologistSignBitMap != null) {
+            TypedFile(CONSTANTS.MULTIPART_FORMAT, saveBitmapToJPG("geologistSign", ocDataModel.geologistSignBitMap!!))
+        } else {
+            null
         }
 
-        if (ocDataModel.clientsGeologistSignBitMap != null) {
-            clientsGeologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, saveBitmapToJPG("clientsGeologistSign", ocDataModel.clientsGeologistSignBitMap!!))
+        clientsGeologistSign = if (ocDataModel.clientsGeologistSignBitMap != null) {
+            TypedFile(CONSTANTS.MULTIPART_FORMAT, saveBitmapToJPG("clientsGeologistSign", ocDataModel.clientsGeologistSignBitMap!!))
+        } else {
+            null
         }
 
-        if (isImageFilled) {
-            sign = TypedFile(CONSTANTS.MULTIPART_FORMAT, saveBitmapToJPG("Image", binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)))
+        if (isImageEdited) {
+            val bitmap = binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
+            sign = TypedFile(CONSTANTS.MULTIPART_FORMAT, saveBitmapToJPG("Image", bitmap))
+        } else if (isImageFilled) {
+            if (img != null) {
+                try {
+                    val file = File(cacheDir, "temp_image.jpg")
+                    val os : OutputStream = BufferedOutputStream(FileOutputStream(file))
+                    img!!.compress(Bitmap.CompressFormat.JPEG, 100, os)
+                    os.close()
+                    sign = TypedFile(CONSTANTS.MULTIPART_FORMAT, file)
+                    binding.drawing.isFilled = true
+                } catch (_ : Exception) {
+                }
+            }
         }
 
-        Log.e("flagOC", flagOC)
         if (isNetworkConnected(ctx)) {
             if (flagOC == "0" || flagOC == "1") {
                 showProgressBar(binding.progressBar, binding.progressBarHolder, act)
@@ -153,10 +168,10 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                                 model : SuccessModel,
                                 response : retrofit.client.Response
                         ) {
-                            if (model.ResponseCode == ctx.getString(R.string.ResponseCodesuccess)) {
+                            if (model.ResponseCode == getString(R.string.ResponseCodesuccess)) {
                                 hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                                 when (model.ResponseCode) {
-                                    ctx.getString(R.string.ResponseCodesuccess) -> {
+                                    getString(R.string.ResponseCodesuccess) -> {
                                         showToast(model.ResponseMessage, act)
                                         flagOC = "0"
                                         ocmr = OpenCastMappingReport()
@@ -167,10 +182,10 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                                         finishAffinity()
                                         ocDataModel = OpenCastInsertModel()
                                     }
-                                    ctx.getString(R.string.ResponseCodefail) -> {
+                                    getString(R.string.ResponseCodefail) -> {
                                         showToast(model.ResponseMessage, act)
                                     }
-                                    ctx.getString(R.string.ResponseCodeDeleted) -> {
+                                    getString(R.string.ResponseCodeDeleted) -> {
                                         callDelete403(act, model.ResponseMessage)
                                     }
                                 }
@@ -224,9 +239,13 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         obj.notes = ocDataModel.notes
         if (ocDataModel.geologistSignBitMap != null) {
             obj.geologistSign = ocDataModel.geologistSignBitMap
+        } else {
+            obj.geologistSign = null
         }
         if (ocDataModel.clientsGeologistSignBitMap != null) {
             obj.clientsGeologistSign = ocDataModel.clientsGeologistSignBitMap
+        } else {
+            obj.clientsGeologistSign = null
         }
         obj.image = binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
         obj.uid = ocmr.uid

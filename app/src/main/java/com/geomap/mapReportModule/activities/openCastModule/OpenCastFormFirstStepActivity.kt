@@ -364,23 +364,11 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             override fun onSigned() {
                 geoSign = true
                 binding.btnGeologistSignPadClear.isEnabled = true
-                binding.btnGeologistSignPadClear.setTextColor(
-                    ContextCompat.getColor(ctx, R.color.primary_theme)
-                )
-                binding.btnGeologistSignPadClear.setBackgroundResource(
-                    R.drawable.border_enable_button
-                )
             }
 
             override fun onClear() {
                 geoSign = false
                 binding.btnGeologistSignPadClear.isEnabled = false
-                binding.btnGeologistSignPadClear.setTextColor(
-                    ContextCompat.getColor(ctx, R.color.primary_theme)
-                )
-                binding.btnGeologistSignPadClear.setBackgroundResource(
-                    R.drawable.border_enable_button
-                )
             }
         })
 
@@ -393,24 +381,11 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             override fun onSigned() {
                 clientsGeoSign = true
                 binding.btnGeologistClientSignPadClear.isEnabled = true
-                binding.btnGeologistClientSignPadClear.setTextColor(
-                    ContextCompat.getColor(ctx, R.color.primary_theme)
-                )
-                binding.btnGeologistClientSignPadClear.setBackgroundResource(
-                    R.drawable.border_enable_button
-                )
-
             }
 
             override fun onClear() {
                 clientsGeoSign = false
                 binding.btnGeologistClientSignPadClear.isEnabled = false
-                binding.btnGeologistClientSignPadClear.setTextColor(
-                    ContextCompat.getColor(ctx, R.color.primary_theme)
-                )
-                binding.btnGeologistClientSignPadClear.setBackgroundResource(
-                    R.drawable.border_enable_button
-                )
             }
         })
 

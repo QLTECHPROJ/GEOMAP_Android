@@ -43,10 +43,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit.RetrofitError
 import retrofit.mime.TypedFile
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.OutputStream
+import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -67,6 +64,10 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
     private var isSignLeftFilled = false
     private var isSignRightFilled = false
     private var isSignFaceFilled = false
+    private var isSignRoofEdited = false
+    private var isSignLeftEdited = false
+    private var isSignRightEdited = false
+    private var isSignFaceEdited = false
     private lateinit var currPaint : ImageButton
     var ugDataModel = UnderGroundInsertModel()
     var i = 0
@@ -154,6 +155,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                 binding.tvName.text = getString(R.string.left)
                 signRoofBitMap = image.copy(image.config, false)
                 isSignRoofFilled = binding.drawing.isFilled
+                isSignRoofEdited = binding.drawing.isEdited
                 if (signLeftBitMap != null) {
                     callEnable(signLeftBitMap!!, "left")
                     binding.drawing.isFilled = true
@@ -166,6 +168,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                 binding.tvName.text = getString(R.string.right)
                 signLeftBitMap = image.copy(image.config, false)
                 isSignLeftFilled = binding.drawing.isFilled
+                isSignLeftEdited = binding.drawing.isEdited
                 if (signRightBitMap != null) {
                     callEnable(signRightBitMap!!, "right")
                     binding.drawing.isFilled = true
@@ -180,6 +183,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                 binding.tvName.text = getString(R.string.face)
                 signRightBitMap = image.copy(image.config, false)
                 isSignRightFilled = binding.drawing.isFilled
+                isSignRightEdited = binding.drawing.isEdited
                 if (signFaceBitMap != null) {
                     callEnable(signFaceBitMap!!, "face")
                     binding.drawing.isFilled = true
@@ -192,6 +196,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             3 -> {
                 signFaceBitMap = image.copy(image.config, false)
                 isSignFaceFilled = binding.drawing.isFilled
+                isSignFaceEdited = binding.drawing.isEdited
                 if (signFaceBitMap != null) {
                     callEnable(signFaceBitMap!!, "face")
                     binding.drawing.isFilled = true
@@ -205,20 +210,28 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
     }
 
     private fun postUndergroundInsert() {
-        if (isSignRoofFilled) {
+        if (isSignRoofEdited) {
             signRoof = TypedFile(CONSTANTS.MULTIPART_FORMAT, saveBitmapToJPG("RoofImage", signRoofBitMap!!))
+        } else if (isSignRoofFilled) {
+            signRoof = getImage("RoofImage", signRoofBitMap!!)
         }
 
-        if (isSignLeftFilled) {
+        if (isSignLeftEdited) {
             signLeft = TypedFile(CONSTANTS.MULTIPART_FORMAT, saveBitmapToJPG("LeftImage", signLeftBitMap!!))
+        } else if (isSignLeftFilled) {
+            signLeft = getImage("LeftImage", signLeftBitMap!!)
         }
 
-        if (isSignRightFilled) {
+        if (isSignRightEdited) {
             signRight = TypedFile(CONSTANTS.MULTIPART_FORMAT, saveBitmapToJPG("RightImage", signRightBitMap!!))
+        } else if (isSignRightFilled) {
+            signRight = getImage("RightImage", signRightBitMap!!)
         }
 
-        if (isSignFaceFilled) {
+        if (isSignFaceEdited) {
             signFace = TypedFile(CONSTANTS.MULTIPART_FORMAT, saveBitmapToJPG("FaceImage", signFaceBitMap!!))
+        } else if (isSignFaceFilled) {
+            signFace = getImage("FaceImage", signFaceBitMap!!)
         }
 
         if (isNetworkConnected(ctx)) {
@@ -272,6 +285,20 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         } else {
             callOfflineFunction()
         }
+    }
+
+    private fun getImage(name : String, bitmap : Bitmap) : TypedFile? {
+        var image : TypedFile? = null
+        try {
+            val file = File(cacheDir, "$name.jpg")
+            val os : OutputStream = BufferedOutputStream(FileOutputStream(file))
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os)
+            os.close()
+            image = TypedFile(CONSTANTS.MULTIPART_FORMAT, file)
+        } catch (_ : Exception) {
+        }
+        return image
+
     }
 
     private fun callOfflineFunction() {
