@@ -30,7 +30,11 @@ import com.geomap.GeoMapApp.*
 import com.geomap.R
 import com.geomap.databinding.ActivityOpenCastFormSecondStepBinding
 import com.geomap.mapReportModule.activities.DashboardActivity
+import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.clientsGeoSign
+import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.clientsGeologistSignEdited
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.flagOC
+import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.geoSign
+import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.geologistSignEdited
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.img
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.ocmr
 import com.geomap.mapReportModule.models.OpenCastInsertModel
@@ -119,14 +123,26 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         isImageEdited = binding.drawing.isEdited
         binding.drawing.isDrawingCacheEnabled = true
 
-        geologistSign = if (ocDataModel.geologistSignBitMap != null) {
+        geologistSign = if (ocDataModel.geologistSignBitMap != null && geologistSignEdited) {
             TypedFile(CONSTANTS.MULTIPART_FORMAT, saveBitmapToJPG("geologistSign", ocDataModel.geologistSignBitMap!!))
+        } else if (ocDataModel.geologistSignBitMap != null && geoSign) {
+            val file = File(cacheDir, "geologistSign.jpg")
+            val os : OutputStream = BufferedOutputStream(FileOutputStream(file))
+            ocDataModel.geologistSignBitMap!!.compress(Bitmap.CompressFormat.JPEG, 100, os)
+            os.close()
+            TypedFile(CONSTANTS.MULTIPART_FORMAT, file)
         } else {
             null
         }
 
-        clientsGeologistSign = if (ocDataModel.clientsGeologistSignBitMap != null) {
+        clientsGeologistSign = if (ocDataModel.clientsGeologistSignBitMap != null && clientsGeologistSignEdited) {
             TypedFile(CONSTANTS.MULTIPART_FORMAT, saveBitmapToJPG("clientsGeologistSign", ocDataModel.clientsGeologistSignBitMap!!))
+        } else if (ocDataModel.clientsGeologistSignBitMap != null && clientsGeoSign) {
+            val file = File(cacheDir, "clientsGeologistSign.jpg")
+            val os : OutputStream = BufferedOutputStream(FileOutputStream(file))
+            ocDataModel.clientsGeologistSignBitMap!!.compress(Bitmap.CompressFormat.JPEG, 100, os)
+            os.close()
+            TypedFile(CONSTANTS.MULTIPART_FORMAT, file)
         } else {
             null
         }
@@ -137,7 +153,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         } else if (isImageFilled) {
             if (img != null) {
                 try {
-                    val file = File(cacheDir, "temp_image.jpg")
+                    val file = File(cacheDir, "image.jpg")
                     val os : OutputStream = BufferedOutputStream(FileOutputStream(file))
                     img!!.compress(Bitmap.CompressFormat.JPEG, 100, os)
                     os.close()

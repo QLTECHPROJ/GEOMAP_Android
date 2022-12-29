@@ -35,14 +35,12 @@ class DrawingView(context : Context?, attrs : AttributeSet?) :
     override fun onDraw(canvas : Canvas) {  //draw view
         canvas.drawBitmap(canvasBitmap!!, 0F, 0F, canvasPaint)
         canvas.drawPath(drawPath, drawPaint)
-        Log.e("MotionEvent", "onDraw")
     }
 
     override fun onSizeChanged(w : Int, h : Int, oldw : Int, oldh : Int) {
         super.onSizeChanged(w, h, oldw, oldh)
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
         drawCanvas = Canvas(canvasBitmap!!)
-        Log.e("MotionEvent", "onSizeChanged")
     }
 
     override fun onTouchEvent(event : MotionEvent) : Boolean {
@@ -53,24 +51,20 @@ class DrawingView(context : Context?, attrs : AttributeSet?) :
                 drawPath.moveTo(touchX, touchY)
                 isFilled = true
                 isEdited = true
-                Log.e("MotionEvent", "ACTION_DOWN")
             }
             MotionEvent.ACTION_MOVE -> {
                 drawPath.lineTo(touchX, touchY)
                 isFilled = true
                 isEdited = true
-                Log.e("MotionEvent", "ACTION_MOVE")
             }
             MotionEvent.ACTION_UP -> {
                 drawCanvas!!.drawPath(drawPath, drawPaint)
                 drawPath.reset()
                 isFilled = true
                 isEdited = true
-                Log.e("MotionEvent", "ACTION_UP")
             }
             else -> return false
         }
-        Log.e("DrawView", isFilled.toString())
         invalidate()
         return true
     }
@@ -80,7 +74,6 @@ class DrawingView(context : Context?, attrs : AttributeSet?) :
         if (erase) {
             drawPaint.color = Color.WHITE
         } else drawPaint.color = paintColor
-        Log.e("MotionEvent", "setErase")
     }
 
     fun setColor(newColor : String?) {
@@ -88,7 +81,6 @@ class DrawingView(context : Context?, attrs : AttributeSet?) :
         paintColor = Color.parseColor(newColor)
         drawPaint.color = paintColor
         tempColor = newColor
-        Log.e("MotionEvent", "setColor")
     }
 
     fun startNew() {
