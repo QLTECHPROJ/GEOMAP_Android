@@ -69,8 +69,6 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.MANAGE_EXTERNAL_STORAGE
     )
-    var geoSign = false
-    var clientsGeoSign = false
 
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
@@ -276,9 +274,11 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 }
                 if (ocmr.geologistSign != null) {
                     binding.geologistSignPad.signatureBitmap = ocmr.geologistSign
+                    geoSign = true
                 }
                 if (ocmr.clientsGeologistSign != null) {
                     binding.geologistClientSignPad.signatureBitmap = ocmr.clientsGeologistSign
+                    clientsGeoSign = true
                 }
             }
         }
@@ -359,23 +359,29 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
 
         binding.geologistSignPad.setOnSignedListener(object : SignaturePad.OnSignedListener {
             override fun onStartSigning() {
+                geologistSignEdited = true
                 verifyStoragePermissions()
+                Log.e("Signature", "onStartSigning")
             }
 
             override fun onSigned() {
                 geoSign = true
                 binding.btnGeologistSignPadClear.isEnabled = true
+                Log.e("Signature", "onSigned")
             }
 
             override fun onClear() {
                 geoSign = false
+                geologistSignEdited = false
                 binding.btnGeologistSignPadClear.isEnabled = false
+                Log.e("Signature", "onClear")
             }
         })
 
         binding.geologistClientSignPad.setOnSignedListener(object :
             SignaturePad.OnSignedListener {
             override fun onStartSigning() {
+                clientsGeologistSignEdited = true
                 verifyStoragePermissions()
             }
 
@@ -386,6 +392,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
 
             override fun onClear() {
                 clientsGeoSign = false
+                clientsGeologistSignEdited = false
                 binding.btnGeologistClientSignPadClear.isEnabled = false
             }
         })
@@ -403,16 +410,22 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             ""
         }
         val gson = Gson()
-        val geologistSignPad : Bitmap? = if (geoSign) {
+        val geologistSignPad : Bitmap? = if (geologistSignEdited) {
+            binding.geologistSignPad.signatureBitmap
+        } else if (geoSign) {
             binding.geologistSignPad.signatureBitmap
         } else {
             null
         }
-        val geologistClientSignPad : Bitmap? = if (clientsGeoSign) {
+
+        val geologistClientSignPad : Bitmap? = if (clientsGeologistSignEdited) {
+            binding.geologistClientSignPad.signatureBitmap
+        } else if (clientsGeoSign) {
             binding.geologistClientSignPad.signatureBitmap
         } else {
             null
         }
+
         ocDataModel = OpenCastInsertModel(
             binding.etMinesSiteName.text.toString(),
             sheetNo, binding.tvOCDate.text.toString(),
@@ -980,17 +993,8 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                         binding.tvHintGeologistName.text = mData.id.toString()
                     }
                 }
-
-                Log.e("1", sampleCollectedId.toString())
-                Log.e("2", weatheringId.toString())
-                Log.e("3", rockStrengthId.toString())
-                Log.e("4", waterConditionId.toString())
-                Log.e("5", typeOfGeologicalStructuresId.toString())
-                Log.e("6", typeOfFaultsId.toString())
-                Log.e("7", geologistNameId.toString())
                 dialog.dismiss()
             }
-
         }
 
         override fun getItemCount() : Int {
@@ -1134,6 +1138,10 @@ Tap Setting > permission, and turn "Files and media" on."""
         var flagOC = "0"
         var ocmr = OpenCastMappingReport()
         var img : Bitmap? = null
+        var geoSign = false
+        var clientsGeoSign = false
+        var geologistSignEdited = false
+        var clientsGeologistSignEdited = false
     }
 
     override fun onBackPressed() {
