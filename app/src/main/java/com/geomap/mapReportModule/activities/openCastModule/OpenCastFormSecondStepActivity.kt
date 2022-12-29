@@ -176,6 +176,8 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                                         flagOC = "0"
                                         ocmr = OpenCastMappingReport()
                                         img = null
+                                        geologistSign = null
+                                        clientsGeologistSign = null
                                         val i = Intent(ctx, DashboardActivity::class.java)
                                         i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                                         startActivity(i)
@@ -260,6 +262,8 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         flagOC = "0"
         ocmr = OpenCastMappingReport()
         img = null
+        geologistSign = null
+        clientsGeologistSign = null
         val i = Intent(ctx, DashboardActivity::class.java)
         i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(i)
