@@ -103,8 +103,10 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
         }
 
         shift = getString(R.string.night_shift)
-        binding.tvUGDate.text = SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT).format(Date())
-
+        if(flagUG == "0") {
+            binding.tvUGDate.text = SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT).format(
+                Date())
+        }
         binding.rbRadioGroup.setOnCheckedChangeListener { radioGroup : RadioGroup, id : Int ->
             shift = radioGroup.findViewById<AppCompatRadioButton>(id).text.toString()
         }

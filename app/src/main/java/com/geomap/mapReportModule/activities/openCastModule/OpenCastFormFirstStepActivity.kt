@@ -288,8 +288,9 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        binding.tvOCDate.text = SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT).format(Date())
-
+        if(flagOC == "0") {
+            binding.tvOCDate.text = SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT).format(Date())
+        }
         shift = getString(R.string.night_shift)
 
         binding.rbRadioGroup.setOnCheckedChangeListener { radioGroup : RadioGroup, id : Int ->
