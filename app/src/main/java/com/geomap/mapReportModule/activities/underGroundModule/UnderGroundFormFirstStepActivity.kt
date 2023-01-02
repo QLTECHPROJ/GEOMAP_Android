@@ -9,6 +9,8 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.*
 import android.widget.*
@@ -56,7 +58,27 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
     private lateinit var model : UnderGroundDetailsModel
     val gson = Gson()
     var nosList = ArrayList<Nos>()
+    private var userTextWatcher: TextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            property = binding.edtProperty.text.toString()
 
+            if (property == "" && attributeDataModelList.isEmpty()) {
+                allDisable(binding.btnNextStep)
+            } else {
+                if (attributesName == "" && attributeDataModelList.isEmpty()) {
+                    allDisable(binding.btnNextStep)
+                } else if (nosName == "" && attributeDataModelList.isEmpty()) {
+                    allDisable(binding.btnNextStep)
+                } else {
+                    binding.btnNextStep.isEnabled = true
+                    binding.btnNextStep.setBackgroundResource(R.drawable.enable_button)
+                }
+            }
+        }
+
+        override fun afterTextChanged(s: Editable) {}
+    }
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(
@@ -176,9 +198,7 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
         binding.llBack.setOnClickListener {
             onBackPressed()
         }
-
-        binding.btnNextStep.isEnabled = true
-        binding.btnNextStep.setBackgroundResource(R.drawable.enable_button)
+        binding.edtProperty.addTextChangedListener(userTextWatcher)
         dialog = Dialog(ctx)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.common_list_layout)
@@ -466,6 +486,7 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
                     if (attributeDataModelList.isEmpty()) {
                         binding.tvAttributes.visibility = View.GONE
                         binding.cvAttributesList.visibility = View.GONE
+                        allDisable(binding.btnNextStep)
                     } else {
                         binding.tvAttributes.visibility = View.VISIBLE
                         binding.cvAttributesList.visibility = View.VISIBLE
@@ -707,6 +728,18 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
             holder.bindingAdapter.llMainLayout.setOnClickListener {
                 binding.tvNos.text = mData.name
                 nosName = mData.name
+                if (property == "" && attributeDataModelList.isEmpty()) {
+                    allDisable(binding.btnNextStep)
+                } else {
+                    if (attributesName == "" && attributeDataModelList.isEmpty()) {
+                        allDisable(binding.btnNextStep)
+                    } else if (nosName == "" && attributeDataModelList.isEmpty()) {
+                        allDisable(binding.btnNextStep)
+                    } else {
+                        binding.btnNextStep.isEnabled = true
+                        binding.btnNextStep.setBackgroundResource(R.drawable.enable_button)
+                    }
+                }
                 dialog.dismiss()
             }
 
