@@ -34,9 +34,16 @@ import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstSte
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.clientsGeologistSignEdited
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.flagOC
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.geoSign
+import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.geologistName
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.geologistSignEdited
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.img
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.ocmr
+import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.rockStrength
+import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.sampleCollected
+import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.typeOfFaults
+import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.typeOfGeologicalStructures
+import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.waterCondition
+import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.weathering
 import com.geomap.mapReportModule.models.OpenCastInsertModel
 import com.geomap.mapReportModule.models.SuccessModel
 import com.geomap.roomDataBase.OpenCastMappingReport
@@ -51,28 +58,24 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class OpenCastFormSecondStepActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityOpenCastFormSecondStepBinding
-    private lateinit var ctx : Context
-    private lateinit var act : Activity
+    private lateinit var binding: ActivityOpenCastFormSecondStepBinding
+    private lateinit var ctx: Context
+    private lateinit var act: Activity
     private var ocDataModel = OpenCastInsertModel()
-    private var userId : String? = null
-    private var sign : TypedFile? = null
+    private var userId: String? = null
+    private var sign: TypedFile? = null
     private var isImageFilled = false
     private var isImageEdited = false
     private val requestExternalStorage = 1
-    private val permissionsStorage = arrayOf(
-        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.MANAGE_EXTERNAL_STORAGE
-    )
-    private lateinit var currPaint : ImageButton
+    private val permissionsStorage = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.MANAGE_EXTERNAL_STORAGE)
+    private lateinit var currPaint: ImageButton
 
-    override fun onCreate(savedInstanceState : Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_open_cast_form_second_step)
         ctx = this@OpenCastFormSecondStepActivity
         act = this@OpenCastFormSecondStepActivity
-
         val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
         userId = shared.getString(CONSTANTS.userId, "")
 
@@ -91,7 +94,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
 
         if (flagOC == "1" || flagOC == "2") {
             if (img != null) {
-                val d : Drawable = BitmapDrawable(resources, img)
+                val d: Drawable = BitmapDrawable(resources, img)
                 binding.drawing.background = d
                 binding.drawing.isFilled = true
             }
@@ -124,10 +127,11 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         binding.drawing.isDrawingCacheEnabled = true
 
         geologistSign = if (ocDataModel.geologistSignBitMap != null && geologistSignEdited) {
-            TypedFile(CONSTANTS.MULTIPART_FORMAT, saveBitmapToJPG("geologistSign", ocDataModel.geologistSignBitMap!!))
+            TypedFile(CONSTANTS.MULTIPART_FORMAT,
+                saveBitmapToJPG("geologistSign", ocDataModel.geologistSignBitMap!!))
         } else if (ocDataModel.geologistSignBitMap != null && geoSign) {
             val file = File(cacheDir, "geologistSign.jpg")
-            val os : OutputStream = BufferedOutputStream(FileOutputStream(file))
+            val os: OutputStream = BufferedOutputStream(FileOutputStream(file))
             ocDataModel.geologistSignBitMap!!.compress(Bitmap.CompressFormat.JPEG, 100, os)
             os.close()
             TypedFile(CONSTANTS.MULTIPART_FORMAT, file)
@@ -136,10 +140,11 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         }
 
         clientsGeologistSign = if (ocDataModel.clientsGeologistSignBitMap != null && clientsGeologistSignEdited) {
-            TypedFile(CONSTANTS.MULTIPART_FORMAT, saveBitmapToJPG("clientsGeologistSign", ocDataModel.clientsGeologistSignBitMap!!))
+            TypedFile(CONSTANTS.MULTIPART_FORMAT,
+                saveBitmapToJPG("clientsGeologistSign", ocDataModel.clientsGeologistSignBitMap!!))
         } else if (ocDataModel.clientsGeologistSignBitMap != null && clientsGeoSign) {
             val file = File(cacheDir, "clientsGeologistSign.jpg")
-            val os : OutputStream = BufferedOutputStream(FileOutputStream(file))
+            val os: OutputStream = BufferedOutputStream(FileOutputStream(file))
             ocDataModel.clientsGeologistSignBitMap!!.compress(Bitmap.CompressFormat.JPEG, 100, os)
             os.close()
             TypedFile(CONSTANTS.MULTIPART_FORMAT, file)
@@ -148,18 +153,19 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         }
 
         if (isImageEdited) {
-            val bitmap = binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
+            val bitmap = binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config,
+                false)
             sign = TypedFile(CONSTANTS.MULTIPART_FORMAT, saveBitmapToJPG("Image", bitmap))
         } else if (isImageFilled) {
             if (img != null) {
                 try {
                     val file = File(cacheDir, "image.jpg")
-                    val os : OutputStream = BufferedOutputStream(FileOutputStream(file))
+                    val os: OutputStream = BufferedOutputStream(FileOutputStream(file))
                     img!!.compress(Bitmap.CompressFormat.JPEG, 100, os)
                     os.close()
                     sign = TypedFile(CONSTANTS.MULTIPART_FORMAT, file)
                     binding.drawing.isFilled = true
-                } catch (_ : Exception) {
+                } catch (_: Exception) {
                 }
             }
         }
@@ -180,25 +186,18 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                     ocDataModel.typeOfFaults, ocDataModel.notes, ocDataModel.shift,
                     ocDataModel.ocDate, ocDataModel.dipDirectionAngle, sign, geologistSign,
                     clientsGeologistSign, object : retrofit.Callback<SuccessModel> {
-                        override fun success(
-                                model : SuccessModel,
-                                response : retrofit.client.Response
-                        ) {
+                        override fun success(model: SuccessModel,
+                            response: retrofit.client.Response) {
                             if (model.ResponseCode == getString(R.string.ResponseCodesuccess)) {
                                 hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                                 when (model.ResponseCode) {
                                     getString(R.string.ResponseCodesuccess) -> {
                                         showToast(model.ResponseMessage, act)
-                                        flagOC = "0"
-                                        ocmr = OpenCastMappingReport()
-                                        img = null
-                                        geologistSign = null
-                                        clientsGeologistSign = null
+                                        clearData()
                                         val i = Intent(ctx, DashboardActivity::class.java)
                                         i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                                         startActivity(i)
                                         finishAffinity()
-                                        ocDataModel = OpenCastInsertModel()
                                     }
                                     getString(R.string.ResponseCodefail) -> {
                                         showToast(model.ResponseMessage, act)
@@ -210,7 +209,9 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                             }
                         }
 
-                        override fun failure(e : RetrofitError) {
+
+
+                        override fun failure(e: RetrofitError) {
                             hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                             showToast(e.message, act)
                         }
@@ -222,7 +223,25 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             callOfflineFunction()
         }
     }
-
+    private fun clearData() {
+        flagOC = "0"
+        ocmr = OpenCastMappingReport()
+        img = null
+        geologistSign = null
+        clientsGeologistSign = null
+        ocDataModel = OpenCastInsertModel()
+        geologistName = ""
+        sampleCollected = ""
+        weathering = ""
+        rockStrength = ""
+        typeOfFaults = ""
+        waterCondition = ""
+        typeOfGeologicalStructures = ""
+        geoSign = false
+        clientsGeoSign = false
+        geologistSignEdited = false
+        clientsGeologistSignEdited = false
+    }
     private fun callOfflineFunction() {
         Log.e("obj.uid", "else true")
         val obj = OpenCastMappingReport()
@@ -275,53 +294,39 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             saveOCReport(obj, ctx)
             showToast(getString(R.string.opencast_saved), act)
         }
-        flagOC = "0"
-        ocmr = OpenCastMappingReport()
-        img = null
-        geologistSign = null
-        clientsGeologistSign = null
+        clearData()
         val i = Intent(ctx, DashboardActivity::class.java)
         i.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
         startActivity(i)
         finishAffinity()
     }
 
-    override fun onRequestPermissionsResult(
-            requestCode : Int,
-            permissions : Array<String?>, grantResults : IntArray
-    ) {
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>,
+        grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             requestExternalStorage -> {
-                if (grantResults.isEmpty()
-                    || grantResults[0] != PackageManager.PERMISSION_GRANTED
-                ) {
+                if (grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     Log.e("onRequestPermissionsResult", "Cannot write images to external storage")
                 }
             }
         }
     }
 
-    @Throws(IOException::class) fun saveBitmapToJPG(name : String, bitmap : Bitmap) : File {
+    @Throws(IOException::class)
+    fun saveBitmapToJPG(name: String, bitmap: Bitmap): File {
         val datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
         val file = File(
-            Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES
-            ), "Pictures"
-        )
-        val imageFile = File(
-            file,
-            String.format("$name$datetime.jpg", System.currentTimeMillis())
-        )
-
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+            "Pictures")
+        val imageFile = File(file, String.format("$name$datetime.jpg", System.currentTimeMillis()))
         val newBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(newBitmap)
         canvas.drawColor(Color.WHITE)
         canvas.drawBitmap(bitmap, 0f, 0f, null)
-        val stream : OutputStream = FileOutputStream(imageFile)
+        val stream: OutputStream = FileOutputStream(imageFile)
         newBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
         stream.close()
-
         val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
         val contentUri = Uri.fromFile(imageFile)
         mediaScanIntent.data = contentUri
@@ -334,50 +339,37 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (!Environment.isExternalStorageManager()) {
                 val building = AlertDialog.Builder(ctx)
-                building.setMessage(
-                    """To upload image allow ${
-                        ctx.getString(
-                            R.string.app_name
-                        )
-                    } access to your device's files. 
-Tap Setting > permission, and turn "Files and media" on."""
-                )
+                building.setMessage("""To upload image allow ${
+                    ctx.getString(R.string.app_name)
+                } access to your device's files. 
+Tap Setting > permission, and turn "Files and media" on.""")
                 building.setCancelable(true)
                 building.setPositiveButton(
-                    ctx.getString(R.string.Settings)
-                ) { dialogs : DialogInterface, _ : Int ->
+                    ctx.getString(R.string.Settings)) { dialogs: DialogInterface, _: Int ->
                     val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
                     val uri = Uri.fromParts("package", packageName, null)
                     intent.data = uri
                     startActivity(intent)
                     dialogs.dismiss()
                 }
-                building.setNegativeButton(
-                    ctx.getString(R.string.not_now)
-                ) { dialogs : DialogInterface, _ : Int -> dialogs.dismiss() }
+                building.setNegativeButton(ctx.getString(
+                    R.string.not_now)) { dialogs: DialogInterface, _: Int -> dialogs.dismiss() }
                 val alert11 = building.create()
                 alert11.window!!.setBackgroundDrawableResource(R.drawable.dialog_bg)
                 alert11.show()
-                alert11.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
-                        .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
-                alert11.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
-                        .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
+                alert11.getButton(android.app.AlertDialog.BUTTON_POSITIVE).setTextColor(
+                        ContextCompat.getColor(ctx, R.color.primary_theme))
+                alert11.getButton(android.app.AlertDialog.BUTTON_NEGATIVE).setTextColor(
+                        ContextCompat.getColor(ctx, R.color.primary_theme))
             }
         } else {
-            if (ActivityCompat.checkSelfPermission(
+            if (ActivityCompat.checkSelfPermission(ctx,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                     ctx,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    ctx, Manifest.permission.READ_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    ctx, Manifest.permission.MANAGE_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    act,
-                    permissionsStorage,
-                    requestExternalStorage
-                )
+                    Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    ctx,
+                    Manifest.permission.MANAGE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(act, permissionsStorage, requestExternalStorage)
             }
         }
     }
@@ -386,7 +378,7 @@ Tap Setting > permission, and turn "Files and media" on."""
         finish()
     }
 
-    fun paintClicked(view : View) {
+    fun paintClicked(view: View) {
         binding.drawing.setErase(false)
         if (view !== currPaint) {
             val imgView = view as ImageButton

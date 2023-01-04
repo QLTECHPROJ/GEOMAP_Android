@@ -902,95 +902,88 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             holder.bindingAdapter.llMainLayout.setOnClickListener {
                 when (keyS) {
                     "1" -> {
-                        if (sampleCollectedId != mData.id) {
+                        if (sampleCollected != mData.name) {
                             binding.tvHintSampleCollected.text = ""
                             binding.tvHintSampleCollected.text = ""
                         }
-                        sampleCollectedId = mData.id
                         binding.tvSampleCollected.text = mData.name
                         binding.tvSampleCollected.setTextColor(
                             ContextCompat.getColor(ctx, R.color.light_black)
                         )
                         sampleCollected = mData.name
-                        binding.tvHintSampleCollected.text = mData.id.toString()
+                        binding.tvHintSampleCollected.text = mData.name.toString()
                     }
                     "2" -> {
-                        if (weatheringId != mData.id) {
+                        if (weathering != mData.name) {
                             binding.tvHintWeathering.text = ""
                             binding.tvHintWeathering.text = ""
                         }
-                        weatheringId = mData.id
                         binding.tvWeathering.text = mData.name
                         binding.tvWeathering.setTextColor(
                             ContextCompat.getColor(ctx, R.color.light_black)
                         )
                         weathering = mData.name
-                        binding.tvHintWeathering.text = mData.id.toString()
+                        binding.tvHintWeathering.text = mData.name.toString()
                     }
                     "3" -> {
-                        if (rockStrengthId != mData.id) {
+                        if (rockStrength != mData.name) {
                             binding.tvHintRockStrength.text = ""
                             binding.tvHintRockStrength.text = ""
                         }
-                        rockStrengthId = mData.id
                         binding.tvRockStrength.text = mData.name
                         binding.tvRockStrength.setTextColor(
                             ContextCompat.getColor(ctx, R.color.light_black)
                         )
                         rockStrength = mData.name
-                        binding.tvHintRockStrength.text = mData.id.toString()
+                        binding.tvHintRockStrength.text = mData.name.toString()
                     }
                     "4" -> {
-                        if (waterConditionId != mData.id) {
+                        if (waterCondition != mData.name) {
                             binding.tvHintWaterCondition.text = ""
                             binding.tvHintWaterCondition.text = ""
                         }
-                        waterConditionId = mData.id
                         binding.tvWaterCondition.text = mData.name
                         binding.tvWaterCondition.setTextColor(
                             ContextCompat.getColor(ctx, R.color.light_black)
                         )
                         waterCondition = mData.name
-                        binding.tvHintWaterCondition.text = mData.id.toString()
+                        binding.tvHintWaterCondition.text = mData.name.toString()
                     }
                     "5" -> {
-                        if (typeOfGeologicalStructuresId != mData.id) {
+                        if (typeOfGeologicalStructures != mData.name) {
                             binding.tvHintTypeOfGeologicalStructures.text = ""
                             binding.tvHintTypeOfGeologicalStructures.text = ""
                         }
-                        typeOfGeologicalStructuresId = mData.id
                         binding.tvTypeOfGeologicalStructures.text = mData.name
                         binding.tvTypeOfGeologicalStructures.setTextColor(
                             ContextCompat.getColor(ctx, R.color.light_black)
                         )
                         typeOfGeologicalStructures = mData.name
-                        binding.tvHintTypeOfGeologicalStructures.text = mData.id.toString()
+                        binding.tvHintTypeOfGeologicalStructures.text = mData.name.toString()
                     }
                     "6" -> {
-                        if (typeOfFaultsId != mData.id) {
+                        if (typeOfFaults != mData.name) {
                             binding.tvHintTypeOfFaults.text = ""
                             binding.tvHintTypeOfFaults.text = ""
                         }
-                        typeOfFaultsId = mData.id
                         binding.tvTypeOfFaults.text = mData.name
                         binding.tvTypeOfFaults.setTextColor(
                             ContextCompat.getColor(ctx, R.color.light_black)
                         )
                         typeOfFaults = mData.name
-                        binding.tvHintTypeOfFaults.text = mData.id.toString()
+                        binding.tvHintTypeOfFaults.text = mData.name.toString()
                     }
                     "7" -> {
-                        if (geologistNameId != mData.id) {
+                        if (geologistName != mData.name) {
                             binding.tvHintGeologistName.text = ""
                             binding.tvHintGeologistName.text = ""
                         }
-                        geologistNameId = mData.id
                         binding.tvGeologistName.text = mData.name
                         binding.tvGeologistName.setTextColor(
                             ContextCompat.getColor(ctx, R.color.light_black)
                         )
                         geologistName = mData.name
-                        binding.tvHintGeologistName.text = mData.id.toString()
+                        binding.tvHintGeologistName.text = mData.name.toString()
                     }
                 }
                 dialog.dismiss()
@@ -1128,13 +1121,6 @@ Tap Setting > permission, and turn "Files and media" on."""
         var waterCondition : String? = ""
         var typeOfGeologicalStructures : String? = ""
         var typeOfFaults : String? = ""
-        var geologistNameId : String? = ""
-        var sampleCollectedId : String? = ""
-        var weatheringId : String? = ""
-        var rockStrengthId : String? = ""
-        var waterConditionId : String? = ""
-        var typeOfGeologicalStructuresId : String? = ""
-        var typeOfFaultsId : String? = ""
         var flagOC = "0"
         var ocmr = OpenCastMappingReport()
         var img : Bitmap? = null

@@ -197,13 +197,13 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                 signFaceBitMap = image.copy(image.config, false)
                 isSignFaceFilled = binding.drawing.isFilled
                 isSignFaceEdited = binding.drawing.isEdited
-                if (signFaceBitMap != null) {
+                /*if (signFaceBitMap != null) {
                     callEnable(signFaceBitMap!!, "face")
                     binding.drawing.isFilled = true
                     isSignFaceFilled = true
                 } else {
                     callDisable("1")
-                }
+                }*/
                 postUndergroundInsert()
             }
         }

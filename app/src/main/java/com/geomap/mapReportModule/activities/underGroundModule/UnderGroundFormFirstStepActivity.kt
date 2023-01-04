@@ -87,6 +87,9 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
         )
         ctx = this@UnderGroundFormFirstStepActivity
         act = this@UnderGroundFormFirstStepActivity
+
+        binding.edtProperty.addTextChangedListener(userTextWatcher)
+
         if (intent.extras != null) {
             if (intent.getStringExtra("flag") == "detail") {
                 flagUG = "1"
@@ -171,10 +174,7 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
                     binding.tvAttributes.visibility = View.GONE
                     binding.cvAttributesList.visibility = View.GONE
                 } else {
-                    binding.tvAttributes.visibility = View.VISIBLE
-                    binding.cvAttributesList.visibility = View.VISIBLE
-                    attributesListAdapter = AttributesListAdapter(attributeDataModelList)
-                    binding.rvAttributesList.adapter = attributesListAdapter
+                    callAdapter()
                 }
             } else if (intent.getStringExtra("flag") == "detailDraft") {
                 flagUG = "2"
@@ -187,10 +187,7 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
                     binding.tvAttributes.visibility = View.GONE
                     binding.cvAttributesList.visibility = View.GONE
                 } else {
-                    binding.tvAttributes.visibility = View.VISIBLE
-                    binding.cvAttributesList.visibility = View.VISIBLE
-                    attributesListAdapter = AttributesListAdapter(attributeDataModelList)
-                    binding.rvAttributesList.adapter = attributesListAdapter
+                    callAdapter()
                 }
             }
         }
@@ -198,23 +195,9 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
         binding.llBack.setOnClickListener {
             onBackPressed()
         }
-        binding.edtProperty.addTextChangedListener(userTextWatcher)
-        dialog = Dialog(ctx)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.common_list_layout)
-        dialog.window !!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        rvList = dialog.findViewById(R.id.rvList)
-        searchView = dialog.findViewById(R.id.searchView)
-        tvFound = dialog.findViewById(R.id.tvFound)
-        pb = dialog.findViewById(R.id.progressBar)
-        pbh = dialog.findViewById(R.id.progressBarHolder)
-        tvTilte = dialog.findViewById(R.id.tvTilte)
 
-        val mLayoutManager : RecyclerView.LayoutManager = LinearLayoutManager(applicationContext)
-        binding.rvAttributesList.layoutManager = mLayoutManager
-        binding.rvAttributesList.itemAnimator = DefaultItemAnimator()
+        setDialog()
 
-        binding.llMainLayout.visibility = View.VISIBLE
         binding.cvAttributes.setOnClickListener {
             dialog = Dialog(ctx)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -355,6 +338,34 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
         }
     }
 
+    private fun setDialog() {
+        dialog = Dialog(ctx)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.common_list_layout)
+        dialog.window !!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        rvList = dialog.findViewById(R.id.rvList)
+        searchView = dialog.findViewById(R.id.searchView)
+        tvFound = dialog.findViewById(R.id.tvFound)
+        pb = dialog.findViewById(R.id.progressBar)
+        pbh = dialog.findViewById(R.id.progressBarHolder)
+        tvTilte = dialog.findViewById(R.id.tvTilte)
+
+        val mLayoutManager : RecyclerView.LayoutManager = LinearLayoutManager(applicationContext)
+        binding.rvAttributesList.layoutManager = mLayoutManager
+        binding.rvAttributesList.itemAnimator = DefaultItemAnimator()
+
+        binding.llMainLayout.visibility = View.VISIBLE
+    }
+
+    private fun callAdapter() {
+        binding.tvAttributes.visibility = View.VISIBLE
+        binding.cvAttributesList.visibility = View.VISIBLE
+        attributesListAdapter = AttributesListAdapter(attributeDataModelList)
+        binding.rvAttributesList.adapter = attributesListAdapter
+        binding.btnNextStep.isEnabled = true
+        binding.btnNextStep.setBackgroundResource(R.drawable.enable_button)
+    }
+
     private fun clearData(flag : String) {
         attributesName = ""
         nosName = ""
@@ -391,13 +402,7 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
             binding.tvAttributes.visibility = View.GONE
             binding.cvAttributesList.visibility = View.GONE
         } else {
-            binding.tvAttributes.visibility = View.VISIBLE
-            binding.cvAttributesList.visibility = View.VISIBLE
-            attributesListAdapter =
-                    AttributesListAdapter(
-                        attributeDataModelList
-                    )
-            binding.rvAttributesList.adapter = attributesListAdapter
+            callAdapter()
         }
         clearData(flag)
     }
@@ -488,10 +493,7 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
                         binding.cvAttributesList.visibility = View.GONE
                         allDisable(binding.btnNextStep)
                     } else {
-                        binding.tvAttributes.visibility = View.VISIBLE
-                        binding.cvAttributesList.visibility = View.VISIBLE
-                        attributesListAdapter = AttributesListAdapter(attributeDataModelList)
-                        binding.rvAttributesList.adapter = attributesListAdapter
+                        callAdapter()
                     }
                 }
                 tvGoBack.setOnClickListener { deleteDialog.dismiss() }
@@ -815,9 +817,5 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
         val gson = Gson()
         var ugmr = UnderGroundMappingReport()
         var flagUG = "0"
-        var signRoofBitMap : Bitmap? = null
-        var signLeftBitMap : Bitmap? = null
-        var signRightBitMap : Bitmap? = null
-        var signFaceBitMap : Bitmap? = null
     }
 }

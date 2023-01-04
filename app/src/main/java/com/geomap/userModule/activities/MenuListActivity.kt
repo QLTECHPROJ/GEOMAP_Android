@@ -299,12 +299,13 @@ class MenuListActivity : AppCompatActivity() {
                         }
                     })
         } else {
+            val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
             binding.civProfile.visibility = View.GONE
             binding.rlCameraBg.visibility = View.GONE
-            val name = "Guest"
+            val name = shared.getString(CONSTANTS.name, "Guest")
             binding.tvUserName.text = name
             binding.rlLetter.visibility = View.VISIBLE
-            binding.tvLetter.text = name.substring(0, 1)
+            binding.tvLetter.text = name?.substring(0, 1)
         }
     }
 
