@@ -114,9 +114,6 @@ interface RetrofitService {
     @get:GET("types_of_fault")
     val getTypeOfFaultList : Call<CommonPopupListModel>
 
-    @get:GET("geologist_data")
-    val getGeologistData : Call<CommonPopupListModel>
-
     companion object {
         fun getInstance() : RetrofitService {
             val interceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)

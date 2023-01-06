@@ -90,12 +90,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 binding.etPitName.setText(ocDetailsModel.ResponseData.pitName)
                 binding.etPitLocation.setText(ocDetailsModel.ResponseData.pitLoaction)
                 binding.etShiftInchargeName.setText(ocDetailsModel.ResponseData.shiftInchargeName)
-                geologistName = ocDetailsModel.ResponseData.geologistName
-                if (geologistName != null) {
-                    binding.tvGeologistName.text = geologistName
-                } else {
-                    geologistName = ""
-                }
+                binding.etGeologistName.setText(ocDetailsModel.ResponseData.geologistName)
                 binding.etFaceLocation.setText(ocDetailsModel.ResponseData.faceLocation)
                 binding.etFaceLengthM.setText(ocDetailsModel.ResponseData.faceLength)
                 binding.etFaceAreaM2.setText(ocDetailsModel.ResponseData.faceArea)
@@ -198,12 +193,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 binding.etPitName.setText(ocmr.pitName)
                 binding.etPitLocation.setText(ocmr.pitLocation)
                 binding.etShiftInchargeName.setText(ocmr.shiftInChargeName)
-                geologistName = ocmr.geologistName
-                if (geologistName != "") {
-                    binding.tvGeologistName.text = geologistName
-                } else {
-                    geologistName = ""
-                }
+                binding.etGeologistName.setText(ocmr.geologistName)
                 binding.etFaceLocation.setText(ocmr.faceLocation)
                 binding.etFaceLengthM.setText(ocmr.faceLength)
                 binding.etFaceAreaM2.setText(ocmr.faceArea)
@@ -287,21 +277,15 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         binding.llBack.setOnClickListener {
             onBackPressed()
         }
-
+        val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
         if(flagOC == "0") {
-            binding.tvOCDate.text = SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT).format(Date())
+            binding.tvOCDate.text = SimpleDateFormat(CONSTANTS.SERVER_TIME_FORMAT).format(Date())
+            binding.etGeologistName.setText(shared.getString(CONSTANTS.name, ""))
         }
         shift = getString(R.string.night_shift)
 
         binding.rbRadioGroup.setOnCheckedChangeListener { radioGroup : RadioGroup, id : Int ->
             shift = radioGroup.findViewById<AppCompatRadioButton>(id).text.toString()
-        }
-
-        binding.cvGeologistName.setOnClickListener {
-            callPopupList(
-                getString(R.string.choose_your_geologist_name),
-                getString(R.string.pls_select_your_geologist_name), "7"
-            )
         }
 
         binding.cvSampleCollected.setOnClickListener {
@@ -431,7 +415,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             sheetNo, binding.tvOCDate.text.toString(),
             binding.etPitName.text.toString(), binding.etPitLocation.text.toString(),
             binding.etShiftInchargeName.text.toString(),
-            geologistName, binding.etFaceLocation.text.toString(),
+            binding.etGeologistName.text.toString(), binding.etFaceLocation.text.toString(),
             binding.etFaceLengthM.text.toString(), binding.etFaceAreaM2.text.toString(),
             binding.etFaceRockTypes.text.toString(), binding.etBenchRL.text.toString(),
             binding.etBenchHeightWidth.text.toString(), binding.etBenchAngle.text.toString(),
@@ -509,9 +493,6 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                         "6" -> {
                             popupAdapter?.filter?.filter(search)
                         }
-                        "7" -> {
-                            popupAdapter?.filter?.filter(search)
-                        }
                     }
                 } catch (e : java.lang.Exception) {
                     e.printStackTrace()
@@ -554,9 +535,6 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 }
                 "6" -> {
                     service = RetrofitService.getInstance().getTypeOfFaultList
-                }
-                "7" -> {
-                    service = RetrofitService.getInstance().getGeologistData
                 }
             }
 
@@ -670,43 +648,6 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                         callTypeOfFaultsAdapter(list, searchView, rvList, tvFound, keyS, dialog)
                     }
                 }
-                "7" -> {
-                    var list : ArrayList<Geologist>
-                    GeoMapDatabase.databaseWriteExecutor.execute {
-                        list = DB?.taskDao()?.geAllGeologist() as ArrayList<Geologist>
-                        Log.e(
-                            "List Geologist",
-                            "true" + DataBaseFunctions.gson.toJson(list).toString()
-                        )
-                        callGeologistAdapter(list, searchView, rvList, tvFound, keyS, dialog)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun callGeologistAdapter(
-            list : ArrayList<Geologist>, searchView : SearchView,
-            rvList : RecyclerView, tvFound : TextView, keyS : String, dialog : Dialog
-    ) {
-        for (i in list.indices) {
-            val obj = CommonPopupListModel.ResponseData()
-            obj.id = list[i].iD.toString()
-            obj.name = list[i].name
-            obj.createdAt = list[i].createDate
-            obj.updatedAt = list[i].updateDate
-            Log.e("saveSampleCollected", "true")
-
-            modelList.responseData!!.add(obj)
-            if (i == list.size - 1) {
-                searchView.isEnabled = true
-                searchView.isClickable = true
-                rvList.layoutManager = LinearLayoutManager(ctx)
-                popupAdapter = PopupAdapter(
-                    dialog, binding, modelList.responseData!!, rvList,
-                    tvFound, keyS, ctx
-                )
-                rvList.adapter = popupAdapter
             }
         }
     }
@@ -973,18 +914,6 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                         typeOfFaults = mData.name
                         binding.tvHintTypeOfFaults.text = mData.name.toString()
                     }
-                    "7" -> {
-                        if (geologistName != mData.name) {
-                            binding.tvHintGeologistName.text = ""
-                            binding.tvHintGeologistName.text = ""
-                        }
-                        binding.tvGeologistName.text = mData.name
-                        binding.tvGeologistName.setTextColor(
-                            ContextCompat.getColor(ctx, R.color.light_black)
-                        )
-                        geologistName = mData.name
-                        binding.tvHintGeologistName.text = mData.name.toString()
-                    }
                 }
                 dialog.dismiss()
             }
@@ -1114,7 +1043,6 @@ Tap Setting > permission, and turn "Files and media" on."""
     }
 
     companion object {
-        var geologistName : String? = ""
         var sampleCollected : String? = ""
         var weathering : String? = ""
         var rockStrength : String? = ""

@@ -208,23 +208,6 @@ class DataBaseFunctions {
             }
         }
 
-        fun callGeologistObserver(responseData: UserCommonDataModel.ResponseData, ctx: Context) {
-            DB = getDataBase(ctx)
-            var list: ArrayList<Geologist>
-            GeoMapDatabase.databaseWriteExecutor.execute {
-                list = DB.taskDao().geAllGeologist() as ArrayList<Geologist>
-                Log.e("List Geologist", "true" + gson.toJson(list).toString())
-                callGeologistSave(list, responseData, ctx)
-            }
-        }
-
-        fun saveGeologist(obj: Geologist, ctx: Context) {
-            DB = getDataBase(ctx)
-            GeoMapDatabase.databaseWriteExecutor.execute {
-                DB!!.taskDao().insertGeologist(obj)
-            }
-        }
-
         fun callAttributeDataObserver(responseData: UserCommonDataModel.ResponseData,
             ctx: Context) {
             DB = getDataBase(ctx)
@@ -405,34 +388,6 @@ class DataBaseFunctions {
                 saveWeatheringData(obj, ctx)
                 Log.e("saveweatheringData", "true")
                 if (i == responseData.weatheringData!!.size - 1) {
-                    callGeologistObserver(responseData, ctx)
-                }
-            }
-        }
-
-        fun callGeologistSave(list: ArrayList<Geologist>,
-            responseData: UserCommonDataModel.ResponseData, ctx: Context) {
-            if (list.size != 0) {
-                DB = getDataBase(ctx)
-                GeoMapDatabase.databaseWriteExecutor.execute {
-                    DB!!.taskDao().deleteGeologist()
-                }
-            }
-            for (i in responseData.geologist!!.indices) {
-                val obj = Geologist()
-                obj.iD = responseData.geologist!![i].id
-                obj.name = responseData.geologist!![i].name
-                obj.email = responseData.geologist!![i].email
-                obj.phone = responseData.geologist!![i].phone
-                obj.companyType = responseData.geologist!![i].companyType
-                obj.position = responseData.geologist!![i].position
-                obj.company = responseData.geologist!![i].company
-                obj.password = responseData.geologist!![i].password
-                obj.createDate = responseData.geologist!![i].createdAt
-                obj.updateDate = responseData.geologist!![i].updatedAt
-                saveGeologist(obj, ctx)
-                Log.e("saveweatheringData", "true")
-                if (i == responseData.geologist!!.size - 1) {
                     callAttributeDataObserver(responseData, ctx)
                 }
             }

@@ -50,6 +50,7 @@
     <string name="no">No</string>
     <string name="close">Close</string>
     <string name="no_result_found">No result found</string>
+    <string name="no_result_found_draft">No draft reports found..!</string>
     <string name="add_under_ground_mapping_report">Underground Mapping</string>
     <string name="add_opencast_mapping_report">OpenCast Mapping</string>
     <string name="undergrounds_mapping_report_details">Underground Mapping \n Report Details</string>

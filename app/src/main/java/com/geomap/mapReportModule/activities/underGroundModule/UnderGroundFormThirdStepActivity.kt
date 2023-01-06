@@ -68,6 +68,10 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
     private var isSignLeftEdited = false
     private var isSignRightEdited = false
     private var isSignFaceEdited = false
+    private var isSignRoofEditedCounter = 0
+    private var isSignLeftEditedCounter = 0
+    private var isSignRightEditedCounter = 0
+    private var isSignFaceEditedCounter = 0
     private lateinit var currPaint : ImageButton
     var ugDataModel = UnderGroundInsertModel()
     var i = 0
@@ -105,7 +109,6 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             intent.extras!!.clear()
         }
 
-//        if (flagUG == "1" || flagUG == "2") {
         signRoofBitMap = ugmr.roofImage
         signLeftBitMap = ugmr.leftImage
         signRightBitMap = ugmr.rightImage
@@ -121,7 +124,6 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         } else {
             callDisable("0")
         }
-//        }
 
         initView()
         val gson = Gson()
@@ -155,7 +157,15 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                 binding.tvName.text = getString(R.string.left)
                 signRoofBitMap = image.copy(image.config, false)
                 isSignRoofFilled = binding.drawing.isFilled
-                isSignRoofEdited = binding.drawing.isEdited
+                if(binding.drawing.isEdited && isSignRoofEditedCounter != 0){
+                    isSignRoofEditedCounter = 0
+                }
+                if(isSignRoofEditedCounter == 0) {
+                    isSignRoofEdited = binding.drawing.isEdited
+                    isSignRoofEditedCounter++
+                }
+                Log.e("before IF isSignRoofFilled", isSignRoofFilled.toString())
+                Log.e("before IF isRoofEdited", isSignRoofEdited.toString())
                 if (signLeftBitMap != null) {
                     callEnable(signLeftBitMap!!, "left")
                     binding.drawing.isFilled = true
@@ -168,7 +178,15 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                 binding.tvName.text = getString(R.string.right)
                 signLeftBitMap = image.copy(image.config, false)
                 isSignLeftFilled = binding.drawing.isFilled
-                isSignLeftEdited = binding.drawing.isEdited
+                if(binding.drawing.isEdited && isSignLeftEditedCounter != 0){
+                    isSignLeftEditedCounter = 0
+                }
+                if(isSignLeftEditedCounter == 0) {
+                    isSignLeftEdited = binding.drawing.isEdited
+                    isSignLeftEditedCounter++
+                }
+                Log.e("before IF isSignLeftFilled", isSignLeftFilled.toString())
+                Log.e("before IF isLeftEdited", isSignLeftEdited.toString())
                 if (signRightBitMap != null) {
                     callEnable(signRightBitMap!!, "right")
                     binding.drawing.isFilled = true
@@ -183,10 +201,24 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                 binding.tvName.text = getString(R.string.face)
                 signRightBitMap = image.copy(image.config, false)
                 isSignRightFilled = binding.drawing.isFilled
-                isSignRightEdited = binding.drawing.isEdited
+                if(binding.drawing.isEdited && isSignRightEditedCounter != 0){
+                    isSignRightEditedCounter = 0
+                }
+                if(isSignRightEditedCounter == 0) {
+                    isSignRightEdited = binding.drawing.isEdited
+                    isSignRightEditedCounter++
+                }
+                Log.e("before IF isSignRightFilled", isSignRightFilled.toString())
+                Log.e("before IF isRightEdited", isSignRightEdited.toString())
                 if (signFaceBitMap != null) {
                     callEnable(signFaceBitMap!!, "face")
                     binding.drawing.isFilled = true
+                    isSignFaceFilled = true
+                    if(flagUG == "0"){
+                        binding.drawing.isEdited = true
+                        isSignFaceEdited = binding.drawing.isEdited
+                        isSignFaceEditedCounter++
+                    }
                 } else {
                     callDisable("1")
                 }
@@ -196,14 +228,26 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             3 -> {
                 signFaceBitMap = image.copy(image.config, false)
                 isSignFaceFilled = binding.drawing.isFilled
-                isSignFaceEdited = binding.drawing.isEdited
-                /*if (signFaceBitMap != null) {
+                if(binding.drawing.isEdited && isSignFaceEditedCounter != 0){
+                    isSignFaceEditedCounter = 0
+                }
+                if(isSignFaceEditedCounter == 0) {
+                    isSignFaceEdited = binding.drawing.isEdited
+                    isSignFaceEditedCounter++
+                }
+                Log.e("before IF isFaceFilled", isSignFaceFilled.toString())
+                Log.e("before IF isFaceEdited", isSignFaceEdited.toString())
+                if (signFaceBitMap != null) {
                     callEnable(signFaceBitMap!!, "face")
                     binding.drawing.isFilled = true
-                    isSignFaceFilled = true
+                    if(isSignFaceEditedCounter != 0 && !isSignFaceEdited && flagUG != "0") {
+                        isSignFaceFilled = true
+                    }
+                    Log.e("after IF isFaceFilled", isSignFaceFilled.toString())
+                    Log.e("after IF isFaceEdited", isSignFaceEdited.toString())
                 } else {
                     callDisable("1")
-                }*/
+                }
                 postUndergroundInsert()
             }
         }

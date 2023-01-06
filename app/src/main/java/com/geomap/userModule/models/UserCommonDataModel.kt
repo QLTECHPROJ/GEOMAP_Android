@@ -34,7 +34,6 @@ class UserCommonDataModel {
         var typeOfGeologicalStructures : List<TypeOfGeologicalStructures>? = null
         @SerializedName("waterCondition") @Expose var waterCondition : List<WaterCondition>? = null
         @SerializedName("weatheringData") @Expose var weatheringData : List<WeatheringData>? = null
-        @SerializedName("Geologist") @Expose var geologist : List<Geologist>? = null
 
         class AttributeData {
             @SerializedName("id") @Expose var id : Int? = null
@@ -90,19 +89,6 @@ class UserCommonDataModel {
         class WeatheringData {
             @SerializedName("id") @Expose var id : Int? = null
             @SerializedName("name") @Expose var name : String? = null
-            @SerializedName("created_at") @Expose var createdAt : String? = null
-            @SerializedName("updated_at") @Expose var updatedAt : String? = null
-        }
-
-        class Geologist {
-            @SerializedName("id") @Expose var id : Int? = null
-            @SerializedName("name") @Expose var name : String? = null
-            @SerializedName("email") @Expose var email : String? = null
-            @SerializedName("phone") @Expose var phone : String? = null
-            @SerializedName("company_type") @Expose var companyType : String? = null
-            @SerializedName("position") @Expose var position : String? = null
-            @SerializedName("company") @Expose var company : String? = null
-            @SerializedName("password") @Expose var password : String? = null
             @SerializedName("created_at") @Expose var createdAt : String? = null
             @SerializedName("updated_at") @Expose var updatedAt : String? = null
         }

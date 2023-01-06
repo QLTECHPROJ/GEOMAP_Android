@@ -22,6 +22,7 @@ object CONSTANTS {
     const val TWELVE_HOUR_FORMAT_WITH_AM_PM = "hh:mm a"
     const val MONTH_DATE_YEAR_FORMAT = "MMM dd, yyyy"
     const val DATE_MONTH_YEAR_FORMAT = "dd MMM, yyyy"
+    const val DATE_MONTH_YEAR_FORMAT_z = "dd MMM, yyyy hh:mm aa"
     const val DATE_MONTH_YEAR_FORMAT1 = "dd MM yyyy"
     const val DATE_MONTH_YEAR_FORMAT_TIME = "dd MMMM, yyyy hh:mm:ss aa"
     const val DATE_MONTH_YEAR_FORMAT_TIME_with_Timzone = "yyyy-MM-dd HH:mm:ssZZ"

@@ -34,7 +34,6 @@ import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstSte
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.clientsGeologistSignEdited
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.flagOC
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.geoSign
-import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.geologistName
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.geologistSignEdited
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.img
 import com.geomap.mapReportModule.activities.openCastModule.OpenCastFormFirstStepActivity.Companion.ocmr
@@ -230,7 +229,6 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         geologistSign = null
         clientsGeologistSign = null
         ocDataModel = OpenCastInsertModel()
-        geologistName = ""
         sampleCollected = ""
         weathering = ""
         rockStrength = ""

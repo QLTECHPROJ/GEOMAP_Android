@@ -28,10 +28,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit.RetrofitError
 import retrofit.mime.TypedFile
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.OutputStream
+import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -71,14 +68,14 @@ class SyncDataActivity : AppCompatActivity() {
     private fun getData() {
         DB = getDataBase(ctx)
         DB.taskDao().geAllUnderGroundMappingReportASC(userId)
-                .observe(ctx as LifecycleOwner) { lists ->
-                    ugList = lists as ArrayList<UnderGroundMappingReport>
-                    setugObjArray(ugList)
-                    Log.e(
-                        "List UnderGroundMappingReport",
-                        "true" + DataBaseFunctions.gson.toJson(ugList).toString()
-                    )
-                }
+            .observe(ctx as LifecycleOwner) { lists ->
+                ugList = lists as ArrayList<UnderGroundMappingReport>
+                setugObjArray(ugList)
+                Log.e(
+                    "List UnderGroundMappingReport",
+                    "true" + DataBaseFunctions.gson.toJson(ugList).toString()
+                )
+            }
     }
 
     private fun getAlbumStorageDir(albumName : String?) : File {
@@ -110,53 +107,19 @@ class SyncDataActivity : AppCompatActivity() {
                 sdu.yCordinate = ugList[i].yCordinate
                 sdu.zCordinate = ugList[i].zCordinate
                 sdu.attribute = ugList[i].attributes
-                var datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(
-                    Date()
-                )
 
-                var photo = File(
-                    getAlbumStorageDir("Pictures"),
-                    String.format(datetime + "roofImage.jpg", System.currentTimeMillis())
-                )
-                saveBitmapToJPG(ugList[i].roofImage!!, photo)
-                scanMediaFile(photo)
-
-                sdu.roofImage = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
-
-                datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(
-                    Date()
-                )
-                photo = File(
-                    getAlbumStorageDir("Pictures"),
-                    String.format(datetime + "leftImage.jpg", System.currentTimeMillis())
-                )
-                saveBitmapToJPG(ugList[i].leftImage!!, photo)
-                scanMediaFile(photo)
-
-                sdu.leftImage = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
-
-                datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(
-                    Date()
-                )
-                photo = File(
-                    getAlbumStorageDir("Pictures"),
-                    String.format(datetime + "rightImage.jpg", System.currentTimeMillis())
-                )
-                saveBitmapToJPG(ugList[i].rightImage!!, photo)
-                scanMediaFile(photo)
-
-                sdu.rightImage = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
-                datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(
-                    Date()
-                )
-                photo = File(
-                    getAlbumStorageDir("Pictures"),
-                    String.format(datetime + "faceImage.jpg", System.currentTimeMillis())
-                )
-                saveBitmapToJPG(ugList[i].faceImage!!, photo)
-                scanMediaFile(photo)
-                sdu.faceImage = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
-
+                if(ugList[i].roofImage!= null) {
+                    sdu.roofImage = getImage("RoofImage", ugList[i].roofImage!!)
+                }
+                if(ugList[i].leftImage!= null) {
+                    sdu.leftImage = getImage("LeftImage", ugList[i].leftImage!!)
+                }
+                if(ugList[i].rightImage!= null) {
+                    sdu.rightImage = getImage("RightImage", ugList[i].rightImage!!)
+                }
+                if(ugList[i].faceImage!= null) {
+                    sdu.faceImage = getImage("FaceImage", ugList[i].faceImage!!)
+                }
                 ugModelList.add(sdu)
                 if (i == ugList.size - 1) {
                     callOcMethod()
@@ -211,42 +174,15 @@ class SyncDataActivity : AppCompatActivity() {
                 sdu.ocDate = ocList[i].ocDate
                 sdu.dipDirectionAndAngle = ocList[i].dipDirectionAngle
 
-                var datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(
-                    Date()
-                )
-                var photo = File(
-                    getAlbumStorageDir("Pictures"),
-                    String.format(datetime + "image.jpg", System.currentTimeMillis())
-                )
-                saveBitmapToJPG(ocList[i].image!!, photo)
-                scanMediaFile(photo)
-
-                sdu.image = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
-
-                datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(
-                    Date()
-                )
-                photo = File(
-                    getAlbumStorageDir("Pictures"),
-                    String.format(datetime + "geologistSign.jpg", System.currentTimeMillis())
-                )
-                saveBitmapToJPG(ocList[i].geologistSign!!, photo)
-                scanMediaFile(photo)
-
-                sdu.geologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
-
-                datetime = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(
-                    Date()
-                )
-                photo = File(
-                    getAlbumStorageDir("Pictures"),
-                    String.format(datetime + "ClientSign.jpg", System.currentTimeMillis())
-                )
-                saveBitmapToJPG(ocList[i].clientsGeologistSign!!, photo)
-                scanMediaFile(photo)
-
-                sdu.clientsGeologistSign = TypedFile(CONSTANTS.MULTIPART_FORMAT, photo)
-
+                if(ocList[i].image != null) {
+                    sdu.image = getImage("image", ocList[i].image!!)
+                }
+                if(ocList[i].geologistSign != null) {
+                    sdu.geologistSign = getImage("geologistSign", ocList[i].geologistSign!!)
+                }
+                if(ocList[i].clientsGeologistSign != null) {
+                    sdu.clientsGeologistSign = getImage("clientsGeologistSign", ocList[i].clientsGeologistSign!!)
+                }
                 ocModelList.add(sdu)
                 if (i == ocList.size - 1) {
                     callPostData()
@@ -258,27 +194,20 @@ class SyncDataActivity : AppCompatActivity() {
         }
     }
 
-    @Throws(IOException::class) fun saveBitmapToJPG(bitmap : Bitmap, photo : File?) {
-        val newBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(newBitmap)
-        canvas.drawColor(Color.WHITE)
-        canvas.drawBitmap(bitmap, 0f, 0f, null)
-        val stream : OutputStream = FileOutputStream(photo)
-        newBitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream)
-        stream.close()
-    }
-
-    private fun scanMediaFile(photo : File) {
-        val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
-        val contentUri = Uri.fromFile(photo)
-        mediaScanIntent.data = contentUri
-        ctx.sendBroadcast(mediaScanIntent)
+    private fun getImage(name : String, bitmap : Bitmap) : TypedFile? {
+        var image : TypedFile? = null
+        try {
+            val file = File(cacheDir, "$name.jpg")
+            val os : OutputStream = BufferedOutputStream(FileOutputStream(file))
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os)
+            os.close()
+            image = TypedFile(CONSTANTS.MULTIPART_FORMAT, file)
+        } catch (_ : Exception) {
+        }
+        return image
     }
 
     private fun callPostData() {
-        Log.e("SyncData UG Report", gson.toJson(ugModelList).toString())
-        Log.e("SyncData OC Report", gson.toJson(ocModelList).toString())
-
         if (ugModelList.isNotEmpty()) {
             postData(0)
         } else if (ugModelList.isEmpty() && ocModelList.isNotEmpty()) {
@@ -306,8 +235,8 @@ class SyncDataActivity : AppCompatActivity() {
                     ugModelList[i].rightImage, ugModelList[i].faceImage,
                     object : retrofit.Callback<SuccessModel> {
                         override fun success(
-                                model : SuccessModel,
-                                response : retrofit.client.Response
+                            model : SuccessModel,
+                            response : retrofit.client.Response
                         ) {
                             hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                             when (model.ResponseCode) {
@@ -396,8 +325,8 @@ class SyncDataActivity : AppCompatActivity() {
                     ocModelList[i].image, ocModelList[i].geologistSign,
                     ocModelList[i].clientsGeologistSign, object : retrofit.Callback<SuccessModel> {
                         override fun success(
-                                model : SuccessModel,
-                                response : retrofit.client.Response
+                            model : SuccessModel,
+                            response : retrofit.client.Response
                         ) {
                             if (model.ResponseCode == ctx.getString(R.string.ResponseCodesuccess)) {
                                 hideProgressBar(binding.progressBar, binding.progressBarHolder, act)

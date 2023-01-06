@@ -130,12 +130,12 @@ interface GeoMapDetailsDao {
     @Query("DELETE FROM typeoffaults")
     fun deleteTypeOfFaults() // ORDER BY uid ASC
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    /*@Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertGeologist(geologist: Geologist?)
 
     @Query("SELECT * FROM Geologist")
     fun geAllGeologist(): List<Geologist>
 
     @Query("DELETE FROM geologist")
-    fun deleteGeologist() // ORDER BY uid ASC
+    fun deleteGeologist() // ORDER BY uid ASC*/
 }

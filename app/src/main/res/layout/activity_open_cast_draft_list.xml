@@ -48,7 +48,7 @@
             android:layout_marginHorizontal="@dimen/_16sdp"
             android:fontFamily="@font/inter_regular"
             android:gravity="center"
-            android:text="@string/no_result_found"
+            android:text="@string/no_result_found_draft"
             android:textColor="@color/light_black"
             android:textSize="@dimen/_16sdp"
             android:visibility="gone"
