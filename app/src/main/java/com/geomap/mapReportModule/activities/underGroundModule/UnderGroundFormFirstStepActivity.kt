@@ -29,10 +29,24 @@ import com.geomap.R
 import com.geomap.databinding.ActivityUnderGroundFormFirstStepBinding
 import com.geomap.databinding.CardviewAttributeLayoutBinding
 import com.geomap.databinding.CommonPopupLayoutBinding
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormThirdStepActivity.Companion.isSignRoofFilled
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormThirdStepActivity.Companion.isSignLeftFilled
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormThirdStepActivity.Companion.isSignRightFilled
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormThirdStepActivity.Companion.isSignFaceFilled
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormThirdStepActivity.Companion.isSignRoofEdited
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormThirdStepActivity.Companion.isSignLeftEdited
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormThirdStepActivity.Companion.isSignRightEdited
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormThirdStepActivity.Companion.isSignFaceEdited
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormThirdStepActivity.Companion.isSignRoofEditedCounter
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormThirdStepActivity.Companion.isSignLeftEditedCounter
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormThirdStepActivity.Companion.isSignRightEditedCounter
+import com.geomap.mapReportModule.activities.underGroundModule.UnderGroundFormThirdStepActivity.Companion.isSignFaceEditedCounter
 import com.geomap.mapReportModule.models.AttributeDataModel
 import com.geomap.mapReportModule.models.AttributesListModel
 import com.geomap.mapReportModule.models.UnderGroundDetailsModel
 import com.geomap.roomDataBase.*
+import com.geomap.utils.CONSTANTS
+import com.geomap.utils.Converter.convertedFormat
 import com.geomap.utils.RetrofitService
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -158,7 +172,7 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
 
                 ugmr.name = model.ResponseData.name
                 ugmr.comment = model.ResponseData.comment
-                ugmr.ugDate = model.ResponseData.ugDate
+                ugmr.ugDate = convertedFormat(model.ResponseData.ugDate, CONSTANTS.DATE_MONTH_YEAR_FORMAT_z,CONSTANTS.SERVER_TIME_FORMAT)
                 ugmr.mapSerialNo = model.ResponseData.mapSerialNo
                 ugmr.shift = model.ResponseData.shift
                 ugmr.mappedBy = model.ResponseData.mappedBy
@@ -521,6 +535,18 @@ class UnderGroundFormFirstStepActivity : AppCompatActivity() {
         nosAdapter = null
         ugmr = UnderGroundMappingReport()
         flagUG = "0"
+        isSignRoofFilled = false
+        isSignLeftFilled = false
+        isSignRightFilled = false
+        isSignFaceFilled = false
+        isSignRoofEdited = false
+        isSignLeftEdited = false
+        isSignRightEdited = false
+        isSignFaceEdited = false
+        isSignRoofEditedCounter = 0
+        isSignLeftEditedCounter = 0
+        isSignRightEditedCounter = 0
+        isSignFaceEditedCounter = 0
         finish()
     }
 

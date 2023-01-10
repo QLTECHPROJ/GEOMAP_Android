@@ -17,6 +17,7 @@ import com.geomap.mvvm.AllViewModel
 import com.geomap.mvvm.UserModelFactory
 import com.geomap.mvvm.UserRepository
 import com.geomap.utils.CONSTANTS
+import com.geomap.utils.Converter
 import com.geomap.utils.RetrofitService
 import com.google.gson.Gson
 
@@ -86,6 +87,8 @@ class OpenCastDetailActivity : AppCompatActivity() {
                                     it.ResponseMessage, it.ResponseStatus
                                 )
                         binding.ocDetail = ocDetail
+                        binding.tvDate.text = Converter.convertedFormat(ocDetail.ResponseData.ocDate,
+                            CONSTANTS.DATE_MONTH_YEAR_FORMAT_z, CONSTANTS.SERVER_TIME_FORMAT)
 
                         Glide.with(ctx).load(ocDetail.ResponseData.geologistSign)
                                 .thumbnail(0.10f).into(binding.imgGeologistSign)

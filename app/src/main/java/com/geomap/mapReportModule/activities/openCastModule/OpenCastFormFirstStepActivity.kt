@@ -40,6 +40,7 @@ import com.geomap.mapReportModule.models.OpenCastDetailsModel
 import com.geomap.mapReportModule.models.OpenCastInsertModel
 import com.geomap.roomDataBase.*
 import com.geomap.utils.CONSTANTS
+import com.geomap.utils.Converter.convertedFormat
 import com.geomap.utils.RetrofitService
 import com.github.gcacace.signaturepad.views.SignaturePad
 import com.google.gson.Gson
@@ -86,7 +87,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 val type1 = object : TypeToken<OpenCastDetailsModel>() {}.type
                 ocDetailsModel = gson.fromJson(data, type1)
                 binding.etMinesSiteName.setText(ocDetailsModel.ResponseData.minesSiteName)
-                binding.tvOCDate.text = ocDetailsModel.ResponseData.ocDate
+                binding.tvOCDate.text = convertedFormat(ocDetailsModel.ResponseData.ocDate,CONSTANTS.DATE_MONTH_YEAR_FORMAT_z,CONSTANTS.SERVER_TIME_FORMAT)
                 binding.etPitName.setText(ocDetailsModel.ResponseData.pitName)
                 binding.etPitLocation.setText(ocDetailsModel.ResponseData.pitLoaction)
                 binding.etShiftInchargeName.setText(ocDetailsModel.ResponseData.shiftInchargeName)
@@ -189,7 +190,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 val type1 = object : TypeToken<OpenCastMappingReport>() {}.type
                 ocmr = gson.fromJson(data, type1)
                 binding.etMinesSiteName.setText(ocmr.minesSiteName)
-                binding.tvOCDate.text = ocmr.ocDate
+                binding.tvOCDate.text = convertedFormat(ocmr.ocDate,CONSTANTS.DATE_MONTH_YEAR_FORMAT_z,CONSTANTS.SERVER_TIME_FORMAT)
                 binding.etPitName.setText(ocmr.pitName)
                 binding.etPitLocation.setText(ocmr.pitLocation)
                 binding.etShiftInchargeName.setText(ocmr.shiftInChargeName)
@@ -277,14 +278,15 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         binding.llBack.setOnClickListener {
             onBackPressed()
         }
-        val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
+        val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, MODE_PRIVATE)
         if(flagOC == "0") {
-            binding.tvOCDate.text = SimpleDateFormat(CONSTANTS.SERVER_TIME_FORMAT).format(Date())
+            binding.tvOCDate.text = SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT_z).format(Date())
             binding.etGeologistName.setText(shared.getString(CONSTANTS.name, ""))
+            shift = getString(R.string.night_shift)
+            binding.rbNightShift.isSelected = true
+            binding.rbDayShift.isSelected = false
         }
-        shift = getString(R.string.night_shift)
-
-        binding.rbRadioGroup.setOnCheckedChangeListener { radioGroup : RadioGroup, id : Int ->
+       binding.rbRadioGroup.setOnCheckedChangeListener { radioGroup : RadioGroup, id : Int ->
             shift = radioGroup.findViewById<AppCompatRadioButton>(id).text.toString()
         }
 
@@ -344,6 +346,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
         binding.geologistSignPad.setOnSignedListener(object : SignaturePad.OnSignedListener {
             override fun onStartSigning() {
                 geologistSignEdited = true
+                binding.btnGeologistSignPadClear.setBackgroundResource(R.drawable.enable_button)
                 verifyStoragePermissions()
                 Log.e("Signature", "onStartSigning")
             }
@@ -351,6 +354,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             override fun onSigned() {
                 geoSign = true
                 binding.btnGeologistSignPadClear.isEnabled = true
+                binding.btnGeologistSignPadClear.setBackgroundResource(R.drawable.enable_button)
                 Log.e("Signature", "onSigned")
             }
 
@@ -358,6 +362,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 geoSign = false
                 geologistSignEdited = false
                 binding.btnGeologistSignPadClear.isEnabled = false
+                binding.btnGeologistSignPadClear.setBackgroundResource(R.drawable.disable_button)
                 Log.e("Signature", "onClear")
             }
         })
@@ -366,18 +371,21 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             SignaturePad.OnSignedListener {
             override fun onStartSigning() {
                 clientsGeologistSignEdited = true
+                binding.btnGeologistClientSignPadClear.setBackgroundResource(R.drawable.enable_button)
                 verifyStoragePermissions()
             }
 
             override fun onSigned() {
                 clientsGeoSign = true
                 binding.btnGeologistClientSignPadClear.isEnabled = true
+                binding.btnGeologistClientSignPadClear.setBackgroundResource(R.drawable.enable_button)
             }
 
             override fun onClear() {
                 clientsGeoSign = false
                 clientsGeologistSignEdited = false
                 binding.btnGeologistClientSignPadClear.isEnabled = false
+                binding.btnGeologistClientSignPadClear.setBackgroundResource(R.drawable.disable_button)
             }
         })
 

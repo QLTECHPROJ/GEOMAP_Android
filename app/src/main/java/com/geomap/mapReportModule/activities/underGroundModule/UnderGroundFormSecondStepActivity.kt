@@ -82,11 +82,11 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
         binding.etComment.setText(ugmr.comment)
         shift = ugmr.shift
         if (shift == getString(R.string.night_shift)) {
-            binding.rbNightShift.isSelected = true
-            binding.rbDayShift.isSelected = false
+            binding.rbNightShift.isChecked = true
+            binding.rbDayShift.isChecked = false
         } else {
-            binding.rbNightShift.isSelected = false
-            binding.rbDayShift.isSelected = true
+            binding.rbNightShift.isChecked = false
+            binding.rbDayShift.isChecked = true
         }
         binding.etName.addTextChangedListener(userTextWatcher)
         binding.etMappedBy.addTextChangedListener(userTextWatcher)
@@ -102,9 +102,11 @@ class UnderGroundFormSecondStepActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        shift = getString(R.string.night_shift)
         if(flagUG == "0") {
-            binding.tvUGDate.text = SimpleDateFormat(CONSTANTS.SERVER_TIME_FORMAT).format(
+            shift = getString(R.string.night_shift)
+            binding.rbNightShift.isChecked = true
+            binding.rbDayShift.isChecked = false
+            binding.tvUGDate.text = SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT_z).format(
                 Date())
         }
         binding.rbRadioGroup.setOnCheckedChangeListener { radioGroup : RadioGroup, id : Int ->

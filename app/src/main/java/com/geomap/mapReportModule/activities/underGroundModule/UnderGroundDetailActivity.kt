@@ -26,6 +26,7 @@ import com.geomap.mvvm.AllViewModel
 import com.geomap.mvvm.UserModelFactory
 import com.geomap.mvvm.UserRepository
 import com.geomap.utils.CONSTANTS
+import com.geomap.utils.Converter
 import com.geomap.utils.RetrofitService
 import com.google.gson.Gson
 import java.util.*
@@ -100,6 +101,8 @@ class UnderGroundDetailActivity : AppCompatActivity() {
                                     it.ResponseMessage, it.ResponseStatus
                                 )
                         binding.ugDetail = ugDetail
+                        binding.tvDate.text = Converter.convertedFormat(ugDetail.ResponseData.ugDate,
+                            CONSTANTS.DATE_MONTH_YEAR_FORMAT_z, CONSTANTS.SERVER_TIME_FORMAT)
                         it.ResponseData.let {
                             if (it.attribute.isEmpty()) {
                                 binding.tvAttributes.visibility = View.GONE

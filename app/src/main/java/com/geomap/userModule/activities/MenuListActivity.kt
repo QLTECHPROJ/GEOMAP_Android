@@ -57,7 +57,6 @@ class MenuListActivity : AppCompatActivity() {
         supportText = shareded.getString(CONSTANTS.supportText, "")
         supportEmail = shareded.getString(CONSTANTS.supportEmail, "")
 
-        prepareData()
         binding.llBack.setOnClickListener {
             onBackPressed()
         }
@@ -239,8 +238,8 @@ class MenuListActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
-        super.onResume()
         prepareData()
+        super.onResume()
     }
 
     private fun prepareData() {
@@ -280,7 +279,17 @@ class MenuListActivity : AppCompatActivity() {
                                                     .thumbnail(0.10f)
                                                     .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
                                                     .into(binding.civProfile)
-                                        } catch (_ : Exception) {
+                                        } catch (e : Exception) {
+                                            e.printStackTrace()
+                                            try {
+                                                Glide.with(ctx).load(
+                                                        coachStatusModel.responseData!!.profileImage).thumbnail(
+                                                        0.10f).apply(RequestOptions.bitmapTransform(
+                                                        RoundedCorners(126))).into(
+                                                        binding.civProfile)
+                                            } catch (e1: Exception) {
+                                                e1.printStackTrace()
+                                            }
                                         }
                                         binding.tvUserName.text = coachStatusModel.responseData!!.name
                                     }

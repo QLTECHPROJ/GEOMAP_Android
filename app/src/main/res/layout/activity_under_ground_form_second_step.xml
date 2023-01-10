@@ -229,7 +229,7 @@
                                 android:background="@android:color/transparent"
                                 android:button="@drawable/cb_btn_bg"
                                 android:buttonTint="@color/primary_theme"
-                                android:checked="true"
+                                android:checked="false"
                                 android:fontFamily="@font/inter_semi_bold"
                                 android:gravity="center"
                                 android:paddingStart="@dimen/_10sdp"

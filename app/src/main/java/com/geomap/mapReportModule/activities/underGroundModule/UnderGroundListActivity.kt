@@ -116,7 +116,7 @@ class UnderGroundListActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
             holder.binding.tvName.text = Converter.format(listModel[position].name)
             holder.binding.tvArea.text = Converter.format(listModel[position].location)
-            holder.binding.tvDate.text = Converter.format(listModel[position].ugDate)
+            holder.binding.tvDate.text = Converter.formatDateList(listModel[position].ugDate.toString())
 
             holder.binding.tvSubTitleOne.setText(
                 Html.fromHtml(

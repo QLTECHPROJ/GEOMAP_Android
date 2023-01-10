@@ -222,7 +222,7 @@ class DashboardActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
             holder.binding.tvName.text = Converter.format(listModel[position].name)
             holder.binding.tvArea.text = Converter.format(listModel[position].location)
-            holder.binding.tvDate.text = Converter.format(listModel[position].ugDate)
+            holder.binding.tvDate.text = Converter.formatDateList(listModel[position].ugDate.toString())
             holder.binding.tvSubTitleOne.setText(
                 Html.fromHtml(
                     "Mapped By : <font color='black'>${Converter.format(listModel[position].mappedBy)}</font>"
@@ -283,7 +283,7 @@ class DashboardActivity : AppCompatActivity() {
                 TextView.BufferType.SPANNABLE
             )
 
-            holder.binding.tvDate.text = Converter.format(listModel[position].ocDate)
+            holder.binding.tvDate.text = Converter.formatDateList(listModel[position].ocDate.toString())
             holder.binding.llMainLayout.setOnClickListener {
                 callOpenCastDetailActivity(act, "1", listModel[position].mappingSheetNo)
             }

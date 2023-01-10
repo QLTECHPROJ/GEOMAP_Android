@@ -98,7 +98,7 @@
                         <TextView
                             android:id="@+id/tvDate"
                             style="@style/subTitle"
-                            android:text="@{Converter.format(ugDetail.responseData.ugDate)}" />
+                            android:text="" />
 
                         <TextView
                             style="@style/title"

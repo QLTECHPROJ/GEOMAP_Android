@@ -39,6 +39,7 @@ import com.geomap.mapReportModule.models.UnderGroundInsertModel
 import com.geomap.roomDataBase.UnderGroundMappingReport
 import com.geomap.utils.APIClientProfile
 import com.geomap.utils.CONSTANTS
+import com.geomap.utils.Converter.convertedFormat
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit.RetrofitError
@@ -60,18 +61,6 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
     private var signLeft : TypedFile? = null
     private var signRight : TypedFile? = null
     private var signFace : TypedFile? = null
-    private var isSignRoofFilled = false
-    private var isSignLeftFilled = false
-    private var isSignRightFilled = false
-    private var isSignFaceFilled = false
-    private var isSignRoofEdited = false
-    private var isSignLeftEdited = false
-    private var isSignRightEdited = false
-    private var isSignFaceEdited = false
-    private var isSignRoofEditedCounter = 0
-    private var isSignLeftEditedCounter = 0
-    private var isSignRightEditedCounter = 0
-    private var isSignFaceEditedCounter = 0
     private lateinit var currPaint : ImageButton
     var ugDataModel = UnderGroundInsertModel()
     var i = 0
@@ -81,7 +70,20 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.MANAGE_EXTERNAL_STORAGE
     )
-
+    companion object {
+        var isSignRoofFilled = false
+        var isSignLeftFilled = false
+        var isSignRightFilled = false
+        var isSignFaceFilled = false
+        var isSignRoofEdited = false
+        var isSignLeftEdited = false
+        var isSignRightEdited = false
+        var isSignFaceEdited = false
+        var isSignRoofEditedCounter = 0
+        var isSignLeftEditedCounter = 0
+        var isSignRightEditedCounter = 0
+        var isSignFaceEditedCounter = 0
+    }
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         binding =
@@ -121,6 +123,8 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             val d : Drawable = BitmapDrawable(resources!!, signRoofBitMap)
             binding.drawing.background = d
             binding.drawing.isFilled = true
+            binding.drawing.isEdited = isSignRoofEdited
+
         } else {
             callDisable("0")
         }
@@ -136,6 +140,28 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         binding.btnClear.setOnClickListener {
             binding.drawing.startNew()
             binding.drawing.background = getDrawable(R.drawable.grid_bg_new)
+            when (i) {
+                0 -> {
+                    isSignRoofFilled = false
+                    isSignRoofEdited = false
+                    isSignRoofEditedCounter = 0
+                }
+                1 -> {
+                    isSignLeftFilled = false
+                    isSignLeftEdited = false
+                    isSignLeftEditedCounter = 0
+                }
+                2 -> {
+                    isSignRightFilled = false
+                    isSignRightEdited = false
+                    isSignRightEditedCounter = 0
+                }
+                3 -> {
+                    isSignFaceFilled = false
+                    isSignFaceEdited = false
+                    isSignFaceEditedCounter = 0
+                }
+            }
         }
 
         binding.btnNext.setOnClickListener {
@@ -214,11 +240,6 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                     callEnable(signFaceBitMap!!, "face")
                     binding.drawing.isFilled = true
                     isSignFaceFilled = true
-                    if(flagUG == "0"){
-                        binding.drawing.isEdited = true
-                        isSignFaceEdited = binding.drawing.isEdited
-                        isSignFaceEditedCounter++
-                    }
                 } else {
                     callDisable("1")
                 }
@@ -248,7 +269,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                 } else {
                     callDisable("1")
                 }
-                postUndergroundInsert()
+             //   postUndergroundInsert()
             }
         }
     }
@@ -282,7 +303,8 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             if (flagUG == "0" || flagUG == "1") {
                 showProgressBar(binding.progressBar, binding.progressBarHolder, act)
                 APIClientProfile.apiService!!.postUndergroundInsert(userId, ugDataModel.name,
-                    ugDataModel.comment, attributeDataModelList, ugDataModel.ugDate,
+                    ugDataModel.comment, attributeDataModelList,
+                    convertedFormat(ugDataModel.ugDate, CONSTANTS.SERVER_TIME_FORMAT,CONSTANTS.DATE_MONTH_YEAR_FORMAT_z),
                     ugDataModel.mapSerialNo, ugDataModel.shift, ugDataModel.mappedBy,
                     ugDataModel.scale, ugDataModel.location, ugDataModel.venieLoad,
                     ugDataModel.xCordinate, ugDataModel.yCordinate, ugDataModel.zCordinate,
@@ -299,6 +321,18 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                                         act
                                     )
                                     showToast(model.ResponseMessage, act)
+                                    isSignRoofFilled = false
+                                    isSignLeftFilled = false
+                                    isSignRightFilled = false
+                                    isSignFaceFilled = false
+                                    isSignRoofEdited = false
+                                    isSignLeftEdited = false
+                                    isSignRightEdited = false
+                                    isSignFaceEdited = false
+                                    isSignRoofEditedCounter = 0
+                                    isSignLeftEditedCounter = 0
+                                    isSignRightEditedCounter = 0
+                                    isSignFaceEditedCounter = 0
                                     binding.drawing.startNew()
                                     val i = Intent(ctx, DashboardActivity::class.java)
                                     i.flags = Intent.FLAG_ACTIVITY_NO_ANIMATION
@@ -487,13 +521,30 @@ Tap Setting > permission, and turn "Files and media" on."""
                 signRoofBitMap =
                         binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
                 ugmr.roofImage = signRoofBitMap
+                if(binding.drawing.isEdited && isSignRoofEditedCounter != 0){
+                    isSignRoofEditedCounter = 0
+                }
+                if(isSignRoofEditedCounter == 0) {
+                    isSignRoofEdited = binding.drawing.isEdited
+                    isSignRoofEditedCounter++
+                }
                 finish()
             }
             1 -> {
                 signLeftBitMap =
                         binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
                 ugmr.leftImage = signLeftBitMap
+                if(binding.drawing.isEdited && isSignLeftEditedCounter != 0){
+                    isSignLeftEditedCounter = 0
+                }
+                if(isSignLeftEditedCounter == 0) {
+                    isSignLeftEdited = binding.drawing.isEdited
+                    isSignLeftEditedCounter++
+                }
                 callEnable(signRoofBitMap!!, "roof")
+//                if(isSignRoofEditedCounter != 0){
+//                    isSignRoofEditedCounter = 0
+//                }
                 binding.btnNext.text = getString(R.string.next)
                 binding.tvName.text = getString(R.string.roof)
                 i--
@@ -502,7 +553,17 @@ Tap Setting > permission, and turn "Files and media" on."""
                 signRightBitMap =
                         binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
                 ugmr.rightImage = signRightBitMap
+                if(binding.drawing.isEdited && isSignRightEditedCounter != 0){
+                    isSignRightEditedCounter = 0
+                }
+                if(isSignRightEditedCounter == 0) {
+                    isSignRightEdited = binding.drawing.isEdited
+                    isSignRightEditedCounter++
+                }
                 callEnable(signLeftBitMap!!, "left")
+//                if(isSignLeftEditedCounter != 0){
+//                    isSignLeftEditedCounter = 0
+//                }
                 binding.btnNext.text = getString(R.string.next)
                 binding.tvName.text = getString(R.string.left)
                 i--
@@ -511,6 +572,16 @@ Tap Setting > permission, and turn "Files and media" on."""
                 signFaceBitMap =
                         binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
                 ugmr.faceImage = signFaceBitMap
+                if(binding.drawing.isEdited && isSignFaceEditedCounter != 0){
+                    isSignFaceEditedCounter = 0
+                }
+                if(isSignFaceEditedCounter == 0) {
+                    isSignFaceEdited = binding.drawing.isEdited
+                    isSignFaceEditedCounter++
+                }
+//                if(isSignRightEditedCounter != 0){
+//                    isSignRightEditedCounter = 0
+//                }
                 callEnable(signRightBitMap!!, "right")
                 binding.btnNext.text = getString(R.string.next)
                 binding.tvName.text = getString(R.string.right)

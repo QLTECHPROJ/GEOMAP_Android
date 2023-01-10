@@ -24,12 +24,12 @@ import com.geomap.roomDataBase.OpenCastMappingReport
 import com.geomap.roomDataBase.UnderGroundMappingReport
 import com.geomap.utils.APIClientProfile
 import com.geomap.utils.CONSTANTS
+import com.geomap.utils.Converter.convertedFormat
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit.RetrofitError
 import retrofit.mime.TypedFile
 import java.io.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 class SyncDataActivity : AppCompatActivity() {
@@ -97,7 +97,7 @@ class SyncDataActivity : AppCompatActivity() {
                 sdu.userId = userId
                 sdu.name = ugList[i].name
                 sdu.comment = ugList[i].comment
-                sdu.ugDate = ugList[i].ugDate
+                sdu.ugDate = convertedFormat(ugList[i].ugDate, CONSTANTS.SERVER_TIME_FORMAT,CONSTANTS.DATE_MONTH_YEAR_FORMAT_z)
                 sdu.shift = ugList[i].shift
                 sdu.mappedBy = ugList[i].mappedBy
                 sdu.scale = ugList[i].scale
@@ -171,7 +171,7 @@ class SyncDataActivity : AppCompatActivity() {
                 sdu.typeOfFaults = ocList[i].typeOfFaults
                 sdu.notes = ocList[i].notes
                 sdu.shift = ocList[i].shift
-                sdu.ocDate = ocList[i].ocDate
+                sdu.ocDate = convertedFormat(ocList[i].ocDate, CONSTANTS.SERVER_TIME_FORMAT,CONSTANTS.DATE_MONTH_YEAR_FORMAT_z)
                 sdu.dipDirectionAndAngle = ocList[i].dipDirectionAngle
 
                 if(ocList[i].image != null) {

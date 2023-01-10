@@ -48,6 +48,7 @@ import com.geomap.mapReportModule.models.SuccessModel
 import com.geomap.roomDataBase.OpenCastMappingReport
 import com.geomap.utils.APIClientProfile
 import com.geomap.utils.CONSTANTS
+import com.geomap.utils.Converter.convertedFormat
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit.RetrofitError
@@ -183,7 +184,8 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                     ocDataModel.sampleCollected, ocDataModel.weathering, ocDataModel.rockStregth,
                     ocDataModel.waterCondition, ocDataModel.typeOfGeologicalStructures,
                     ocDataModel.typeOfFaults, ocDataModel.notes, ocDataModel.shift,
-                    ocDataModel.ocDate, ocDataModel.dipDirectionAngle, sign, geologistSign,
+                    convertedFormat(ocDataModel.ocDate,CONSTANTS.SERVER_TIME_FORMAT,CONSTANTS.DATE_MONTH_YEAR_FORMAT_z),
+                    ocDataModel.dipDirectionAngle, sign, geologistSign,
                     clientsGeologistSign, object : retrofit.Callback<SuccessModel> {
                         override fun success(model: SuccessModel,
                             response: retrofit.client.Response) {

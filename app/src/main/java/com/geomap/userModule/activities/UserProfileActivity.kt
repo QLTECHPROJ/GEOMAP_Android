@@ -312,9 +312,11 @@ class UserProfileActivity : AppCompatActivity() {
                                         Context.MODE_PRIVATE
                                     )
                             val editor1 = shared1.edit()
-                            editor1.putString(
-                                CONSTANTS.profileImage, model.responseData?.profileImage
-                            )
+                            editor1.putString(CONSTANTS.profileImage, model.responseData?.profileImage)
+                            editor1.putString(CONSTANTS.dob, model.responseData?.dob)
+                            editor1.putString(CONSTANTS.mobile, model.responseData?.mobile)
+                            editor1.putString(CONSTANTS.name, model.responseData?.name)
+                            editor1.putString(CONSTANTS.email, model.responseData?.email)
                             editor1.apply()
                             prepareData()
                             finish()
@@ -350,10 +352,7 @@ class UserProfileActivity : AppCompatActivity() {
                                 call : Call<UserCommonDataModel>,
                                 response : Response<UserCommonDataModel>
                         ) {
-                            hideProgressBar(
-                                binding.progressBar, binding.progressBarHolder,
-                                act
-                            )
+                            hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                             val coachStatusModel : UserCommonDataModel? = response.body()
                             when (coachStatusModel!!.responseCode) {
                                 getString(R.string.ResponseCodesuccess) -> {
