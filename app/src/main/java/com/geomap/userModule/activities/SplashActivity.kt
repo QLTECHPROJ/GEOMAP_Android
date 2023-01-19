@@ -7,6 +7,8 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
@@ -23,7 +25,6 @@ import com.geomap.mvvm.UserModelFactory
 import com.geomap.mvvm.UserRepository
 import com.geomap.roomDataBase.GeoMapDatabase
 import com.geomap.userModule.models.VersionModel
-import com.geomap.utils.AppSignatureHashHelper
 import com.geomap.utils.CONSTANTS
 import com.geomap.utils.RetrofitService
 import com.google.android.gms.tasks.Task
@@ -37,7 +38,6 @@ class SplashActivity : AppCompatActivity() {
     private lateinit var ctx : Context
     private lateinit var act : Activity
     private var userId : String? = null
-    private var key : String? = null
     private lateinit var viewModel : AllViewModel
     private val retrofitService = RetrofitService.getInstance()
 
@@ -51,12 +51,11 @@ class SplashActivity : AppCompatActivity() {
         val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
         userId = shared.getString(CONSTANTS.userId, "")
 
-        key = AppSignatureHashHelper(this).appSignatures[0]
-        if (key.equals("")) {
-            key = getKey(ctx)
+        if (isNetworkConnected(ctx)) {
+            fcmCall()
+        }else{
+            checkAppVersion()
         }
-
-        fcmCall()
     }
 
     private fun fcmCall() {
@@ -65,17 +64,15 @@ class SplashActivity : AppCompatActivity() {
         if (TextUtils.isEmpty(fcmId)) {
             FirebaseMessaging.getInstance().token.addOnCompleteListener { task : Task<String?> ->
                 if (!task.isSuccessful) {
-                    Log.e("Token", fcmId)
                     return@addOnCompleteListener
                 }
                 // Get new FCM registration token
-                val token = task.result
+                fcmId = task.result.toString()
                 // Log and toast
-                Log.e("newToken", token!!)
-                fcmId = token
+                Log.e("newToken", fcmId)
                 val editor = getContext()
-                        .getSharedPreferences(CONSTANTS.FCMToken, MODE_PRIVATE).edit()
-                editor.putString(CONSTANTS.Token, token) //Friend
+                    .getSharedPreferences(CONSTANTS.FCMToken, MODE_PRIVATE).edit()
+                editor.putString(CONSTANTS.Token, fcmId) //Friend
                 editor.apply()
                 checkAppVersion()
             }
@@ -97,8 +94,7 @@ class SplashActivity : AppCompatActivity() {
         if (isNetworkConnected(ctx)) {
             RetrofitService.getInstance().getAppVersions(/*"1", */
                 BuildConfig.VERSION_CODE.toString(), CONSTANTS.FLAG_ONE, fcmId,
-                deviceId
-            ).enqueue(object : Callback<VersionModel> {
+                deviceId).enqueue(object : Callback<VersionModel> {
                 override fun onResponse(
                         call : Call<VersionModel>,
                         response : Response<VersionModel>
@@ -201,7 +197,6 @@ class SplashActivity : AppCompatActivity() {
 
     private fun callSplashData() {
         if (userId != "") {
-            callDashboardActivity(act, "0")
             if (isNetworkConnected(ctx)) {
                 viewModel = ViewModelProvider(
                     this, UserModelFactory(
@@ -223,10 +218,14 @@ class SplashActivity : AppCompatActivity() {
                     }
                 }
             } else {
-                callDashboardActivity(act, "0")
+                Handler(Looper.getMainLooper()).postDelayed({
+                    callDashboardActivity(act, "0")
+                }, 2000)
             }
         } else {
-            callSignActivity("", act)
+            Handler(Looper.getMainLooper()).postDelayed({
+                callSignActivity("", act)
+            }, 2000)
         }
     }
 }

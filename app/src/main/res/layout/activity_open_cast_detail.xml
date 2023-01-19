@@ -83,718 +83,272 @@
                         android:paddingVertical="@dimen/_10sdp">
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/mapping_sheet_no"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/mapping_sheet_no" />
 
                         <TextView
                             android:id="@+id/tvMappingSheetNo"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.mappingSheetNo)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.mappingSheetNo)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/date"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/date" />
 
                         <TextView
                             android:id="@+id/tvDate"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text=""
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/mine_site_name"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/mine_site_name" />
 
                         <TextView
                             android:id="@+id/tvMineSiteName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.minesSiteName)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.minesSiteName)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/pit_name"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/pit_name" />
 
                         <TextView
                             android:id="@+id/tvPitName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.pitName)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.pitName)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/pit_location"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/pit_location" />
 
                         <TextView
                             android:id="@+id/tvPitLocation"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
+                            style="@style/subTitle"
                             android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.pitLoaction)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            android:text="@{Converter.format(ocDetail.responseData.pitLoaction)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/shift"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/shift" />
 
                         <TextView
                             android:id="@+id/tvShift"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{ocDetail.responseData.shift}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{ocDetail.responseData.shift}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/shift_incharge_name"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/shift_incharge_name" />
 
                         <TextView
                             android:id="@+id/tvShiftInchargeName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.shiftInchargeName)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.shiftInchargeName)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/geologist_name"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/geologist_name" />
 
                         <TextView
                             android:id="@+id/tvGeologistName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.geologistName)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.geologistName)}" />
 
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
+                            style="@style/title"
                             android:text="@string/mapping_parameters"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            android:visibility="gone"
-                            tools:ignore="SpUsage" />
+                            android:visibility="gone" />
 
                         <TextView
-                            android:id="@+id/tvMappingParameters"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            android:visibility="gone"
-                            tools:ignore="SpUsage" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/face_location"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/face_location" />
 
                         <TextView
                             android:id="@+id/tvFaceLocation"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.faceLocation)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.faceLocation)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/face_length_m"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/face_length_m" />
 
                         <TextView
                             android:id="@+id/tvFaceLength"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.faceLength)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.faceLength)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/face_area_m2"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/face_area_m2" />
 
                         <TextView
                             android:id="@+id/tvFaceArea"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.faceArea)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.faceArea)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/face_rock_types"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/face_rock_types" />
 
                         <TextView
                             android:id="@+id/tvFaceRockTypes"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.faceRockType)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.faceRockType)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/bench_rl"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/bench_rl" />
 
                         <TextView
                             android:id="@+id/tvBenchRL"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.benchRl)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.benchRl)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/bench_height_amp_width_m"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/bench_height_amp_width_m" />
 
                         <TextView
                             android:id="@+id/tvBenchHeightWidth"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.benchHeightWidth)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.benchHeightWidth)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/bench_angle"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/bench_angle" />
 
                         <TextView
                             android:id="@+id/tvBenchAngle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.benchAngle)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.benchAngle)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/dip_direction_and_angle"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/dip_direction_and_angle" />
 
                         <TextView
                             android:id="@+id/tvDipDirectionAngle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.dipDirectionAndAngle)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.dipDirectionAndAngle)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/thickness_of_ore_coal_seam"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/thickness_of_ore_coal_seam" />
 
                         <TextView
                             android:id="@+id/tvThicknessOfOre"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.thicknessOfOre)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.thicknessOfOre)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/thiness_of_overburden_m"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/thiness_of_overburden_m" />
 
                         <TextView
                             android:id="@+id/tvThinessOfOverburden"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.thicknessOfOverburdan)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.thicknessOfOverburdan)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/thickness_of_interburden_m"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/thickness_of_interburden_m" />
 
                         <TextView
                             android:id="@+id/tvThicknessOfInterburden"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.thicknessOfInterburden)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.thicknessOfInterburden)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/observed_grade_of_ore"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/observed_grade_of_ore" />
 
                         <TextView
                             android:id="@+id/tvObservedGradeOfOre"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.observedGradeOfOre)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.observedGradeOfOre)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/sample_collected"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/sample_collected" />
 
                         <TextView
                             android:id="@+id/tvSampleCollected"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.sampleColledted)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.sampleColledted)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/actual_grade_of_ore_lab_grade"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/actual_grade_of_ore_lab_grade" />
 
                         <TextView
                             android:id="@+id/tvActualGradeOfOre"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.actualGradeOfOre)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.actualGradeOfOre)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/weathering"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/weathering" />
 
                         <TextView
                             android:id="@+id/tvWeathering"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.weathring)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.weathring)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/rock_strength"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/rock_strength" />
 
                         <TextView
                             android:id="@+id/tvRockStrength"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.rockStregth)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.rockStregth)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/water_condition"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/water_condition" />
 
                         <TextView
                             android:id="@+id/tvWaterCondition"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.waterCondition)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.waterCondition)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/type_of_geological_structures"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/type_of_geological_structures" />
 
                         <TextView
                             android:id="@+id/tvTypeOfGeologicalStructures"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.typeOfGeologist)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.typeOfGeologist)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/type_of_faults"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/type_of_faults" />
 
                         <TextView
                             android:id="@+id/tvTypeOfFaults"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.typeOfFaults)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/subTitle"
+                            android:text="@{Converter.format(ocDetail.responseData.typeOfFaults)}" />
 
                         <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_20sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@string/notes_"
-                            android:textColor="@color/gray"
-                            android:textSize="@dimen/_12sdp"
-                            tools:ignore="SpUsage" />
+                            style="@style/title"
+                            android:text="@string/notes_" />
 
                         <TextView
                             android:id="@+id/tvNotes"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
+                            style="@style/subTitle"
                             android:layout_marginBottom="@dimen/_4sdp"
-                            android:fontFamily="@font/inter_medium"
-                            android:gravity="start"
-                            android:text="@{Converter.format(ocDetail.responseData.notes)}"
-                            android:textColor="@color/light_black"
-                            android:textSize="@dimen/_16sdp"
-                            tools:ignore="SpUsage" />
+                            android:text="@{Converter.format(ocDetail.responseData.notes)}" />
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    style="@style/subTitleHead"
                     android:layout_marginHorizontal="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_20sdp"
-                    android:fontFamily="@font/inter_semi_bold"
-                    android:gravity="start"
-                    android:text="@string/geologist_sign"
-                    android:textColor="@color/light_black"
-                    android:textSize="@dimen/_16sdp"
-                    tools:ignore="SpUsage" />
+                    android:text="@string/geologist_sign" />
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -814,17 +368,10 @@
                 </androidx.cardview.widget.CardView>
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    style="@style/subTitleHead"
                     android:layout_marginHorizontal="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_20sdp"
-                    android:fontFamily="@font/inter_semi_bold"
-                    android:gravity="start"
-                    android:text="@string/client_s_geologist_sign"
-                    android:textColor="@color/light_black"
-                    android:textSize="@dimen/_16sdp"
-                    tools:ignore="SpUsage" />
+                    android:text="@string/client_s_geologist_sign" />
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -844,17 +391,10 @@
                 </androidx.cardview.widget.CardView>
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    style="@style/subTitleHead"
                     android:layout_marginHorizontal="@dimen/_25sdp"
                     android:layout_marginTop="@dimen/_20sdp"
-                    android:fontFamily="@font/inter_semi_bold"
-                    android:gravity="start"
-                    android:text="@string/image"
-                    android:textColor="@color/light_black"
-                    android:textSize="@dimen/_16sdp"
-                    tools:ignore="SpUsage" />
+                    android:text="@string/image" />
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
@@ -869,7 +409,7 @@
                     <ImageView
                         android:id="@+id/image"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_340sdp"
+                        android:layout_height="wrap_content"
                         android:contentDescription="@string/todo"
                         android:scaleType="fitXY" />
                 </androidx.cardview.widget.CardView>

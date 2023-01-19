@@ -13,28 +13,12 @@
             android:weightSum="1">
 
             <TextView
-                android:layout_width="@dimen/_0sdp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0.3"
-                android:fontFamily="@font/inter_medium"
-                android:gravity="start"
-                android:text="@string/name_"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/_12sdp"
-                tools:ignore="SpUsage" />
+                style="@style/recycleTitle"
+                android:text="@string/name_"/>
 
             <TextView
                 android:id="@+id/tvName"
-                android:layout_width="@dimen/_0sdp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0.7"
-                android:fontFamily="@font/inter_medium"
-                android:gravity="start"
-                android:textColor="@color/light_black"
-                android:textSize="@dimen/_12sdp"
-                tools:ignore="SpUsage" />
+                style="@style/recycleSubTitle" />
 
         </LinearLayout>
 
@@ -45,28 +29,12 @@
             android:weightSum="1">
 
             <TextView
-                android:layout_width="@dimen/_0sdp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0.3"
-                android:fontFamily="@font/inter_medium"
-                android:gravity="start"
-                android:text="@string/nos"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/_12sdp"
-                tools:ignore="SpUsage" />
+                style="@style/recycleTitle"
+                android:text="@string/nos" />
 
             <TextView
                 android:id="@+id/tvNos"
-                android:layout_width="@dimen/_0sdp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0.7"
-                android:fontFamily="@font/inter_medium"
-                android:gravity="start"
-                android:textColor="@color/light_black"
-                android:textSize="@dimen/_12sdp"
-                tools:ignore="SpUsage" />
+                style="@style/recycleSubTitle" />
 
         </LinearLayout>
 
@@ -77,28 +45,12 @@
             android:weightSum="1">
 
             <TextView
-                android:layout_width="@dimen/_0sdp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0.3"
-                android:fontFamily="@font/inter_medium"
-                android:gravity="start"
-                android:text="@string/properties"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/_12sdp"
-                tools:ignore="SpUsage" />
+                style="@style/recycleTitle"
+                android:text="@string/properties" />
 
             <TextView
                 android:id="@+id/tvProperties"
-                android:layout_width="@dimen/_0sdp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="0.7"
-                android:fontFamily="@font/inter_medium"
-                android:gravity="start"
-                android:textColor="@color/light_black"
-                android:textSize="@dimen/_12sdp"
-                tools:ignore="SpUsage" />
+                style="@style/recycleSubTitle" />
         </LinearLayout>
 
         <View

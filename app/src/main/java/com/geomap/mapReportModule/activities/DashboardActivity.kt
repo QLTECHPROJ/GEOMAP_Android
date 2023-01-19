@@ -198,6 +198,7 @@ class DashboardActivity : AppCompatActivity() {
         } else {
             binding.ivNetworkCheck.visibility = View.VISIBLE
             binding.llMainLayout.visibility = View.GONE
+            binding.tvFound.visibility = View.GONE
         }
     }
 

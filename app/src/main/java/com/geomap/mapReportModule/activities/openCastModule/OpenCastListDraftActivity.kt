@@ -101,7 +101,8 @@ class OpenCastListDraftActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder : MyViewHolder, position : Int) {
             holder.binding.tvName.text = Converter.format(listModel[position].pitName)
             holder.binding.tvArea.text = Converter.format(listModel[position].pitLocation)
-            holder.binding.tvDate.text = Converter.format(listModel[position].ocDate)
+            holder.binding.tvDate.text = Converter.convertedFormat(listModel[position].ocDate.toString(),
+                CONSTANTS.DATE_MONTH_YEAR_FORMAT_z_D, CONSTANTS.DATE_MONTH_YEAR_FORMAT_z)
             holder.binding.tvSubTitleOne.setText(
                 Html.fromHtml(
                     "Mines site name : <font color='black'>${

@@ -144,11 +144,11 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 binding.etNotes.setText(ocDetailsModel.ResponseData.notes)
                 shift = ocDetailsModel.ResponseData.shift
                 if (shift == getString(R.string.night_shift)) {
-                    binding.rbNightShift.isSelected = true
-                    binding.rbDayShift.isSelected = false
+                    binding.rbNightShift.isChecked = true
+                    binding.rbDayShift.isChecked = false
                 } else {
-                    binding.rbNightShift.isSelected = false
-                    binding.rbDayShift.isSelected = true
+                    binding.rbNightShift.isChecked = false
+                    binding.rbDayShift.isChecked = true
                 }
                 if (ocDetailsModel.ResponseData.image != "") {
                     GeoMapDatabase.databaseWriteExecutor.execute {
@@ -190,7 +190,7 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                 val type1 = object : TypeToken<OpenCastMappingReport>() {}.type
                 ocmr = gson.fromJson(data, type1)
                 binding.etMinesSiteName.setText(ocmr.minesSiteName)
-                binding.tvOCDate.text = convertedFormat(ocmr.ocDate,CONSTANTS.DATE_MONTH_YEAR_FORMAT_z,CONSTANTS.SERVER_TIME_FORMAT)
+                binding.tvOCDate.text =ocmr.ocDate
                 binding.etPitName.setText(ocmr.pitName)
                 binding.etPitLocation.setText(ocmr.pitLocation)
                 binding.etShiftInchargeName.setText(ocmr.shiftInChargeName)
@@ -257,11 +257,11 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
                     }
                 }
                 if (shift == getString(R.string.night_shift)) {
-                    binding.rbNightShift.isSelected = true
-                    binding.rbDayShift.isSelected = false
+                    binding.rbNightShift.isChecked = true
+                    binding.rbDayShift.isChecked = false
                 } else {
-                    binding.rbNightShift.isSelected = false
-                    binding.rbDayShift.isSelected = true
+                    binding.rbNightShift.isChecked = false
+                    binding.rbDayShift.isChecked = true
                 }
                 if (ocmr.geologistSign != null) {
                     binding.geologistSignPad.signatureBitmap = ocmr.geologistSign
@@ -283,8 +283,8 @@ class OpenCastFormFirstStepActivity : AppCompatActivity() {
             binding.tvOCDate.text = SimpleDateFormat(CONSTANTS.DATE_MONTH_YEAR_FORMAT_z).format(Date())
             binding.etGeologistName.setText(shared.getString(CONSTANTS.name, ""))
             shift = getString(R.string.night_shift)
-            binding.rbNightShift.isSelected = true
-            binding.rbDayShift.isSelected = false
+            binding.rbNightShift.isChecked = true
+            binding.rbDayShift.isChecked = false
         }
        binding.rbRadioGroup.setOnCheckedChangeListener { radioGroup : RadioGroup, id : Int ->
             shift = radioGroup.findViewById<AppCompatRadioButton>(id).text.toString()
@@ -1070,6 +1070,19 @@ Tap Setting > permission, and turn "Files and media" on."""
         flagOC = "0"
         ocmr = OpenCastMappingReport()
         img = null
+        geologistSign = null
+        clientsGeologistSign = null
+        ocDataModel = OpenCastInsertModel()
+        sampleCollected = ""
+        weathering = ""
+        rockStrength = ""
+        typeOfFaults = ""
+        waterCondition = ""
+        typeOfGeologicalStructures = ""
+        geoSign = false
+        clientsGeoSign = false
+        geologistSignEdited = false
+        clientsGeologistSignEdited = false
         finish()
     }
 }

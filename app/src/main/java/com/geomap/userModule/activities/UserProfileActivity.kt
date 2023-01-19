@@ -406,6 +406,14 @@ class UserProfileActivity : AppCompatActivity() {
                                                     .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
                                                     .into(binding.civProfile)
                                         } catch (_ : Exception) {
+                                            try {
+                                                Glide.with(ctx)
+                                                    .load(coachStatusModel.responseData!!.profileImage)
+                                                    .thumbnail(0.10f)
+                                                    .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
+                                                    .into(binding.civProfile)
+                                            } catch (e: Exception) {
+                                            }
                                         }
                                     }
 
@@ -683,8 +691,8 @@ class UserProfileActivity : AppCompatActivity() {
         val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         image = File.createTempFile(imageFileName, ".jpg", storageDir)
         profilePicPath = image.absolutePath
-        //        Glide.with(ctx).load(profilePicPath).thumbnail(0.10f)
-        //            .apply(RequestOptions.bitmapTransform(RoundedCorners(126))).into(binding.civProfile)
+        Glide.with(ctx).load(profilePicPath).thumbnail(0.10f)
+                   .apply(RequestOptions.bitmapTransform(RoundedCorners(126))).into(binding.civProfile)
         Log.e("image url", profilePicPath.toString())
         return image
     }

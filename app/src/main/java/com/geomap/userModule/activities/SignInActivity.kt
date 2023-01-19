@@ -169,9 +169,9 @@ class SignInActivity : AppCompatActivity() {
         }
 
         binding.btnSignIn.setOnClickListener {
-            if (isValidPassword(binding.etPassword.text.toString())) {
-                fcmCall()
-            }
+//            if (isValidPassword(binding.etPassword.text.toString())) {
+            fcmCall()
+//            }
         }
     }
 
@@ -237,17 +237,15 @@ class SignInActivity : AppCompatActivity() {
         if (TextUtils.isEmpty(fcmId)) {
             FirebaseMessaging.getInstance().token.addOnCompleteListener { task : Task<String?> ->
                 if (!task.isSuccessful) {
-                    Log.e("Token", fcmId)
                     return@addOnCompleteListener
                 }
                 // Get new FCM registration token
-                val token = task.result
+                fcmId = task.result.toString()
                 // Log and toast
-                Log.e("newToken", token!!)
-                fcmId = token
+                Log.e("newToken", fcmId)
                 val editor = getContext()
                         .getSharedPreferences(CONSTANTS.FCMToken, MODE_PRIVATE).edit()
-                editor.putString(CONSTANTS.Token, token) //Friend
+                editor.putString(CONSTANTS.Token, fcmId) //Friend
                 editor.apply()
                 postLoginData()
             }
@@ -257,9 +255,9 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun postLoginData() {
+        showProgressBar(binding.progressBar, binding.progressBarHolder, act)
         if (isNetworkConnected(ctx)) {
             binding.ltPassword.isErrorEnabled = false
-            showProgressBar(binding.progressBar, binding.progressBarHolder, act)
             viewModel = ViewModelProvider(
                 this, UserModelFactory(
                     UserRepository(retrofitService)

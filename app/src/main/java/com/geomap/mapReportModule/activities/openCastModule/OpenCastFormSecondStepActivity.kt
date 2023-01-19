@@ -6,9 +6,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
+import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -16,6 +14,9 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
+import android.text.Layout
+import android.text.StaticLayout
+import android.text.TextPaint
 import android.util.Log
 import android.view.View
 import android.widget.ImageButton
@@ -56,6 +57,7 @@ import retrofit.mime.TypedFile
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.roundToInt
 
 class OpenCastFormSecondStepActivity : AppCompatActivity() {
     private lateinit var binding: ActivityOpenCastFormSecondStepBinding
@@ -66,6 +68,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
     private var sign: TypedFile? = null
     private var isImageFilled = false
     private var isImageEdited = false
+    var titleImg = ""
     private val requestExternalStorage = 1
     private val permissionsStorage = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.MANAGE_EXTERNAL_STORAGE)
@@ -86,23 +89,34 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             ocDataModel = gson.fromJson(data, type1)
         }
 
+        titleImg = "  "+ ocDataModel.ocDate + "_OC_Image"
+        binding.tvImgTitle.text = titleImg
         binding.llBack.setOnClickListener {
             onBackPressed()
         }
 
         initViewSandVars()
 
-        if (flagOC == "1" || flagOC == "2") {
-            if (img != null) {
-                val d: Drawable = BitmapDrawable(resources, img)
-                binding.drawing.background = d
-                binding.drawing.isFilled = true
-            }
+//        if (flagOC == "1" || flagOC == "2") {
+        if (img != null) {
+//            img = saveBitmapToJPGImg(img!!)
+            val d: Drawable = BitmapDrawable(resources, img)
+            binding.drawing.background = d
+            binding.drawing.isFilled = true
+        }else{
+            var bitmap = BitmapFactory.decodeResource(resources!!, R.drawable.grid_bg_new)
+            bitmap = saveBitmapToJPGImg(bitmap)
+            val d : Drawable = BitmapDrawable(resources!!, bitmap)
+            binding.drawing.background = d
         }
 
         binding.btnSignPadClear.setOnClickListener {
             binding.drawing.background = getDrawable(R.drawable.grid_bg_new)
             binding.drawing.startNew()
+            var bitmap = BitmapFactory.decodeResource(resources!!, R.drawable.grid_bg_new)
+            bitmap = saveBitmapToJPGImg(bitmap)
+            val d : Drawable = BitmapDrawable(resources!!, bitmap)
+            binding.drawing.background = d
         }
 
         binding.btnSubmit.setOnClickListener {
@@ -157,17 +171,21 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                 false)
             sign = TypedFile(CONSTANTS.MULTIPART_FORMAT, saveBitmapToJPG("Image", bitmap))
         } else if (isImageFilled) {
-            if (img != null) {
-                try {
-                    val file = File(cacheDir, "image.jpg")
-                    val os: OutputStream = BufferedOutputStream(FileOutputStream(file))
-                    img!!.compress(Bitmap.CompressFormat.JPEG, 100, os)
-                    os.close()
-                    sign = TypedFile(CONSTANTS.MULTIPART_FORMAT, file)
-                    binding.drawing.isFilled = true
-                } catch (_: Exception) {
-                }
-            }
+            img = binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
+            val file = File(cacheDir, "image.jpg")
+            val os: OutputStream = BufferedOutputStream(FileOutputStream(file))
+            img!!.compress(Bitmap.CompressFormat.JPEG, 100, os)
+            os.close()
+            sign = TypedFile(CONSTANTS.MULTIPART_FORMAT, file)
+            binding.drawing.isFilled = true
+        }else{
+            img = binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
+            val file = File(cacheDir, "image.jpg")
+            val os: OutputStream = BufferedOutputStream(FileOutputStream(file))
+            img!!.compress(Bitmap.CompressFormat.JPEG, 100, os)
+            os.close()
+            sign = TypedFile(CONSTANTS.MULTIPART_FORMAT, file)
+            binding.drawing.isFilled = true
         }
 
         if (isNetworkConnected(ctx)) {
@@ -335,6 +353,67 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         return imageFile
     }
 
+    @Throws(IOException::class)
+    fun saveBitmapToJPGImg(bitmap: Bitmap): Bitmap{
+        var bitmap = bitmap
+        val scale: Float = resources.displayMetrics.density
+        var bitmapConfig: Bitmap.Config = bitmap.config // set default bitmap config if none
+        // set default bitmap config if none
+        if (bitmapConfig == null) {
+            bitmapConfig = Bitmap.Config.ARGB_8888
+        } // resource bitmaps are immutable, so we need to convert it to mutable one
+        // resource bitmaps are immutable, so we need to convert it to mutable one
+        bitmap = bitmap.copy(bitmapConfig, true)
+        val canvas = Canvas(bitmap) // new antialiased Paint
+        // new antialiased Paint
+        val paint = TextPaint(Paint.ANTI_ALIAS_FLAG) // text color - #3D3D3D
+        // text color - #3D3D3D
+        paint.color = getColor(R.color.white) // text size in pixels
+        // text size in pixels
+        paint.textSize = (binding.tvImgTitle.textSize) // text shadow
+        paint.textAlign = Paint.Align.LEFT
+
+        // text shadow
+//        paint.setShadowLayer(2f, 0f, 1f, getColor(R.color.primary_theme)) // set text width to canvas width minus 16dp padding
+        // set text width to canvas width minus 16dp padding
+        val textWidth = canvas.width - (16 * scale.roundToInt())// init StaticLayout for text
+        // init StaticLayout for text
+        val textLayout = StaticLayout(binding.tvImgTitle.text, paint, textWidth, Layout.Alignment.ALIGN_NORMAL, 1.0f,
+            0.0f, false) // get height of multiline text
+        // get height of multiline text
+        val textHeight = textLayout.height // get position of text's top left corner
+        // get position of text's top left corner
+        val x: Float = ((bitmap.width - textWidth) / 30).toFloat()
+        val y: Float = ((bitmap.height - textHeight) / 30).toFloat() // draw text to the Canvas center
+        val p = Paint()
+        p.color = getColor(R.color.primary_theme) // text size in pixels
+        p.style = Paint.Style.FILL
+        var rectF = RectF(0.0f, 2.0f, 1200.0f,120.0f)
+        /*if((ocDataModel.minesSiteName != "" && ocDataModel.pitName == "" &&  ocDataModel.pitLocation == "") || (ocDataModel.minesSiteName == "" && ocDataModel.pitName != "" &&  ocDataModel.pitLocation == "") || (ocDataModel.minesSiteName == "" && ocDataModel.pitName == "" &&  ocDataModel.pitLocation != "") ){
+            //3line
+            Log.e("4line","4Line")
+            rectF = RectF(1000.0f, 60.0f, 500.0f,220.0f)
+        }else  if((ocDataModel.minesSiteName == "" && ocDataModel.pitName != "" &&  ocDataModel.pitLocation != "") || (ocDataModel.minesSiteName != "" && ocDataModel.pitName == "" &&  ocDataModel.pitLocation != "")|| (ocDataModel.minesSiteName != "" && ocDataModel.pitName != "" &&  ocDataModel.pitLocation == "")){
+            //4line
+            Log.e("3line","3Line")
+            rectF = RectF(1000.0f, 60.0f, 500.0f,280.0f)
+        }else if(ocDataModel.minesSiteName != "" && ocDataModel.pitName != "" &&  ocDataModel.pitLocation != ""){
+            //5line
+            Log.e("4line","4Line")
+            rectF = RectF(1000.0f, 60.0f, 500.0f,310.0f)
+        }else if(ocDataModel.minesSiteName == "" && ocDataModel.pitName == "" && ocDataModel.pitLocation == ""){
+     */       //2line
+//        }
+        //        val rectF = RectF(textHeight.toFloat(), textWidth.toFloat(), textHeight.toFloat(),textWidth.toFloat())
+        canvas.drawRect(rectF, p)
+        // draw text to the Canvas center
+        canvas.save()
+        canvas.translate(x, y)
+        textLayout.draw(canvas)
+        canvas.restore()
+        return bitmap
+    }
+
     private fun verifyStoragePermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (!Environment.isExternalStorageManager()) {
@@ -375,6 +454,12 @@ Tap Setting > permission, and turn "Files and media" on.""")
     }
 
     override fun onBackPressed() {
+        isImageFilled = binding.drawing.isFilled
+        isImageEdited = binding.drawing.isEdited
+        binding.drawing.isDrawingCacheEnabled = true
+        img = binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config,
+                false)
+//        img =  saveBitmapToJPGImg(img)
         finish()
     }
 

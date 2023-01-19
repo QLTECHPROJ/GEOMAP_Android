@@ -1,5 +1,9 @@
 package com.geomap;
 
+import static android.net.ConnectivityManager.RESTRICT_BACKGROUND_STATUS_DISABLED;
+import static android.net.ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED;
+import static android.net.ConnectivityManager.RESTRICT_BACKGROUND_STATUS_WHITELISTED;
+
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -7,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +21,7 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.room.Room;
 
 import com.geomap.faqModule.activities.FaqActivity;
@@ -40,12 +46,13 @@ import com.geomap.userModule.activities.MenuListActivity;
 import com.geomap.userModule.activities.SignInActivity;
 import com.geomap.userModule.activities.UserProfileActivity;
 import com.geomap.userModule.models.UserCommonDataModel;
-import com.geomap.utils.AppSignatureHashHelper;
 import com.geomap.utils.CONSTANTS;
 import com.geomap.utils.CryptLib;
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -81,16 +88,10 @@ public class GeoMapApp extends Application {
 
     public static boolean isNetworkConnected(Context context) {
         try {
-            ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
-            boolean flag = false;
-            ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            //For 3G check
-            boolean is3g = manager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).isConnectedOrConnecting();
-            //For WiFi Check
-            boolean isWifi = manager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).isConnectedOrConnecting();
-            flag = !(!is3g && !isWifi);
-            return flag;
+            ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            boolean connected = (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                    connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED);
+            return connected;
         } catch (NullPointerException e) {
             return false;
         }
@@ -271,16 +272,6 @@ public class GeoMapApp extends Application {
         if (flag.equalsIgnoreCase("1")) {
             callDashboardActivity(act, "0");
         }
-    }
-
-    public static String getKey(Context context) {
-        AppSignatureHashHelper appSignatureHashHelper = new AppSignatureHashHelper(context);
-        String key = appSignatureHashHelper.getAppSignatures().get(0);
-        SharedPreferences shared = context.getSharedPreferences(CONSTANTS.PREF_KEY_Splash, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = shared.edit();
-        editor.putString(CONSTANTS.PREF_KEY_SplashKey, appSignatureHashHelper.getAppSignatures().get(0));
-        editor.apply();
-        return key;
     }
 
     public static GeoMapDatabase getDataBase(Context ctx) {

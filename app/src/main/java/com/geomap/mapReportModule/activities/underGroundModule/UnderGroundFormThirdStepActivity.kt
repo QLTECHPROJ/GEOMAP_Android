@@ -1,14 +1,14 @@
 package com.geomap.mapReportModule.activities.underGroundModule
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
+import android.content.res.Resources
+import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -16,6 +16,9 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.Settings
+import android.text.Layout
+import android.text.StaticLayout
+import android.text.TextPaint
 import android.util.Log
 import android.view.View
 import android.widget.ImageButton
@@ -47,6 +50,7 @@ import retrofit.mime.TypedFile
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.roundToInt
 
 class UnderGroundFormThirdStepActivity : AppCompatActivity() {
     private lateinit var binding : ActivityUnderGroundFormThirdStepBinding
@@ -61,6 +65,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
     private var signLeft : TypedFile? = null
     private var signRight : TypedFile? = null
     private var signFace : TypedFile? = null
+    var imgTitle = ""
     private lateinit var currPaint : ImageButton
     var ugDataModel = UnderGroundInsertModel()
     var i = 0
@@ -84,6 +89,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         var isSignRightEditedCounter = 0
         var isSignFaceEditedCounter = 0
     }
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState : Bundle?) {
         super.onCreate(savedInstanceState)
         binding =
@@ -110,12 +116,15 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             }
             intent.extras!!.clear()
         }
-
+        imgTitle = " Image "+ ugDataModel.ugDate
         signRoofBitMap = ugmr.roofImage
         signLeftBitMap = ugmr.leftImage
         signRightBitMap = ugmr.rightImage
         signFaceBitMap = ugmr.faceImage
+        binding.tvName.text = getString(R.string.roof)
+        binding.tvImgTitle.text =  getString(R.string.roof) + imgTitle
         if (signRoofBitMap != null) {
+//            signRoofBitMap =  saveBitmapToJPGImg(signRoofBitMap!!)
             if (binding.drawing.drawingCache != null) {
                 binding.drawing.startNew()
                 binding.drawing.background = getDrawable(R.drawable.grid_bg_new)
@@ -124,7 +133,6 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             binding.drawing.background = d
             binding.drawing.isFilled = true
             binding.drawing.isEdited = isSignRoofEdited
-
         } else {
             callDisable("0")
         }
@@ -135,11 +143,9 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         binding.btnClear.isEnabled = true
         binding.btnClear.setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
         binding.btnClear.setBackgroundResource(R.drawable.border_enable_button)
-        binding.tvName.text = getString(R.string.roof)
 
         binding.btnClear.setOnClickListener {
-            binding.drawing.startNew()
-            binding.drawing.background = getDrawable(R.drawable.grid_bg_new)
+           callDisable("1")
             when (i) {
                 0 -> {
                     isSignRoofFilled = false
@@ -177,11 +183,14 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun saveImage(image : Bitmap) {
         when (i) {
             0 -> {
                 binding.tvName.text = getString(R.string.left)
                 signRoofBitMap = image.copy(image.config, false)
+                binding.tvImgTitle.text =  getString(R.string.roof) + imgTitle
+//                signRoofBitMap =  saveBitmapToJPGImg(signRoofBitMap!!)
                 isSignRoofFilled = binding.drawing.isFilled
                 if(binding.drawing.isEdited && isSignRoofEditedCounter != 0){
                     isSignRoofEditedCounter = 0
@@ -193,6 +202,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                 Log.e("before IF isSignRoofFilled", isSignRoofFilled.toString())
                 Log.e("before IF isRoofEdited", isSignRoofEdited.toString())
                 if (signLeftBitMap != null) {
+//                    signLeftBitMap =  saveBitmapToJPGImg(signLeftBitMap!!)
                     callEnable(signLeftBitMap!!, "left")
                     binding.drawing.isFilled = true
                 } else {
@@ -203,6 +213,8 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             1 -> {
                 binding.tvName.text = getString(R.string.right)
                 signLeftBitMap = image.copy(image.config, false)
+                binding.tvImgTitle.text =  getString(R.string.left) + imgTitle
+//                signLeftBitMap =  saveBitmapToJPGImg(signLeftBitMap!!)
                 isSignLeftFilled = binding.drawing.isFilled
                 if(binding.drawing.isEdited && isSignLeftEditedCounter != 0){
                     isSignLeftEditedCounter = 0
@@ -214,6 +226,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                 Log.e("before IF isSignLeftFilled", isSignLeftFilled.toString())
                 Log.e("before IF isLeftEdited", isSignLeftEdited.toString())
                 if (signRightBitMap != null) {
+//                    signRightBitMap =  saveBitmapToJPGImg(signRightBitMap!!)
                     callEnable(signRightBitMap!!, "right")
                     binding.drawing.isFilled = true
                 } else {
@@ -225,6 +238,8 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             2 -> {
                 binding.btnNext.text = getString(R.string.submit)
                 binding.tvName.text = getString(R.string.face)
+                binding.tvImgTitle.text =  getString(R.string.right) + imgTitle
+//                signRightBitMap =  saveBitmapToJPGImg(signRightBitMap!!)
                 signRightBitMap = image.copy(image.config, false)
                 isSignRightFilled = binding.drawing.isFilled
                 if(binding.drawing.isEdited && isSignRightEditedCounter != 0){
@@ -237,6 +252,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                 Log.e("before IF isSignRightFilled", isSignRightFilled.toString())
                 Log.e("before IF isRightEdited", isSignRightEdited.toString())
                 if (signFaceBitMap != null) {
+//                    signFaceBitMap =  saveBitmapToJPGImg(signFaceBitMap!!)
                     callEnable(signFaceBitMap!!, "face")
                     binding.drawing.isFilled = true
                     isSignFaceFilled = true
@@ -248,6 +264,8 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
             }
             3 -> {
                 signFaceBitMap = image.copy(image.config, false)
+                binding.tvImgTitle.text =  getString(R.string.face) + imgTitle
+//                signFaceBitMap =  saveBitmapToJPGImg(signFaceBitMap!!)
                 isSignFaceFilled = binding.drawing.isFilled
                 if(binding.drawing.isEdited && isSignFaceEditedCounter != 0){
                     isSignFaceEditedCounter = 0
@@ -269,33 +287,49 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
                 } else {
                     callDisable("1")
                 }
-             //   postUndergroundInsert()
+                postUndergroundInsert()
             }
         }
     }
 
     private fun postUndergroundInsert() {
         if (isSignRoofEdited) {
+            binding.tvImgTitle.text =  getString(R.string.roof) + imgTitle
+            signRoofBitMap =  saveBitmapToJPGImg(signRoofBitMap!!)
             signRoof = TypedFile(CONSTANTS.MULTIPART_FORMAT, saveBitmapToJPG("RoofImage", signRoofBitMap!!))
         } else if (isSignRoofFilled) {
+            signRoof = getImage("RoofImage", signRoofBitMap!!)
+        }else {
             signRoof = getImage("RoofImage", signRoofBitMap!!)
         }
 
         if (isSignLeftEdited) {
+            binding.tvImgTitle.text =  getString(R.string.left) + imgTitle
+            signLeftBitMap =  saveBitmapToJPGImg(signLeftBitMap!!)
             signLeft = TypedFile(CONSTANTS.MULTIPART_FORMAT, saveBitmapToJPG("LeftImage", signLeftBitMap!!))
         } else if (isSignLeftFilled) {
+            signLeft = getImage("LeftImage", signLeftBitMap!!)
+        }else{
             signLeft = getImage("LeftImage", signLeftBitMap!!)
         }
 
         if (isSignRightEdited) {
+            binding.tvImgTitle.text =  getString(R.string.right) + imgTitle
+            signRightBitMap =  saveBitmapToJPGImg(signRightBitMap!!)
             signRight = TypedFile(CONSTANTS.MULTIPART_FORMAT, saveBitmapToJPG("RightImage", signRightBitMap!!))
         } else if (isSignRightFilled) {
+            signRight = getImage("RightImage", signRightBitMap!!)
+        }else{
             signRight = getImage("RightImage", signRightBitMap!!)
         }
 
         if (isSignFaceEdited) {
+            binding.tvImgTitle.text =  getString(R.string.face) + imgTitle
+            signFaceBitMap =  saveBitmapToJPGImg(signFaceBitMap!!)
             signFace = TypedFile(CONSTANTS.MULTIPART_FORMAT, saveBitmapToJPG("FaceImage", signFaceBitMap!!))
         } else if (isSignFaceFilled) {
+            signFace = getImage("FaceImage", signFaceBitMap!!)
+        }else{
             signFace = getImage("FaceImage", signFaceBitMap!!)
         }
 
@@ -422,7 +456,11 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         if (flag == "1") {
             binding.drawing.startNew()
         }
-        binding.drawing.background = getDrawable(R.drawable.grid_bg_new)
+        binding.tvImgTitle.text =  binding.tvName.text.toString() + imgTitle
+        var bitmap = BitmapFactory.decodeResource(resources!!, R.drawable.grid_bg_new)
+        bitmap = saveBitmapToJPGImg(bitmap)
+        val d : Drawable = BitmapDrawable(resources!!, bitmap)
+        binding.drawing.background = d
     }
 
     private fun callEnable(signBitMap : Bitmap, bitmapString : String) {
@@ -458,6 +496,65 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         sendBroadcast(mediaScanIntent)
 
         return imageFile
+    }
+    @Throws(IOException::class)
+    fun saveBitmapToJPGImg(bitmap: Bitmap): Bitmap{
+        var bitmap = bitmap
+        val scale: Float = resources.displayMetrics.density
+        var bitmapConfig: Bitmap.Config = bitmap.config // set default bitmap config if none
+        // set default bitmap config if none
+        if (bitmapConfig == null) {
+            bitmapConfig = Bitmap.Config.ARGB_8888
+        } // resource bitmaps are immutable, so we need to convert it to mutable one
+        // resource bitmaps are immutable, so we need to convert it to mutable one
+        bitmap = bitmap.copy(bitmapConfig, true)
+        val canvas = Canvas(bitmap) // new antialiased Paint
+        // new antialiased Paint
+        val paint = TextPaint(Paint.ANTI_ALIAS_FLAG) // text color - #3D3D3D
+        // text color - #3D3D3D
+        paint.color = getColor(R.color.white) // text size in pixels
+        // text size in pixels
+        paint.textSize = (binding.tvImgTitle.textSize) // text shadow
+        paint.textAlign = Paint.Align.LEFT
+
+        // text shadow
+//        paint.setShadowLayer(2f, 0f, 1f, getColor(R.color.primary_theme)) // set text width to canvas width minus 16dp padding
+        // set text width to canvas width minus 16dp padding
+        val textWidth = canvas.width - (16 * scale.roundToInt())// init StaticLayout for text
+        // init StaticLayout for text
+        val textLayout = StaticLayout("  "+ binding.tvImgTitle.text, paint, textWidth, Layout.Alignment.ALIGN_NORMAL, 1.0f,
+            0.0f, false) // get height of multiline text
+        // get height of multiline text
+        val textHeight = textLayout.height // get position of text's top left corner
+        // get position of text's top left corner
+        val x: Float = ((bitmap.width - textWidth) / 30).toFloat()
+        val y: Float = ((bitmap.height - textHeight) / 30).toFloat() // draw text to the Canvas center
+        val p = Paint()
+        p.color = getColor(R.color.primary_theme) // text size in pixels
+        p.style = Paint.Style.FILL
+        //        p.strokeWidth = 20.0f
+        var rectF = RectF(0.0f, 2.0f, 1200.0f,120.0f)
+   /*     if((ugDataModel.name == "" &&  ugDataModel.location != "") || (ugDataModel.name != "" && ugDataModel.location == "")){
+            //3line
+            Log.e("3line","3Line")
+            rectF = RectF(1000.0f, 60.0f, 500.0f,220.0f)
+        }else if(ugDataModel.name != "" &&  ugDataModel.location != ""){
+            //4line
+            Log.e("4line","4Line")
+            rectF = RectF(1000.0f, 60.0f, 500.0f,280.0f)
+        }else if(ugDataModel.name == "" && ugDataModel.location == ""){
+            //2line
+            Log.e("2line","2Line")
+            rectF = RectF(1000.0f, 60.0f, 500.0f,100.0f)
+        }*/
+//        val rectF = RectF(textHeight.toFloat(), textWidth.toFloat(), textHeight.toFloat(),textWidth.toFloat())
+        canvas.drawRect(rectF, p)
+        // draw text to the Canvas center
+        canvas.save()
+        canvas.translate(x, y)
+        textLayout.draw(canvas)
+        canvas.restore()
+        return bitmap
     }
 
     private fun initView() {
@@ -514,12 +611,15 @@ Tap Setting > permission, and turn "Files and media" on."""
         currPaint.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.paint_pressed))
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBackPressed() {
         binding.drawing.isDrawingCacheEnabled = true
         when (i) {
             0 -> {
                 signRoofBitMap =
                         binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
+                binding.tvImgTitle.text =  getString(R.string.roof) + imgTitle
+//                signRoofBitMap = saveBitmapToJPGImg(signRoofBitMap!!)
                 ugmr.roofImage = signRoofBitMap
                 if(binding.drawing.isEdited && isSignRoofEditedCounter != 0){
                     isSignRoofEditedCounter = 0
@@ -533,6 +633,8 @@ Tap Setting > permission, and turn "Files and media" on."""
             1 -> {
                 signLeftBitMap =
                         binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
+                binding.tvImgTitle.text =  getString(R.string.left) + imgTitle
+//                signLeftBitMap = saveBitmapToJPGImg(signLeftBitMap!!)
                 ugmr.leftImage = signLeftBitMap
                 if(binding.drawing.isEdited && isSignLeftEditedCounter != 0){
                     isSignLeftEditedCounter = 0
@@ -552,6 +654,8 @@ Tap Setting > permission, and turn "Files and media" on."""
             2 -> {
                 signRightBitMap =
                         binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
+                binding.tvImgTitle.text =  getString(R.string.right) + imgTitle
+//                signRightBitMap = saveBitmapToJPGImg(signRightBitMap!!)
                 ugmr.rightImage = signRightBitMap
                 if(binding.drawing.isEdited && isSignRightEditedCounter != 0){
                     isSignRightEditedCounter = 0
@@ -571,6 +675,8 @@ Tap Setting > permission, and turn "Files and media" on."""
             3 -> {
                 signFaceBitMap =
                         binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
+                binding.tvImgTitle.text =  getString(R.string.face) + imgTitle
+//                signFaceBitMap = saveBitmapToJPGImg(signFaceBitMap!!)
                 ugmr.faceImage = signFaceBitMap
                 if(binding.drawing.isEdited && isSignFaceEditedCounter != 0){
                     isSignFaceEditedCounter = 0
