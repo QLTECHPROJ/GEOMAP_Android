@@ -179,7 +179,7 @@ class UserProfileActivity : AppCompatActivity() {
                 val btn = deleteDialog!!.findViewById<Button>(R.id.Btn)
                 val progressBar = deleteDialog!!.findViewById<ProgressBar>(R.id.progressBar)
                 val progressBarHolder =
-                        deleteDialog!!.findViewById<FrameLayout>(R.id.progressBarHolder)
+                    deleteDialog!!.findViewById<FrameLayout>(R.id.progressBarHolder)
                 tvTitle.text = getString(R.string.delete_account)
                 tvHeader.text = getString(R.string.delete_ac_quotes)
 
@@ -218,45 +218,14 @@ class UserProfileActivity : AppCompatActivity() {
     }
 
     private fun callDeleteAcApi() {
-        if (isNetworkConnected(ctx)) {
-            showProgressBar(binding.progressBar, binding.progressBarHolder, act)
-            viewModel = ViewModelProvider(
-                this, UserModelFactory(
-                    UserRepository(retrofitService)
-                )
-            )[AllViewModel::class.java]
-            viewModel.postDeleteUser(
-                userId!!
-            )
-            viewModel.postDeleteUser.observe(this) {
-                hideProgressBar(
-                    binding.progressBar,
-                    binding.progressBarHolder, act
-                )
-                when {
-                    it?.ResponseCode == getString(R.string.ResponseCodesuccess) -> {
-                        showToast(it.ResponseMessage, act)
-                        finish()
-                    }
-                    it.ResponseCode == act.getString(R.string.ResponseCodefail) -> {
-                        showToast(it.ResponseMessage, act)
-                    }
-                    it.ResponseCode == act.getString(R.string.ResponseCodeDeleted) -> {
-                        callDelete403(act, it.ResponseMessage)
-                    }
-                }
-            }
-        } else {
-            showToast(getString(R.string.no_server_found), act)
-        }
 
         if (isNetworkConnected(ctx)) {
             RetrofitService.getInstance().postDeleteUser(
                 userId
             ).enqueue(object : Callback<SuccessModel?> {
                 override fun onResponse(
-                        call : Call<SuccessModel?>,
-                        response : Response<SuccessModel?>
+                    call : Call<SuccessModel?>,
+                    response : Response<SuccessModel?>
                 ) {
                     val model = response.body()
                     hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
@@ -284,7 +253,7 @@ class UserProfileActivity : AppCompatActivity() {
 
     private fun String.isEmailValid() : Boolean {
         return !TextUtils.isEmpty(this) && android.util.Patterns.EMAIL_ADDRESS.matcher(this)
-                .matches()
+            .matches()
     }
 
     private fun prepareUpdateData() {
@@ -297,8 +266,8 @@ class UserProfileActivity : AppCompatActivity() {
                 binding.etDob.text.toString(), binding.etMobileNo.text.toString(), typedFile,
                 object : retrofit.Callback<ProfileUpdateModel> {
                     override fun success(
-                            model : ProfileUpdateModel,
-                            response : retrofit.client.Response
+                        model : ProfileUpdateModel,
+                        response : retrofit.client.Response
                     ) {
                         hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                         if (model.responseCode.equals(
@@ -307,10 +276,10 @@ class UserProfileActivity : AppCompatActivity() {
                         ) {
                             showToast(model.responseMessage, act)
                             val shared1 =
-                                    getSharedPreferences(
-                                        CONSTANTS.PREFE_ACCESS_USERDATA,
-                                        Context.MODE_PRIVATE
-                                    )
+                                getSharedPreferences(
+                                    CONSTANTS.PREFE_ACCESS_USERDATA,
+                                    Context.MODE_PRIVATE
+                                )
                             val editor1 = shared1.edit()
                             editor1.putString(CONSTANTS.profileImage, model.responseData?.profileImage)
                             editor1.putString(CONSTANTS.dob, model.responseData?.dob)
@@ -347,75 +316,75 @@ class UserProfileActivity : AppCompatActivity() {
         showProgressBar(binding.progressBar, binding.progressBarHolder, act)
         if (isNetworkConnected(ctx)) {
             RetrofitService.getInstance().getUserDetails(userId)
-                    .enqueue(object : Callback<UserCommonDataModel> {
-                        override fun onResponse(
-                                call : Call<UserCommonDataModel>,
-                                response : Response<UserCommonDataModel>
-                        ) {
-                            hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                            val coachStatusModel : UserCommonDataModel? = response.body()
-                            when (coachStatusModel!!.responseCode) {
-                                getString(R.string.ResponseCodesuccess) -> {
+                .enqueue(object : Callback<UserCommonDataModel> {
+                    override fun onResponse(
+                        call : Call<UserCommonDataModel>,
+                        response : Response<UserCommonDataModel>
+                    ) {
+                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                        val coachStatusModel : UserCommonDataModel? = response.body()
+                        when (coachStatusModel!!.responseCode) {
+                            getString(R.string.ResponseCodesuccess) -> {
 //                                binding.rlMainLayout.visibility = View.VISIBLE
-                                    name = coachStatusModel.responseData!!.name
-                                    email = coachStatusModel.responseData!!.email
-                                    mobileNo = coachStatusModel.responseData!!.mobile
-                                    dob = coachStatusModel.responseData!!.dob
-                                    profileImage = coachStatusModel.responseData!!.profileImage
-                                    binding.etName.setText(name)
-                                    binding.etEmail.setText(email)
-                                    binding.etMobileNo.setText(mobileNo)
-                                    binding.etDob.setText(dob)
-                                    if (coachStatusModel.responseData!!.dob != "") {
-                                        val outputFormat : DateFormat = SimpleDateFormat(
-                                            CONSTANTS.DATE_MONTH_YEAR_FORMAT1
-                                        )
-                                        val inputFormat : DateFormat = SimpleDateFormat(
-                                            CONSTANTS.DATE_MONTH_YEAR_FORMAT
-                                        )
-                                        val inputText = dob
-                                        val date : Date? = inputFormat.parse(inputText!!)
-                                        val outputText : String = outputFormat.format(date!!)
-                                        Log.e("dob", outputText)
-                                        val dateSpilt = outputText.split(" ")
-                                        ageYear = dateSpilt[2].toInt()
-                                        ageMonth = dateSpilt[1].toInt()
-                                        ageDate = dateSpilt[0].toInt()
-                                        birthYear = getAge(ageYear, ageMonth, ageDate)
-                                    }
-                                    binding.ivCameraIconBg.visibility = View.VISIBLE
-                                    binding.ivCameraIcon.visibility = View.VISIBLE
-                                    if (coachStatusModel.responseData!!.profileImage == "") {
-                                        binding.civProfile.visibility = View.GONE
-                                        binding.rlCameraBg.visibility = View.GONE
-                                        val name = if (coachStatusModel.responseData!!.name == "") {
-                                            "Guest"
-                                        } else {
-                                            coachStatusModel.responseData!!.name
-                                        }
-                                        binding.rlLetter.visibility = View.VISIBLE
-                                        binding.tvLetter.text = name!!.substring(0, 1)
+                                name = coachStatusModel.responseData!!.name
+                                email = coachStatusModel.responseData!!.email
+                                mobileNo = coachStatusModel.responseData!!.mobile
+                                dob = coachStatusModel.responseData!!.dob
+                                profileImage = coachStatusModel.responseData!!.profileImage
+                                binding.etName.setText(name)
+                                binding.etEmail.setText(email)
+                                binding.etMobileNo.setText(mobileNo)
+                                binding.etDob.setText(dob)
+                                if (coachStatusModel.responseData!!.dob != "") {
+                                    val outputFormat : DateFormat = SimpleDateFormat(
+                                        CONSTANTS.DATE_MONTH_YEAR_FORMAT1
+                                    )
+                                    val inputFormat : DateFormat = SimpleDateFormat(
+                                        CONSTANTS.DATE_MONTH_YEAR_FORMAT
+                                    )
+                                    val inputText = dob
+                                    val date : Date? = inputFormat.parse(inputText!!)
+                                    val outputText : String = outputFormat.format(date!!)
+                                    Log.e("dob", outputText)
+                                    val dateSpilt = outputText.split(" ")
+                                    ageYear = dateSpilt[2].toInt()
+                                    ageMonth = dateSpilt[1].toInt()
+                                    ageDate = dateSpilt[0].toInt()
+                                    birthYear = getAge(ageYear, ageMonth, ageDate)
+                                }
+                                binding.ivCameraIconBg.visibility = View.VISIBLE
+                                binding.ivCameraIcon.visibility = View.VISIBLE
+                                if (coachStatusModel.responseData!!.profileImage == "") {
+                                    binding.civProfile.visibility = View.GONE
+                                    binding.rlCameraBg.visibility = View.GONE
+                                    val name = if (coachStatusModel.responseData!!.name == "") {
+                                        "Guest"
                                     } else {
-                                        binding.civProfile.visibility = View.VISIBLE
-                                        binding.rlCameraBg.visibility = View.VISIBLE
-                                        binding.rlLetter.visibility = View.GONE
+                                        coachStatusModel.responseData!!.name
+                                    }
+                                    binding.rlLetter.visibility = View.VISIBLE
+                                    binding.tvLetter.text = name!!.substring(0, 1)
+                                } else {
+                                    binding.civProfile.visibility = View.VISIBLE
+                                    binding.rlCameraBg.visibility = View.VISIBLE
+                                    binding.rlLetter.visibility = View.GONE
+                                    try {
+                                        Glide.with(ctx)
+                                            .load(coachStatusModel.responseData!!.profileImage)
+                                            .thumbnail(0.10f)
+                                            .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
+                                            .into(binding.civProfile)
+                                    } catch (_ : Exception) {
                                         try {
                                             Glide.with(ctx)
-                                                    .load(coachStatusModel.responseData!!.profileImage)
-                                                    .thumbnail(0.10f)
-                                                    .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
-                                                    .into(binding.civProfile)
-                                        } catch (_ : Exception) {
-                                            try {
-                                                Glide.with(ctx)
-                                                    .load(coachStatusModel.responseData!!.profileImage)
-                                                    .thumbnail(0.10f)
-                                                    .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
-                                                    .into(binding.civProfile)
-                                            } catch (e: Exception) {
-                                            }
+                                                .load(coachStatusModel.responseData!!.profileImage)
+                                                .thumbnail(0.10f)
+                                                .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
+                                                .into(binding.civProfile)
+                                        } catch (e: Exception) {
                                         }
                                     }
+                                }
 
 //                                binding.etMobileNo.isEnabled = false
 //                                binding.etMobileNo.isClickable = false
@@ -427,20 +396,20 @@ class UserProfileActivity : AppCompatActivity() {
 //                                binding.etEmail.setTextColor(
 //                                    ContextCompat.getColor(applicationContext, R.color.light_gray))
 
-                                }
-                                getString(R.string.ResponseCodefail) -> {
-                                    showToast(coachStatusModel.responseMessage, act)
-                                }
-                                getString(R.string.ResponseCodeDeleted) -> {
-                                    callDelete403(act, coachStatusModel.responseMessage)
-                                }
+                            }
+                            getString(R.string.ResponseCodefail) -> {
+                                showToast(coachStatusModel.responseMessage, act)
+                            }
+                            getString(R.string.ResponseCodeDeleted) -> {
+                                callDelete403(act, coachStatusModel.responseMessage)
                             }
                         }
+                    }
 
-                        override fun onFailure(call : Call<UserCommonDataModel>, t : Throwable) {
-                            hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
-                        }
-                    })
+                    override fun onFailure(call : Call<UserCommonDataModel>, t : Throwable) {
+                        hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
+                    }
+                })
         } else {
             setProfilePic("")
             binding.civProfile.visibility = View.GONE
@@ -485,90 +454,82 @@ class UserProfileActivity : AppCompatActivity() {
         if (profilePic.equals("")) {
             try {
                 Glide.with(applicationContext).load(R.drawable.default_profile).thumbnail(0.10f)
-                        .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
-                        .into(binding.civProfile)
+                    .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
+                    .into(binding.civProfile)
             } catch (_ : Exception) {
             }
         } else {
             try {
                 Glide.with(applicationContext).load(profilePic).thumbnail(0.10f)
-                        .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
-                        .into(binding.civProfile)
+                    .apply(RequestOptions.bitmapTransform(RoundedCorners(126)))
+                    .into(binding.civProfile)
             } catch (_ : Exception) {
             }
         }
     }
 
     private fun selectImage() {
+        val writeP = ContextCompat.checkSelfPermission(ctx,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val readP = ContextCompat.checkSelfPermission(ctx,
+            Manifest.permission.READ_EXTERNAL_STORAGE)
+        val camaraP = ContextCompat.checkSelfPermission(ctx, Manifest.permission.CAMERA)
+        val permissionG = PackageManager.PERMISSION_GRANTED
+        val permissionD = PackageManager.PERMISSION_DENIED
+        val aWriteP = Manifest.permission.WRITE_EXTERNAL_STORAGE
+        val aReadP = Manifest.permission.READ_EXTERNAL_STORAGE
+        val aCamaraP = Manifest.permission.CAMERA
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
-            if (ContextCompat.checkSelfPermission(
-                    ctx, Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
-                    ctx, Manifest.permission.READ_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
-                    ctx, Manifest.permission.CAMERA
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
+            if (writeP == permissionG && readP == permissionG && camaraP == permissionG) {
                 callProfilePathSet()
             } else {
-                mRequestPermissionHandler!!.requestPermission(
-                    act, arrayOf(
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA
-                    ), 123, object :
-                        RequestPermissionHandler.RequestPermissionListener {
-                        override fun onSuccess() {
-                            callProfilePathSet()
-                        }
-
-                        override fun onFailed() {}
-                    })
+                callPermission(arrayOf(aWriteP, aReadP, aCamaraP))
             }
         } else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
-            if (ContextCompat.checkSelfPermission(
-                    ctx, Manifest.permission.READ_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
-                    ctx, Manifest.permission.CAMERA
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                if (ContextCompat.checkSelfPermission(
-                        ctx, Manifest.permission.CAMERA
-                    ) == PackageManager.PERMISSION_DENIED
-                ) {
-                    callCamaraPermission()
-                } else if (ContextCompat.checkSelfPermission(
-                        ctx, Manifest.permission.READ_MEDIA_IMAGES
-                    ) == PackageManager.PERMISSION_DENIED
-                ) {
-                    callReadPermission("1", "Files and media")
-                }
-            } else {
+            if (readP == permissionG && camaraP == permissionG) {
                 callProfilePathSet()
+            } else {
+                if (camaraP != permissionG && readP != permissionG) {
+                    callPermission(arrayOf(aReadP, aCamaraP))
+                } else if (camaraP == permissionD) {
+                    callCamaraPermission()
+                } else if (readP == permissionD) {
+                    callReadPermission("1", "Files and media")
+                } else {
+                    callPermission(arrayOf(aReadP, aCamaraP))
+                }
             }
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(
-                    ctx, Manifest.permission.READ_MEDIA_IMAGES
-                ) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
-                    ctx, Manifest.permission.CAMERA
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                if (ContextCompat.checkSelfPermission(
-                        ctx, Manifest.permission.CAMERA
-                    ) == PackageManager.PERMISSION_DENIED
-                ) {
-                    callCamaraPermission()
-                } else if (ContextCompat.checkSelfPermission(
-                        ctx, Manifest.permission.READ_MEDIA_IMAGES
-                    ) == PackageManager.PERMISSION_DENIED
-                ) {
-                    callReadPermission("0", "Photos and videos")
-                }
-            } else {
+
+            val readPI = ContextCompat.checkSelfPermission(ctx,
+                Manifest.permission.READ_MEDIA_IMAGES)
+            if (readPI == permissionG && camaraP == permissionG) {
                 callProfilePathSet()
+            } else {
+                if (camaraP != permissionG && readPI != permissionG) {
+                    callPermission(arrayOf(aReadP, aCamaraP))
+                } else if (camaraP == permissionD) {
+                    callCamaraPermission()
+                } else if (readPI == permissionD) {
+                    callReadPermission("0", "Photos and videos")
+                } else {
+                    callPermission(arrayOf(aReadP, aCamaraP))
+                }
             }
         } else {
             callProfilePathSet()
         }
+    }
+    private fun callPermission(arry: Array<String>) {
+
+        mRequestPermissionHandler!!.requestPermission(act, arry, 123,
+            object : RequestPermissionHandler.RequestPermissionListener {
+                override fun onSuccess() {
+                    callProfilePathSet()
+                }
+
+                override fun onFailed() {}
+            })
     }
 
     private fun callCamaraPermission() {
@@ -597,9 +558,9 @@ class UserProfileActivity : AppCompatActivity() {
         alert11.window!!.setBackgroundDrawableResource(R.drawable.dialog_bg)
         alert11.show()
         alert11.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
-                .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
+            .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
         alert11.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
-                .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
+            .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
     }
 
     private fun callReadPermission(version : String, text : String) {
@@ -634,9 +595,9 @@ class UserProfileActivity : AppCompatActivity() {
         alert11.window!!.setBackgroundDrawableResource(R.drawable.dialog_bg)
         alert11.show()
         alert11.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
-                .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
+            .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
         alert11.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
-                .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
+            .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
     }
 
     private fun callProfilePathSet() {
@@ -665,16 +626,16 @@ class UserProfileActivity : AppCompatActivity() {
                     }
                     if (photoFile != null) {
                         val photoURI =
-                                FileProvider.getUriForFile(
-                                    ctx, BuildConfig.APPLICATION_ID + ".provider", photoFile
-                                )
+                            FileProvider.getUriForFile(
+                                ctx, BuildConfig.APPLICATION_ID + ".provider", photoFile
+                            )
                         pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                         startActivityForResult(pictureIntent, CONTENT_REQUEST)
                     }
                 }
             } else if (options[item] == getString(R.string.chooseFromGallary)) {
                 val intent =
-                        Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                    Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                 startActivityForResult(intent, 2)
             } else if (options[item] == ctx.getString(R.string.cancel_small)) {
                 dialog.dismiss()
@@ -692,7 +653,7 @@ class UserProfileActivity : AppCompatActivity() {
         image = File.createTempFile(imageFileName, ".jpg", storageDir)
         profilePicPath = image.absolutePath
         Glide.with(ctx).load(profilePicPath).thumbnail(0.10f)
-                   .apply(RequestOptions.bitmapTransform(RoundedCorners(126))).into(binding.civProfile)
+            .apply(RequestOptions.bitmapTransform(RoundedCorners(126))).into(binding.civProfile)
         Log.e("image url", profilePicPath.toString())
         return image
     }
