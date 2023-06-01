@@ -22,6 +22,7 @@ import android.text.TextPaint
 import android.util.Log
 import android.view.View
 import android.widget.ImageButton
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -40,8 +41,7 @@ import com.geomap.mapReportModule.models.AttributeDataModel
 import com.geomap.mapReportModule.models.SuccessModel
 import com.geomap.mapReportModule.models.UnderGroundInsertModel
 import com.geomap.roomDataBase.UnderGroundMappingReport
-import com.geomap.utils.APIClientProfile
-import com.geomap.utils.CONSTANTS
+import com.geomap.utils.*
 import com.geomap.utils.Converter.convertedFormat
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -88,6 +88,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
         var isSignLeftEditedCounter = 0
         var isSignRightEditedCounter = 0
         var isSignFaceEditedCounter = 0
+        private var mRequestPermissionHandler: RequestPermissionHandler? = null
     }
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState : Bundle?) {
@@ -99,7 +100,7 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
 
         val shared = getSharedPreferences(CONSTANTS.PREFE_ACCESS_USERDATA, Context.MODE_PRIVATE)
         userId = shared.getString(CONSTANTS.userId, "")
-
+        mRequestPermissionHandler = RequestPermissionHandler()
         if (intent.extras != null) {
             if (intent.hasExtra("ugData")) {
                 val gson = Gson()
@@ -558,7 +559,56 @@ class UnderGroundFormThirdStepActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        val manageP = ContextCompat.checkSelfPermission(ctx,
+            Manifest.permission.MANAGE_EXTERNAL_STORAGE)
+        val readP = ContextCompat.checkSelfPermission(ctx,
+            Manifest.permission.READ_EXTERNAL_STORAGE)
+        val permissionG = PackageManager.PERMISSION_GRANTED
+        val permissionD = PackageManager.PERMISSION_DENIED
+        val aManageP = Manifest.permission.MANAGE_EXTERNAL_STORAGE
+        val aReadP = Manifest.permission.READ_EXTERNAL_STORAGE
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
+            if (readP == permissionG) {
+                callProfilePathSet()
+            } else {
+                callPermission(arrayOf(aReadP))
+            }
+        } else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q && Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
+            if (manageP == permissionG && readP == permissionG) {
+                callProfilePathSet()
+            } else {
+                if (readP != permissionG) {
+                    callPermission(arrayOf(aReadP))
+                } else if (readP == permissionD) {
+                    callReadPermission("1", "Files and media")
+                }else if (manageP == permissionD) {
+                    callReadPermission("1", "Files and media")
+                } else {
+                    callPermission(arrayOf(aManageP,aReadP))
+                }
+            }
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+
+            val readPI = ContextCompat.checkSelfPermission(ctx,
+                Manifest.permission.READ_MEDIA_IMAGES)
+            if (manageP == permissionG && readPI == permissionG) {
+                callProfilePathSet()
+            } else {
+                if ( readPI != permissionG) {
+                    callPermission(arrayOf(aReadP))
+                }  else if (readPI == permissionD) {
+                    callReadPermission("0", "Photos and videos")
+                } else if (manageP == permissionD) {
+                    callReadPermission("0", "Files and media")
+                } else {
+                    callPermission(arrayOf(aReadP))
+                }
+            }
+        } else {
+            callProfilePathSet()
+        }
+
+       /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             if (!Environment.isExternalStorageManager()) {
                 val building = AlertDialog.Builder(ctx)
                 building.setMessage(
@@ -606,11 +656,60 @@ Tap Setting > permission, and turn "Files and media" on."""
                     requestExternalStorage
                 )
             }
-        }
+        }*/
         currPaint = binding.paintColors.getChildAt(0) as ImageButton
         currPaint.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.paint_pressed))
     }
 
+    private fun callReadPermission(version: String, text: String) {
+        val buildable = AlertDialog.Builder(ctx)
+        buildable.setPositiveButton(R.string.Settings) { dialogs: DialogInterface, _: Int ->
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val uri = Uri.fromParts("package", packageName, null)
+            intent.data = uri
+            startActivity(intent)
+            dialogs.dismiss()
+        }
+
+        if (version == "0") {
+            buildable.setMessage("To upload image allow ${
+                getString(R.string.app_name)
+            } access to your device's files. Tap Setting > permission, and turn $text on.")
+        } else if (version == "1") {
+            buildable.setMessage("To upload image allow ${
+                getString(R.string.app_name)
+            } access to your device's files. Tap Setting > permission, and turn $text on.")
+        }
+
+        buildable.setNegativeButton(ctx.getString(
+            R.string.not_now)) { dialogue: DialogInterface, _: Int -> dialogue.dismiss() }
+        buildable.setCancelable(true)
+        val alert11 = buildable.create()
+        alert11.window!!.setBackgroundDrawableResource(R.drawable.dialog_bg)
+        alert11.show()
+        alert11.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
+            .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
+        alert11.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
+            .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
+    }
+    private fun callProfilePathSet() {
+        val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
+        val uri = Uri.fromParts("package", packageName, null)
+        intent.data = uri
+        startActivity(intent)
+    }
+
+    private fun callPermission(arry: Array<String>) {
+
+        mRequestPermissionHandler!!.requestPermission(act, arry, 123,
+            object : RequestPermissionHandler.RequestPermissionListener {
+                override fun onSuccess() {
+                    callProfilePathSet()
+                }
+
+                override fun onFailed() {}
+            })
+    }
     @SuppressLint("SetTextI18n")
     override fun onBackPressed() {
         binding.drawing.isDrawingCacheEnabled = true

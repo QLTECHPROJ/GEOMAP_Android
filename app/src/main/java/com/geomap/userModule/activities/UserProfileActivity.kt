@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -57,8 +58,7 @@ import retrofit.mime.TypedFile
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
-import java.io.IOException
+import java.io.*
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -87,8 +87,6 @@ class UserProfileActivity : AppCompatActivity() {
     private var deleteDialog : Dialog? = null
     private var mLastClickTime : Long = 0
     private lateinit var viewModel : AllViewModel
-    private val retrofitService = RetrofitService.getInstance()
-    private val requestSourceCode = 1
 
     private var userTextWatcher : TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s : CharSequence, start : Int, count : Int, after : Int) {}
@@ -423,10 +421,17 @@ class UserProfileActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode : Int, resultCode : Int, data : Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CONTENT_REQUEST && resultCode == Activity.RESULT_OK) {
-            setProfilePic(profilePicPath)
             val map = HashMap<String, String?>()
             map[CONSTANTS.userId] = "userId"
+            val photo: Bitmap? = data!!.extras!!["data"] as Bitmap?
+            val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+            val imageFileName = "IMG_" + timeStamp + "_"
+            image =  File(cacheDir, "$imageFileName.jpg")
+            val os : OutputStream = BufferedOutputStream(FileOutputStream(image))
+            photo!!.compress(Bitmap.CompressFormat.JPEG, 100, os)
+            os.close()
             typedFile = TypedFile(CONSTANTS.MULTIPART_FORMAT, image)
+            setProfilePic(image.toString())
             enableButton()
             Log.e("Camera Image URL", image.toString())
         } else if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
@@ -601,41 +606,17 @@ class UserProfileActivity : AppCompatActivity() {
     }
 
     private fun callProfilePathSet() {
-        options = if (profilePicPath == "") {
-            arrayOf(
-                getString(R.string.takePhoto), getString(R.string.chooseFromGallary),
-                getString(R.string.cancel_small)
-            )
-        } else {
-            arrayOf(
-                getString(R.string.takePhoto), getString(R.string.chooseFromGallary),
-                getString(R.string.cancel_small)
-            )
-        }
+        options = arrayOf(getString(R.string.takePhoto), getString(R.string.chooseFromGallary),
+            getString(R.string.cancel_small))
         val builder = AlertDialog.Builder(ctx)
         builder.setTitle(R.string.addPhoto)
-        builder.setItems(options) { dialog : DialogInterface, item : Int ->
+        builder.setItems(options) { dialog: DialogInterface, item: Int ->
             if (options[item] == getString(R.string.takePhoto)) {
                 val pictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                if (pictureIntent.resolveActivity(ctx.packageManager) != null) {
-                    var photoFile : File? = null
-                    try {
-                        photoFile = createImageFile()
-                    } catch (ex : IOException) {
-                        ex.printStackTrace()
-                    }
-                    if (photoFile != null) {
-                        val photoURI =
-                            FileProvider.getUriForFile(
-                                ctx, BuildConfig.APPLICATION_ID + ".provider", photoFile
-                            )
-                        pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                        startActivityForResult(pictureIntent, CONTENT_REQUEST)
-                    }
-                }
+                startActivityForResult(pictureIntent, CONTENT_REQUEST)
             } else if (options[item] == getString(R.string.chooseFromGallary)) {
-                val intent =
-                    Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                val intent = Intent(Intent.ACTION_PICK,
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                 startActivityForResult(intent, 2)
             } else if (options[item] == ctx.getString(R.string.cancel_small)) {
                 dialog.dismiss()
@@ -644,18 +625,6 @@ class UserProfileActivity : AppCompatActivity() {
         val alert11 = builder.create()
         alert11.window!!.setBackgroundDrawableResource(R.drawable.dialog_bg)
         alert11.show()
-    }
-
-    @Throws(IOException::class) private fun createImageFile() : File {
-        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
-        val imageFileName = "IMG_" + timeStamp + "_"
-        val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        image = File.createTempFile(imageFileName, ".jpg", storageDir)
-        profilePicPath = image.absolutePath
-        Glide.with(ctx).load(profilePicPath).thumbnail(0.10f)
-            .apply(RequestOptions.bitmapTransform(RoundedCorners(126))).into(binding.civProfile)
-        Log.e("image url", profilePicPath.toString())
-        return image
     }
 
     @SuppressLint("SimpleDateFormat")
