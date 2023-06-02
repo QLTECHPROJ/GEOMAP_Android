@@ -58,7 +58,6 @@ object CONSTANTS {
     const val attributeId = "attributeId"
     const val checkLogin = "checkLogin"
 
-
     const val supportTitle = "supportTitle"
     const val supportText = "supportText"
     const val supportEmail = "supportEmail"
@@ -67,7 +66,8 @@ object CONSTANTS {
     const val report = "report"
     const val id = "id"
 
-    @JvmField var Web = "Web"
+    @JvmField
+    var Web = "Web"
     const val PREF_KEY_Splash = "Splash"
     const val PREF_KEY_SplashKey = "SplashKey"
 }

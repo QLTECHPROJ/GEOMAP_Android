@@ -474,21 +474,21 @@ class UserProfileActivity : AppCompatActivity() {
     }
 
     private fun selectImage() {
-        val writeP = ContextCompat.checkSelfPermission(ctx,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//        val writeP = ContextCompat.checkSelfPermission(ctx,
+//            Manifest.permission.WRITE_EXTERNAL_STORAGE)
         val readP = ContextCompat.checkSelfPermission(ctx,
             Manifest.permission.READ_EXTERNAL_STORAGE)
         val camaraP = ContextCompat.checkSelfPermission(ctx, Manifest.permission.CAMERA)
         val permissionG = PackageManager.PERMISSION_GRANTED
         val permissionD = PackageManager.PERMISSION_DENIED
-        val aWriteP = Manifest.permission.WRITE_EXTERNAL_STORAGE
+//        val aWriteP = Manifest.permission.WRITE_EXTERNAL_STORAGE
         val aReadP = Manifest.permission.READ_EXTERNAL_STORAGE
         val aCamaraP = Manifest.permission.CAMERA
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
-            if (writeP == permissionG && readP == permissionG && camaraP == permissionG) {
+            if (readP == permissionG && camaraP == permissionG) {
                 callProfilePathSet()
             } else {
-                callPermission(arrayOf(aWriteP, aReadP, aCamaraP))
+                callPermission(arrayOf(aReadP, aCamaraP))
             }
         } else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
             if (readP == permissionG && camaraP == permissionG) {

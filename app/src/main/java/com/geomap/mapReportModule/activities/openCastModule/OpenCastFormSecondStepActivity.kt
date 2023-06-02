@@ -1,6 +1,5 @@
 package com.geomap.mapReportModule.activities.openCastModule
 
-import android.Manifest
 import android.app.Activity
 import android.content.*
 import android.content.pm.PackageManager
@@ -9,12 +8,10 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.*
-import android.provider.Settings
 import android.text.*
 import android.util.Log
 import android.view.View
 import android.widget.ImageButton
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -63,8 +60,6 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
     var titleImg = ""
     private val requestExternalStorage = 1
     private var mRequestPermissionHandler: RequestPermissionHandler? = null
-    private val permissionsStorage = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.MANAGE_EXTERNAL_STORAGE)
     private lateinit var currPaint: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,7 +77,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             ocDataModel = gson.fromJson(data, type1)
         }
 
-        titleImg = "  "+ ocDataModel.ocDate + "_OC_Image"
+        titleImg = "  " + ocDataModel.ocDate + "_OC_Image"
         binding.tvImgTitle.text = titleImg
         binding.llBack.setOnClickListener {
             onBackPressed()
@@ -96,10 +91,10 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             val d: Drawable = BitmapDrawable(resources, img)
             binding.drawing.background = d
             binding.drawing.isFilled = true
-        }else{
+        } else {
             var bitmap = BitmapFactory.decodeResource(resources!!, R.drawable.grid_bg_new)
             bitmap = saveBitmapToJPGImg(bitmap)
-            val d : Drawable = BitmapDrawable(resources!!, bitmap)
+            val d: Drawable = BitmapDrawable(resources!!, bitmap)
             binding.drawing.background = d
         }
 
@@ -108,18 +103,17 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             binding.drawing.startNew()
             var bitmap = BitmapFactory.decodeResource(resources!!, R.drawable.grid_bg_new)
             bitmap = saveBitmapToJPGImg(bitmap)
-            val d : Drawable = BitmapDrawable(resources!!, bitmap)
+            val d: Drawable = BitmapDrawable(resources!!, bitmap)
             binding.drawing.background = d
         }
 
         binding.btnSubmit.setOnClickListener {
-            verifyStoragePermissions()
+//            verifyStoragePermissions()
             postData()
         }
     }
 
     private fun initViewSandVars() {
-        verifyStoragePermissions()
         currPaint = binding.paintColors.getChildAt(0) as ImageButton
         currPaint.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.paint_pressed))
     }
@@ -171,7 +165,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             os.close()
             sign = TypedFile(CONSTANTS.MULTIPART_FORMAT, file)
             binding.drawing.isFilled = true
-        }else{
+        } else {
             img = binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
             val file = File(cacheDir, "image.jpg")
             val os: OutputStream = BufferedOutputStream(FileOutputStream(file))
@@ -195,11 +189,11 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                     ocDataModel.sampleCollected, ocDataModel.weathering, ocDataModel.rockStregth,
                     ocDataModel.waterCondition, ocDataModel.typeOfGeologicalStructures,
                     ocDataModel.typeOfFaults, ocDataModel.notes, ocDataModel.shift,
-                    convertedFormat(ocDataModel.ocDate,CONSTANTS.SERVER_TIME_FORMAT,CONSTANTS.DATE_MONTH_YEAR_FORMAT_z),
-                    ocDataModel.dipDirectionAngle, sign, geologistSign,
-                    clientsGeologistSign, object : retrofit.Callback<SuccessModel> {
+                    convertedFormat(ocDataModel.ocDate, CONSTANTS.SERVER_TIME_FORMAT,
+                        CONSTANTS.DATE_MONTH_YEAR_FORMAT_z), ocDataModel.dipDirectionAngle, sign,
+                    geologistSign, clientsGeologistSign, object : retrofit.Callback<SuccessModel> {
                         override fun success(model: SuccessModel,
-                            response: retrofit.client.Response) {
+                                             response: retrofit.client.Response) {
                             if (model.ResponseCode == getString(R.string.ResponseCodesuccess)) {
                                 hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                                 when (model.ResponseCode) {
@@ -221,8 +215,6 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
                             }
                         }
 
-
-
                         override fun failure(e: RetrofitError) {
                             hideProgressBar(binding.progressBar, binding.progressBarHolder, act)
                             showToast(e.message, act)
@@ -235,6 +227,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
             callOfflineFunction()
         }
     }
+
     private fun clearData() {
         flagOC = "0"
         ocmr = OpenCastMappingReport()
@@ -253,6 +246,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         geologistSignEdited = false
         clientsGeologistSignEdited = false
     }
+
     private fun callOfflineFunction() {
         Log.e("obj.uid", "else true")
         val obj = OpenCastMappingReport()
@@ -313,7 +307,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String?>,
-        grantResults: IntArray) {
+                                            grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             requestExternalStorage -> {
@@ -347,7 +341,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
     }
 
     @Throws(IOException::class)
-    fun saveBitmapToJPGImg(bitmap: Bitmap): Bitmap{
+    fun saveBitmapToJPGImg(bitmap: Bitmap): Bitmap {
         var bitmap = bitmap
         val scale: Float = resources.displayMetrics.density
         var bitmapConfig: Bitmap.Config = bitmap.config // set default bitmap config if none
@@ -371,8 +365,8 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         // set text width to canvas width minus 16dp padding
         val textWidth = canvas.width - (16 * scale.roundToInt())// init StaticLayout for text
         // init StaticLayout for text
-        val textLayout = StaticLayout(binding.tvImgTitle.text, paint, textWidth, Layout.Alignment.ALIGN_NORMAL, 1.0f,
-            0.0f, false) // get height of multiline text
+        val textLayout = StaticLayout(binding.tvImgTitle.text, paint, textWidth,
+            Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false) // get height of multiline text
         // get height of multiline text
         val textHeight = textLayout.height // get position of text's top left corner
         // get position of text's top left corner
@@ -381,7 +375,7 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         val p = Paint()
         p.color = getColor(R.color.primary_theme) // text size in pixels
         p.style = Paint.Style.FILL
-        var rectF = RectF(0.0f, 2.0f, 1200.0f,120.0f)
+        var rectF = RectF(0.0f, 2.0f, 1200.0f, 120.0f)
         /*if((ocDataModel.minesSiteName != "" && ocDataModel.pitName == "" &&  ocDataModel.pitLocation == "") || (ocDataModel.minesSiteName == "" && ocDataModel.pitName != "" &&  ocDataModel.pitLocation == "") || (ocDataModel.minesSiteName == "" && ocDataModel.pitName == "" &&  ocDataModel.pitLocation != "") ){
             //3line
             Log.e("4line","4Line")
@@ -407,167 +401,11 @@ class OpenCastFormSecondStepActivity : AppCompatActivity() {
         return bitmap
     }
 
-    private fun verifyStoragePermissions() {
-        val manageP = ContextCompat.checkSelfPermission(ctx,
-            Manifest.permission.MANAGE_EXTERNAL_STORAGE)
-        val readP = ContextCompat.checkSelfPermission(ctx,
-            Manifest.permission.READ_EXTERNAL_STORAGE)
-        val permissionG = PackageManager.PERMISSION_GRANTED
-        val permissionD = PackageManager.PERMISSION_DENIED
-        val aManageP = Manifest.permission.MANAGE_EXTERNAL_STORAGE
-        val aReadP = Manifest.permission.READ_EXTERNAL_STORAGE
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q) {
-            if (readP == permissionG) {
-                callProfilePathSet()
-            } else {
-                callPermission(arrayOf(aReadP))
-            }
-        } else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.Q && Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
-            if (manageP == permissionG && readP == permissionG) {
-                callProfilePathSet()
-            } else {
-                if (readP != permissionG) {
-                    callPermission(arrayOf(aReadP))
-                } else if (readP == permissionD) {
-                    callReadPermission("1", "Files and media")
-                } else if (manageP == permissionD) {
-                    callReadPermission("1", "Files and media")
-                } else {
-                    callPermission(arrayOf(aManageP, aReadP))
-                }
-            }
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-
-            val readPI = ContextCompat.checkSelfPermission(ctx,
-                Manifest.permission.READ_MEDIA_IMAGES)
-            if (manageP == permissionG && readPI == permissionG) {
-                callProfilePathSet()
-            } else {
-                if (readPI != permissionG) {
-                    callPermission(arrayOf(aReadP))
-                } else if (readPI == permissionD) {
-                    callReadPermission("0", "Photos and videos")
-                } else if (manageP == permissionD) {
-                    callReadPermission("0", "Files and media")
-                } else {
-                    callPermission(arrayOf(aReadP))
-                }
-            }
-        } else {
-            callProfilePathSet()
-        }
-
-        /* if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                 if (!Environment.isExternalStorageManager()) {
-                     val building = AlertDialog.Builder(ctx)
-                     building.setMessage(
-                         """To upload image allow ${
-                             ctx.getString(
-                                 R.string.app_name
-                             )
-                         } access to your device's files.
-     Tap Setting > permission, and turn "Files and media" on."""
-                     )
-                     building.setCancelable(true)
-                     building.setPositiveButton(
-                         ctx.getString(R.string.Settings)
-                     ) { dialogs : DialogInterface, _ : Int ->
-                         val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-                         val uri = Uri.fromParts("package", packageName, null)
-                         intent.data = uri
-                         startActivity(intent)
-                         dialogs.dismiss()
-                     }
-                     building.setNegativeButton(
-                         ctx.getString(R.string.not_now)
-                     ) { dialogs : DialogInterface, _ : Int -> dialogs.dismiss() }
-                     val alert11 = building.create()
-                     alert11.window!!.setBackgroundDrawableResource(R.drawable.dialog_bg)
-                     alert11.show()
-                     alert11.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
-                             .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
-                     alert11.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
-                             .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
-                 }
-             } else {
-                 if (ActivityCompat.checkSelfPermission(
-                         ctx,
-                         Manifest.permission.WRITE_EXTERNAL_STORAGE
-                     ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                         ctx, Manifest.permission.READ_EXTERNAL_STORAGE
-                     ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                         ctx, Manifest.permission.MANAGE_EXTERNAL_STORAGE
-                     ) != PackageManager.PERMISSION_GRANTED
-                 ) {
-                     ActivityCompat.requestPermissions(
-                         act,
-                         permissionsStorage,
-                         requestExternalStorage
-                     )
-                 }
-             }*/
-        currPaint = binding.paintColors.getChildAt(0) as ImageButton
-        currPaint.setImageDrawable(ContextCompat.getDrawable(ctx, R.drawable.paint_pressed))
-
-    }
-
-
-    private fun callReadPermission(version: String, text: String) {
-        val buildable = AlertDialog.Builder(ctx)
-        buildable.setPositiveButton(R.string.Settings) { dialogs: DialogInterface, _: Int ->
-            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            val uri = Uri.fromParts("package", packageName, null)
-            intent.data = uri
-            startActivity(intent)
-            dialogs.dismiss()
-        }
-
-        if (version == "0") {
-            buildable.setMessage("To upload image allow ${
-                getString(R.string.app_name)
-            } access to your device's files. Tap Setting > permission, and turn $text on.")
-        } else if (version == "1") {
-            buildable.setMessage("To upload image allow ${
-                getString(R.string.app_name)
-            } access to your device's files. Tap Setting > permission, and turn $text on.")
-        }
-
-        buildable.setNegativeButton(ctx.getString(
-            R.string.not_now)) { dialogue: DialogInterface, _: Int -> dialogue.dismiss() }
-        buildable.setCancelable(true)
-        val alert11 = buildable.create()
-        alert11.window!!.setBackgroundDrawableResource(R.drawable.dialog_bg)
-        alert11.show()
-        alert11.getButton(android.app.AlertDialog.BUTTON_POSITIVE)
-            .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
-        alert11.getButton(android.app.AlertDialog.BUTTON_NEGATIVE)
-            .setTextColor(ContextCompat.getColor(ctx, R.color.primary_theme))
-    }
-    private fun callProfilePathSet() {
-        val intent = Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION)
-        val uri = Uri.fromParts("package", packageName, null)
-        intent.data = uri
-        startActivity(intent)
-    }
-
-    private fun callPermission(arry: Array<String>) {
-
-        mRequestPermissionHandler!!.requestPermission(act, arry, 123,
-            object : RequestPermissionHandler.RequestPermissionListener {
-                override fun onSuccess() {
-                    callProfilePathSet()
-                }
-
-                override fun onFailed() {}
-            })
-    }
-
     override fun onBackPressed() {
         isImageFilled = binding.drawing.isFilled
         isImageEdited = binding.drawing.isEdited
         binding.drawing.isDrawingCacheEnabled = true
-        img = binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config,
-                false)
+        img = binding.drawing.drawingCache.copy(binding.drawing.drawingCache.config, false)
 //        img =  saveBitmapToJPGImg(img)
         finish()
     }
