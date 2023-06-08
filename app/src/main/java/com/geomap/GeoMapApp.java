@@ -1,9 +1,5 @@
 package com.geomap;
 
-import static android.net.ConnectivityManager.RESTRICT_BACKGROUND_STATUS_DISABLED;
-import static android.net.ConnectivityManager.RESTRICT_BACKGROUND_STATUS_ENABLED;
-import static android.net.ConnectivityManager.RESTRICT_BACKGROUND_STATUS_WHITELISTED;
-
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
@@ -11,9 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -21,7 +15,6 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.room.Room;
 
 import com.geomap.faqModule.activities.FaqActivity;
@@ -51,10 +44,6 @@ import com.geomap.utils.CryptLib;
 import com.google.gson.Gson;
 
 import java.io.File;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -88,7 +77,7 @@ public class GeoMapApp extends Application {
 
     public static boolean isNetworkConnected(Context context) {
         try {
-            ConnectivityManager connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             boolean connected = (connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
                     connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED);
             return connected;
