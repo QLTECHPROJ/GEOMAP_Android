@@ -102,13 +102,14 @@ class FaqActivity : AppCompatActivity() {
             holder.binding.llMainLayout.setOnClickListener {
                 if (expandedPosition >= -1) {
                     val prev = expandedPosition
-                    notifyItemChanged(prev)
                     callExpandView(holder)
                 } else {
                     callCollapseView(holder)
                 }
                 expandedPosition = holder.position
-                notifyItemChanged(expandedPosition)
+//                notifyItemChanged(expandedPosition)
+
+                notifyDataSetChanged()
             }
         }
 

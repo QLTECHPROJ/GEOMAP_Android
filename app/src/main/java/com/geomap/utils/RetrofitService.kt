@@ -5,10 +5,7 @@ import com.geomap.GeoMapApp.getContext
 import com.geomap.GeoMapApp.securityKey
 import com.geomap.faqModule.models.FaqListModel
 import com.geomap.mapReportModule.models.*
-import com.geomap.userModule.models.ConfirmSuccessModel
-import com.geomap.userModule.models.ContactUsModel
-import com.geomap.userModule.models.UserCommonDataModel
-import com.geomap.userModule.models.VersionModel
+import com.geomap.userModule.models.*
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -46,6 +43,9 @@ interface RetrofitService {
     @POST("forgot_password")
     @FormUrlEncoded
     fun postForgotPassword(@Field("email") email : String?) : Call<SuccessModel>
+    @POST("forgot_password")
+    @FormUrlEncoded
+    fun postForgotPassword1(@Field("email") email : String?) : Call<SuccessModel1>
 
     @POST("logout")
     @FormUrlEncoded

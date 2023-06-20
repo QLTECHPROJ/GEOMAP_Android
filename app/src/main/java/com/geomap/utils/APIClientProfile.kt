@@ -23,6 +23,7 @@ object APIClientProfile {
             okHttpClient.setConnectTimeout(0, TimeUnit.HOURS)
             okHttpClient.setWriteTimeout(0, TimeUnit.HOURS)
             okHttpClient.setReadTimeout(0, TimeUnit.HOURS)
+            okHttpClient.setReadTimeout(0, TimeUnit.HOURS)
             val restAdapter : RestAdapter =
                     RestAdapter.Builder().setLogLevel(RestAdapter.LogLevel.FULL)
                             .setEndpoint(New_BASE_URL)

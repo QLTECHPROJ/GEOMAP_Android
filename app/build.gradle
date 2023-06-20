@@ -69,10 +69,10 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:21.0.1'
     implementation platform('com.google.firebase:firebase-bom:30.1.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
-    implementation 'com.google.firebase:firebase-messaging:23.1.1'
-    implementation 'com.google.firebase:firebase-crashlytics-ndk:18.3.2'
+    implementation 'com.google.firebase:firebase-messaging:23.1.2'
+    implementation 'com.google.firebase:firebase-crashlytics-ndk:18.3.7'
     implementation 'com.google.firebase:firebase-core:21.1.1'
-    implementation 'com.google.android.gms:play-services-auth:20.4.0'
+    implementation 'com.google.android.gms:play-services-auth:20.5.0'
     implementation 'com.google.android.gms:play-services-auth-api-phone:18.0.1'
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.2.0-alpha01")
 
