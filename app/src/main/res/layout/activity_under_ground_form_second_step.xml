@@ -614,9 +614,8 @@
                         android:fontFamily="@font/inter_semi_bold"
                         android:gravity="top"
                         android:hint="@string/comment"
-                        android:imeOptions="actionDone"
-                        android:importantForAutofill="no"
-                        android:inputType="textMultiLine|textVisiblePassword"
+                        android:inputType="text|textLongMessage|textImeMultiLine"
+                        android:digits="@string/alldigits"
                         android:overScrollMode="always"
                         android:paddingLeft="@dimen/_8sdp"
                         android:paddingTop="@dimen/_8sdp"
@@ -627,7 +626,6 @@
                         android:textColor="@color/light_black"
                         android:textCursorDrawable="@null"
                         android:textSize="@dimen/_16sdp"
-                        android:visibility="visible"
                         tools:ignore="SpUsage" />
                 </androidx.cardview.widget.CardView>
 
